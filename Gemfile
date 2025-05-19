@@ -22,7 +22,7 @@ group :test do
 end
 
 group :development, :test, :danger do
-  gem 'gitlab-dangerfiles', '~> 4.8.1', require: false
+  gem 'gitlab-dangerfiles', '~> 4.9.0', require: false
   gem 'resolv', '~> 0.6.0', require: false
 
   gem 'ruby-lsp', "~> 0.23.0", require: false
