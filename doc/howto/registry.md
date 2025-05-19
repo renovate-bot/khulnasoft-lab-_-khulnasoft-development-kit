@@ -49,7 +49,7 @@ In these instructions, we assume you [set up `registry.test`](local_network.md).
 
 1. Locate the Docker daemon configuration file and set the `insecure-registries` directive to point to the local registry `registry.test:5100`:
    - For Rancher Desktop, see [modify Docker daemon configuration in Rancher Desktop VM](https://github.com/rancher-sandbox/rancher-desktop/discussions/1477).
-   - For Colima, see [How to customize Docker config e.g. add insecure registries?](https://github.com/abiosoft/colima/blob/main/docs/FAQ.md#how-to-customize-docker-config-eg-add-insecure-registries).
+   - For Colima, see [How to customize Docker config e.g. add insecure registries?](https://github.com/abiosoft/colima/blob/master/docs/FAQ.md#how-to-customize-docker-config-eg-add-insecure-registries).
    - For general information, see the [CNCF documentation](https://distribution.github.io/distribution/about/insecure/#deploy-a-plain-http-registry).
 1. Restart the Docker engine.
 1. Run `kdk reconfigure`.
@@ -384,7 +384,7 @@ To verify that the build stage has successfully pushed an image to your local Kh
 ### Pushing multi-arch images to local KhulnaSoft container registry
 
 1. Install [buildx](https://github.com/docker/buildx?tab=readme-ov-file#installing) for Docker.
-1. Optional. If you are using Colima, [link the Colima socket](https://github.com/abiosoft/colima/blob/main/docs/FAQ.md#cannot-connect-to-the-docker-daemon-at-unixvarrundockersock-is-the-docker-daemon-running) to the default socket path:
+1. Optional. If you are using Colima, [link the Colima socket](https://github.com/abiosoft/colima/blob/master/docs/FAQ.md#cannot-connect-to-the-docker-daemon-at-unixvarrundockersock-is-the-docker-daemon-running) to the default socket path:
 
    ```shell
    sudo ln -sf $HOME/.colima/default/docker.sock /var/run/docker.sock

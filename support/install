@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # This is the KDK one line installation. For more information, please visit:
-# https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/main/doc/index.md#one-line-installation
+# https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/master/doc/index.md#one-line-installation
 #
 # Wrap everything in a function to ensure a partially downloaded install script
 # is not executed. Inspired by https://install.sandstorm.io/
@@ -112,10 +112,10 @@ kdk_install() {
 
 echo
 echo "INFO: This is the KDK one line installation. For more information, please visit:"
-echo "INFO: https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/main/doc/index.md#one-line-installation"
+echo "INFO: https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/master/doc/index.md#one-line-installation"
 echo "INFO:"
 echo "INFO: The source for the installation script can be viewed at:"
-echo "INFO: https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/main/support/install"
+echo "INFO: https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/master/support/install"
 echo
 
 if [ $# -eq 1 ]; then

@@ -116,7 +116,7 @@ version:
    brew install postgresql@12
    ```
 
-   If you are using [`mise`](mise.md), the KDK [.tool-versions](https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/main/.tool-versions) file includes required PostgreSQL versions, which can be installed by running:
+   If you are using [`mise`](mise.md), the KDK [.tool-versions](https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/master/.tool-versions) file includes required PostgreSQL versions, which can be installed by running:
 
    ```shell
    mise install

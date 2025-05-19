@@ -15,14 +15,14 @@ KDK supports macOS 10.14 (Mojave) and later. To install dependencies for macOS:
 1. [Install](https://brew.sh) Homebrew to get access to the `brew` command for package management.
 1. Clone the [`khulnasoft-development-kit` project](https://github.com/khulnasoft-lab/khulnasoft-development-kit) to `kdk`
    so you have access to the project's
-   [`Brewfile`](https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/main/Brewfile).
+   [`Brewfile`](https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/master/Brewfile).
    You can:
      - Reuse an existing checkout if you have one, but make sure it's up to date.
      - Use this check out again when you [use KDK to install KhulnaSoft](_index.md#use-kdk-to-install-gitlab).
 
 1. Install [`nvm`](https://github.com/nvm-sh/nvm#installing-and-updating). It should automatically
    configure it for your shell.
-1. Install [the KDK required version of node](https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/main/.tool-versions) using `nvm`, such as:
+1. Install [the KDK required version of node](https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/master/.tool-versions) using `nvm`, such as:
 
    ```shell
    nvm install 18.16.0
@@ -42,7 +42,7 @@ KDK supports macOS 10.14 (Mojave) and later. To install dependencies for macOS:
       ```
 
 1. [Configure `rbenv`](https://github.com/rbenv/rbenv#homebrew-on-macos) for your shell.
-1. Install [the KDK required version of Ruby](https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/main/.ruby-version)
+1. Install [the KDK required version of Ruby](https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/master/.ruby-version)
 using rbenv, such as:
 
    ```shell

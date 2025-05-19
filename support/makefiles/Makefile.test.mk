@@ -14,7 +14,7 @@ kdk_bundle_install:
 .PHONY: rubocop
 ifeq ($(BUNDLE),)
 rubocop:
-	@echo "ERROR: Bundler is not installed, please ensure you've bootstrapped your machine. See https://github.com/khulnasoft-lab/khulnasoft-development-kit/blob/main/doc/index.md for more details"
+	@echo "ERROR: Bundler is not installed, please ensure you've bootstrapped your machine. See https://github.com/khulnasoft-lab/khulnasoft-development-kit/blob/master/doc/index.md for more details"
 	@false
 else
 rubocop: kdk_bundle_install
@@ -25,7 +25,7 @@ endif
 .PHONY: rspec
 ifeq ($(BUNDLE),)
 rspec:
-	@echo "ERROR: Bundler is not installed, please ensure you've bootstrapped your machine. See https://github.com/khulnasoft-lab/khulnasoft-development-kit/blob/main/doc/index.md for more details"
+	@echo "ERROR: Bundler is not installed, please ensure you've bootstrapped your machine. See https://github.com/khulnasoft-lab/khulnasoft-development-kit/blob/master/doc/index.md for more details"
 	@false
 else
 rspec: kdk_bundle_install
@@ -43,7 +43,7 @@ vale:
 .PHONY: yarn-install
 yarn-install:
 ifeq ($(YARN)),)
-	@echo "ERROR: YARN is not installed, please ensure you've bootstrapped your machine. See https://github.com/khulnasoft-lab/khulnasoft-development-kit/blob/main/doc/index.md for more details"
+	@echo "ERROR: YARN is not installed, please ensure you've bootstrapped your machine. See https://github.com/khulnasoft-lab/khulnasoft-development-kit/blob/master/doc/index.md for more details"
 	@false
 else
 	@[[ "${YARN}" ]] && ${YARN} install --silent --frozen-lockfile ${QQ}

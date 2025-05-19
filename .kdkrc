@@ -1,0 +1,42 @@
+# shellcheck shell=bash
+
+CPU_TYPE=$(arch -arm64 uname -m 2> /dev/null || uname -m)
+
+# macOS
+#
+if [[ "${OSTYPE}" == "darwin"* ]]; then
+  if [[ -x "/opt/homebrew/bin/brew" ]]; then
+    BREW_PREFIX="/opt/homebrew"
+  elif [[ -x "/usr/local/bin/brew" ]]; then
+    BREW_PREFIX="/usr/local"
+  else
+    echo "ERROR: Homebrew is required but cannot be found." 1>&2
+    exit
+  fi
+
+  HOMEBREW_BUNDLE_FILE=""
+  OPENSSL_PREFIX="${BREW_PREFIX}/opt/openssl"
+  READLINE_PREFIX="${BREW_PREFIX}/opt/readline"
+  ICU4C_PREFIX="${BREW_PREFIX}/opt/icu4c"
+
+  # Workaround for https://bugs.ruby-lang.org/issues/19005
+  export DLDFLAGS="-Wl,-undefined,dynamic_lookup"
+  export LDFLAGS="-L${OPENSSL_PREFIX}/lib"
+  export CPPFLAGS="-I${OPENSSL_PREFIX}/include"
+  export PKG_CONFIG_PATH="${OPENSSL_PREFIX}/lib/pkgconfig:${ICU4C_PREFIX}/lib/pkgconfig"
+  export RUBY_CONFIGURE_OPTS="--with-openssl-dir=${OPENSSL_PREFIX} --with-readline-dir=${READLINE_PREFIX}"
+  export MACOSX_DEPLOYMENT_TARGET=$(sw_vers --productVersion)
+
+  if [[ "${CPU_TYPE}" == "arm64" && "${KDK_MACOS_ARM64_NATIVE}" == "true" ]]; then
+    export LIBPCREDIR="${BREW_PREFIX}/opt/pcre2"
+  fi
+fi
+
+KDK_CUSTOM_RC_FILE=".kdkrc.custom"
+
+if [[ -f "${KDK_CUSTOM_RC_FILE}" ]]; then
+  # shellcheck disable=SC1090
+  source "${KDK_CUSTOM_RC_FILE}"
+fi
+
+export KDK_ENV_LOADED=1

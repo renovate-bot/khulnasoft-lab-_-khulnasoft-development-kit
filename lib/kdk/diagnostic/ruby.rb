@@ -62,7 +62,7 @@ module KDK
           #{XCODE_CLT_STALE_DIRECTORY}
 
           This may cause issues with compiling C++ extensions. You may need to remove
-          this directory. See https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/main/doc/troubleshooting/ruby.md#cannot-compile-c-native-extensions
+          this directory. See https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/master/doc/troubleshooting/ruby.md#cannot-compile-c-native-extensions
         MESSAGE
       end
     end

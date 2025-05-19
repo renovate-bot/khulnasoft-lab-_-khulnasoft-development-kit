@@ -1,0 +1,65 @@
+# KhulnaSoft Development Kit
+
+Usage: kdk <command> [<args>]
+
+Manage services:
+
+  kdk start                                         # Start everything
+  kdk start redis postgresql                        # Start specific services
+  kdk stop                                          # Stop all services and unload Runit
+  kdk stop redis postgresql                         # Stop specific service
+  kdk status                                        # See status of all services
+  kdk restart                                       # Restart everything
+  kdk restart redis postgresql                      # Restart specific services
+  kdk kill                                          # Forcibly kills services
+
+  kdk tail                                          # Tail logs for all services (stdout and stderr only)
+  kdk tail redis postgresql                         # Tail specific logs
+
+  kdk psql [-d khulnasofthq_development]                # Run Postgres console
+  kdk psql-geo                                      # Run Postgres console connected to the Geo tracking database
+  kdk rails <command> [<args>]                      # Execute provided command on Rails bundled with KhulnaSoft
+  kdk redis-cli                                     # Run Redis console
+  kdk clickhouse                                    # Run ClickHouse console
+
+  kdk measure                                       # Generate a sitespeed.io report for given URL(s)
+  kdk measure-workflow                              # Generate a sitespeed.io report for given workflow(s)
+
+Manage KDK:
+
+  kdk open                                          # Visit your KhulnaSoft installation in your default web browser
+
+  kdk install khulnasoft_repo=https://my-fork           # Install everything
+  kdk update                                        # Pull application changes from Git
+  kdk reconfigure                                   # Delete and regenerate all config files created by KDK
+  kdk diff-config                                   # Preview `kdk reconfigure` config changes
+  kdk switch <branch>                               # Switch to a branch and set up services (similar to `kdk update`)
+
+  kdk config list                                   # List all config keys and values
+  kdk config get postgresql.port                    # Get configuration value
+  kdk config set postgresql.port <port>             # Set configuration value
+  kdk config set sshd.hostkeyalgorithms rsa,ed25519 # Set array configuration with comma-separated values
+
+  kdk telemetry                                     # Opt in or out of error tracking and analytic data collection
+
+  kdk reset-data                                    # Back up and create fresh Gitaly storage, PostgreSQL
+                                                    #  data and Rails upload directory
+  kdk reset-praefect-data                           # Back up and create fresh Praefect PostgreSQL data
+  kdk reset-registry-data                           # Clean up existing Registry PostgreSQL data 
+                                                    # and reinstate a fresh registry database.
+  kdk import-registry-data                          # One-off import of the Registry data into the 
+                                                    # Registry metadata database.
+  kdk cleanup                                       # Truncate log files and remove any unnecessarily
+                                                    #  installed dependencies
+  kdk pristine                                      # Reset KDK state. Deletes caches, temporary files
+                                                    #  reinstalls dependencies. Does not delete data
+
+  kdk doctor                                        # Run diagnostics on KDK
+  kdk console                                       # Run IRB with KDK context
+  kdk version                                       # Print current KDK version
+  kdk help                                          # Print this help text
+
+# Development admin account: root / 5iveL!fe
+
+For more information about KhulnaSoft development see
+https://docs.khulnasoft.com/ee/development/index.html.

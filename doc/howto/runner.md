@@ -299,7 +299,7 @@ From now on you can use `kdk start runner` and `kdk stop runner` CLI commands to
 To customize the runner, you must configure through your `kdk.yml` file. Any customizations you make directly to the
 `<path-to-kdk>/gitlab-runner-config.toml` file are overwritten when you run `kdk update`. To add support for more
 runner customizations through `kdk.yml`, raise a merge request to update
-[`lib/kdk/config.rb`](https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/main/lib/kdk/config.rb).
+[`lib/kdk/config.rb`](https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/master/lib/kdk/config.rb).
 
 You are good to go! Now you can assign the runner to a project and verify your jobs are running properly!
 
@@ -476,7 +476,7 @@ You might need to modify the KhulnaSoft Runner config file.
 
 ##### Solution 4: Link the Colima Socket to the Default Docker Socket Path
 
-You can also try [linking the Colima socket](https://github.com/abiosoft/colima/blob/main/docs/FAQ.md#cannot-connect-to-the-docker-daemon-at-unixvarrundockersock-is-the-docker-daemon-running) to the default socket path:
+You can also try [linking the Colima socket](https://github.com/abiosoft/colima/blob/master/docs/FAQ.md#cannot-connect-to-the-docker-daemon-at-unixvarrundockersock-is-the-docker-daemon-running) to the default socket path:
 
 ```shell
 sudo ln -sf $HOME/.colima/default/docker.sock /var/run/docker.sock

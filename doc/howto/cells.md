@@ -188,7 +188,7 @@ by default in KDK.
 
 It sits in front of Workhorse, and [NGINX](nginx.md) (if enabled).
 
-Refer to <https://gitlab.com/gitlab-org/cells/http-router/-/blob/main/README.md> for details.
+Refer to <https://gitlab.com/gitlab-org/cells/http-router/-/blob/master/README.md> for details.
 
 ### Using the HTTP router
 
@@ -228,7 +228,7 @@ kdk config get gitlab.rails.session_store.unique_cookie_key_postfix # => should 
 kdk config set gitlab.rails.session_store.unique_cookie_key_postfix false
 ```
 
-Refer to <https://gitlab.com/gitlab-org/cells/http-router/-/blob/main/docs/config.md#routing-rules> for details.
+Refer to <https://gitlab.com/gitlab-org/cells/http-router/-/blob/master/docs/config.md#routing-rules> for details.
 
 ## Disabling the HTTP router
 

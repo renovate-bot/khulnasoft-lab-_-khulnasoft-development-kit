@@ -149,7 +149,7 @@ RSpec.describe KDK::Diagnostic::Geo do
             Geo is disabled in KDK, but `/home/git/kdk/khulnasoft/config/database.yml` contains geo database.
 
             Please run `kdk reconfigure` to apply settings in kdk.yml.
-            For more details, please refer to https://github.com/khulnasoft-lab/khulnasoft-development-kit/blob/main/doc/howto/geo.md.
+            For more details, please refer to https://github.com/khulnasoft-lab/khulnasoft-development-kit/blob/master/doc/howto/geo.md.
           MESSAGE
 
           expect(geo_diagnostic.detail).to eq(expected_detail)
@@ -172,7 +172,7 @@ RSpec.describe KDK::Diagnostic::Geo do
             Geo is enabled in KDK as a secondary, but `/home/git/kdk/khulnasoft/config/database.yml` does not contain geo database.
 
             Please run `kdk reconfigure` to apply settings in kdk.yml.
-            For more details, please refer to https://github.com/khulnasoft-lab/khulnasoft-development-kit/blob/main/doc/howto/geo.md.
+            For more details, please refer to https://github.com/khulnasoft-lab/khulnasoft-development-kit/blob/master/doc/howto/geo.md.
           MESSAGE
 
           expect(geo_diagnostic.detail).to eq(expected_detail)
@@ -195,7 +195,7 @@ RSpec.describe KDK::Diagnostic::Geo do
             Geo is enabled in KDK, but not as a secondary node, so `/home/git/kdk/khulnasoft/config/database.yml` should not contain geo database.
 
             Please run `kdk reconfigure` to apply settings in kdk.yml.
-            For more details, please refer to https://github.com/khulnasoft-lab/khulnasoft-development-kit/blob/main/doc/howto/geo.md.
+            For more details, please refer to https://github.com/khulnasoft-lab/khulnasoft-development-kit/blob/master/doc/howto/geo.md.
           MESSAGE
 
           expect(geo_diagnostic.detail).to eq(expected_detail)

@@ -52,7 +52,7 @@ praefect:
 ```
 
 For other KDK Gitaly and Praefect options, refer to the `gitaly:` and `praefect:` sections of the
-[`kdk.example.yml`](https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/main/kdk.example.yml).
+[`kdk.example.yml`](https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/master/kdk.example.yml).
 
 ## Add Gitaly nodes
 

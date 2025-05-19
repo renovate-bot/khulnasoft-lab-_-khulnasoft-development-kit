@@ -9,7 +9,7 @@ You can use the KDK to contribute KhulnaSoft documentation. The KDK can:
 - Preview changes made in the KDK-managed `gitlab/doc` directory.
 
 If you want to contribute to KhulnaSoft documentation without using KDK, see
-[Set up local development and preview](https://gitlab.com/gitlab-org/technical-writing/docs-gitlab-com/-/blob/main/doc/setup.md).
+[Set up local development and preview](https://gitlab.com/gitlab-org/technical-writing/docs-gitlab-com/-/blob/master/doc/setup.md).
 
 ## Configure KhulnaSoft Docs in KDK
 

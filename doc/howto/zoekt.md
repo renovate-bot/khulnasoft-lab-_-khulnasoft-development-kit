@@ -43,7 +43,7 @@ Group-level searches are also served by Zoekt.
 
 ### Switch to a different version of KhulnaSoft Zoekt
 
-The default KhulnaSoft Zoekt Indexer version is defined in [`lib/kdk/config.rb`](https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/main/lib/kdk/config.rb).
+The default KhulnaSoft Zoekt Indexer version is defined in [`lib/kdk/config.rb`](https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/master/lib/kdk/config.rb).
 
 To change this, set `indexer_version`:
 

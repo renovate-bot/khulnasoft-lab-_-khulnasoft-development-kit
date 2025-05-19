@@ -393,7 +393,7 @@ ensure_supported_platform() {
     if [[ "${CPU_TYPE}" == "arm64" && "${KDK_MACOS_ARM64_NATIVE}" == "false" ]]; then
 
       if [[ $(command -v brew) == "/opt/homebrew/bin/brew" ]]; then
-        echo "ERROR: Native Apple Silicon (arm64) detected. Rosetta 2 is required. For more information, see https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/main/doc/advanced.md#macos." >&2
+        echo "ERROR: Native Apple Silicon (arm64) detected. Rosetta 2 is required. For more information, see https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/master/doc/advanced.md#macos." >&2
         echo "INFO: Native Apple Silicon support for macOS is coming with https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/issues/1159." >&2
 
         return 1
@@ -437,7 +437,7 @@ common_preflight_checks() {
     echo "INFO:" >&2
     echo "INFO: If your platform is not listed above, you're welcome to create a Merge Request in the KDK project to add support." >&2
     echo "INFO:" >&2
-    echo "INFO: Please visit https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/main/doc/advanced.md to bootstrap manually." >&2
+    echo "INFO: Please visit https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/master/doc/advanced.md to bootstrap manually." >&2
     return 1
   fi
 
@@ -454,7 +454,7 @@ common_preflight_checks() {
   if ! asdf_check_rvm_rbenv; then
     echo "ERROR: RVM or rbenv detected, which can cause issues with asdf." >&2
     echo "INFO: We recommend you uninstall RVM or rbenv, or remove RVM or rbenv from your PATH variable." >&2
-    echo "INFO: For more information, see https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/main/doc/migrate_to_asdf.md." >&2
+    echo "INFO: For more information, see https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/master/doc/migrate_to_asdf.md." >&2
     return 1
   fi
 }

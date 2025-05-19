@@ -139,7 +139,7 @@ module KDK
 
           #{backup.recover_cmd_string}
           If you want to protect this file from being overwritten, see:
-          https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/main/doc/configuration.md#overwriting-configuration-files
+          https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/master/doc/configuration.md#overwriting-configuration-files
           -------------------------------------------------------------------------------------------------------------
         OVERWRITTEN
       end

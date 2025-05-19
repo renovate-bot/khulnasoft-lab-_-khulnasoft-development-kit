@@ -7,7 +7,7 @@ module KDK
       MAC_PORTS_BIN = '/opt/local/bin/port'
       POSTGRESQL_COMPILATION_PROBLEM_ISSUE = 'https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/issues/1362'
       MAC_PORTS_UNINSTALLATION_LINK = 'https://guide.macports.org/chunked/installing.macports.uninstalling.html'
-      MIGRATE_TO_ASDF_LINK = 'https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/main/doc/migrate_to_asdf.md'
+      MIGRATE_TO_ASDF_LINK = 'https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/master/doc/migrate_to_asdf.md'
 
       def success?
         !File.exist?(MAC_PORTS_BIN)

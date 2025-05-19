@@ -4,7 +4,7 @@
 # frozen_string_literal: true
 
 # Please see the Vagrant section in the docs for caveats and tips
-# https://github.com/khulnasoft-lab/khulnasoft-development-kit/blob/main/doc/vagrant.md
+# https://github.com/khulnasoft-lab/khulnasoft-development-kit/blob/master/doc/vagrant.md
 
 Vagrant.require_version ">= 1.6.0"
 VAGRANTFILE_API_VERSION = "2"

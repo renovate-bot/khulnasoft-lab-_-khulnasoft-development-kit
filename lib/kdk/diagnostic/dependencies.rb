@@ -22,7 +22,7 @@ module KDK
 
           For details on how to install, please visit:
 
-          https://github.com/khulnasoft-lab/khulnasoft-development-kit/blob/main/doc/index.md
+          https://github.com/khulnasoft-lab/khulnasoft-development-kit/blob/master/doc/index.md
         MESSAGE
       end
 

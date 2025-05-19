@@ -59,7 +59,7 @@ module KDK
       end
 
       def geo_howto_url
-        'https://github.com/khulnasoft-lab/khulnasoft-development-kit/blob/main/doc/howto/geo.md'
+        'https://github.com/khulnasoft-lab/khulnasoft-development-kit/blob/master/doc/howto/geo.md'
       end
 
       def geo_mismatch_description

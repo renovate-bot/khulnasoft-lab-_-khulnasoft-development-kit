@@ -27,7 +27,7 @@ check_inotify() {
   if [[ ${INOTIFY_WATCHES} -lt ${INOTIFY_WATCHES_THRESHOLD} ]]; then
     echo "fs.inotify.max_user_watches is less than ${INOTIFY_WATCHES_THRESHOLD}. Please set this on your node."
     echo "See https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/issues/307 and"
-    echo "https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/main/doc/advanced.md#install-dependencies-for-other-linux-distributions"
+    echo "https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/master/doc/advanced.md#install-dependencies-for-other-linux-distributions"
     echo "for details."
 
     exit 1

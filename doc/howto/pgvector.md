@@ -21,7 +21,7 @@ To enable building and installing it into PostgreSQL:
 ### Switch to a different version of pgvector
 
 The default pgvector version is defined in
-[`lib/kdk/config.rb`](https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/main/lib/kdk/config.rb).
+[`lib/kdk/config.rb`](https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/master/lib/kdk/config.rb).
 
 You can change this by setting `repo` and/or `version`:
 

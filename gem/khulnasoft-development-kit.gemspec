@@ -19,7 +19,7 @@ Gem::Specification.new do |spec|
   spec.required_ruby_version = '>= 3.2.0'
   spec.metadata['rubygems_mfa_required'] = 'true'
 
-  spec.add_dependency 'khulnasoft-sdk', '~> 0.0.1'
+  spec.add_dependency 'khulnasoft-sdk', '~> 0.3.1'
   spec.add_dependency 'rake', '~> 13.1'
   spec.add_dependency 'sentry-ruby', '~> 5.23'
   spec.add_dependency 'tty-markdown', '~> 0.7.2'

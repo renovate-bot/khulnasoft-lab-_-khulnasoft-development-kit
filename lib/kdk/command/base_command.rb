@@ -57,7 +57,7 @@ module KDK
           - Run 'kdk doctor'.
 
           - Visit the troubleshooting documentation:
-            https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/main/doc/troubleshooting/index.md.
+            https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/master/doc/troubleshooting/index.md.
           - Visit https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/issues to
             see if there are known issues.
 

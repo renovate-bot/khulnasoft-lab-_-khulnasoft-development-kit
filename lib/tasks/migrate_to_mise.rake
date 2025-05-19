@@ -107,7 +107,7 @@ class AsdfToMise
     KDK::Output.notice('2. Afterward, run this command:')
     KDK::Output.puts('   kdk reconfigure && kdk update')
     KDK::Output.puts
-    KDK::Output.notice('If you encounter any issues with mise, see our troubleshooting guide: https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/main/doc/troubleshooting/mise.md')
+    KDK::Output.notice('If you encounter any issues with mise, see our troubleshooting guide: https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/master/doc/troubleshooting/mise.md')
   end
 
   def run_command(command, error_message)

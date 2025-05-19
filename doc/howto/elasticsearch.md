@@ -24,7 +24,7 @@ To enable the service and make it run as part of `kdk start`:
 
 #### Other versions of Elasticsearch
 
-The default Elasticsearch version is defined in [`lib/kdk/config.rb`](https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/main/lib/kdk/config.rb).
+The default Elasticsearch version is defined in [`lib/kdk/config.rb`](https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/master/lib/kdk/config.rb).
 
 For example, to use 7.5.2:
 

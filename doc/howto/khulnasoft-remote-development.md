@@ -4,7 +4,7 @@ title: KhulnaSoft Remote Development
 
 ## Setting up Remote Development locally
 
-Follow [these steps](https://gitlab.com/gitlab-org/remote-development/khulnasoft-remote-development-docs/-/blob/main/doc/local-development-environment-setup.md) to set up remote development locally.
+Follow [these steps](https://gitlab.com/gitlab-org/remote-development/khulnasoft-remote-development-docs/-/blob/master/doc/local-development-environment-setup.md) to set up remote development locally.
 
 ## Develop KhulnaSoft with KhulnaSoft remote development workspaces
 

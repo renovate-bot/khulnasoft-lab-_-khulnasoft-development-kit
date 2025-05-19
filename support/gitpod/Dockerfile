@@ -19,7 +19,7 @@ COPY --from=vale-source /bin/vale /usr/bin/vale
 
 # --- Install KhulnaSoft Runner
 # KDK doesn't install it, but it is needed for running pipelines
-# https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/main/doc/howto/runner.md
+# https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/master/doc/howto/runner.md
 RUN curl -L https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh | sudo bash
 RUN sudo apt-get install gitlab-runner -y
 

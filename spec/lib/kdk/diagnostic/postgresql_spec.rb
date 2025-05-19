@@ -208,7 +208,7 @@ RSpec.describe KDK::Diagnostic::Postgresql do
             `psql` is version 11.8, but your PostgreSQL data dir is using version 12.
 
             Check that your PATH is pointing to the right PostgreSQL version, or see the PostgreSQL upgrade guide:
-            https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/main/doc/howto/postgresql.md#upgrade-postgresql
+            https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/master/doc/howto/postgresql.md#upgrade-postgresql
           MESSAGE
 
           expect(subject.detail).to eq(expected)

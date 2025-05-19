@@ -183,7 +183,7 @@ Here's the Google Cloud REST API equivalent:
 
 ### One-line installation (Recommended)
 
-These steps are based on the instructions in <https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/main/doc/index.md#one-line-installation>.
+These steps are based on the instructions in <https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/master/doc/index.md#one-line-installation>.
 
 1. Install `git` and `make`:
 
@@ -199,7 +199,7 @@ These steps are based on the instructions in <https://github.com/khulnasoft-lab/
 
 ### Manual installation
 
-These steps are based on the instructions in <https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/main/doc/advanced.md#ubuntu-and-debian>.
+These steps are based on the instructions in <https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/master/doc/advanced.md#ubuntu-and-debian>.
 
 1. Install `git`, `make`, `yarn`, PostgreSQL, and Go:
    1. `sudo apt install git`

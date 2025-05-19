@@ -38,4 +38,4 @@ Announcements are YAML files stored in `data/announcements`. To add a new announ
    ```
 
 For an example of an existing announcement, see
-[`data/announcements/0001_announcement_support.yml`](https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/main/data/announcements/0001_announcement_support.yml)
+[`data/announcements/0001_announcement_support.yml`](https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/master/data/announcements/0001_announcement_support.yml)

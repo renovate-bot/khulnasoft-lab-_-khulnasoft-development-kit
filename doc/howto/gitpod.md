@@ -253,7 +253,7 @@ The billing page is now accessible at **Group > Settings > Billing**.
 
 ### Connect the Customer app to your Gitpod instance
 
-Use the instructions in the [`customers-gitlab-com` project](https://gitlab.com/gitlab-org/customers-gitlab-com/-/blob/main/doc/setup/gitpod_installation.md).
+Use the instructions in the [`customers-gitlab-com` project](https://gitlab.com/gitlab-org/customers-gitlab-com/-/blob/master/doc/setup/gitpod_installation.md).
 
 ### Use Advanced Search
 

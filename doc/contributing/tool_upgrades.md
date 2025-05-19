@@ -17,7 +17,7 @@ The approach described here:
 To update the default PostgreSQL:
 
 1. Run initial tests with a scheduled pipeline:
-   1. Set the `TARGET_POSTGRES_VERSION` in [`_versions.gitlab-ci.yaml`](https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/main/.gitlab/ci/_versions.gitlab-ci.yml).
+   1. Set the `TARGET_POSTGRES_VERSION` in [`_versions.gitlab-ci.yaml`](https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/master/.gitlab/ci/_versions.gitlab-ci.yml).
       
       This enables a nightly scheduled pipeline that:
       - Replaces the current PostgreSQL version with the target version.

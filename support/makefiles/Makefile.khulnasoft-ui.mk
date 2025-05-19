@@ -52,7 +52,7 @@ endif
 
 .gitlab-ui-yarn:
 ifeq ($(YARN),)
-	@echo "ERROR: YARN is not installed, please ensure you've bootstrapped your machine. See https://github.com/khulnasoft-lab/khulnasoft-development-kit/blob/main/doc/index.md for more details"
+	@echo "ERROR: YARN is not installed, please ensure you've bootstrapped your machine. See https://github.com/khulnasoft-lab/khulnasoft-development-kit/blob/master/doc/index.md for more details"
 	@false
 else
 	@echo
