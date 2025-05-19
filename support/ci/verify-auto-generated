@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+set -e
+
+make kdk-reconfigure-task
+
+if [ -n "$(git diff --name-only)" ]; then
+  printf "Config changes are not cleanly committed.\n"
+  printf "\n"
+  printf "Run \e[36mkdk reconfigure\e[0m to update the config files below.\n"
+  printf "\n"
+  printf "The config diff is as follows:\n"
+  diff=$(git diff -p --binary)
+  printf "%s" "$diff"
+  exit 1
+fi

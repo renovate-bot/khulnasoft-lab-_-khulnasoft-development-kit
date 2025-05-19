@@ -1,0 +1,7 @@
+# See http://smarden.org/runit/svlogd.8.html#sect6 for documentation of the svlogd config file
+# zip old log files
+!gzip
+# custom log prefix for <%= service_instance.name %>
+p<%= log_prefix + log_label + reset_color %>
+# keep at most 1 old log file
+n1

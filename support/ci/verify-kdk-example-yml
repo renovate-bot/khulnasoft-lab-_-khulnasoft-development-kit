@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+set -e
+
+rake kdk.example.yml
+
+git diff --exit-code kdk.example.yml
+result=$?
+
+if [[ ${result} != 0 ]]; then
+  echo
+  echo "ERROR: There are kdk.example.yml changes that need to be checked in.  Run 'rake kdk.example.yml' to generate."
+  exit ${result}
+fi

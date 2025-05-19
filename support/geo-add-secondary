@@ -1,0 +1,355 @@
+#!/usr/bin/env ruby
+#
+# frozen_string_literal: true
+
+#
+# Add target KDK as a Geo secondary
+#
+# Prerequisites
+#
+# * Have a primary KDK working
+# * Have a KhulnaSoft Premium license installed
+# * Have another clone of KDK for the secondary site, but no need to `make bootstrap` or `kdk install`
+#
+# Notes
+#
+# * The basename of each KDK directory is the "Geo node name", by default
+# * This script configures Unified URL
+# * Set KDK_DEBUG=true to increase output verbosity
+#
+# Example:
+#
+#   ./support/geo-add-secondary --secondary-port 3001 --primary . ../kdk2
+#
+
+require 'optparse'
+require 'yaml'
+require 'fileutils'
+require 'readline'
+require 'pathname'
+require 'English'
+require_relative '../lib/kdk'
+
+module GeoSecondaryHelpers
+  Abort = Class.new(StandardError)
+  Done = Class.new(StandardError)
+end
+
+class AddGeoSecondaryOptionParser
+  Options = Struct.new(
+    :primary_kdk,
+    :secondary_kdk,
+    :secondary_port
+  )
+
+  class << self
+    def parse(argv)
+      options = Options.new
+
+      parser = OptionParser.new do |opts|
+        opts.banner = "Usage: #{__FILE__} [options] <target-kdk-directory>\n\n"
+
+        opts.on('--primary [string]', String, 'KDK directory of primary site') do |value|
+          options.primary_kdk = value
+        end
+
+        opts.on('--secondary_port [string]', String, 'Desired port of target secondary site') do |value|
+          options.secondary_port = value
+        end
+
+        opts.on('-h', '--help', 'Print help message') do
+          $stdout.puts opts
+          raise Done
+        end
+      end
+
+      parser.parse!(argv)
+
+      unless argv.one?
+        $stdout.puts parser.help
+        $stdout.puts
+        raise Abort, 'Target KDK directory is required'
+      end
+
+      options.secondary_kdk = argv.first
+
+      options
+    end
+
+    def read_primary_kdk
+      $stdout.puts
+      $stdout.puts '>> KDK directory of primary site:'
+
+      loop do
+        primary_kdk = Readline.readline('?> ', false)&.strip
+        return primary_kdk unless primary_kdk.empty?
+
+        warn 'KDK directory of primary site is required'
+      end
+    end
+
+    def read_secondary_port
+      $stdout.puts
+      $stdout.puts '>> Desired port of target secondary site (enter to skip):'
+
+      secondary_port = Readline.readline('?> ', false)&.strip
+      secondary_port = nil if secondary_port.empty?
+      secondary_port
+    end
+  end
+end
+
+class GeoSecondaryAdder
+  include GeoSecondaryHelpers
+
+  attr_reader :options, :primary_kdk, :secondary_kdk, :primary_gitlab, :secondary_gitlab, :secondary_port
+
+  def initialize(options)
+    @options = options
+  end
+
+  def execute
+    initialize_vars
+
+    configure_primary
+    configure_secondary
+
+    unified_url = run_rails_command(secondary_gitlab, 'puts(GeoNode.current_node_url)')
+    create_primary_geo_node_record(unified_url)
+    create_secondary_geo_node_record(unified_url)
+
+    restart_both
+    khulnasoft_geo_checks
+  end
+
+  private
+
+  def initialize_vars
+    options.primary_kdk ||= AddGeoSecondaryOptionParser.read_primary_kdk
+    options.secondary_port ||= AddGeoSecondaryOptionParser.read_secondary_port
+
+    @primary_kdk = Pathname.new(options.primary_kdk).realpath
+    @secondary_kdk = Pathname.new(options.secondary_kdk).realpath
+    @primary_gitlab = primary_kdk.join('khulnasoft')
+    @secondary_gitlab = secondary_kdk.join('khulnasoft')
+    @secondary_port = options.secondary_port
+
+    print_vars
+  end
+
+  def print_vars
+    $stdout.puts "Primary site: #{primary_kdk}"
+    $stdout.puts "Secondary site: #{secondary_kdk}"
+    $stdout.puts "Secondary site port: #{secondary_port}"
+  end
+
+  def configure_primary
+    configure_primary_kdk_yml
+    run_command_arr(primary_kdk, %w[kdk reconfigure])
+    run_command_arr(primary_kdk, %w[kdk start])
+  end
+
+  def configure_secondary
+    configure_secondary_kdk_yml
+    run_command_arr(secondary_kdk, %w[make bootstrap])
+    run_command_arr(secondary_kdk, %W[kdk install khulnasoft_repo=#{primary_gitlab}]) unless secondary_gitlab.exist?
+    run_command_arr(secondary_kdk, %w[make geo-secondary-setup])
+    copy_db_key_base_to_secondary
+    setup_pg_replication
+  end
+
+  def configure_primary_kdk_yml
+    kdk_set(primary_kdk, 'geo.enabled', true)
+    kdk_set(primary_kdk, 'geo.secondary', false)
+    kdk_set(primary_kdk, 'sshd.enabled', false)
+  end
+
+  def configure_secondary_kdk_yml
+    kdk_set(secondary_kdk, 'port', secondary_port)
+    kdk_set(secondary_kdk, 'geo.enabled', true)
+    kdk_set(secondary_kdk, 'geo.secondary', true)
+    kdk_set(secondary_kdk, 'sshd.enabled', true)
+    kdk_set(secondary_kdk, 'kdk.runit_wait_secs', 40)
+    kdk_set(secondary_kdk, 'port_offset', 10_000)
+
+    if ENV['TOOL_VERSION_MANAGER'] && ENV['TOOL_VERSION_MANAGER'] != 'mise'
+      kdk_set(secondary_kdk, 'asdf.opt_out', false)
+      kdk_set(secondary_kdk, 'mise.enabled', false)
+    else
+      # Default to mise
+      kdk_set(secondary_kdk, 'asdf.opt_out', true)
+      kdk_set(secondary_kdk, 'mise.enabled', true)
+    end
+  end
+
+  def kdk_set(pathname, key, value)
+    cmd = %w[kdk config set] << key.to_s << value.to_s
+    run_command_arr(pathname.to_s, cmd)
+  end
+
+  def secondary_kdk_khulnasoft_directory_exists?
+    retval = secondary_gitlab.exist? && secondary_gitlab.directory?
+    $stdout.puts "Secondary KDK gitlab directory #{retval ? 'exists' : 'does not exist'}"
+    retval
+  end
+
+  def setup_pg_replication
+    # Stop secondary PG now in case it's already streaming replication
+    run_command_arr(secondary_kdk, %w[kdk stop postgresql])
+
+    pg_replication_prepare_primary
+    pg_replication_prepare_secondary
+
+    # Backup, and configure replication
+    run_command_arr(secondary_kdk, %w[make postgresql-geo-replication-secondary])
+
+    # Start the replica
+    run_command_arr(secondary_kdk, %w[kdk start postgresql])
+  end
+
+  def pg_replication_prepare_primary
+    run_command_arr(primary_kdk, %w[kdk start postgresql])
+    run_command_arr(primary_kdk, %w[make postgresql-geo-replication-primary])
+    run_command_arr(primary_kdk, %w[kdk restart postgresql])
+
+    system('make', 'postgresql-replication/drop-slot') # silence
+    run_command_arr(primary_kdk, %w[make postgresql-replication-primary-create-slot])
+    run_command_arr(primary_kdk, %w[kdk restart postgresql])
+  end
+
+  def pg_replication_prepare_secondary
+    FileUtils.remove_dir(secondary_kdk.join('postgresql/data'), true)
+    symlink = secondary_kdk.join('postgresql-primary')
+    FileUtils.rm_f(symlink)
+    File.symlink(primary_kdk.join('postgresql'), secondary_kdk.join('postgresql-primary'))
+  end
+
+  # Copy the secret key to the secondary so it can decrypt data in the PG DB
+  # which was encrypted by the primary.
+  def copy_db_key_base_to_secondary
+    db_key_base = read_db_key_base(primary_gitlab)
+    write_db_key_base(secondary_gitlab, db_key_base)
+  end
+
+  def read_db_key_base(rails_dir)
+    secrets_file = rails_dir.join('config', 'secrets.yml')
+
+    data = YAML.load_file secrets_file
+    data['development']['db_key_base']
+  end
+
+  def write_db_key_base(rails_dir, new_db_key_base)
+    secrets_file = rails_dir.join('config', 'secrets.yml')
+
+    data = YAML.load_file secrets_file
+    data['development']['db_key_base'] = new_db_key_base
+    File.open(secrets_file, 'w') { |f| YAML.dump(data, f) }
+  end
+
+  def create_primary_geo_node_record(unified_url)
+    # Note that we aren't using rake geo:set_primary_node here because setting
+    # up Unified URL in KDK requires us to overwrite some GeoNode attrs anyway.
+    rails_set_as_primary_with_unified_url_cmd =
+      'n = GeoNode.find_or_initialize_by(name: GeoNode.current_node_name); ' \
+        'n.primary = true; ' \
+        "n.url = '#{unified_url}'; " \
+        'n.internal_url = GeoNode.current_node_url; ' \
+        'n.save!'
+
+    run_rails_command(primary_gitlab, rails_set_as_primary_with_unified_url_cmd)
+  end
+
+  def create_secondary_geo_node_record(unified_url)
+    cmd_get_secondary_node_name = 'kdk config get geo.node_name'
+    secondary_node_name = run_command_for_stdout(secondary_kdk, cmd_get_secondary_node_name)
+
+    rails_create_secondary_node_cmd =
+      "n = GeoNode.find_or_initialize_by(name: '#{secondary_node_name}'); " \
+        'n.primary = false; ' \
+        "n.url = '#{unified_url}'; " \
+        'n.save!'
+
+    run_rails_command(primary_gitlab, rails_create_secondary_node_cmd)
+  end
+
+  def run_command_arr(dir, cmd_arr)
+    # sh = KDK::Shellout.new(*cmd_arr, chdir: dir.to_s)
+    # TODO: Prefer `chdir` option and tokenized commands.
+    # But `chdir` does not work when calling `kdk`.
+    # Begin hack
+    cmd_arr = %W[cd #{dir} &&] + cmd_arr
+    cmd = cmd_arr.join(' ')
+    sh = KDK::Shellout.new(cmd)
+    # End hack
+
+    $stdout.puts sh.command
+    sh.execute
+
+    raise GeoSecondaryHelpers::Abort unless sh.success?
+
+    true
+  end
+
+  def run_command_for_stdout(dir, cmd)
+    # sh = KDK::Shellout.new(cmd, chdir: dir.to_s)
+    # Begin hack
+    cmd = "cd #{dir} && #{cmd}"
+    sh = KDK::Shellout.new(cmd)
+    # End hack
+
+    $stdout.puts sh.command
+    sh.execute
+
+    raise GeoSecondaryHelpers::Abort unless sh.success?
+
+    sh.read_stdout
+  end
+
+  def run_rails_command(dir, cmd)
+    # TODO: Tokenizing shell commands is preferred. However it seems that
+    # tokenizing a `bin/rails runner "foo"` command does not actually succeed,
+    # with `system` or `Open3.capture3` or `KDK::Shellout`. AND it returns exit code 0 and no
+    # output! Why??
+    cmd = "bundle exec rails runner \"#{cmd}\""
+
+    run_command_for_stdout(dir, cmd)
+  end
+
+  def assert_equal(result, expected)
+    unless expected == result
+      msg = "assert_equal: Got #{result.inspect} instead of #{expected.inspect}"
+      raise GeoSecondaryHelpers::Abort, msg
+    end
+
+    $stdout.puts "assert_equal: Got #{result.inspect} as expected"
+  end
+
+  def restart_both
+    run_command_arr(primary_kdk, %w[kdk restart])
+    run_command_arr(secondary_kdk, %w[kdk restart])
+  end
+
+  def khulnasoft_geo_checks
+    run_command_arr(primary_gitlab, %w[bin/rake gitlab:geo:check])
+    run_command_arr(secondary_gitlab, %w[bin/rake gitlab:geo:check])
+
+    $stdout.puts "The `geo-install` and `geo-add-secondary` scripts do not configure SSH at the moment."
+    $stdout.puts "So the following failures during `rake gitlab:geo:check` can be ignored if Git over SSH is not needed:\n"
+    $stdout.puts "Git user has default SSH configuration? ... no"
+    $stdout.puts "OpenSSH configured to use AuthorizedKeysCommand ... no"
+    $stdout.puts "KhulnaSoft configured to disable writing to authorized_keys file ... no"
+  end
+end
+
+if $PROGRAM_NAME == __FILE__
+  begin
+    options = AddGeoSecondaryOptionParser.parse(ARGV)
+    GeoSecondaryAdder.new(options).execute
+  rescue GeoSecondaryHelpers::Abort => e
+    warn e.message
+    warn e.backtrace.join("\n")
+    exit 1
+  rescue GeoSecondaryHelpers::Done
+    exit
+  end
+end

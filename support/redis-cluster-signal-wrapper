@@ -1,0 +1,54 @@
+#!/usr/bin/env ruby
+#
+# frozen_string_literal: true
+
+# rubocop:disable Style/GlobalVars
+$pids = []
+
+def start_cluster(ip, ports, dir)
+  node_addrs = []
+  ports.split(':').each do |port|
+    port = port.to_i
+    $pids << spawn(<<-TEXT
+      redis-server --bind 0.0.0.0 \
+        --port #{port} \
+        --cluster-enabled yes \
+        --cluster-config-file #{dir}/nodes_#{port}.conf \
+        --cluster-node-timeout 5000 \
+        --protected-mode no \
+        --dir #{dir} \
+        --dbfilename dump_#{port}.rdb
+    TEXT
+                  )
+    node_addrs << "#{ip}:#{port}"
+  end
+
+  sleep(5)
+
+  `redis-cli --cluster-yes --cluster create #{node_addrs.join(' ')} --cluster-replicas 0`
+end
+# rubocop:enable Style/GlobalVars
+
+# Broadcast SIGTERM to all nodes of the cluster
+Signal.trap('TERM') do
+  Process.kill('TERM', *$pids) # rubocop:disable Style/GlobalVars
+end
+
+# e.g. support/redis-cluster-signal-wrapper redis-cluster 127.0.0.01 6000:6001:6002 6003:6004:6005
+dir = (ARGV[0] || 'redis-cluster').to_s
+hostname = (ARGV[1] || '127.0.0.1').to_s
+dev_ports = ARGV[2] || '6000:6001:6002'
+test_ports = ARGV[3] || '6003:6004:6005'
+
+require 'resolv'
+require 'fileutils'
+
+FileUtils.mkdir_p dir
+ip_address = Resolv.getaddress(hostname)
+
+start_cluster(ip_address, dev_ports, dir)  # development cluster
+start_cluster(ip_address, test_ports, dir) # test cluster
+
+Process.waitall
+
+exit($CHILD_STATUS&.exitstatus || 0)

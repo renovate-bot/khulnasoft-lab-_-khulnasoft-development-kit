@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+
+# frozen_string_literal: true
+
+EXEC = 'geo_log_cursor'
+
+bin_dir = 'gitlab/ee/bin/'
+bin_dir = 'gitlab/bin' unless File.exist?(File.join(bin_dir, EXEC))
+
+abort 'Could not locate Geo log cursor executable' unless File.exist?(File.join(bin_dir, EXEC))
+
+Dir.chdir(bin_dir)
+
+exec("./#{EXEC}", *ARGV)

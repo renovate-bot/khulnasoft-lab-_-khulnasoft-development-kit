@@ -1,0 +1,12 @@
+<%=
+  [:development, :test].each_with_object({}) do |env, all|
+    value = if config.redis.custom_config[env.to_s] && config.redis.custom_config[env.to_s][cluster.to_s]
+              config.redis.custom_config[env.to_s][cluster.to_s]
+            else
+              "unix:#{config.redis.__socket_file}?db=#{config.redis.databases[env][cluster]}"
+            end
+
+    all[env.to_s] = value
+
+  end.to_yaml
+-%>

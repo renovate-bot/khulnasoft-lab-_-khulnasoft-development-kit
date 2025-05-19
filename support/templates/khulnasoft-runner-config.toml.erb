@@ -1,0 +1,35 @@
+concurrent = <%= config.runner.concurrent %>
+check_interval = 0
+
+[session_server]
+  session_timeout = 1800
+
+[[runners]]
+  name = "KDK local runner"
+  url = "<%= "#{config.__uri}" %>"
+  token = "<%= config.runner.token %>"
+  executor = "<%= config.runner.executor %>"
+<%- if config.https? && !config.runner.__install_mode_docker -%>
+  tls-ca-file = "<%= config.kdk_root.join(config.nginx.ssl.certificate) %>"
+<%- end -%>
+  [runners.custom_build_dir]
+  [runners.docker]
+<%- if config.runner.docker_host.length > 0 -%>
+    host = "<%= config.runner.docker_host %>"
+<%- end -%>
+<%- if config.runner.__network_mode_host? -%>
+    network_mode = "host"
+<%- end -%>
+    tls_verify = false
+    image = "alpine:latest"
+    privileged = true
+    disable_entrypoint_overwrite = false
+    oom_kill_disable = false
+    disable_cache = false
+    volumes = ["<%= ENV['HOME'] %>/.docker/certs.d:/etc/docker/certs.d", "/certs/client", "/cache"]
+    shm_size = 0
+    pull_policy = "<%= config.runner.pull_policy %>"
+    extra_hosts = <%= config.runner.extra_hosts %>
+  [runners.cache]
+    [runners.cache.s3]
+    [runners.cache.gcs]

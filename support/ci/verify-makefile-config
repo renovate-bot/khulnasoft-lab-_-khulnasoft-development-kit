@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+set -e
+
+if [ -n "$(git diff --name-only -- support/makefiles/Makefile.config.mk)" ]; then
+  printf "Changes to 'support/makefiles/Makefile.config.mk' are not cleanly committed.\n"
+  printf "The diff is as follows:\n"
+  diff=$(git diff -p --binary -- support/makefiles/Makefile.config.mk)
+  printf "%s" "$diff"
+  exit 1
+fi

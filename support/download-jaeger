@@ -1,0 +1,115 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+IFS=$'\n\t'
+
+jaeger_version="$1"
+download_path="$2"
+
+function sha_for_url() {
+  # Add new URLs in here as we upgrade to new version of Jaeger
+  # Releases found at https://github.com/jaegertracing/jaeger/releases
+  # SHA can be generated with:
+  # curl -C - -L --fail "<url>"|shasum -a1
+  case "$1" in
+    #
+    # 1.10.1
+    #
+    https://github.com/jaegertracing/jaeger/releases/download/v1.10.1/jaeger-1.10.1-linux-amd64.tar.gz)
+      echo 667f14a528077ca6c346831cd69c295439f071da
+      ;;
+    https://github.com/jaegertracing/jaeger/releases/download/v1.10.1/jaeger-1.10.1-darwin-amd64.tar.gz)
+      echo ce5b8610f73caf625b75a50ed27b0ab45bfe1dbe
+      ;;
+    #
+    # 1.18.1
+    #
+    https://github.com/jaegertracing/jaeger/releases/download/v1.18.1/jaeger-1.18.1-linux-amd64.tar.gz)
+      echo ea221ab60bdad17f51cc1b588a00a35c3b3c58ee
+      ;;
+    https://github.com/jaegertracing/jaeger/releases/download/v1.18.1/jaeger-1.18.1-darwin-amd64.tar.gz)
+      echo 088796e232fa5ded2681811ea257ce33e140ae20
+      ;;
+    https://github.com/jaegertracing/jaeger/releases/download/v1.18.1/jaeger-1.18.1-linux-arm64.tar.gz)
+      echo 6180a357d932fca59321b026e7b21d6563537f97
+      ;;
+    #
+    # 1.21.0
+    #
+    https://github.com/jaegertracing/jaeger/releases/download/v1.21.0/jaeger-1.21.0-linux-amd64.tar.gz)
+      echo 28b35039621f44cac49511fbb8111e26eb5b22bd
+      ;;
+    https://github.com/jaegertracing/jaeger/releases/download/v1.21.0/jaeger-1.21.0-darwin-amd64.tar.gz)
+      echo b069d93d8023582c3c591455c5e5b60e1bfe3f44
+      ;;
+    https://github.com/jaegertracing/jaeger/releases/download/v1.21.0/jaeger-1.21.0-linux-arm64.tar.gz)
+      echo 97b6bd39271b784ed5d8afec7035bd1a12c5b89a
+      ;;
+
+    #
+    # 1.66.0
+    #
+    https://github.com/jaegertracing/jaeger/releases/download/v1.66.0/jaeger-1.66.0-linux-amd64.tar.gz)
+      echo c382a089c91d3e4c0d457197c33121610638fedc
+      ;;
+    https://github.com/jaegertracing/jaeger/releases/download/v1.66.0/jaeger-1.66.0-darwin-amd64.tar.gz)
+      echo e45935855ce5a81aeb5952878b25ae9671c53f40
+      ;;
+    https://github.com/jaegertracing/jaeger/releases/download/v1.66.0/jaeger-1.66.0-darwin-arm64.tar.gz)
+      echo a528d90525f0f97522b88b4ec3a7e6f01ae48bca
+     ;;
+    https://github.com/jaegertracing/jaeger/releases/download/v1.66.0/jaeger-1.66.0-linux-arm64.tar.gz)
+      echo a391d2f83d532f536926471a227367438b888045
+      ;;
+    *)
+      >&2 echo "Unable to determine sha for url ${1}"
+      return 1
+  esac
+}
+
+function os_type() {
+  case "$(uname)" in
+    Linux)
+      echo "linux"
+      ;;
+    Darwin)
+      echo "darwin"
+      ;;
+    *)
+    >&2 echo "unable to determine operating system."
+    return 1
+  esac
+}
+
+function machine_type() {
+  case "$(uname -m)" in
+    x86_64*)
+      echo "amd64"
+      ;;
+    aarch64*|arm64*)
+      echo "arm64"
+      ;;
+    *)
+    >&2 echo "unable to determine machine type."
+    return 1
+  esac
+}
+
+function url_for_version() {
+  local os_type
+  local machine_type
+  os_type=$(os_type)
+  machine_type=$(machine_type)
+
+  echo "https://github.com/jaegertracing/jaeger/releases/download/v${1}/jaeger-${1}-${os_type}-${machine_type}.tar.gz"
+}
+
+url=$(url_for_version "${jaeger_version}")
+sha=$(sha_for_url "${url}")
+
+curl -C - -L --fail "$url" -o "$download_path"
+if ! (echo "$sha  $download_path" | shasum -a1 -c -); then
+  rm -f "$download_path"
+  >&2 echo "cannot verify jaeger binary: sha checksum mismatch."
+  exit 1
+fi

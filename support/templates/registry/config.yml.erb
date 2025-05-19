@@ -1,0 +1,68 @@
+version: 0.1
+log:
+  level: info
+storage:
+  cache:
+    blobdescriptor: inmemory
+  filesystem:
+    rootdirectory: <%= kdk_root.join('registry/storage') %>
+  delete:
+    enabled: true
+  maintenance:
+    <%- if config.registry.read_only_maintenance_enabled -%>
+    readonly:
+      enabled: true
+    <%- end -%>
+    uploadpurging:
+      enabled: true
+      age: 8h
+      interval: 1h
+      dryrun: false
+http:
+  addr: :<%= config.registry.port %>
+  headers:
+    X-Content-Type-Options: [nosniff]
+  <%- if config.registry.self_signed -%>
+  tls:
+    certificate: <%= kdk_root.join('registry_host.crt') %>
+    key: <%= kdk_root.join('registry_host.key') %>
+  <%- end -%>
+health:
+  storagedriver:
+    enabled: true
+    interval: 10s
+    threshold: 3
+<%- if config.registry.auth_enabled -%>
+auth:
+  token:
+    realm: <%= "#{config.__uri}/jwt/auth" %>
+    service: container_registry
+    issuer: gitlab-issuer
+    rootcertbundle: "<%= kdk_root.join('localhost.crt') %>"
+    autoredirect: false
+<%- end -%>
+validation:
+  disabled: true
+<%- if config.registry.compatibility_schema1_enabled -%>
+compatibility:
+  schema1:
+    enabled: true
+<%- end -%>
+
+<%- if config.registry.notifications_enabled -%>
+notifications:
+  endpoints:
+    - name: gitlab-rails
+      url: <%= "#{config.__uri}/api/v4/container_registry_event/events" %>
+      headers:
+        Authorization: [notifications_secret]
+      timeout: 500ms
+      threshold: 5
+      backoff: 1s
+<%- end -%>
+database:
+  enabled:  <%= config.registry.database.enabled ? true : false %>
+  host:     <%= config.registry.database.host %>
+  port:     <%= config.registry.database.port %>
+  dbname:   <%= config.registry.database.dbname %>
+  sslmode:  <%= config.registry.database.sslmode %>

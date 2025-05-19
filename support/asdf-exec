@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+CDPATH=''
+ROOT_PATH="$(cd "$(dirname "${BASH_SOURCE[${#BASH_SOURCE[@]} - 1]}")/.." || exit ; pwd -P)"
+
+ASDF_DIR="${ASDF_DIR:-${HOME}/.asdf}"
+ASDF_AVAILABLE=$("${ROOT_PATH}/support/asdf-available")
+MISE_AVAILABLE=$("${ROOT_PATH}/support/mise-available")
+
+asdf_exec() {
+  local dir="${1}"
+  local command="${*:2}"
+
+  cd "${dir}"
+
+  if [[ "${ASDF_AVAILABLE}" == "true" ]]; then
+		# shellcheck disable=SC1091 disable=SC1090
+    source "${ASDF_DIR}/asdf.sh"
+  elif [[ "${MISE_AVAILABLE}" == "true" ]]; then
+    command="mise exec -- ${command}"
+  fi
+
+  eval "${command}"
+}
+
+asdf_exec "${1}" "${*:2}"

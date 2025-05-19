@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+parent_path=$(dirname "$0")
+
+# shellcheck source=support/bootstrap-common.sh
+source "${parent_path}"/bootstrap-common.sh
+
+asdf_update() {
+  header_print "Configuring asdf with $HOME/.default-gems"
+
+  if ! asdf_install_update_plugins; then
+    error "Failed to update some asdf plugins." >&2
+  fi
+
+  if ! asdf_update_tools; then
+    error "Failed to update some asdf tools." >&2
+  fi
+}
+
+mise_update() {
+  header_print "Updating mise plugins"
+  if ! mise_update_plugins; then
+    error "Failed to update some mise plugins." >&2
+  fi
+}
+
+###############################################################################
+
+if ! common_preflight_checks; then
+  error "Failed to perform preflight checks." >&2
+fi
+
+header_print "Ensuring platform software installed"
+if ! setup_platform; then
+  error "Failed to install platform software." >&2
+fi
+
+if ! ensure_kdk_in_default_gems; then
+  error "Failed to ensure kdk is in default gems." >&2
+fi
+
+if asdf_enabled; then
+  asdf_update
+elif mise_enabled; then
+  mise_update
+fi
+
+if ! kdk_install_kdk_clt; then
+  error "Failed to run kdk_install_kdk_clt()." >&2
+fi
+
+if ! configure_ruby; then
+  error "Failed to configure Ruby." >&2
+fi

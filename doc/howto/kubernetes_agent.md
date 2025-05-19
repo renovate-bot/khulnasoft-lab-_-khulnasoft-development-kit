@@ -1,0 +1,366 @@
+---
+title: KhulnaSoft Agent Server (KAS)
+---
+
+## Run KAS from within KDK
+
+If you wish to clone and keep an updated [KhulnaSoft Agent for Kubernetes](https://gitlab.com/gitlab-org/cluster-integration/gitlab-agent) as part of your KDK, do the following:
+
+1. If using MacOS, install [XCode from App Store](https://apps.apple.com/us/app/xcode/id497799835).
+   Once installed, open it and agree to the terms and conditions.
+   Please note, this is not the same as the XCode Command Line Tools.
+
+1. Install build dependencies
+
+   The recommended way to install Bazel is to use mise.
+   Just run `mise install` in the KhulnaSoft agent root directory.
+
+1. Add the following settings in your `kdk.yml`:
+
+   ```yaml
+   khulnasoft_k8s_agent:
+     enabled: true
+   ```
+
+1. (Optional) To use the [CI tunnel](https://docs.gitlab.com/ee/user/clusters/agent/ci_cd_workflow.html) functionality, you must:
+   1. Enable [NGINX](nginx.md) in HTTPS mode. `kubectl` never sends credentials over a plain
+      text connection.
+   1. Specify concrete IP addresses for `kas` to listen on. `kdk.yml` looks like this
+      (assuming [loopback alias IP](local_network.md#create-loopback-interface) was set up):
+
+      ```yaml
+      khulnasoft_k8s_agent:
+        enabled: true
+        agent_listen_address: 172.16.123.1:8150
+        k8s_api_listen_address: 172.16.123.1:8154
+      hostname: kdk.test
+      port: 3443
+      https:
+        enabled: true
+      nginx:
+        enabled: true
+        ssl:
+          certificate: kdk.test.pem
+          key: kdk.test-key.pem
+      ```
+
+1. Run `kdk update` to get `kas` installed as part of KDK.
+
+1. Run `kdk reconfigure` to update various configuration files.
+
+1. You can start KDK with `kdk start`. It prints the URL for `agentk` to use:
+
+   ```plaintext
+   => KhulnaSoft available at http://127.0.0.1:3000.
+   => KhulnaSoft Agent Server (KAS) available at grpc://127.0.0.1:8150.
+   ```
+
+   If you are using NGINX+HTTPS, the URL would show something like:
+
+   ```plaintext
+   => KhulnaSoft available at https://kdk.test:3443.
+   => KhulnaSoft Agent Server (KAS) available at wss://kdk.test:3443/-/kubernetes-agent.
+   ```
+
+1. To verify that `kas` is running you can:
+   - Run `kdk tail khulnasoft-k8s-agent` to check the logs. You should see no errors in the logs. Empty logs are normal too.
+   - Run `curl 127.0.0.1:8150`. It should print
+
+     ```plaintext
+     Warning: Binary output can mess up your terminal. Use "--output -" to tell
+     Warning: curl to output it to your terminal anyway, or consider "--output
+     Warning: <FILE>" to save to a file.
+     ```
+
+     This is normal because gRPC is a binary protocol.
+
+   - If running with NGINX enabled, run using the loopback address: `curl 172.16.123.1:8150`. It should print
+
+     ```plaintext
+     WebSocket protocol violation: Connection header "close" does not contain Upgrade
+     ```
+
+     This is a normal response from `kas` for such a request because it's expecting a WebSocket connection upgrade.
+
+1. Once your KhulnaSoft Agent Server is running, you can connect to a Kubernetes cluster by
+   [installing `agentk` to the cluster](https://docs.gitlab.com/ee/user/clusters/agent/install/index.html#install-the-agent-in-the-cluster).
+   The `kasAddress` should be the KhulnaSoft Agent Server URL outputted when you ran `kdk start` or from the listed URLs when you run `kdk status`.
+
+   - To connect to a Kubernetes cluster on `k3d`, read the instructions below for [deploying `agentk` with `k3d`](#optional-deploy-the-gitlab-agent-agentk-with-k3d)
+
+## (Optional) Connecting your project to `agentk` using CI Tunnel
+
+The KhulnaSoft Agent Server communicates with `agentk` through a Kubernetes proxy. You can check the proxy address by running `kdk status`, which will output it as one of the URLs:
+
+```plaintext
+=> KhulnaSoft available at https://kdk.test:3443.
+=> KhulnaSoft Agent Server (KAS) available at wss://kdk.test:3443/-/kubernetes-agent.
+=> Kubernetes proxy (via KAS) available at https://kdk.test:3443/-/k8s-proxy/.
+```
+
+The [KhulnaSoft Runner](runner.md) must be authorized to access the `https` address. This is done by adding the NGINX SSL certificate to the relevant places.
+
+### Runner configuration
+
+If your runner is configured with a `docker` executor, you must add your certificate to the volumes in your runner's `config.toml`:
+
+```plaintext
+[[runners]]
+  name = "KDK local runner"
+  url = "https://kdk.test:3443"
+  # other config here
+  [runners.docker]
+  volumes = [
+    "path/to/kdk/directory/kdk.test.crt:/etc/ssl/certs/kdk.test.crt",
+    # other volumes here
+    "/certs/client",
+    "/cache"
+  ]
+```
+
+Alternatively, you can set the `certificate-authority` of `agentk`'s Kubernetes cluster:
+
+1. Add the `kdk.test` certificate into your project that is using CI Tunnel. You can also use the root certificate if there is one. For
+   example, the `rootCA.pem` file generated by `mkcert`.
+
+   1. Copy the contents of the certificate to the clipboard
+   1. Add a [`File` type CI/CD variable](https://docs.gitlab.com/ee/ci/variables/#use-file-type-cicd-variables) in your project.
+      For example: key is `CA_CRT`, value is content of `.pem` or `.crt` file, and type is `File`. Unset all flags.
+
+1. In the project's `.gitlab-ci.yml`, for steps that need to connect to `agentk` (e.g.: the deploy step), add a command to set the certificate authority of the associated Kubernetes cluster:
+
+   ```shell
+   kubectl config set clusters.gitlab.certificate-authority $CA_CRT
+   ```
+
+   This reads the certificate that you added to your project.
+
+   An example `.gitlab-ci.yml`, extended from [this guide](https://docs.gitlab.com/ee/user/clusters/agent/ci_cd_workflow.html#update-your-gitlab-ciyml-file-to-run-kubectl-commands), looks like this:
+
+   ```yaml
+   deploy:
+     image:
+       name: bitnami/kubectl:latest
+       entrypoint: ['']
+     script:
+       - kubectl config get-contexts
+       - kubectl config use-context path/to/project:agentk-name
+       - kubectl config set clusters.gitlab.certificate-authority $CA_CRT
+       - kubectl get pods --namespace gitlab-agent
+   ```
+
+## (Optional) Deploy the KhulnaSoft Agent (agentk) with k3d
+
+1. [Install k3d](https://github.com/rancher/k3d#get).
+1. Create a k3d cluster:
+
+   ```shell
+   k3d cluster create
+   ```
+
+1. Set up a [loopback alias IP](local_network.md#create-loopback-interface). We can use it as the
+   listen address so that `agentk` can reach your local KhulnaSoft and KAS. Let's assume this is `172.16.123.1`.
+   We recommend you also bind your hostname to this address in `/etc/hosts`, by adding the line
+   `172.16.123.1 kdk.test` to `/etc/hosts`
+
+   Then update your `kdk.yml` to include these global keys:
+
+   ```yaml
+   hostname: kdk.test
+   listen_address: "172.16.123.1"
+   ```
+
+   This sets the default hostname and listen address for all KDK services, including KhulnaSoft.
+   For example, with the default ports:
+
+   - KhulnaSoft would now be available on `http://kdk.test:3000`.
+   - The registry would now be available on `https://kdk.test:5100`.
+
+1. Run `kdk reconfigure` to apply the above change.
+1. Deploy `agentk`:
+
+   1. [Register the agent](https://docs.gitlab.com/ee/user/clusters/agent/install/index.html#register-the-agent-with-gitlab) as you normally would to deploy it to any cluster. Take note of the token.
+   1. [Install the Agent to the cluster](https://docs.gitlab.com/ee/user/clusters/agent/install/index.html#install-the-agent-in-the-cluster).
+
+      At this step, be sure to use the loopback alias as the KAS address instead of the `kdk.test` URL. This is necessary because `k3d` is running on Docker, which will not be able to resolve `kdk.test`.
+
+      You can do this by changing the `config.kasAddress` in the Helm installation command:
+
+      ```shell
+      helm upgrade --install agentk-test gitlab/gitlab-agent \
+      --namespace gitlab-agent \
+      --create-namespace \
+      --set image.tag=v15.4.0 \
+      --set config.token=<token generated from the previous step> \
+      --set config.kasAddress=grpc://172.16.123.1:8150
+      ```
+
+## (Optional) Run `agentk` from source using `support/agentk`
+
+To increase development velocity, KDK includes a script `support/agentk` to run
+agentk with `go run`, skipping the build and deploy steps associated with
+running `agentk` in a cluster. The script takes a single mandatory argument, the
+agent token, and runs the agent in the foreground:
+
+```shell
+support/agentk TOKEN [EXTRA ARGS FOR AGENTK]
+```
+
+When run in this way, `agentk` implicitly uses the currently selected context in
+your kubeconfig, similar to how `kubectl` works.
+
+To pick up new changes to the code, simply restart the script. If you are also making changes to KAS, consider running
+[KAS from source as well](#optional-run-kas-directly-from-source-with-go-run).
+
+When running the script, all arguments following the token get forwarded
+directly to `agentk`. For example, to use a different kubeconfig context, you
+can use the `--context` flag:
+
+```shell
+support/agentk TOKEN --context YOUR_CONTEXT
+```
+
+To see the list of available flags, you can run
+
+```shell
+support/agentk "" --help
+```
+
+## (Optional) Run using Bazel instead of KDK
+
+If you want to run KhulnaSoft Agent Server and Agent locally with Bazel instead of KDK, see
+the [KhulnaSoft Agent documentation](https://gitlab.com/gitlab-org/cluster-integration/gitlab-agent/-/blob/master/doc/developing.md#running-the-agent-locally).
+
+## (Optional) Developing KAS observability together with KhulnaSoft Observability Stack's development environment
+
+To develop observability features of KAS, you can configure KDK and KAS so that traces are sent to a development instance of KhulnaSoft Observability Stack (GOS).
+
+To configure KDK and KAS:
+
+1. Launch a [devvm](https://gitlab.com/gitlab-org/opstrace/devvm/) - integrated development environment for GOS.
+1. Once all the steps required to launch devvm are completed, note the KhulnaSoft groupID that was provisioned.
+   You can find it in the output of the `booter` script - please refer to [the devvm documentation](https://gitlab.com/gitlab-org/opstrace/devvm/#start-monitoring-the-progress-of-booter).
+   This is referred to as `<gitlab groupID>` in this document.
+1. Create a KhulnaSoft Observability Stack API token.
+   1. In the web browser, enter `https://gob.devvm/-/<gitlab groupID>/`, for example `https://gob.devvm/-/22/`.
+   1. On the left sidebar, select **Configuration > API Keys**.
+   1. Select **New API Key**.
+   1. Enter a title for the key, select the **User** role, and then select **Add**.
+   1. Copy the created API key. You will use it in a later step.
+1. Log into the `devvm`. All the following steps must be executed from the `dev` user inside `devvm`.
+1. Store the API token in a file:
+
+   ```shell
+   echo <token> > /home/dev/otel-token.txt
+   ```
+
+1. Perform steps required to [run KAS from within KDK](#run-kas-from-within-kdk).
+1. Configure the `kubectl` plugin for `mise`:
+
+   ```shell
+   mise list kubectl | sort -n | head -n 1 | xargs -I{} mise use -g kubectl@{}
+   ```
+
+1. Fetch the CA certificate that GOB (KhulnaSoft Observability Backend) uses:
+
+   ```shell
+   KUBECONFIG=/home/dev/kubeconfig kubectl get secret self-signed-ca-secret -o jsonpath='{ .data.ca\.crt }' | base64 -d > /home/dev/khulnasoft-development-kit/gob-ca.crt
+   ```
+
+1. Add [OTel](https://opentelemetry.io/) configuration to `kdk.yml`:
+
+   ```yaml
+   khulnasoft_k8s_agent:
+     <...>
+     otlp_endpoint: https://gob.devvm/v1/traces/<gitlab groupID>
+     otlp_token_secret_file: /home/dev/otel-token.txt
+     otlp_ca_certificate_file: /home/dev/khulnasoft-development-kit/gob-ca.crt
+     <...>
+   ```
+
+1. Uninstall the `mise` installation of Go to avoid issues:
+
+   ```shell
+   mise uninstall golang 1.19.3
+   ```
+
+   Sign out and sign back in to the `dev` account in order for changes to take effect.
+   You should be using now the system version of Go:
+
+   ```shell
+   $ which go
+   /usr/bin/go
+   ```
+
+1. Reconfigure KDK:
+
+   ```shell
+   kdk reconfigure
+   ```
+
+1. Configure KDK to use the CA certificate when deploying `agentk`.
+
+   ```shell
+   export KUBECONFIG=/home/dev/kubeconfig
+   helm repo add gitlab https://charts.gitlab.io
+   helm repo update
+   helm upgrade --install mynamespace gitlab/gitlab-agent \
+      --namespace gitlab-agent-mynamespace \
+      --create-namespace \
+      --set image.tag=v15.7.0-rc1 \
+      --set config.token=<...> \
+      --set config.kasAddress=wss://kdk.devvm:3443/-/kubernetes-agent \
+      --set config.caCert="$(cat /home/dev/khulnasoft-development-kit/kdk.devvm.pem)"
+   ```
+
+1. Deploy the agent by following the steps in [Installing the agent for Kubernetes](https://docs.gitlab.com/ee/user/clusters/agent/install/).
+   To keep things simple, you should deploy the agent on the same Kubernetes cluster that GOB is running on.
+1. Test if traces are properly received.
+   1. In the web browser, enter `https://gob.devvm/-/<gitlab groupID>`.
+   1. On the left sidebar, expand **Explore**, and select **Explore > Traces**.
+   If you can see a section named `gitlab-kas`, then the traces are being ingested by GOB.
+
+## (Optional) Run KAS directly from source (with `go run`)
+
+When working on KAS, it can be convenient to run directly from source instead of
+having to rebuild every time.
+
+```shell
+kdk config set khulnasoft_k8s_agent.run_from_source true
+kdk reconfigure
+```
+
+That way, changes to the code get picked up immediately every time you restart
+KAS:
+
+```shell
+kdk restart khulnasoft-k8s-agent
+```
+
+## (Optional) Run KAS manually
+
+When working on KAS, it can be convenient to run KAS manually instead of running it through the KDK `Procfile`.
+For example, this method can be ideal if you want to run KAS with a debugger, directly from the IDE, or run multiple KAS replicas.
+
+```shell
+kdk config set khulnasoft_k8s_agent.configure_only true
+kdk reconfigure
+```
+
+## (Optional) Disable automatic repository updates
+
+When working on the agent, you probably want to manage the repository on your
+own, to avoid having `kdk update` stash your changes:
+
+```shell
+kdk config set khulnasoft_k8s_agent.auto_update false
+kdk reconfigure
+```
+
+## (Optional) Deploying a FluxCD Project to the cluster / installing the Agent with Flux
+
+See the [dedicated flux docs](flux.md).
+
+## Troubleshooting
+
+See [Bad CPU type in executable Target](../troubleshooting/apple_mx_machines.md#bad-cpu-type-in-executable-target).

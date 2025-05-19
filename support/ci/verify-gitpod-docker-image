@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+set -ex
+
+ROOT_PATH="$(cd "$(dirname "${BASH_SOURCE[${#BASH_SOURCE[@]} - 1]}")/../.." || exit ; pwd -P)"
+DOCKER_IMAGE_TAG="${CI_COMMIT_REF_SLUG:-main}"
+DOCKER_IMAGE="${CI_REGISTRY_IMAGE}/gitpod-workspace:${DOCKER_IMAGE_TAG}"
+HOME="/home/gitpod"
+
+/sbin/sysctl fs.inotify.max_user_watches=1048576
+
+if ! docker run --rm -t -v "${ROOT_PATH}/support/gitpod/startup-scripts/:/tmp/startup-scripts" -v "${ROOT_PATH}/artifacts/:/artifacts" "${DOCKER_IMAGE}" bash -ic "/tmp/startup-scripts/docker-entrypoint"; then
+  echo "ERROR: Failed to run KhulnaSoft in Gitpod workspace Docker image." >&2
+  exit 1
+else
+  echo "INFO: Successfully ran KhulnaSoft in Gitpod workspace Docker image."
+fi

@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+set -e
+
+kdk_root=$(kdk config get kdk_root)
+kas_address=$(kdk config get khulnasoft_k8s_agent.__url_for_agentk)
+https_enabled=$(kdk config get https.enabled)
+token_file=$(mktemp)
+
+token=$1
+shift
+extra_args=( "$@" )
+
+# For convenience, we take the token as a positional argument
+echo -n "${token}" > "${token_file}"
+
+optional_args=()
+if [[ "$https_enabled" == "true" ]]; then
+    optional_args+=("--ca-cert-file" "${kdk_root}/localhost.crt")
+fi
+
+# dummy variables for agentk
+export POD_NAMESPACE=default
+export POD_NAME=agentk
+
+"${kdk_root}/support/exec-cd" "${kdk_root}/khulnasoft-k8s-agent" \
+    go run cmd/agentk/main.go \
+    --kas-address "${kas_address}" \
+    --token-file "${token_file}" \
+    "${optional_args[@]}" \
+    "${extra_args[@]}"

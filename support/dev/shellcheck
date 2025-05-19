@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+# Spellcheck rule definitions
+#
+# https://github.com/koalaman/shellcheck/wiki/SC1071 - ShellCheck only supports sh/bash/dash/ksh scripts. Sorry!
+
+root="$(cd "$(dirname "$0")/../.." || exit ; pwd -P)"
+
+does_shellcheck_exist() {
+  command -v shellcheck > /dev/null 2>&1
+}
+
+attempt_shellcheck_install() {
+  eval "${root}/support/dev/package-install shellcheck"
+}
+
+run() {
+  find \
+			"${root}/bin" \
+			"${root}/support" \
+			"${root}/support/ci" \
+			"${root}/support/dev" \
+			"${root}/support/completions" \
+      -maxdepth 1 \
+      -type f \
+      -not -path "*/Dockerfile" \
+      -not -path "*/support/gitpod/Dockerfile" \
+      -not -path "*/support/ci/Dockerfile.verify*" \
+      -not -path "*/support/.rubocop.yml" \
+      -not -path "*.swp" \
+      -print0 \
+  | xargs -0 shellcheck --exclude=SC1071 --external-sources --
+}
+
+if ! does_shellcheck_exist; then
+  attempt_shellcheck_install
+fi
+
+if ! does_shellcheck_exist; then
+  echo "ERROR: shellcheck is not available, please ensure it's installed on your platform." >&2
+  exit 1
+fi
+
+/bin/echo -n "Shellcheck: "
+
+if run; then
+  echo "OK"
+  exit 0
+else
+  exit 1
+fi

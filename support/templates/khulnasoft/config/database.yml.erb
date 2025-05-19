@@ -1,0 +1,218 @@
+development:
+  main:
+    adapter: postgresql
+    encoding: unicode
+    database: gitlabhq_development
+    host: <%= config.postgresql.host %>
+    port: <%= config.postgresql.port %>
+    pool: 10
+    gssencmode: disable
+    prepared_statements: false
+    variables:
+      statement_timeout: 120s
+<%- if config.load_balancing.discover? -%>
+    username: <%= config.__whoami %>
+    password: gitlab
+    load_balancing:
+      discover:
+        record: replica.pgbouncer.service.consul
+        nameserver: 127.0.0.1
+        port: 8600
+        record_type: SRV
+        use_tcp: true
+<%- elsif config.load_balancing? -%>
+  <%- unless config.geo? -%>
+    load_balancing:
+      hosts:
+        - <%= config.postgresql.host %>
+        <%- if config.postgresql.replica? %>
+        - <%= config.postgresql.replica.host %>
+        <%- end -%>
+        <%- if config.postgresql.replica_2? %>
+        - <%= config.postgresql.replica_2.host %>
+        <%- end -%>
+  <%- end -%>
+<%- end -%>
+<%- if config.gitlab.rails.databases.ci.__enabled -%>
+  ci:
+    adapter: postgresql
+    encoding: unicode
+  <%- if config.gitlab.rails.databases.ci.__use_main_database -%>
+    database: gitlabhq_development
+    database_tasks: false
+  <%- else -%>
+    database: gitlabhq_development_ci
+  <%- end -%>
+    host: <%= config.postgresql.host %>
+    port: <%= config.postgresql.port %>
+    pool: 10
+    gssencmode: disable
+    prepared_statements: false
+    variables:
+      statement_timeout: 120s
+    <%- if config.load_balancing.discover? -%>
+    username: <%= config.__whoami %>
+    password: gitlab
+    load_balancing:
+      discover:
+        record: replica.pgbouncer.service.consul
+        nameserver: 127.0.0.1
+        port: 8600
+        record_type: SRV
+        use_tcp: true
+    <%- end -%>
+<%- end -%>
+<%- if config.gitlab.rails.databases.sec.__enabled -%>
+  sec:
+    adapter: postgresql
+    encoding: unicode
+  <%- if config.gitlab.rails.databases.sec.__use_main_database -%>
+    database: gitlabhq_development
+    database_tasks: false
+  <%- else -%>
+    database: gitlabhq_development_sec
+  <%- end -%>
+    host: <%= config.postgresql.host %>
+    port: <%= config.postgresql.port %>
+    pool: 10
+    gssencmode: disable
+    prepared_statements: false
+    variables:
+      statement_timeout: 120s
+    <%- if config.load_balancing.discover? -%>
+    username: <%= config.__whoami %>
+    password: gitlab
+    load_balancing:
+      discover:
+        record: replica.pgbouncer.service.consul
+        nameserver: 127.0.0.1
+        port: 8600
+        record_type: SRV
+        use_tcp: true
+    <%- end -%>
+<%- end -%>
+<%- if config.gitlab.rails.databases.embedding.__enabled -%>
+  embedding:
+    adapter: postgresql
+    encoding: unicode
+    database: gitlabhq_development_embedding
+    database_tasks: true
+    host: <%= config.postgresql.host %>
+    port: <%= config.postgresql.port %>
+    pool: 10
+    gssencmode: disable
+    prepared_statements: false
+    variables:
+      statement_timeout: 120s
+<%- end -%>
+<%- if config.geo? && config.geo.secondary? -%>
+  geo:
+    adapter: postgresql
+    encoding: unicode
+    database: gitlabhq_geo_development
+    database_tasks: true
+    host: <%= config.postgresql.geo.host %>
+    port: <%= config.postgresql.geo.port %>
+    pool: 5
+    gssencmode: disable
+<%- end -%>
+
+test: &test
+  main:
+    adapter: postgresql
+    encoding: unicode
+    database: gitlabhq_test
+  <%- if config.geo? && config.geo.secondary? -%>
+    host: <%= config.postgresql.geo.host %>
+    port: <%= config.postgresql.geo.port %>
+  <%- else -%>
+    host: <%= config.postgresql.host %>
+    port: <%= config.postgresql.port %>
+  <%- end -%>
+    pool: 10
+    gssencmode: disable
+    prepared_statements: false
+    variables:
+      statement_timeout: 120s
+<%- if config.gitlab.rails.databases.ci.__enabled -%>
+  ci:
+    adapter: postgresql
+    encoding: unicode
+  <%- if config.gitlab.rails.databases.ci.__use_main_database -%>
+    database: gitlabhq_test
+    database_tasks: false
+  <%- else -%>
+    database: gitlabhq_test_ci
+  <%- end -%>
+  <%- if config.geo? && config.geo.secondary? -%>
+    host: <%= config.postgresql.geo.host %>
+    port: <%= config.postgresql.geo.port %>
+  <%- else -%>
+    host: <%= config.postgresql.host %>
+    port: <%= config.postgresql.port %>
+  <%- end -%>
+    pool: 10
+    gssencmode: disable
+    prepared_statements: false
+    variables:
+      statement_timeout: 120s
+<%- end -%>
+<%- if config.gitlab.rails.databases.sec.__enabled -%>
+  sec:
+    adapter: postgresql
+    encoding: unicode
+  <%- if config.gitlab.rails.databases.sec.__use_main_database -%>
+    database: gitlabhq_test
+    database_tasks: false
+  <%- else -%>
+    database: gitlabhq_test_sec
+  <%- end -%>
+  <%- if config.geo? && config.geo.secondary? -%>
+    host: <%= config.postgresql.geo.host %>
+    port: <%= config.postgresql.geo.port %>
+  <%- else -%>
+    host: <%= config.postgresql.host %>
+    port: <%= config.postgresql.port %>
+  <%- end -%>
+    pool: 10
+    gssencmode: disable
+    prepared_statements: false
+    variables:
+      statement_timeout: 120s
+<%- end -%>
+<%- if config.gitlab.rails.databases.embedding.__enabled -%>
+  embedding:
+    adapter: postgresql
+    encoding: unicode
+    database: gitlabhq_test_embedding
+    database_tasks: true
+    host: <%= config.postgresql.host %>
+    port: <%= config.postgresql.port %>
+    pool: 10
+    gssencmode: disable
+    prepared_statements: false
+    variables:
+      statement_timeout: 120s
+<%- end -%>
+<%- if config.geo? && config.geo.secondary? -%>
+  geo:
+    adapter: postgresql
+    encoding: unicode
+    database: gitlabhq_geo_test
+    database_tasks: true
+    host: <%= config.postgresql.geo.host %>
+    port: <%= config.postgresql.geo.port %>
+    pool: 5
+    gssencmode: disable
+<%- end -%>
+<%- if config.geo? && !config.geo.secondary? && config.geo.experimental.allow_secondary_tests_in_primary -%>
+  geo:
+    adapter: postgresql
+    encoding: unicode
+    database: gitlabhq_geo_test
+    database_tasks: true
+    host: <%= config.postgresql.host %>
+    port: <%= config.postgresql.port %>
+    pool: 5
+    gssencmode: disable
+<%- end -%>

@@ -1,0 +1,14 @@
+#!/bin/sh
+set -e
+
+exec 2>&1
+cd <%= kdk_root %>
+
+<% config.env.merge(service_instance.env).each do |k, v| %>
+export <%= k %>='<%= v %>'
+<% end %>
+
+test -f env.runit && . ./env.runit
+
+# Use chpst -P to run the command in its own process group
+exec chpst -P <%= service_instance.command %>

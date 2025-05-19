@@ -1,0 +1,42 @@
+env = "development"
+
+<%- if config.gitlab.topology_service.enabled -%>
+[[cells]]
+id = <%= config.gitlab.cell.id %>
+address = "<%= config.nginx? ? config.nginx.__listen_address : config.workhorse.__listen_address %>"
+session_prefix = "<%= config.gitlab.rails.session_store.session_cookie_token_prefix %>"
+sequence_range = [1, <%= config.gitlab.cell.__legacy_cell_sequence_maxval %>]
+[[cells.sequence_ranges]]
+minval = 1
+maxval = <%= config.gitlab.cell.__legacy_cell_sequence_maxval %>
+<%- end -%>
+
+<%- cell_manager = CellManager.new -%>
+<%- config.cells.instances.elems.each do |instance| -%>
+<%- cell_config = cell_manager.get_config_for(instance.fetch('id')) -%>
+[[cells]]
+id = <%= instance.id %>
+address = "<%= cell_config.nginx? ? cell_config.nginx.__listen_address : cell_config.workhorse.__listen_address %>"
+session_prefix = "<%= cell_config.gitlab.rails.session_store.session_cookie_token_prefix %>"
+sequence_range = [<%= instance.__sequence_range[0] %>, <%= instance.__sequence_range[1] %>]
+[[cells.sequence_ranges]]
+minval = <%= instance.__sequence_range[0] %>
+maxval = <%= instance.__sequence_range[1] %>
+<%- end -%>
+[[serve]]
+address = ":<%= config.khulnasoft_topology_service.grpc_port %>"
+features = ["*_grpc"]
+
+[[serve]]
+address = ":<%= config.khulnasoft_topology_service.rest_port %>"
+features = ["*_rest"]
+
+[[services.classify.response_headers]]
+key = "Cache-Control"
+value = "s-maxage=10"
+raw_header = true
+
+[[services.classify.response_headers]]
+key = "Cache-Tag"
+value = "gprd_topology_service_khulnasoft_com"
+raw_header = true

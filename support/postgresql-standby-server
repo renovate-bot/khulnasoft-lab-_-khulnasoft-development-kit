@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+set -eu
+
+socket_path=$1
+pg_port=$2
+postgres_data_dir=$(kdk config get postgresql.data_dir 2>/dev/null)
+postgres_version=$(kdk config get postgresql.active_version 2>/dev/null | cut -d. -f1)
+
+if [[ $postgres_version -ge 12 ]] ; then
+  if [ ! -f "$postgres_data_dir/standby.signal" ] ; then
+    touch "$postgres_data_dir"/standby.signal
+  fi
+  cat <<EOF >> "$postgres_data_dir"/postgresql.conf
+primary_conninfo = 'host=${socket_path} port=${pg_port} user=khulnasoft_replication'
+primary_slot_name = 'khulnasoft_kdk_replication_slot'
+EOF
+else
+  cat <<EOF >> "$postgres_data_dir"/recovery.conf
+standby_mode = 'on'
+primary_conninfo = 'host=${socket_path} port=${pg_port} user=khulnasoft_replication'
+primary_slot_name = 'khulnasoft_kdk_replication_slot'
+EOF
+fi

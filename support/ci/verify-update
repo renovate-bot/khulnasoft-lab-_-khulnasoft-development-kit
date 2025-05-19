@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+set -ex
+
+parent_path=$(dirname "$0")
+
+# shellcheck source=support/ci/functions.sh
+source "${parent_path}"/functions.sh
+
+init
+
+# test KDK self-update
+if [ -n "${CI_MERGE_REQUEST_SOURCE_BRANCH_SHA}" ]; then
+  checkout "${CI_MERGE_REQUEST_SOURCE_BRANCH_SHA}"
+else
+  checkout "${CI_COMMIT_SHA}"
+fi
+
+# test KDK components update
+install_kdk_clt
+update
+test_url

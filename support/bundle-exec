@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+CDPATH=''
+ROOT_PATH="$(cd "$(dirname "${BASH_SOURCE[${#BASH_SOURCE[@]} - 1]}")/.." || exit ; pwd -P)"
+
+ASDF_AVAILABLE=$("${ROOT_PATH}/support/asdf-available")
+MISE_AVAILABLE=$("${ROOT_PATH}/support/mise-available")
+
+# shellcheck disable=SC1091 disable=SC1090
+test -f "${ROOT_PATH}/env.runit" && . "${ROOT_PATH}/env.runit"
+
+prepare_command() {
+  local command="${1}"
+
+  [[ "${ASDF_AVAILABLE}" == "true" ]] && command="asdf exec ${command}"
+  [[ "${MISE_AVAILABLE}" == "true" ]] && command="mise exec -- ${command}"
+
+  echo "${command}"
+}
+
+bundle_exec() {
+  local command="bundle exec ${1}"
+
+  command=$(prepare_command "${command}")
+
+  eval "${command}"
+}
+
+bundle_exec "${*}"

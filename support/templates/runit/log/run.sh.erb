@@ -1,0 +1,7 @@
+#!/bin/sh
+set -e
+
+# svlogd is a long-running daemon so it should run from /
+cd /
+
+exec svlogd -tt <%= service_log_dir %>

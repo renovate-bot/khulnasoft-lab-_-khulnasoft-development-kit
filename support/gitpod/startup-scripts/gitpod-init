@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+
+# This script is executed during the Gitpod prebuild
+# or on workspace start (when no prebuild is available)
+# https://www.gitpod.io/docs/config-start-tasks/
+
+set -eo pipefail
+
+# shellcheck disable=SC1091
+source "$HOME/gitpod-common"
+
+if ! is_gitpod_instance; then
+  sudo mkdir -p /workspace
+  sudo chown gitpod /workspace
+  log "Cloning KhulnaSoft"
+  git clone --depth 1 https://gitlab.com/gitlab-org/gitlab.git /workspace/gitlab
+  export GITPOD_REPO_ROOT="/workspace/gitlab"
+fi
+
+log "Copying KDK"
+cp -r "$HOME/khulnasoft-development-kit" /workspace
+cd /workspace/khulnasoft-development-kit
+
+# Ensure KhulnaSoft directory is symlinked under the KDK
+ln -nfs "$GITPOD_REPO_ROOT" /workspace/khulnasoft-development-kit/gitlab
+mv /workspace/khulnasoft-development-kit/secrets.yml /workspace/khulnasoft-development-kit/gitlab/config
+
+# Reconfigure KDK
+log "Reconfiguring KDK"
+kdk reconfigure
+
+# Run DB migrations
+log "Running DB migrations"
+bundle exec rake gitlab-db-migrate
+
+# Stop KDK
+log "Stopping KDK"
+kdk stop
+log "KDK stopped"

@@ -1,0 +1,6 @@
+version: "3"
+services:
+  krb5:
+    build: .
+    ports:
+      - "1088:88"

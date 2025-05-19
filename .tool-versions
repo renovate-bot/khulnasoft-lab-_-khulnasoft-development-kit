@@ -1,0 +1,37 @@
+# NOTE: This file declares dependencies for KDK itself.
+#
+#       Each project KDK manages should define its own depenencies in
+#       its respective repository, and not in here.
+#
+#       This file _can_ be used to override specific versions when
+#       incompatibilities arise, but generally speaking, each project is
+#       responsible for declaring its dependencies and KDK follows these
+#       declarations.
+#
+# For more information, see doc/asdf.md.
+nodejs 20.12.2
+yarn 1.22.19
+redis 7.0.14
+
+# Minio version must be set as it's necessary for the MinIO Object Storage service
+minio 2022-07-15T03-44-22Z
+
+# Postgres version must be set as it's necessary for the PostgreSQL upgrade script
+postgres 16.8 14.9
+
+# Rust is needed before Ruby to support YJIT. However, asdf will sort this
+# file and prevent that: https://github.com/asdf-vm/asdf/issues/929.
+rust 1.73.0
+
+# Ruby version must be set
+ruby 3.3.7 3.2.4
+
+# For linting shell scripts
+shellcheck 0.10.0
+
+# For linting KDK documentation
+markdownlint-cli2 0.18.0
+vale 3.11.2
+
+# To allow gitaly to build in rspec in the khulnasoft/ directory
+golang 1.24.0

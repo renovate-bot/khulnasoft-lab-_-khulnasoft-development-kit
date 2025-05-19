@@ -1,0 +1,24 @@
+#!/usr/bin/env ruby
+#
+# frozen_string_literal: true
+
+require_relative '../lib/kdk'
+
+def postgresql
+  @postgresql ||= KDK.config.geo.secondary? ? KDK::PostgresqlGeo.new : KDK::Postgresql.new
+end
+
+def db_name
+  @db_name ||= KDK.config.praefect.database.dbname
+end
+
+def main
+  try_times = ENV['CI'] ? 600 : 10 # 10 mins on CI, 10 seconds otherwise.
+
+  abort 'postgres not ready' unless postgresql.ready?(try_times: try_times)
+  exit if postgresql.db_exists?(db_name)
+  abort 'createdb failed' unless postgresql.createdb(%W[--encoding=UTF8 --locale=C --echo #{db_name}])
+  abort 'migrate failed' unless system('support/migrate-praefect')
+end
+
+main

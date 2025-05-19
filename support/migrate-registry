@@ -1,0 +1,4 @@
+#!/bin/sh
+set -e
+
+$(kdk config get registry.__registry_build_bin_path) database migrate up registry/config.yml

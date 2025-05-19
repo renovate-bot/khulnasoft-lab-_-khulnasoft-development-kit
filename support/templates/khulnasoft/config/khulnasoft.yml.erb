@@ -1,0 +1,1218 @@
+# # # # # # # # # # # # # # # # # #
+# KhulnaSoft application config file  #
+# # # # # # # # # # # # # # # # # #
+#
+###########################  NOTE  #####################################
+# This file should not receive new settings. All configuration options #
+# * are being moved to ApplicationSetting model!                       #
+# If a setting requires an application restart say so in that screen.  #
+# If you change this file in a Merge Request, please also create       #
+# a MR on https://gitlab.com/gitlab-org/omnibus-gitlab/merge_requests  #
+########################################################################
+#
+#
+# How to use:
+# 1. Copy file as gitlab.yml
+# 2. Update gitlab -> host with your fully qualified domain name
+# 3. Update gitlab -> email_from
+# 4. If you installed Git from source, change git -> bin_path to /usr/local/bin/git
+#    IMPORTANT: If Git was installed in a different location use that instead.
+#    You can check with `which git`. If a wrong path of Git is specified, it will
+#     result in various issues such as failures of KhulnaSoft CI builds.
+# 5. Review this configuration file for other settings you may want to adjust
+
+production: &base
+  #
+  # 1. KhulnaSoft app settings
+  # ==========================
+
+  ## KhulnaSoft settings
+  gitlab:
+    ## Web server settings (note: host is the FQDN, do not include http://)
+    host: <%= config.gitlab.rails.hostname %>
+    port: <%= config.gitlab.rails.port %>
+    https: <%= config.gitlab.rails.https? %>
+
+    relative_url_root: "<%= config.relative_url_root %>"
+
+    allowed_hosts: <%= config.gitlab.rails.allowed_hosts %>
+
+    # Trusted Proxies
+    # Customize if you have KhulnaSoft behind a reverse proxy which is running on a different machine.
+    # Add the IP address for your reverse proxy to the list, otherwise users will appear signed in from that address.
+    trusted_proxies:
+      # Examples:
+      #- 192.168.1.0/24
+      #- 192.168.2.1
+      #- 2001:0db8::/32
+
+    user: <%= config.username %>
+    ssh_user: <%= config.sshd.user %>
+
+    ## Date & Time settings
+    # Uncomment and customize if you want to change the default time zone of KhulnaSoft application.
+    # To see all available zones, run `bundle exec rake time:zones:all RAILS_ENV=production`
+    # time_zone: 'UTC'
+
+    ## Email settings
+    # Uncomment and set to false if you need to disable email sending from KhulnaSoft (default: true)
+    # email_enabled: true
+    # Email address used in the "From" field in mails sent by KhulnaSoft
+    email_from: example@example.com
+    email_display_name: KhulnaSoft
+    email_reply_to: noreply@example.com
+    email_subject_suffix: ''
+
+    # Email server smtp settings are in config/initializers/smtp_settings.rb.sample
+
+    # default_can_create_group: false  # default: true
+    # username_changing_enabled: false # default: true - User can change her username/namespace
+    ## Default theme ID
+    ##   1 - Indigo
+    ##   2 - Gray
+    ##   3 - Neutral
+    ##   4 - Blue
+    ##   5 - Green
+    ##   6 - Light Indigo
+    ##   7 - Light Blue
+    ##   8 - Light Green
+    ##   9 - Red
+    ##   10 - Light Red
+    # default_theme: 1 # default: 1
+    ## Default color mode ID
+    ##   1 - Light
+    ##   2 - Dark
+    ##   3 - Automatic
+    # default_color_mode: 1 # default: 1
+
+    ## Automatic issue closing
+    # If a commit message matches this regular expression, all issues referenced from the matched text will be closed.
+    # This happens when the commit is pushed or merged into the default branch of a project.
+    # When not specified the default issue_closing_pattern as specified below will be used.
+    # Tip: you can test your closing pattern at http://rubular.com.
+    # issue_closing_pattern: '\b((?:[Cc]los(?:e[sd]?|ing)|\b[Ff]ix(?:e[sd]|ing)?|\b[Rr]esolv(?:e[sd]?|ing)|\b[Ii]mplement(?:s|ed|ing)?)(:?) +(?:(?:issues? +)?%{issue_ref}(?:(?:, *| +and +)?)|([A-Z][A-Z0-9_]+-\d+))+)'
+
+    ## Default project features settings
+    default_projects_features:
+      issues: true
+      merge_requests: true
+      wiki: true
+      snippets: true
+      builds: true
+      container_registry: true
+
+    ## Webhook settings
+    # Number of seconds to wait for HTTP response after sending webhook HTTP POST request (default: 10)
+    # webhook_timeout: 10
+
+    ## Repository downloads directory
+    # When a user clicks e.g. 'Download zip' on a project, a temporary zip file is created in the following directory.
+    # The default is 'shared/cache/archive/' relative to the root of the Rails app.
+    # repository_downloads_path: shared/cache/archive/
+
+    ## Impersonation settings
+    impersonation_enabled: true
+
+    ## Application settings cache expiry in seconds (default: 60)
+    application_settings_cache_seconds: <%= config.gitlab.rails.application_settings_cache_seconds %>
+
+  ## Reply by email
+  # Allow users to comment on issues and merge requests by replying to notification emails.
+  # For documentation on how to set this up, see http://doc.gitlab.com/ce/administration/reply_by_email.html
+  incoming_email:
+    enabled: false
+
+    # The email address including the `%{key}` placeholder that will be replaced to reference the item being replied to.
+    # The placeholder can be omitted but if present, it must appear in the "user" part of the address (before the `@`).
+    address: "gitlab-incoming+%{key}@gmail.com"
+
+    # Email account username
+    # With third party providers, this is usually the full email address.
+    # With self-hosted email servers, this is usually the user part of the email address.
+    user: "gitlab-incoming@gmail.com"
+    # Email account password
+    password: "[REDACTED]"
+
+    # IMAP server host
+    host: "imap.gmail.com"
+    # IMAP server port
+    port: 993
+    # Whether the IMAP server uses SSL
+    ssl: true
+    # Whether the IMAP server uses StartTLS
+    start_tls: false
+
+    # The mailbox where incoming mail will end up. Usually "inbox".
+    mailbox: "inbox"
+    # The IDLE command timeout.
+    idle_timeout: 60
+
+  <%- if config.object_store.consolidated_form? -%>
+  ## Consolidated object store config
+  ## This will only take effect if the object_store sections are not defined
+  ## within the types (e.g. artifacts, lfs, etc.).
+  object_store:
+    enabled: <%= config.object_store? %>
+    proxy_download: false
+    connection: <%= config.object_store.connection.to_json %>
+    objects: <%= config.object_store.objects.to_json %>
+  <%- end %>
+
+  ## Service desk email
+  # Allow users to create new service desk issues by sending an email to
+  # service desk address.
+  # https://docs.gitlab.com/ee/user/project/service_desk.html#using-custom-email-address
+  service_desk_email:
+    enabled: false
+
+    # The email address including the `%{key}` placeholder that will be replaced to reference the item being replied to.
+    # The placeholder can be omitted but if present, it must appear in the "user" part of the address (before the `@`).
+    address: "contact_project+%{key}@gmail.com"
+
+    # Email account username
+    # With third party providers, this is usually the full email address.
+    # With self-hosted email servers, this is usually the user part of the email address.
+    user: "contact_project@gmail.com"
+    # Email account password
+    password: "[REDACTED]"
+
+    # IMAP server host
+    host: "imap.gmail.com"
+    # IMAP server port
+    port: 993
+    # Whether the IMAP server uses SSL
+    ssl: true
+    # Whether the IMAP server uses StartTLS
+    start_tls: false
+
+    # The mailbox where incoming mail will end up. Usually "inbox".
+    mailbox: "inbox"
+    # The IDLE command timeout.
+    idle_timeout: 60
+
+  ## Build Artifacts
+  artifacts:
+    enabled: true
+    <%- unless config.object_store.consolidated_form? -%>
+    object_store:
+      enabled: <%= config.object_store? %>
+      remote_directory: artifacts
+      direct_upload: true
+      connection:
+        provider: AWS
+        aws_access_key_id: minio
+        aws_secret_access_key: kdk-minio
+        region: kdk
+        endpoint: 'http://<%= config.object_store.host %>:<%= config.object_store.port %>'
+        path_style: true
+    <%- end -%>
+
+  ## Merge request external diff storage
+  external_diffs:
+    enabled: <%= config.object_store? %>
+    <%- unless config.object_store.consolidated_form? -%>
+    object_store:
+      enabled: <%= config.object_store? %>
+      remote_directory: external-diffs
+      direct_upload: true
+      connection:
+        provider: AWS
+        aws_access_key_id: minio
+        aws_secret_access_key: kdk-minio
+        region: kdk
+        endpoint: 'http://<%= config.object_store.host %>:<%= config.object_store.port %>'
+        path_style: true
+    <%- end -%>
+
+  ## Git LFS
+  lfs:
+    enabled: true
+    <%- unless config.object_store.consolidated_form? -%>
+    object_store:
+      enabled: <%= config.object_store? %>
+      remote_directory: lfs-objects
+      direct_upload: true
+      connection:
+        provider: AWS
+        aws_access_key_id: minio
+        aws_secret_access_key: kdk-minio
+        region: kdk
+        endpoint: 'http://<%= config.object_store.host %>:<%= config.object_store.port %>'
+        path_style: true
+    <%- end -%>
+
+  ## Uploads (attachments, avatars, etc...)
+  uploads:
+    # The location where uploads objects are stored (default: public/).
+    # storage_path: public/
+    # base_dir: uploads/-/system
+    <%- unless config.object_store.consolidated_form? -%>
+    object_store:
+      enabled: <%= config.object_store? %>
+      remote_directory: uploads
+      direct_upload: true
+      connection:
+        provider: AWS
+        aws_access_key_id: minio
+        aws_secret_access_key: kdk-minio
+        region: kdk
+        endpoint: 'http://<%= config.object_store.host %>:<%= config.object_store.port %>'
+        path_style: true
+    <%- end -%>
+
+  ## Packages (maven repository, npm registry, etc...)
+  packages:
+    enabled: true
+    dpkg_deb_path: <%= config.packages.__dpkg_deb_path %>
+    <%- unless config.object_store.consolidated_form? -%>
+    object_store:
+      enabled: <%= config.object_store? %>
+      remote_directory: packages
+      direct_upload: true
+      connection:
+        provider: AWS
+        aws_access_key_id: minio
+        aws_secret_access_key: kdk-minio
+        region: kdk
+        endpoint: 'http://<%= config.object_store.host %>:<%= config.object_store.port %>'
+        path_style: true
+    <%- end -%>
+
+  ## Dependency Proxy
+  dependency_proxy:
+    enabled: true
+    <%- unless config.object_store.consolidated_form? -%>
+    object_store:
+      enabled: <%= config.object_store? %>
+      remote_directory: dependency-proxy
+      direct_upload: true
+      connection:
+        provider: AWS
+        aws_access_key_id: minio
+        aws_secret_access_key: kdk-minio
+        region: kdk
+        endpoint: 'http://<%= config.object_store.host %>:<%= config.object_store.port %>'
+        path_style: true
+    <%- end -%>
+
+  ## Terraform state
+  terraform_state:
+    enabled: true
+   <%- unless config.object_store.consolidated_form? -%>
+    object_store:
+      enabled: <%= config.object_store? %>
+      remote_directory: terraform
+      connection:
+        provider: AWS
+        aws_access_key_id: minio
+        aws_secret_access_key: kdk-minio
+        region: kdk
+        endpoint: 'http://<%= config.object_store.host %>:<%= config.object_store.port %>'
+        path_style: true
+    <%- end -%>
+
+  ## CI Secure Files
+  ci_secure_files:
+    enabled: true
+    <%- unless config.object_store.consolidated_form? -%>
+    object_store:
+      enabled: <%= config.object_store? %>
+      remote_directory: ci-secure-files
+      connection:
+        provider: AWS
+        aws_access_key_id: minio
+        aws_secret_access_key: kdk-minio
+        region: kdk
+        endpoint: 'http://<%= config.object_store.host %>:<%= config.object_store.port %>'
+        path_style: true
+    <%- end -%>
+
+  ## KhulnaSoft Pages
+  pages:
+    enabled: true
+    access_control: <%= config.khulnasoft_pages.access_control? %>
+    host: <%= config.khulnasoft_pages.host %>
+    port: <%= config.khulnasoft_pages.port %>
+    https: false # Set to true if you serve the pages with HTTPS
+    artifacts_server: true
+    <%- if config.khulnasoft_pages.enable_custom_domains? -%>
+    external_http: true # enable custom domains
+    external_https: true # enable TLS for custom domains
+    <%- end -%>
+    admin:
+      address: unix:<%= kdk_root %>/gitlab/tmp/sockets/private/pages-admin.socket # TCP connections are supported too (e.g. tcp://host:port)
+    secret_file: <%= config.khulnasoft_pages.secret_file %>
+    <%- unless config.object_store.consolidated_form? -%>
+    object_store:
+      enabled: <%= config.object_store? %>
+      remote_directory: pages # The bucket name
+      connection:
+        provider: AWS
+        aws_access_key_id: minio
+        aws_secret_access_key: kdk-minio
+        region: kdk
+        endpoint: 'http://<%= config.object_store.host %>:<%= config.object_store.port %>'
+        path_style: true
+     <%- end -%>
+
+  ## Mattermost
+  ## For enabling Add to Mattermost button
+  mattermost:
+    enabled: false
+    host: 'https://mattermost.example.com'
+
+  ## Jira connect
+  ## To switch to a Jira connect development environment
+  jira_connect:
+    # atlassian_js_url: 'http://localhost:9292/atlassian.js'
+    # enable_public_keys_storage: true
+    # enforce_jira_base_url_https: false
+    # additional_iframe_ancestors: ['localhost:*']
+
+  ## Gravatar
+  ## If using gravatar.com, there's nothing to change here. For Libravatar
+  ## you'll need to provide the custom URLs. For more information,
+  ## see: https://docs.gitlab.com/ee/customization/libravatar.html
+  gravatar:
+    # Gravatar/Libravatar URLs: possible placeholders: %{hash} %{size} %{email} %{username}
+    # plain_url: "http://..."     # default: https://www.gravatar.com/avatar/%{hash}?s=%{size}&d=identicon
+    # ssl_url:   "https://..."    # default: https://secure.gravatar.com/avatar/%{hash}?s=%{size}&d=identicon
+
+  ## Sidekiq
+  sidekiq:
+    log_format: json # (default is also supported)
+    routing_rules: <%= config.gitlab.rails_background_jobs.sidekiq_routing_rules.to_json %>
+
+  ## Auxiliary jobs
+  # Periodically executed jobs, to self-heal KhulnaSoft, do external synchronizations, etc.
+  # Please read here for more information: https://github.com/ondrejbartas/sidekiq-cron#adding-cron-job
+  cron_jobs:
+    # Flag stuck CI jobs as failed
+    stuck_ci_jobs_worker:
+      cron: "0 * * * *"
+    # Execute scheduled triggers
+    pipeline_schedule_worker:
+      cron: "19 * * * *"
+    # Remove expired build artifacts
+    expire_build_artifacts_worker:
+      cron: "50 * * * *"
+    # Periodically run 'git fsck' on all repositories. If started more than
+    # once per hour you will have concurrent 'git fsck' jobs.
+    repository_check_worker:
+      cron: "20 * * * *"
+    # Archive live traces which have not been archived yet
+    ci_archive_traces_cron_worker:
+      cron: "17 * * * *"
+    # Send admin emails once a week
+    admin_email_worker:
+      cron: "0 0 * * 0"
+
+    # Remove outdated repository archives
+    repository_archive_cache_worker:
+      cron: "0 * * * *"
+
+    # Verify custom KhulnaSoft Pages domains
+    pages_domain_verification_cron_worker:
+      cron: "*/15 * * * *"
+
+    # Periodically migrate diffs from the database to external storage
+    schedule_migrate_external_diffs_worker:
+      cron: "15 * * * *"
+
+  registry:
+    enabled: <%= config.registry? %>
+    host: <%= config.registry.host %>
+    port: <%= config.registry.port %>
+    api_url: http://<%= config.registry.api_host %>:<%= config.registry.port %>
+    key: <%= kdk_root %>/localhost.key
+    path: <%= kdk_root %>/registry/storage/
+    issuer: gitlab-issuer
+    notification_secret: notifications_secret # Notification secret, use the same secret you use in registry/config.yml
+
+  ## Error Reporting and Logging with Sentry
+  sentry:
+    # enabled: false
+    # dsn: https://<key>@sentry.io/<project>
+    # clientside_dsn: https://<key>@sentry.io/<project>
+    # environment: 'production' # e.g. development, staging, production
+
+  ## Geo
+  # NOTE: These settings will only take effect if Geo is enabled
+  geo:
+    # This is an optional identifier which Geo nodes can use to identify themselves.
+    # For example, if external_url is the same for two secondaries, you must specify
+    # a unique Geo node name for those secondaries.
+    #
+    # If it is blank, it defaults to external_url.
+    node_name: <%= config.geo.node_name %>
+
+    registry_replication:
+      enabled: <%= config.geo.registry_replication? %>
+      primary_api_url: <%= config.geo.registry_replication.primary_api_url %> # internal address to the primary registry, will be used by KhulnaSoft to directly communicate with primary registry API
+
+  ## Feature Flag https://docs.gitlab.com/ee/user/project/operations/feature_flags.html
+  feature_flags:
+    unleash:
+      # enabled: false
+      # url: https://gitlab.com/api/v4/feature_flags/unleash/<project_id>
+      # app_name: gitlab.com # Environment name of your KhulnaSoft instance
+      # instance_id: INSTANCE_ID
+
+  #
+  # 2. KhulnaSoft CI settings
+  # ==========================
+
+  khulnasoft_ci:
+    # Default project notifications settings:
+    #
+    # Send emails only on broken builds (default: true)
+    # all_broken_builds: true
+    #
+    # Add pusher to recipients list (default: false)
+    # add_pusher: true
+
+    # The location where build traces are stored (default: builds/). Relative paths are relative to Rails.root
+    # builds_path: builds/
+
+  #
+  # 3. Auth settings
+  # ==========================
+
+  ## LDAP settings
+  # You can test connections and inspect a sample of the LDAP users with login
+  # access by running:
+  #   bundle exec rake gitlab:ldap:check RAILS_ENV=production
+  ldap:
+    enabled: <%= config.openldap.enabled? %>
+    servers:
+      ##########################################################################
+      #
+      # Since KhulnaSoft 7.4, LDAP servers get ID's (below the ID is 'main'). KhulnaSoft
+      # Enterprise Edition now supports connecting to multiple LDAP servers.
+      #
+      # If you are updating from the old (pre-7.4) syntax, you MUST give your
+      # old server the ID 'main'.
+      #
+      ##########################################################################
+      main: # 'main' is the KhulnaSoft 'provider ID' of this LDAP server
+        ## label
+        #
+        # A human-friendly name for your LDAP server. It is OK to change the label later,
+        # for instance if you find out it is too large to fit on the web page.
+        #
+        # Example: 'Paris' or 'Acme, Ltd.'
+        label: 'LDAP'
+
+        # Example: 'ldap.mydomain.com'
+        host: <%= config.openldap.main.host %>
+        # This port is an example, it is sometimes different but it is always an integer and not a string
+        port: 3890
+        uid: 'uid'
+
+        # Examples: 'america\\momo' or 'CN=Khulnasoft Git,CN=Users,DC=mydomain,DC=com'
+        # bind_dn: '_the_full_dn_of_the_user_you_will_bind_with'
+        # password: '_the_password_of_the_bind_user'
+
+        # Encryption method. The "method" key is deprecated in favor of
+        # "encryption".
+        #
+        #   Examples: "start_tls" or "simple_tls" or "plain"
+        #
+        #   Deprecated values: "tls" was replaced with "start_tls" and "ssl" was
+        #   replaced with "simple_tls".
+        #
+        encryption: 'plain'
+
+        # Enables SSL certificate verification if encryption method is
+        # "start_tls" or "simple_tls". Defaults to true.
+        verify_certificates: true
+
+        # OpenSSL::SSL::SSLContext options.
+        tls_options:
+          # Specifies the path to a file containing a PEM-format CA certificate,
+          # e.g. if you need to use an internal CA.
+          #
+          #   Example: '/etc/ca.pem'
+          #
+          ca_file: ''
+
+          # Specifies the SSL version for OpenSSL to use, if the OpenSSL default
+          # is not appropriate.
+          #
+          #   Example: 'TLSv1_1'
+          #
+          ssl_version: ''
+
+          # Specific SSL ciphers to use in communication with LDAP servers.
+          #
+          # Example: 'ALL:!EXPORT:!LOW:!aNULL:!eNULL:!SSLv2'
+          ciphers: ''
+
+          # Client certificate
+          #
+          # Example:
+          #   cert: |
+          #     -----BEGIN CERTIFICATE-----
+          #     MIIDbDCCAlSgAwIBAgIGAWkJxLmKMA0GCSqGSIb3DQEBCwUAMHcxFDASBgNVBAoTC0dvb2dsZSBJ
+          #     bmMuMRYwFAYDVQQHEw1Nb3VudGFpbiBWaWV3MRQwEgYDVQQDEwtMREFQIENsaWVudDEPMA0GA1UE
+          #     CxMGR1N1aXRlMQswCQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTAeFw0xOTAyMjAwNzE4
+          #     rntnF4d+0dd7zP3jrWkbdtoqjLDT/5D7NYRmVCD5vizV98FJ5//PIHbD1gL3a9b2MPAc6k7NV8tl
+          #     ...
+          #     4SbuJPAiJxC1LQ0t39dR6oMCAMab3hXQqhL56LrR6cRBp6Mtlphv7alu9xb/x51y2x+g2zWtsf80
+          #     Jrv/vKMsIh/sAyuogb7hqMtp55ecnKxceg==
+          #     -----END CERTIFICATE -----
+          cert: ''
+
+          # Client private key
+          #   key: |
+          #     -----BEGIN PRIVATE KEY-----
+          #     MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC3DmJtLRmJGY4xU1QtI3yjvxO6
+          #     bNuyE4z1NF6Xn7VSbcAaQtavWQ6GZi5uukMo+W5DHVtEkgDwh92ySZMuJdJogFbNvJvHAayheCdN
+          #     7mCQ2UUT9jGXIbmksUn9QMeJVXTZjgJWJzPXToeUdinx9G7+lpVa62UATEd1gaI3oyL72WmpDy/C
+          #     rntnF4d+0dd7zP3jrWkbdtoqjLDT/5D7NYRmVCD5vizV98FJ5//PIHbD1gL3a9b2MPAc6k7NV8tl
+          #     ...
+          #     +9IhSYX+XIg7BZOVDeYqlPfxRvQh8vy3qjt/KUihmEPioAjLaGiihs1Fk5ctLk9A2hIUyP+sEQv9
+          #     l6RG+a/mW+0rCWn8JAd464Ps9hE=
+          #     -----END PRIVATE KEY-----
+          key: ''
+
+        # Set a timeout, in seconds, for LDAP queries. This helps avoid blocking
+        # a request if the LDAP server becomes unresponsive.
+        # A value of 0 means there is no timeout.
+        timeout: 10
+
+        # This setting specifies if LDAP server is Active Directory LDAP server.
+        # For non AD servers it skips the AD specific queries.
+        # If your LDAP server is not AD, set this to false.
+        active_directory: false
+
+        # If allow_username_or_email_login is enabled, KhulnaSoft will ignore everything
+        # after the first '@' in the LDAP username submitted by the user on login.
+        #
+        # Example:
+        # - the user enters 'jane.doe@example.com' and 'p@ssw0rd' as LDAP credentials;
+        # - KhulnaSoft queries the LDAP server with 'jane.doe' and 'p@ssw0rd'.
+        #
+        # If you are using "uid: 'userPrincipalName'" on ActiveDirectory you need to
+        # disable this setting, because the userPrincipalName contains an '@'.
+        allow_username_or_email_login: false
+
+        # To maintain tight control over the number of active users on your KhulnaSoft installation,
+        # enable this setting to keep new users blocked until they have been cleared by the admin
+        # (default: false).
+        block_auto_created_users: false
+
+        # Base where we can search for users
+        #
+        #   Ex. 'ou=People,dc=gitlab,dc=example' or 'DC=mydomain,DC=com'
+        #
+        base: 'dc=example,dc=com'
+        group_base: 'ou=groups,dc=example,dc=com'
+
+        # Filter LDAP users
+        #
+        #   Format: RFC 4515 https://tools.ietf.org/search/rfc4515
+        #   Ex. (employeeType=developer)
+        #
+        #   Note: KhulnaSoft does not support omniauth-ldap's custom filter syntax.
+        #
+        #   Example for getting only specific users:
+        #   '(&(objectclass=user)(|(samaccountname=momo)(samaccountname=toto)))'
+        #
+        user_filter: ''
+
+        # LDAP attributes that KhulnaSoft will use to create an account for the LDAP user.
+        # The specified attribute can either be the attribute name as a string (e.g. 'mail'),
+        # or an array of attribute names to try in order (e.g. ['mail', 'email']).
+        # Note that the user's LDAP login will always be the attribute specified as `uid` above.
+        attributes:
+          # The username will be used in paths for the user's own projects
+          # (like `gitlab.example.com/username/project`) and when mentioning
+          # them in issues, merge request and comments (like `@username`).
+          # If the attribute specified for `username` contains an email address,
+          # the KhulnaSoft username will be the part of the email address before the '@'.
+          username: ['uid', 'userid', 'sAMAccountName']
+          email:    ['mail', 'email', 'userPrincipalName']
+
+          # If no full name could be found at the attribute specified for `name`,
+          # the full name is determined using the attributes specified for
+          # `first_name` and `last_name`.
+          name:       'cn'
+          first_name: 'givenName'
+          last_name:  'sn'
+
+        # If lowercase_usernames is enabled, KhulnaSoft will lower case the username.
+        lowercase_usernames: false
+
+      alt:
+        label: LDAP-alt
+        host: <%= config.openldap.alt.host %>
+        port: 3890
+        uid: 'uid'
+        encryption: 'plain' # "tls" or "ssl" or "plain"
+        base: 'dc=example-alt,dc=com'
+        user_filter: ''
+        group_base: 'ou=groups,dc=example-alt,dc=com'
+        admin_group: ''
+
+  ## OmniAuth settings
+  omniauth:
+    # Allow login via Google, GitHub, etc. using OmniAuth providers
+    # enabled: true
+
+    # Uncomment this to automatically sign in with a specific omniauth provider's without
+    # showing KhulnaSoft's sign-in page (default: show the KhulnaSoft sign-in page)
+    # auto_sign_in_with_provider: saml
+
+    # Sync user's profile from the specified Omniauth providers every time the user logs in (default: empty).
+    # Define the allowed providers using an array, e.g. ["saml", "google_oauth2"],
+    # or as true/false to allow all providers or none.
+    # When authenticating using LDAP, the user's email is always synced.
+    # sync_profile_from_provider: []
+
+    # Select which info to sync from the providers above. (default: email).
+    # Define the synced profile info using an array. Available options are "name", "email" and "location"
+    # e.g. ["name", "email", "location"] or as true to sync all available.
+    # This consequently will make the selected attributes read-only.
+    # sync_profile_attributes: true
+
+    # CAUTION!
+    # This allows users to login without having a user account first. Define the allowed providers
+    # using an array, e.g. ["saml", "google_oauth2"], or as true/false to allow all providers or none.
+    # User accounts will be created automatically when authentication was successful.
+    allow_single_sign_on: ["saml"]
+
+    # Locks down those users until they have been cleared by the admin (default: true).
+    block_auto_created_users: true
+    # Look up new users in LDAP servers. If a match is found (same uid), automatically
+    # link the omniauth identity with the LDAP account. (default: false)
+    auto_link_ldap_user: false
+
+    # Allow users with existing accounts to login and auto link their account via SAML
+    # login, without having to do a manual login first and manually add SAML
+    # (default: false)
+    auto_link_saml_user: false
+
+    # Set different Omniauth providers as external so that all users creating accounts
+    # via these providers will not be able to have access to internal projects. You
+    # will need to use the full name of the provider, like `google_oauth2` for Google.
+    # Refer to the examples below for the full names of the supported providers.
+    # (default: [])
+    external_providers: []
+
+    ## Auth providers
+    # Uncomment the following lines and fill in the data of the auth provider you want to use
+    # If your favorite auth provider is not listed you can use others:
+    # see https://github.com/gitlabhq/gitlab-public-wiki/wiki/Custom-omniauth-provider-configurations
+    # The 'app_id' and 'app_secret' parameters are always passed as the first two
+    # arguments, followed by optional 'args' which can be either a hash or an array.
+    # Documentation for this is available at http://doc.gitlab.com/ce/integration/omniauth.html
+    providers:
+      # - { name: 'alicloud',
+      #     app_id: 'YOUR_APP_ID',
+      #     app_secret: 'YOUR_APP_SECRET' }
+      # - { name: 'github',
+      #     app_id: 'YOUR_APP_ID',
+      #     app_secret: 'YOUR_APP_SECRET',
+      #     url: "https://github.com/",
+      #     verify_ssl: true,
+      #     args: { scope: 'user:email' } }
+      # - { name: 'bitbucket',
+      #     app_id: 'YOUR_APP_ID',
+      #     app_secret: 'YOUR_APP_SECRET' }
+      # - { name: 'khulnasoft',
+      #     app_id: 'YOUR_APP_ID',
+      #     app_secret: 'YOUR_APP_SECRET',
+      #     args: { scope: 'api' } }
+      # - { name: 'google_oauth2',
+      #     app_id: 'YOUR_APP_ID',
+      #     app_secret: 'YOUR_APP_SECRET',
+      #     args: { access_type: 'offline', approval_prompt: '' } }
+      # - { name: 'jwt',
+      #     args: {
+      #       secret: 'YOUR_APP_SECRET',
+      #       algorithm: 'HS256', # Supported algorithms: 'RS256', 'RS384', 'RS512', 'ES256', 'ES384', 'ES512', 'HS256', 'HS384', 'HS512'
+      #       uid_claim: 'email',
+      #       required_claims: ['name', 'email'],
+      #       info_map: { name: 'name', email: 'email' },
+      #       auth_url: 'https://example.com/',
+      #       valid_within: 3600 # 1 hour
+      #     }
+      #   }
+      # - { name: 'saml',
+      #     label: 'Our SAML Provider',
+      #     groups_attribute: 'Groups',
+      #     external_groups: ['Contractors', 'Freelancers'],
+      #     args: {
+      #             assertion_consumer_service_url: 'https://gitlab.example.com/users/auth/saml/callback',
+      #             idp_cert_fingerprint: '43:51:43:a1:b5:fc:8b:b7:0a:3a:a9:b1:0f:66:73:a8',
+      #             idp_sso_target_url: 'https://login.example.com/idp',
+      #             issuer: 'https://gitlab.example.com',
+      #             name_identifier_format: 'urn:oasis:names:tc:SAML:2.0:nameid-format:transient'
+      #           } }
+      #
+      # - { name: 'group_saml' }
+      #
+      # - { name: 'crowd',
+      #     args: {
+      #       crowd_server_url: 'CROWD SERVER URL',
+      #       application_name: 'YOUR_APP_NAME',
+      #       application_password: 'YOUR_APP_PASSWORD' } }
+      #
+      # - { name: 'auth0',
+      #     args: {
+      #       client_id: 'YOUR_AUTH0_CLIENT_ID',
+      #       client_secret: 'YOUR_AUTH0_CLIENT_SECRET',
+      #       domain: 'YOUR_AUTH0_DOMAIN',
+      #       scope: 'openid profile email' } }
+
+  # Shared file storage settings
+  shared:
+    # path: /mnt/gitlab # Default: shared
+
+  # Gitaly settings
+  gitaly:
+    # Default Gitaly authentication token. Can be overridden per storage. Can
+    # be left blank when Gitaly is running locally on a Unix socket, which
+    # is the normal way to deploy Gitaly.
+    token:
+
+  #
+  # 4. Advanced settings
+  # ==========================
+
+  ## Repositories settings
+  repositories:
+    # Paths where repositories can be stored. Give the canonicalized absolute pathname.
+    # IMPORTANT: None of the path components may be symlink, because
+    # gitlab-shell invokes Dir.pwd inside the repository path and that results
+    # real path not the symlink.
+    storages: # You must have at least a `default` storage path.
+      default:
+        path: <%= config.repositories_root %>
+        gitaly_address: unix:<%= config.praefect? ? config.praefect.address : config.gitaly.address %>
+    <%- config.gitaly.__storages.select { |s| s.name != 'default' }.each do |storage| -%>
+      <%= storage.name %>:
+        path: <%= storage.path %>
+        gitaly_address: unix:<%= config.gitaly.address %>
+    <%- end -%>
+
+  ## Backup settings
+  backup:
+    path: "tmp/backups"   # Relative paths are relative to Rails.root (default: tmp/backups/)
+    gitaly_backup_path: <%= config.gitaly.__build_bin_backup_path %> # Path of the gitaly-backup binary (default: searches $PATH)
+    <%- if config.object_store.enabled? && !config.object_store.backup_remote_directory.empty? -%>
+    upload:
+      connection: <%= config.object_store.connection.to_json %>
+      remote_directory: <%= config.object_store.backup_remote_directory %>
+    <%- end -%>
+    # archive_permissions: 0640 # Permissions for the resulting backup.tar file (default: 0600)
+    # keep_time: 604800   # default: 0 (forever) (in seconds)
+    # pg_schema: public     # default: nil, it means that all schemas will be backed up
+    # upload:
+    #   # Fog storage connection settings, see http://fog.io/storage/ .
+    #   connection:
+    #     provider: AWS
+    #     region: eu-west-1
+    #     aws_access_key_id: AKIAKIAKI
+    #     aws_secret_access_key: 'secret123'
+    #   # The remote 'directory' to store your backups. For S3, this would be the bucket name.
+    #   remote_directory: 'my.s3.bucket'
+    #   # Use multipart uploads when file size reaches 100MB, see
+    #   #  http://docs.aws.amazon.com/AmazonS3/latest/dev/uploadobjusingmpu.html
+    #   multipart_chunk_size: 104857600
+    #   # Turns on AWS Server-Side Encryption with Amazon S3-Managed Keys for backups, this is optional
+    #   # encryption: 'AES256'
+    #   # Turns on AWS Server-Side Encryption with Amazon Customer-Provided Encryption Keys for backups, this is optional
+    #   #   This should be set to the 256-bit, base64-encoded encryption key for Amazon S3 to use to encrypt or decrypt your data.
+    #   #   'encryption' must also be set in order for this to have any effect.
+    #   # encryption_key: '<base64 key>'
+    #   # Specifies Amazon S3 storage class to use for backups, this is optional
+    #   # storage_class: 'STANDARD'
+
+  ## KhulnaSoft Shell settings
+  khulnasoft_shell:
+    path: <%= config.khulnasoft_shell.dir %>
+    authorized_keys_file: <%= kdk_root.join(".ssh", "authorized_keys") %>
+
+    # Git over HTTP
+    upload_pack: true
+    receive_pack: true
+
+    ssh_port: <%= config.sshd.listen_port %>
+    ssh_host: <%= config.sshd.listen_address %>
+
+  workhorse:
+    # File that contains the secret key for verifying access for khulnasoft-workhorse.
+    # Default is '.khulnasoft_workhorse_secret' relative to Rails.root (i.e. root of the KhulnaSoft app).
+    # secret_file: /home/git/gitlab/.khulnasoft_workhorse_secret
+
+  <%- if config.gitlab.topology_service.enabled -%>
+  topology_service:
+    enabled: true
+    address: <%= config.gitlab.topology_service.address %>
+    ca_file: <%= config.gitlab.topology_service.ca_file %>
+    private_key_file: <%= config.gitlab.topology_service.private_key_file %>
+    certificate_file: <%= config.gitlab.topology_service.certificate_file %>
+
+  cell:
+    enabled: true
+    id: <%= config.gitlab.cell.id %>
+    database:
+      skip_sequence_alteration: <%= config.gitlab.cell.database.skip_sequence_alteration %>
+  <%- end -%>
+
+  khulnasoft_kas:
+    enabled: <%= config.khulnasoft_k8s_agent.enabled? %>
+    internal_url: <%= config.khulnasoft_k8s_agent.__internal_api_url %>
+    external_url: <%= config.khulnasoft_k8s_agent.__url_for_agentk %>
+    external_k8s_proxy_url: <%= config.khulnasoft_k8s_agent.__k8s_api_url %>
+    secret_file: <%= config.khulnasoft_k8s_agent.__secret_file %>
+
+  ## Git settings
+  # CAUTION!
+  # Use the default values unless you really know what you are doing
+  git:
+    bin_path: <%= config.git.bin %>
+
+  ## Webpack settings
+  webpack:
+    dev_server:
+      enabled: <%= config.webpack? %>
+      host: <%= config.webpack.host %>
+      port: <%= config.webpack.port %>
+
+  ## Monitoring
+  # Built in monitoring settings
+  monitoring:
+    # Time between sampling of Puma metrics, in seconds
+    # puma_sampler_interval: 5
+    # IP whitelist to access monitoring endpoints
+    ip_whitelist:
+      - 127.0.0.0/8
+      - 10.0.0.0/8
+      - 172.16.0.0/12
+      - 192.168.0.0/16
+
+    # Sidekiq exporter is a webserver built in to Sidekiq to expose Prometheus metrics
+    sidekiq_exporter:
+      enabled: <%= config.gitlab.rails_background_jobs.sidekiq_exporter_enabled? %>
+      address: <%= config.hostname %>
+      port: <%= config.gitlab.rails_background_jobs.sidekiq_exporter_port %>
+
+    # Sidekiq health checks is a webserver built in to Sidekiq to serve health checks for the workers
+    sidekiq_health_checks:
+      enabled: <%= config.gitlab.rails_background_jobs.sidekiq_health_check_enabled? %>
+      address: <%= config.hostname %>
+      port: <%= config.gitlab.rails_background_jobs.sidekiq_health_check_port %>
+  prometheus:
+    enabled: <%= config.prometheus.enabled? %>
+    server_address: '<%= config.hostname %>:<%= config.prometheus.port %>'
+  snowplow_micro:
+    enabled: <%= config.snowplow_micro.enabled? %>
+    address: '<%= config.hostname %>:<%= config.snowplow_micro.port %>'
+  #
+  # 5. Extra customization
+  # ==========================
+
+  extra:
+    ## Google analytics. Uncomment if you want it
+    # google_analytics_id: '_your_tracking_id'
+
+    ## Piwik analytics.
+    # piwik_url: '_your_piwik_url'
+    # piwik_site_id: '_your_piwik_site_id'
+
+  rack_attack:
+    git_basic_auth:
+      # Rack Attack IP banning enabled
+      # enabled: true
+      #
+      # Whitelist requests from 127.0.0.1 for web proxies (NGINX/Apache) with incorrect headers
+      # ip_whitelist: ["127.0.0.1"]
+      #
+      # Limit the number of Git HTTP authentication attempts per IP
+      # maxretry: 10
+      #
+      # Reset the auth attempt counter per IP after 60 seconds
+      # findtime: 60
+      #
+      # Ban an IP for one hour (3600s) after too many auth attempts
+      # bantime: 3600
+
+development:
+  <<: *base
+  omniauth:
+    providers:
+    <%- if config.omniauth.gitlab.enabled -%>
+    - { name: 'khulnasoft',
+        app_id: '<%= config.omniauth.gitlab.app_id %>',
+        app_secret: '<%= config.omniauth.gitlab.app_secret %>',
+        args: { scope: '<%= config.omniauth.gitlab.scope %>' } }
+    <%- end -%>
+    <%- if config.omniauth.google_oauth2.enabled -%>
+    - { name: 'google_oauth2',
+        app_id: '<%= config.omniauth.google_oauth2.client_id %>',
+        app_secret: '<%= config.omniauth.google_oauth2.client_secret %>',
+        args: { access_type: 'offline', approval_prompt: '' } }
+    <%- end -%>
+    <%- if config.omniauth.github.enabled -%>
+    - { name: 'github',
+        app_id: '<%= config.omniauth.github.client_id %>',
+        app_secret: '<%= config.omniauth.github.client_secret %>',
+        args: { scope: "user:email" } }
+    <%- end -%>
+    <%- if config.omniauth.group_saml.enabled -%>
+    - { name: 'group_saml' }
+    <%- end -%>
+    <%- if config.omniauth.openid_connect.enabled -%>
+    - { name: 'openid_connect',
+        label: 'OpenID Connect',
+        args: <%= config.omniauth.openid_connect.args.to_json %> }
+    <%- end -%>
+
+  <%- if config.https? && config.smartcard? -%>
+  smartcard:
+    # Allow smartcard authentication
+    enabled: true
+
+    # Path to a file containing a CA certificate
+    ca_file: <%= kdk_root.join(config.smartcard.ssl.client_cert_ca) %>
+
+    # Host and port where the client side certificate is requested by the
+    # webserver (NGINX/Apache)
+    client_certificate_required_host: <%= config.smartcard.hostname %>
+    client_certificate_required_port: <%= config.smartcard.port %>
+
+    # enable checking usernames / emails in cert SAN extensions
+    san_extensions: <%= config.smartcard.san_extensions %>
+  <%- end -%>
+
+  elasticsearch:
+    indexer_path: <%= kdk_root %>/gitlab-elasticsearch-indexer/bin/gitlab-elasticsearch-indexer
+
+  <%- if config.duo_workflow.enabled? -%>
+  duo_workflow:
+    debug: <%= config.duo_workflow.debug %>
+    service_url: "<%= config.gitlab.rails.hostname %>:<%= config.duo_workflow.port %>"
+    secure: false
+    executor_binary_url: "<%= config.duo_workflow.executor_binary_url %>"
+    executor_version: "<%= File.read(File.join(kdk_root, 'khulnasoft', 'DUO_WORKFLOW_EXECUTOR_VERSION')).chomp %>"
+
+  <%- end -%>
+
+test:
+  <<: *base
+  object_store:
+    enabled: false
+  gravatar:
+    enabled: true
+  external_diffs:
+    enabled: false
+    # Diffs may be `always` external (the default), or they can be made external
+    # after they have become `outdated` (i.e., the MR is closed or a new version
+    # has been pushed).
+    # when: always
+    # The location where external diffs are stored (default: shared/external-diffs).
+    # storage_path: shared/external-diffs
+    <%- unless config.object_store.consolidated_form? -%>
+    object_store:
+      enabled: false
+      remote_directory: external-diffs # The bucket name
+      connection:
+        provider: AWS # Only AWS supported at the moment
+        aws_access_key_id: AWS_ACCESS_KEY_ID
+        aws_secret_access_key: AWS_SECRET_ACCESS_KEY
+        region: us-east-1
+    <%- end -%>
+  lfs:
+    enabled: true
+    # The location where LFS objects are stored (default: shared/lfs-objects).
+    # storage_path: shared/lfs-objects
+    <%- unless config.object_store.consolidated_form? -%>
+    object_store:
+      enabled: false
+      remote_directory: lfs-objects # The bucket name
+      connection:
+        provider: AWS # Only AWS supported at the moment
+        aws_access_key_id: AWS_ACCESS_KEY_ID
+        aws_secret_access_key: AWS_SECRET_ACCESS_KEY
+        region: us-east-1
+    <%- end -%>
+  artifacts:
+    path: tmp/tests/artifacts
+    enabled: true
+    # The location where build artifacts are stored (default: shared/artifacts).
+    # path: shared/artifacts
+    <%- unless config.object_store.consolidated_form? -%>
+    object_store:
+      enabled: false
+      remote_directory: artifacts # The bucket name
+      background_upload: false
+      connection:
+        provider: AWS # Only AWS supported at the moment
+        aws_access_key_id: AWS_ACCESS_KEY_ID
+        aws_secret_access_key: AWS_SECRET_ACCESS_KEY
+        region: us-east-1
+    <%- end -%>
+  uploads:
+    storage_path: tmp/tests/public
+    <%- unless config.object_store.consolidated_form? -%>
+    object_store:
+      enabled: false
+      connection:
+        provider: AWS # Only AWS supported at the moment
+        aws_access_key_id: AWS_ACCESS_KEY_ID
+        aws_secret_access_key: AWS_SECRET_ACCESS_KEY
+        region: us-east-1
+    <%- end -%>
+  terraform_state:
+    enabled: true
+    storage_path: tmp/tests/terraform_state
+    <%- unless config.object_store.consolidated_form? -%>
+    object_store:
+      enabled: false
+      remote_directory: terraform
+      connection:
+        provider: AWS # Only AWS supported at the moment
+        aws_access_key_id: AWS_ACCESS_KEY_ID
+        aws_secret_access_key: AWS_SECRET_ACCESS_KEY
+        region: us-east-1
+    <%- end -%>
+  ci_secure_files:
+    enabled: true
+    storage_path: tmp/tests/ci_secure_files
+    <%- unless config.object_store.consolidated_form? -%>
+    object_store:
+      enabled: false
+      remote_directory: ci_secure_files
+      connection:
+        provider: AWS # Only AWS supported at the moment
+        aws_access_key_id: AWS_ACCESS_KEY_ID
+        aws_secret_access_key: AWS_SECRET_ACCESS_KEY
+        region: us-east-1
+    <%- end -%>
+  gitlab:
+    host: localhost
+    port: 80
+
+    content_security_policy:
+      directives:
+        connect_src: "'self' http://localhost:* ws://localhost:* wss://localhost:* ws://<%= config.gitlab.rails.hostname %>:* wss://<%= config.gitlab.rails.hostname %>:*"
+
+    # When you run tests we clone and set up gitlab-shell
+    # In order to set it up correctly you need to specify
+    # your system username you use to run KhulnaSoft
+    user: <%= config.username %>
+
+  webpack:
+    dev_server:
+      enabled: true
+      host: <%= config.webpack.host %>
+      port: <%= config.webpack.port %>
+
+  pages:
+    path: tmp/tests/pages
+    <%- unless config.object_store.consolidated_form? -%>
+    object_store:
+      enabled: false
+      remote_directory: pages
+      connection:
+        provider: AWS # Only AWS supported at the moment
+        aws_access_key_id: AWS_ACCESS_KEY_ID
+        aws_secret_access_key: AWS_SECRET_ACCESS_KEY
+        region: us-east-1
+    <%- end -%>
+  repositories:
+    storages:
+      default:
+        path: tmp/tests/repositories/
+        gitaly_address: unix:tmp/tests/gitaly/<%= config.praefect? ? 'praefect' : 'gitaly' %>.socket
+
+  gitaly:
+    token: secret
+  backup:
+    path: tmp/tests/backups
+    gitaly_backup_path: tmp/tests/gitaly/_build/bin/gitaly-backup
+  khulnasoft_shell:
+    path: tmp/tests/gitlab-shell/
+    authorized_keys_file: tmp/tests/authorized_keys
+  issues_tracker:
+    redmine:
+      title: "Redmine"
+      project_url: "http://redmine/projects/:issues_tracker_id"
+      issues_url: "http://redmine/:project_id/:issues_tracker_id/:id"
+      new_issue_url: "http://redmine/projects/:issues_tracker_id/issues/new"
+    jira:
+      title: "JIRA"
+      url: https://sample_company.atlassian.net
+      project_key: PROJECT
+
+  omniauth:
+    # enabled: true
+    allow_single_sign_on: true
+    external_providers: []
+
+    providers:
+      - { name: 'alicloud',
+          app_id: 'YOUR_APP_ID',
+          app_secret: 'YOUR_APP_SECRET' }
+      - { name: 'github',
+          app_id: 'YOUR_APP_ID',
+          app_secret: 'YOUR_APP_SECRET',
+          url: "https://github.com/",
+          verify_ssl: false,
+          args: { scope: 'user:email' } }
+      - { name: 'bitbucket',
+          app_id: 'YOUR_APP_ID',
+          app_secret: 'YOUR_APP_SECRET' }
+      - { name: 'khulnasoft',
+          app_id: 'YOUR_APP_ID',
+          app_secret: 'YOUR_APP_SECRET',
+          args: { scope: 'api' } }
+      - { name: 'google_oauth2',
+          app_id: 'YOUR_APP_ID',
+          app_secret: 'YOUR_APP_SECRET',
+          args: { access_type: 'offline', approval_prompt: '' } }
+      - { name: 'jwt',
+          app_secret: 'YOUR_APP_SECRET',
+          args: {
+                  algorithm: 'HS256',
+                  uid_claim: 'email',
+                  required_claims: ["name", "email"],
+                  info_map: { name: "name", email: "email" },
+                  auth_url: 'https://example.com/',
+                  valid_within: null,
+                }
+        }
+      - { name: 'auth0',
+          args: {
+            client_id: 'YOUR_AUTH0_CLIENT_ID',
+            client_secret: 'YOUR_AUTH0_CLIENT_SECRET',
+            domain: 'YOUR_AUTH0_DOMAIN',
+            scope: 'openid profile email' } }
+      - { name: 'salesforce',
+          app_id: 'YOUR_CLIENT_ID',
+          app_secret: 'YOUR_CLIENT_SECRET'
+        }
+      - { name: 'atlassian_oauth2',
+          app_id: 'YOUR_CLIENT_ID',
+          app_secret: 'YOUR_CLIENT_SECRET',
+          args: { scope: 'offline_access read:jira-user read:jira-work', prompt: 'consent' }
+      }
+  ldap:
+    enabled: false
+    servers:
+      main:
+        label: ldap
+        host: 127.0.0.1
+        port: 3890
+        uid: 'uid'
+        encryption: 'plain' # "start_tls" or "simple_tls" or "plain"
+        base: 'dc=example,dc=com'
+        user_filter: ''
+        group_base: 'ou=groups,dc=example,dc=com'
+        admin_group: ''
+
+staging:
+  <<: *base

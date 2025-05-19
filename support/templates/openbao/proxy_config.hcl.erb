@@ -1,0 +1,32 @@
+pid_file = "./proxy_pidfile"
+
+api_proxy {
+  use_auto_auth_token = "force"
+}
+
+vault {
+  address = "http://<%= config.hostname %>:<%= config.openbao.port %>"
+
+  retry {
+    num_retries = 5
+  }
+}
+
+listener "tcp" {
+  address = "<%= config.hostname %>:<%= config.openbao.vault_proxy.port %>"
+  tls_disable = true
+}
+
+auto_auth {
+  method {
+    type = "approle"
+
+    config = {
+      role_id_file_path = "openbao/roleid"
+      secret_id_file_path = "openbao/secretid"
+      secret_id_response_wrapping_path = "auth/approle/role/project_secret_engines_manager/secret-id"
+      remove_secret_id_file_after_reading = false
+    }
+  }
+}
+

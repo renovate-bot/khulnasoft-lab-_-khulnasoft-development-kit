@@ -1,0 +1,181 @@
+worker_processes  1;
+daemon off;
+pid tmp/nginx.pid;
+error_log stderr;
+
+events {
+  worker_connections  1024;
+}
+
+http {
+  include       mime.types;
+  default_type  application/octet-stream;
+
+  access_log logs/access.log;
+
+  <%- if config.nginx.sendfile? -%>
+  sendfile        on;
+  <%- end -%>
+  #tcp_nopush     on;
+
+  #keepalive_timeout  0;
+  keepalive_timeout  65;
+
+  #gzip  on;
+  proxy_temp_path proxy_temp;
+  client_body_temp_path client_body_temp;
+  uwsgi_temp_path uwsgi_temp;
+  fastcgi_temp_path fastcgi_temp;
+  scgi_temp_path scgi_temp;
+
+  client_max_body_size 0;
+
+  upstream khulnasoft-workhorse {
+    server <%= config.workhorse.__listen_address %> fail_timeout=0;
+  }
+
+<%- if config.khulnasoft_k8s_agent? -%>
+  upstream khulnasoft-k8s-agent {
+    <%- if config.khulnasoft_k8s_agent.agent_listen_network == 'unix' -%>
+    server unix:<%= config.khulnasoft_k8s_agent.agent_listen_address %> fail_timeout=0;
+    <%- else -%>
+    server <%= config.khulnasoft_k8s_agent.agent_listen_address %> fail_timeout=0;
+    <%- end -%>
+  }
+  upstream khulnasoft-k8s-agent-k8s-proxy {
+    <%- if config.khulnasoft_k8s_agent.k8s_api_listen_network == 'unix' -%>
+    server unix:<%= config.khulnasoft_k8s_agent.k8s_api_listen_address %> fail_timeout=0;
+    <%- else -%>
+    server <%= config.khulnasoft_k8s_agent.k8s_api_listen_address %> fail_timeout=0;
+    <%- end -%>
+  }
+
+  <%- if config.khulnasoft_k8s_agent.autoflow.enabled && config.khulnasoft_k8s_agent.autoflow.temporal.workflow_data_encryption.enabled -%>
+  upstream khulnasoft-k8s-agent-autoflow-temporal-codec-server {
+    <%- if config.khulnasoft_k8s_agent.autoflow.temporal.workflow_data_encryption.codec_server.listen.network == 'unix' -%>
+    server unix:<%= config.khulnasoft_k8s_agent.autoflow.temporal.workflow_data_encryption.codec_server.listen.address %> fail_timeout=0;
+    <%- else -%>
+    server <%= config.khulnasoft_k8s_agent.autoflow.temporal.workflow_data_encryption.codec_server.listen.address %> fail_timeout=0;
+    <%- end -%>
+  }
+  <%- end -%>
+<%- end -%>
+
+  map $http_upgrade $connection_upgrade {
+    default upgrade;
+    ''      close;
+  }
+
+  server {
+    listen <%= config.nginx.__listen_address %><%= ' ssl' if config.https? %>;
+    <%= 'http2 on;' if config.https? && config.nginx.http2? %>
+<%- if config.https? -%>
+
+    error_page 497 =307 https://<%= config.hostname %>:<%= config.port %>$request_uri;
+
+    ssl_certificate <%= kdk_root.join(config.nginx.ssl.certificate) %>;
+    ssl_certificate_key <%= kdk_root.join(config.nginx.ssl.key) %>;
+<%- end -%>
+
+    proxy_set_header    Host                $http_host;
+    proxy_set_header    X-Real-IP           $remote_addr;
+    proxy_set_header    X-Forwarded-For     $proxy_add_x_forwarded_for;
+    proxy_set_header    X-Forwarded-Proto   $scheme;
+    proxy_set_header    Upgrade             $http_upgrade;
+    proxy_set_header    Connection          $connection_upgrade;
+
+    proxy_http_version 1.1;
+    proxy_read_timeout 300;
+
+    location ~ (<%= config.nginx.__request_buffering_off_routes.join('|') %>) {
+    <%- if config.https? -%>
+      proxy_pass https://khulnasoft-workhorse;
+    <%- else -%>
+      proxy_pass http://khulnasoft-workhorse;
+    <%- end -%>
+      proxy_cache off;
+      proxy_request_buffering off;
+    }
+
+<%- if config.webpack? && config.webpack.live_reload? -%>
+    location /_hmr/ {
+      proxy_pass http://<%= config.webpack.host %>:<%= config.webpack.port %>/ws;
+    }
+<%- end -%>
+
+<%- if config.vite? && config.vite.hot_module_reloading? -%>
+    location /vite-dev/ {
+      proxy_pass http://<%= config.listen_address %>:<%= config.vite.port %>/vite-dev/;
+    }
+<%- end -%>
+
+    location / {
+    <%- if config.https? -%>
+      proxy_pass https://khulnasoft-workhorse;
+    <%- else -%>
+      proxy_pass http://khulnasoft-workhorse;
+    <%- end -%>
+    }
+<%- if config.khulnasoft_k8s_agent? -%>
+
+    location = <%= config.khulnasoft_k8s_agent.__agent_listen_url_path %> {
+      proxy_pass http://khulnasoft-k8s-agent;
+      proxy_intercept_errors off;
+    }
+
+    location <%= config.khulnasoft_k8s_agent.__k8s_api_listen_url_path %> {
+      proxy_pass http://khulnasoft-k8s-agent-k8s-proxy;
+      proxy_buffering off;
+      proxy_intercept_errors off;
+    }
+
+    <%- if config.khulnasoft_k8s_agent.autoflow.enabled && config.khulnasoft_k8s_agent.autoflow.temporal.workflow_data_encryption.enabled -%>
+    location <%= config.khulnasoft_k8s_agent.autoflow.temporal.workflow_data_encryption.codec_server.nginx_url_path %> {
+      proxy_pass http://khulnasoft-k8s-agent-autoflow-temporal-codec-server/;
+      proxy_intercept_errors off;
+    }
+    <%- end -%>
+
+<%- end -%>
+  }
+
+<%- if config.https? && config.smartcard? -%>
+  server {
+      listen <%= config.smartcard.hostname %>:<%= config.smartcard.port %> ssl;
+
+      # certificate for configuring SSL
+      ssl_certificate "<%= kdk_root.join(config.smartcard.ssl.certificate) %>";
+      ssl_certificate_key "<%= kdk_root.join(config.smartcard.ssl.key) %>";
+
+      ssl_verify_depth 2;
+      # CA certificate for client side certificate verification
+      # quoted: default on macOS includes "Application Support" dir in pathname
+      ssl_client_certificate "<%= kdk_root.join(config.smartcard.ssl.client_cert_ca) %>";
+      ssl_verify_client on;
+
+      location / {
+          proxy_set_header    Host                        $http_host;
+          proxy_set_header    X-Real-IP                   $remote_addr;
+          proxy_set_header    X-Forwarded-For             $proxy_add_x_forwarded_for;
+          proxy_set_header    X-Forwarded-Proto           $scheme;
+          proxy_set_header    Upgrade                     $http_upgrade;
+          proxy_set_header    Connection                  $connection_upgrade;
+
+          proxy_set_header    X-SSL-Client-Certificate    $ssl_client_escaped_cert;
+
+          proxy_read_timeout 300;
+
+          proxy_pass https://khulnasoft-workhorse;
+      }
+  }
+<%- end -%>
+
+<%- if config.https? && !config.khulnasoft_http_router? -%>
+
+  server {
+    listen <%= config.nginx.listen_address %>:<%= config.nginx.http.port %>;
+
+    return 301 https://<%= config.hostname %>:<%= config.port %>$request_uri;
+  }
+<%- end -%>
+}

@@ -1,0 +1,19 @@
+---
+name: khulnasoft_base.Offerings
+description: |
+  Tests the offering information in the tier badges that appear below topic titles.
+
+  For a list of all options, see
+  https://docs.gitlab.com/development/documentation/styleguide/availability_details/#available-options
+extends: substitution
+message: "The offerings are 'KhulnaSoft Self-Managed' and 'KhulnaSoft Dedicated', with that exact capitalization."
+link: https://docs.gitlab.com/development/documentation/styleguide/availability_details/#available-options
+vocab: false
+level: warning
+action:
+  name: replace
+ignorecase: false
+swap:
+  - 'KhulnaSoft [Ss]elf-managed': KhulnaSoft Self-Managed
+  - '(?<!KhulnaSoft )[Ss]elf-[Mm]anaged(?! runner)': KhulnaSoft Self-Managed
+  - KhulnaSoft dedicated: KhulnaSoft Dedicated

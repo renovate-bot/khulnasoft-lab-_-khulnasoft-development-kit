@@ -1,0 +1,221 @@
+#!/usr/bin/env bash
+
+# This is the KDK + Geo one line installation. For more information, please visit:
+# https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/main/doc/index.md#one-line-installation
+#
+# Wrap everything in a function to ensure a partially downloaded install script
+# is not executed. Inspired by https://install.sandstorm.io/
+#
+# Requires KHULNASOFT_LICENSE_KEY to be set, like:
+#
+#   export KHULNASOFT_LICENSE_KEY=$(cat ~/Documents/KhulnaSoft/Test.gitlab-license)
+#
+# Or:
+#
+#   export KHULNASOFT_LICENSE_KEY="pasted text"
+#
+# Valid arguments are:
+#
+# 1 = directory in which to clone into, default is kdk (KDK_PRIMARY_INSTALL_DIR)
+# 2 = directory in which to clone into, default is kdk2 (KDK_SECONDARY_INSTALL_DIR)
+# 3 = git SHA/branch to checkout once cloned, default is main (KDK_CLONE_BRANCH)
+#
+# Example usage with arguments:
+#
+#   curl "https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/raw/main/support/geo-install" | bash -s kdk-a kdk-b my-kdk-branch-name
+#
+_() {
+
+set -eo pipefail
+
+KDK_PRIMARY_INSTALL_DIR="${2-kdk}"
+KDK_SECONDARY_INSTALL_DIR="${3-kdk2}"
+KDK_CLONE_BRANCH="${4-main}"
+
+CURRENT_ASDF_DIR="${ASDF_DIR:-${HOME}/.asdf}"
+ASDF_SH_PATH="${CURRENT_ASDF_DIR}/asdf.sh"
+ASDF_FISH_PATH="${CURRENT_ASDF_DIR}/asdf.fish"
+ASDF_ELVISH_PATH="${CURRENT_ASDF_DIR}/asdf.elv"
+ASDF_NUSHELL_PATH="${CURRENT_ASDF_DIR}/asdf.nu"
+
+REQUIRED_COMMANDS=(git make)
+REQUIRED_ENV_VARS=(KHULNASOFT_LICENSE_KEY)
+
+error() {
+  echo "ERROR: ${1}" >&2
+  exit 1
+}
+
+ensure_required_commands_exist() {
+  for command in "${REQUIRED_COMMANDS[@]}"; do
+    if ! command -v "${command}" > /dev/null 2>&1; then
+     error "Please ensure ${command} is installed."
+    fi
+  done
+}
+
+ensure_required_env_vars_exist() {
+  for env_var in "${REQUIRED_ENV_VARS[@]}"; do
+    if [ -z "${!env_var}" ]; then
+     error "Please ensure environment variable ${env_var} is set."
+    fi
+  done
+}
+
+ensure_not_root() {
+  if [[ ${EUID} -eq 0 ]]; then
+    return 1
+  fi
+
+  return 0
+}
+
+clone_kdk_if_needed() {
+  if [[ -d ${KDK_PRIMARY_INSTALL_DIR} ]]; then
+    echo "INFO: A ${KDK_PRIMARY_INSTALL_DIR} directory already exists in the current working directory, resuming.."
+  else
+    git clone https://github.com/khulnasoft-lab/khulnasoft-development-kit.git "${KDK_PRIMARY_INSTALL_DIR}"
+  fi
+}
+
+clone_kdk2_if_needed() {
+  if [[ -d ${KDK_SECONDARY_INSTALL_DIR} ]]; then
+    echo "INFO: A ${KDK_SECONDARY_INSTALL_DIR} directory already exists in the current working directory, resuming.."
+  else
+    git clone "${KDK_PRIMARY_INSTALL_DIR}" "${KDK_SECONDARY_INSTALL_DIR}"
+  fi
+}
+
+ensure_kdk_clone_branch_checked_out() {
+  git -C "${PWD}/${KDK_PRIMARY_INSTALL_DIR}" fetch origin "${KDK_CLONE_BRANCH}"
+  git -C "${PWD}/${KDK_PRIMARY_INSTALL_DIR}" checkout "${KDK_CLONE_BRANCH}"
+}
+
+setup_tool_version_manager() {
+  local kdk_yml="${PWD}/kdk.yml"
+
+  echo "INFO: Setting up tool version manager: ${TOOL_VERSION_MANAGER}"
+
+  mkdir -p "$(dirname "${kdk_yml}")"
+
+  if [[ "${TOOL_VERSION_MANAGER}" == "mise" ]]; then
+    cat << EOF > "${kdk_yml}"
+---
+asdf:
+  opt_out: true
+mise:
+  enabled: true
+EOF
+  else
+    cat << EOF > "${kdk_yml}"
+---
+asdf:
+  opt_out: false
+EOF
+  fi
+
+  local full_path
+  full_path=$(readlink -f "${kdk_yml}")
+
+  echo "INFO: Tool version manager settings saved to ${full_path}:"
+  cat "${kdk_yml}"
+}
+
+bootstrap() {
+  make bootstrap
+}
+
+kdk_install() {
+  # shellcheck disable=SC1090
+
+  if [[ "${TOOL_VERSION_MANAGER}" == "asdf" ]]; then
+    source "${ASDF_SH_PATH}"
+  fi
+
+  kdk install
+}
+
+echo
+echo "INFO: This is the KDK + Geo one line installation. For more information, please visit:"
+echo "INFO: https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/main/doc/howto/geo.md#easy-installation"
+echo "INFO:"
+echo "INFO: The source for the installation script can be viewed at:"
+echo "INFO: https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/main/support/geo-install"
+echo
+
+if ! ensure_not_root; then
+  error "Running as root is not supported."
+fi
+
+ensure_required_commands_exist
+ensure_required_env_vars_exist
+
+# Collapsible section for geo-install CI job. See https://docs.gitlab.com/ee/ci/jobs/index.html#custom-collapsible-sections
+echo -e "\e[0Ksection_start:$(date +%s):set_up_primary_kdk\r\e[0KSet up primary KDK"
+clone_kdk_if_needed
+ensure_kdk_clone_branch_checked_out
+cd "${KDK_PRIMARY_INSTALL_DIR}" || error "Clone of KDK should have created ${KDK_PRIMARY_INSTALL_DIR} directory."
+setup_tool_version_manager
+bootstrap
+kdk_install
+cd gitlab || error "kdk install should have created gitlab directory."
+bin/rails runner 'License.create!(data: ENV["KHULNASOFT_LICENSE_KEY"])'
+
+echo
+if [[ ${TOOL_VERSION_MANAGER} == "asdf" ]]; then
+  echo "INFO: To make sure KDK commands are available in this shell and ensure you're"
+  echo "INFO: in the newly installed KDK directory, please run the command corresponding to your shell."
+  echo
+  echo "sh / bash / zsh:"
+  echo "source \"${ASDF_SH_PATH}\""
+  echo
+  echo "fish:"
+  echo "source \"${ASDF_FISH_PATH}\""
+  echo
+  echo "elvish:"
+  echo "source \"${ASDF_ELVISH_PATH}\""
+  echo
+  echo "nushell:"
+  echo "source \"${ASDF_NUSHELL_PATH}\""
+fi
+echo
+echo "then:"
+echo "cd ${KDK_PRIMARY_INSTALL_DIR}"
+echo
+echo -e "\e[0Ksection_end:$(date +%s):set_up_primary_kdk\r\e[0K"
+
+echo -e "\e[0Ksection_start:$(date +%s):set_up_secondary_kdk\r\e[0KSet up secondary KDK"
+cd ../..
+clone_kdk2_if_needed
+cd "${KDK_SECONDARY_INSTALL_DIR}" || error "Clone of KDK should have created ${KDK_SECONDARY_INSTALL_DIR} directory."
+setup_tool_version_manager
+cd "../${KDK_PRIMARY_INSTALL_DIR}" || error "Sanity check for ${KDK_PRIMARY_INSTALL_DIR} directory failed."
+./support/geo-add-secondary --secondary_port 3001 --primary . "../${KDK_SECONDARY_INSTALL_DIR}"
+
+echo
+if [[ ${TOOL_VERSION_MANAGER} == "asdf" ]]; then
+  echo "INFO: To make sure KDK commands are available in this shell and ensure you're"
+  echo "INFO: in the newly installed KDK directory, please run the command corresponding to your shell."
+  echo
+  echo "sh / bash / zsh:"
+  echo "source \"${ASDF_SH_PATH}\""
+  echo
+  echo "fish:"
+  echo "source \"${ASDF_FISH_PATH}\""
+  echo
+  echo "elvish:"
+  echo "source \"${ASDF_ELVISH_PATH}\""
+  echo
+  echo "nushell:"
+  echo "source \"${ASDF_NUSHELL_PATH}\""
+fi
+echo
+echo "then:"
+echo "cd ${KDK_SECONDARY_INSTALL_DIR}"
+echo
+echo -e "\e[0Ksection_end:$(date +%s):set_up_secondary_kdk\r\e[0K"
+}
+
+# If we've reached here, the entire install script has been downloaded and
+# "should" be safe to execute.
+_ "$0" "$@"

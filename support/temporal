@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+set -e
+
+# Check if homebrew is installed
+if [ -z "$(command -v brew)" ]; then
+  # shellcheck disable=SC2016
+  echo 'Error: requires Homebrew to be installed a the brew binary in $PATH' >&2
+  exit 1
+fi
+
+# Install latest version of temporal CLI
+brew install temporal
+
+# Start temporal dev server
+echo 'Add the snippet below to your KAS config file if you want to set up AutoFlow'
+echo
+echo 'autoflow:'
+echo '  temporal:'
+echo '    host_port: localhost:7233'
+echo
+echo "By default the file is at $(kdk config get kdk_root)/khulnasoft-k8s-agent-config.yml"
+echo
+echo 'Running temporal dev server with default configuration'
+echo 'Press Ctrl+C to abort'
+temporal server start-dev

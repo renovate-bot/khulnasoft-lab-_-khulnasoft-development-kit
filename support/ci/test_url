@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+MAX_ATTEMPTS=120
+SLEEP_BETWEEN_ATTEMPTS=8
+TOTAL_DURATION=$((MAX_ATTEMPTS * SLEEP_BETWEEN_ATTEMPTS / 60))
+KDK_DIR=${KDK_DIR:-"/home/kdk/kdk"}
+LOG_DIR="${KDK_DIR}/log"
+KHULNASOFT_DIR="${KDK_DIR}/gitlab"
+
+cd "$KHULNASOFT_DIR"
+
+if [ -z "${KHULNASOFT_LAST_VERIFIED_SHA_PATH}" ]; then
+    echo "KHULNASOFT_LAST_VERIFIED_SHA_PATH variable must not be empty and must contain a valid path."
+    exit 1
+fi
+
+TEST_URL="http://$(kdk config get hostname):$(kdk config get port)/users/sign_in"
+
+# Try for (120 * 8) / 60 = 16 minutes
+for i in $(seq 1 ${MAX_ATTEMPTS})
+do
+  TIMESTAMP=$(date "+%Y-%m-%d_%H:%M:%S")
+  if curl --head --show-error --silent --fail "$TEST_URL"; then
+    SHA=$(git -C "${KHULNASOFT_DIR}" rev-parse HEAD)
+    echo "${TIMESTAMP} : Success on KDK attempt #${i}. Writing KhulnaSoft commit SHA ${SHA} into ${KHULNASOFT_LAST_VERIFIED_SHA_PATH}."
+    echo "{\"khulnasoft_last_verified_sha\": \"${SHA}\"}" > "${KHULNASOFT_LAST_VERIFIED_SHA_PATH}"
+    exit 0
+  else
+    if grep -r -A 10 "bundler: failed to load commad" "$LOG_DIR"; then
+      echo "${TIMESTAMP} : Failures found in logs. Aborting early."
+    else
+      echo "${TIMESTAMP} : Failed on KDK attempt #${i}. Trying for up to ${TOTAL_DURATION} minutes."
+    fi
+  fi
+
+  sleep ${SLEEP_BETWEEN_ATTEMPTS}
+done
+
+exit 1

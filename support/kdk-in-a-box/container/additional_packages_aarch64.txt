@@ -1,0 +1,8 @@
+# Needed to be able to support installing node-canvas later
+# See https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/merge_requests/3871#note_2435263572
+build-essential
+libcairo2-dev
+libgif-dev
+libjpeg-dev
+libpango1.0-dev
+librsvg2-dev

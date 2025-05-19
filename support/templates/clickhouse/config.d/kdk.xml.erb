@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<clickhouse>
+  <http_port><%= config.clickhouse.http_port %></http_port>
+  <tcp_port><%= config.clickhouse.tcp_port %></tcp_port>
+  <mysql_port></mysql_port>
+  <postgresql_port></postgresql_port>
+  <interserver_http_port><%= config.clickhouse.interserver_http_port %></interserver_http_port>
+  <max_thread_pool_size><%= config.clickhouse.max_thread_pool_size %></max_thread_pool_size>
+  <max_server_memory_usage><%= config.clickhouse.max_server_memory_usage %></max_server_memory_usage>
+  <shutdown_wait_unfinished>10</shutdown_wait_unfinished>
+</clickhouse>

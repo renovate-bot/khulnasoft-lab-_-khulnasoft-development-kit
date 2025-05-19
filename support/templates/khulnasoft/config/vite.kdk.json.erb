@@ -1,0 +1,36 @@
+<% hmr =
+  (
+    if config.vite.hot_module_reloading?
+      {
+        clientPort: (config.nginx? ? config.nginx.__port : config.vite.port),
+        host: (config.nginx? ? config.hostname : config.listen_address),
+        protocol: (service(:Vite).https? ? "wss" : "ws")
+      }
+    else
+      nil
+    end
+  ) -%>
+<% https =
+  (
+    if service(:Vite).https?
+      {
+        https: {
+          enabled: true,
+          key: config.kdk_root.join(config.nginx.ssl.key),
+          certificate: config.kdk_root.join(config.nginx.ssl.certificate)
+        }
+      }
+    else
+      {} # Can be changed to nil for Ruby 3.4+
+    end
+  ) -%>
+<%= JSON.pretty_generate(
+  {
+    enabled: service(:Vite).enabled?,
+    public_host: config.hostname,
+    host: config.listen_address,
+    port: config.vite.port,
+    hmr: hmr,
+    **https
+  },
+) %>

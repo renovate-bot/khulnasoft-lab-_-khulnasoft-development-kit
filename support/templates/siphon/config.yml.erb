@@ -1,0 +1,31 @@
+application_identifier: "kdkproducer" # Environment.CellID.SchemaName.ID
+max_column_size_in_bytes: 1048576 # 1 mb
+
+database:
+  host: "<%= config.postgresql.host %>" # can be pointed to a socket file
+  port: <%= config.postgresql.port %> # optional
+  database: "gitlabhq_development"
+  advisory_lock_id: 144324
+  advisory_lock_timeout_ms: 100
+  advisory_lock_timeout_fuzziness_ms: 50
+  lock_timeout_ms: 500
+  lock_timeout_fuzziness_ms: 300
+  application_name: "siphon"
+
+replication:
+  publication_name: "siphon_publication_main_db"
+  slot_name: "siphon_slot_main_db"
+  initial_data_snapshot_threads_per_table: 3
+  memory_buffer_size_in_bytes: 8388608 # 8mb mb
+
+queueing:
+  driver: "nats"
+  url: "localhost:4222"
+  stream_name: 'siphon_stream_main_db'
+
+table_mapping:
+<%- config.siphon.tables.each do |table| -%>
+  - table: <%= table %>
+    schema: public
+    subject: <%= table %>
+<%- end -%>

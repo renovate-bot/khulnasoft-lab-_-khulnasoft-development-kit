@@ -1,0 +1,26 @@
+---
+engines:
+  duplication:
+    enabled: false
+    config:
+      languages:
+      - ruby
+  fixme:
+    enabled: false
+  shellcheck:
+    enabled: true
+ratings:
+  paths:
+  - support/**/*
+  - bin/*
+  - "**.rb"
+exclude_paths:
+- "**/vendor/**/*"
+- gitaly/
+- khulnasoft/
+- khulnasoft-elasticsearch-indexer
+- khulnasoft-shell/
+- khulnasoft-workhorse/
+- reposities/
+- postgresql/
+- redis/

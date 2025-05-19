@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+set -e
+
+LOG_DIR="/workspace/khulnasoft-development-kit/log"
+
+mkdir -p artifacts
+
+# Override startup-scripts added in docker image with the startup-scripts in the current branch
+cp /tmp/startup-scripts/* /home/gitpod/
+
+error() {
+  echo
+  echo "ERROR: ${1}" >&2
+
+  combined_logs_file="${LOG_DIR}/combined_logs.txt"
+  cat "$LOG_DIR"/*/current >> "$combined_logs_file"
+  sudo cp -r "$LOG_DIR" /artifacts
+  exit 1
+}
+
+# Simulate how .gitpod.yml starts up KDK by running Gitpod init and command tasks
+if ! ./gitpod-init; then
+  error "Failed to run gitpod-init."
+fi
+
+if ! ./gitpod-command; then
+  error "Failed to run gitpod-command."
+fi

@@ -1,0 +1,11 @@
+[databases]
+gitlabhq_development = host=<%= host %> dbname=gitlabhq_development user=<%= config.__whoami %>
+gitlabhq_development_ci = host=<%= host %> dbname=gitlabhq_development_ci user=<%= config.__whoami %>
+
+[pgbouncer]
+listen_port = <%= port %>
+listen_addr = localhost
+auth_type = md5
+auth_file = pgbouncers/userlist.txt
+admin_users = <%= config.__whoami %>
+pool_mode = transaction

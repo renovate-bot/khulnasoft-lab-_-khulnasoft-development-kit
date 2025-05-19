@@ -1,0 +1,61 @@
+ARG from_image
+FROM ${from_image} as verify_full
+
+LABEL authors.maintainer "KDK contributors: https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/graphs/main"
+
+ENV DEBIAN_FRONTEND=noninteractive
+ENV LC_ALL=en_US.UTF-8
+ENV LANG=en_US.UTF-8
+ENV LANGUAGE=en_US.UTF-8
+
+ARG PROJECT_URL
+ARG SHA
+
+ARG KHULNASOFT_CI_CACHE_DIR
+ARG KDK_INTERNAL_CACHE_FULL_DIR
+ARG BUNDLE_PATH
+ARG GEM_HOME
+ARG GEM_PATH
+ARG GOCACHE
+ARG GOMODCACHE
+ARG NODE_PATH
+ARG PUMA_SINGLE_MODE
+ARG KDK_DEBUG
+ARG KHULNASOFT_CI_CACHE_GO_DIR
+
+RUN sudo mkdir -p ${BUNDLE_PATH} ${GEM_HOME} ${GEM_PATH} ${GOCACHE} ${GOMODCACHE} ${NODE_PATH}
+RUN sudo chown -R kdk:kdk ${KDK_INTERNAL_CACHE_FULL_DIR} || true
+
+WORKDIR /home/kdk
+
+COPY --chown=kdk ${KHULNASOFT_CI_CACHE_DIR}/ ${KHULNASOFT_CI_CACHE_DIR}/
+
+RUN du -smx ${KHULNASOFT_CI_CACHE_DIR}/* || true
+
+RUN echo "yarn-offline-mirror ${NODE_PATH}/.yarn-cache/" >> ${HOME}/.yarnrc
+RUN echo "yarn-offline-mirror-pruning true" >> ${HOME}/.yarnrc
+
+RUN if [ "$TOOL_VERSION_MANAGER" = "mise" ]; then \
+      eval "$(mise activate bash --shims)"; \
+    fi && \
+    curl --fail "${PROJECT_URL}/-/raw/${SHA}/support/install" | bash -s - kdk "${SHA}" "${TOOL_VERSION_MANAGER}" "true" && \
+    (cd kdk && KDK_KILL_CONFIRM=true kdk kill) && \
+    (du -smx ${KHULNASOFT_CI_CACHE_DIR}/* || true) && \
+    (sudo rm -rf ${KHULNASOFT_CI_CACHE_DIR}/nodejs || true) && \
+    (find .gitlab-ci-cache \( -path '*libexec/lefthook-*' -and -not -path '*lefthook-linux-x64*' \) -delete || true) && \
+    (sudo rm -rf ${KHULNASOFT_CI_CACHE_GO_DIR} || true) && \
+    (du -smx ${KHULNASOFT_CI_CACHE_DIR}/* || true) && \
+    (du -smx /home/kdk/.cache/* || true) && \
+    (sudo rm -rf /home/kdk/.cache/yarn || true) && \
+    (du -smx /home/kdk/.cache/* || true)
+
+WORKDIR /home/kdk/kdk
+
+RUN kdk config set gitlab.cache_classes true && kdk config set webpack.live_reload false && kdk config set webpack.sourcemaps false && make Procfile
+
+FROM verify_full as verify
+
+ARG KHULNASOFT_CI_CACHE_DIR
+ARG KHULNASOFT_CI_CACHE_GO_DIR
+
+WORKDIR /home/kdk

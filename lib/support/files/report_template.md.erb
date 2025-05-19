@@ -1,0 +1,100 @@
+<!-- Please add a description of the issue you are facing -->
+
+## Steps to replicate (optional)
+
+<!-- Clear steps of how to replicate the issue. -->
+
+## Environment
+### General
+- **Operating System**: `<%= report_json[:os_name] %>`
+- **Architecture**: `<%= report_json[:arch] %>`
+- **Ruby Version**: `<%= report_json[:ruby_version] %>`
+- **KDK version**: `<%= report_json[:kdk_version] %>`
+- **Package Manager**: `<%= report_json[:package_manager] %>`
+
+<details>
+<summary>Variables</summary>
+
+```
+<%= report_json[:env_variables] %>
+```
+</details>
+
+
+<details>
+<summary>KDK Configuration</summary>
+
+```
+<%= report_json[:kdk_config] %>
+```
+</details>
+
+## KDK Doctor
+
+<details>
+<summary>Result</summary>
+
+```
+<%= report_json[:kdk_doctor] %>
+```
+</details>
+
+## Ruby Environment
+
+<details>
+<summary>Gem Environment</summary>
+
+```
+<%= report_json[:gem_env] %>
+```
+</details>
+
+<details>
+<summary>Bundle Environment</summary>
+
+<%= report_json[:bundle_env] %>
+
+</details>
+
+## Telemetry
+
+<details>
+<summary>Network information</summary>
+
+```
+<%= report_json[:network_information] %>
+```
+</details>
+
+## Logs
+
+<% report_json[:logs].each do |name, logs| %>
+  <details>
+  <summary><%= name.capitalize %> Logs</summary>
+
+  ```
+  <%= logs %>
+  ```
+  </details>
+<% end %>
+
+## Git Repositories
+
+<% report_json[:git_repositories].each do |name, status_and_head| %>
+  <details>
+  <summary>Git Status and HEAD for <%= name.capitalize %></summary>
+
+  **Git Status**:
+  ```
+  <%= status_and_head[:git_status] %>
+  ```
+
+  **Git HEAD**:
+  ```
+  <%= status_and_head[:git_head] %>
+  ```
+  </details>
+<% end %>
+
+Created at:
+<%= report_json[:date_time] %>

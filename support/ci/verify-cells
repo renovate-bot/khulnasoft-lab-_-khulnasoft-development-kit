@@ -1,0 +1,23 @@
+#!/bin/bash -ex
+
+parent_path=$(dirname "$0")
+
+# shellcheck source=support/ci/functions.sh
+source "${parent_path}"/functions.sh
+
+init
+cd_into_checkout_path
+
+kdk start
+
+kdk config set cells.enabled true
+kdk config set cells.instance_count 1
+
+kdk reconfigure
+
+kdk cells up
+kdk cells start
+kdk cells status
+
+export KDK_DIR="/home/kdk/kdk/gitlab-cells/cell-2"
+support/ci/test_url

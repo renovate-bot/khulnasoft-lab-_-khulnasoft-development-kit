@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+download_ssh_key () {
+  curl --clobber "https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/raw/main/support/kdk-in-a-box/kdk.local_rsa" -o ~/.ssh/kdk.local_rsa
+  chmod 600 ~/.ssh/kdk.local_rsa
+  echo "SSH key imported."
+}
+
+if [ -f ~/.ssh/kdk.local_rsa ]; then
+  echo "SSH key previously imported."
+  echo "Do you want to:"
+  echo "  1. Overwrite the existing key"
+  echo "  2. Skip this step"
+  echo "  3. Exit"
+  read -r answer </dev/tty
+  if [ "$answer" == "1" ]; then
+    download_ssh_key
+  elif [ "$answer" == "2" ]; then
+    echo "Skipping this step."
+  elif [ "$answer" == "3" ]; then
+    exit 0
+  else
+    echo "Invalid option - please rerun the script!"
+    exit 1
+  fi
+else
+  download_ssh_key
+fi
+
+echo "Select the installation type:"
+echo "  1. Container"
+echo "  2. Virtual Machine (UTM or Virtualbox)"
+
+read -r answer </dev/tty
+if [ "$answer" == "1" ]; then
+  echo "Adding SSH config for the container to ~/.ssh/config"
+  {
+    echo ""
+    echo "# Added by KDK in a box"
+    echo "Host kdk.local"
+    echo "  Hostname localhost"
+    echo "  IdentityFile ~/.ssh/kdk.local_rsa"
+    echo "  User kdk"
+    echo "  Port 2022"
+  } >> ~/.ssh/config
+elif [ "$answer" == "2" ]; then
+  echo "Adding SSH config for the VM to ~/.ssh/config"
+  {
+    echo ""
+    echo "# Added by KDK in a box"
+    echo "Host kdk.local"
+    echo "  IdentityFile ~/.ssh/kdk.local_rsa"
+    echo "  User debian"
+  } >> ~/.ssh/config
+else
+  echo "Invalid option - please rerun the script!"
+  exit 1
+fi

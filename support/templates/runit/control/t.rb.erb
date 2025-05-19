@@ -1,0 +1,25 @@
+#!/usr/bin/env ruby
+
+def kill(signal, pid)
+  puts "runit control/t: sending #{signal} to #{pid}"
+  Process.kill(signal, pid)
+rescue SystemCallError
+  nil
+end
+
+def pid
+  @pid ||= begin
+    p = File.read('<%= pid_path %>')
+    return if p.empty?
+
+    Integer(p)
+  end
+end
+
+exit(0) unless pid
+
+# Kill PID group with <%= term_signal %>
+kill('<%= term_signal %>', -pid)
+
+# Kill PID with <%= term_signal %>
+kill('<%= term_signal %>', pid)

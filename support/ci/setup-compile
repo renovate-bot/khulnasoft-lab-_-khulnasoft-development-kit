@@ -1,0 +1,211 @@
+#!/usr/bin/env bash
+
+set -eo pipefail
+
+PROJECT=$1
+
+install_common_deps() {
+  echo "Installing common dependencies..."
+  gem install gitlab-sdk sentry-ruby zeitwerk tty-spinner
+}
+
+install_macos_deps() {
+  echo "Installing macOS dependencies..."
+  brew install libyaml
+}
+
+install_linux_deps() {
+  echo "Installing Linux dependencies..."
+}
+
+install_gitaly_deps() {
+  echo "Installing Gitaly-specific dependencies..."
+
+  if [[ "$BUILD_OS" == "darwin" ]]; then
+    asdf plugin add nodejs https://github.com/asdf-vm/asdf-nodejs.git
+    asdf plugin add markdownlint-cli2 https://github.com/paulo-ferraz-oliveira/asdf-markdownlint-cli2.git
+    asdf plugin add meson https://github.com/asdf-community/asdf-meson.git
+    asdf plugin add ninja https://github.com/asdf-community/asdf-ninja.git
+    asdf plugin add vale https://github.com/pdemagny/asdf-vale.git
+  elif [[ "$BUILD_OS" == "linux" ]]; then
+    apt-get install -y libcurl4-openssl-dev libpcre2-dev libssl-dev libz-dev meson ninja-build
+  fi
+}
+
+install_os_deps() {
+  if [[ "$BUILD_OS" == "darwin" ]]; then
+    install_macos_deps
+  elif [[ "$BUILD_OS" == "linux" ]]; then
+    install_linux_deps
+  fi
+
+  if [[ "$PROJECT" == "gitaly" ]]; then
+    install_gitaly_deps
+  fi
+}
+
+clone_repository() {
+  local repo_url=$1
+  local branch=$2
+  local work_dir=$3
+  local depth=${4:-1}
+
+  echo "Cloning $repo_url..."
+
+  local clone_args=("--branch" "$branch" "--single-branch")
+
+  if [ "$depth" != "full" ]; then
+    clone_args+=("--depth" "$depth")
+  fi
+
+  git clone "${clone_args[@]}" "$repo_url"
+  cd "$work_dir" || exit 1
+}
+
+setup_build_environment() {
+  echo "Setting up build environment..."
+  mkdir -p build
+
+  if [[ "$BUILD_OS" == "darwin" ]]; then
+    if [[ -f .tool-versions ]]; then
+      echo "Installing nodejs first if necessary (required by markdownlint-cli2)"
+      grep -E '^nodejs ' .tool-versions | awk '{ print $1 " " $2 }' | xargs -r -L 1 asdf install || true
+    fi
+
+    echo "Running 'asdf plugin update ruby' for macOS..."
+    asdf plugin update ruby
+    echo "Running 'asdf install' for macOS..."
+    asdf install
+  fi
+}
+
+fetch_version() {
+  local project=$1
+  local url=$2
+
+  echo "Fetching version for $project..."
+
+  local version
+  version=$(curl --silent --fail --url "$url")
+
+  if [[ -z "$version" ]]; then
+    echo "Error: Could not fetch version for $project from $url"
+    exit 1
+  fi
+
+  export PACKAGE_VERSION="$version"
+}
+
+generate_checksums() {
+  echo "Generating checksums..."
+  find build -type f -print0 | xargs -0 sha256sum > "$1/checksums.txt"
+}
+
+generate_metadata() {
+  local output="$1/metadata.txt"
+
+  echo "Generating metadata..."
+
+  {
+    echo "Timestamp: $(date)"
+    echo "uname: $(uname -a)"
+    echo "CI_JOB_STARTED_AT: ${CI_JOB_STARTED_AT}"
+    echo "CI_COMMIT_SHA: ${CI_COMMIT_SHA}"
+    echo "CI_JOB_ID: ${CI_JOB_ID}"
+    echo "CI_JOB_URL: ${CI_JOB_URL}"
+    echo "BUILD_ARCH: ${BUILD_ARCH}"
+    echo "BUILD_OS: ${BUILD_OS}"
+  } >> "$output"
+}
+
+compile_gitaly() {
+  fetch_version "gitaly" "$GITALY_SERVER_VERSION_FILE_URL"
+  clone_repository "https://gitlab.com/gitlab-org/gitaly.git" "master" "gitaly" full
+  setup_build_environment
+
+  echo "Building Gitaly..."
+  git checkout "$PACKAGE_VERSION"
+  GOOS=$BUILD_OS GOARCH=$BUILD_ARCH make WITH_BUNDLED_GIT=YesPlease BUNDLE_FLAGS=--no-deployment USE_MESON=YesPlease
+
+  echo "Cleaning up unnecessary binaries..."
+  rm _build/bin/gitaly-git*
+  rm _build/bin/gitaly-{ssh,hooks,lfs-smudge,gpg}
+
+  echo "Moving binaries to build directory..."
+  mv _build/bin/* build
+
+  generate_metadata build
+  generate_checksums build
+
+  cd "$CI_PROJECT_DIR" || exit 1
+  support/package-helper gitaly upload
+}
+
+compile_khulnasoft_shell() {
+  fetch_version "gitlab-shell" "$KHULNASOFT_SHELL_VERSION_FILE_URL"
+  clone_repository "https://gitlab.com/gitlab-org/gitlab-shell.git" "v$PACKAGE_VERSION" "gitlab-shell"
+  setup_build_environment
+
+  echo "Building KhulnaSoft Shell..."
+  CGO_ENABLED=0 GOOS=$BUILD_OS GOARCH=$BUILD_ARCH make build
+
+  echo "Moving binaries to build directory..."
+  mv bin/* build
+
+  generate_metadata build
+  generate_checksums build
+
+  cd "$CI_PROJECT_DIR" || exit 1
+  support/package-helper khulnasoft_shell upload
+}
+
+compile_workhorse() {
+  fetch_version "workhorse" "$KHULNASOFT_WORKHORSE_VERSION_FILE_URL"
+  clone_repository "https://gitlab.com/gitlab-org/gitlab.git" "master" "gitlab/workhorse"
+  setup_build_environment
+
+  echo "Building KhulnaSoft Workhorse..."
+  git checkout "$PACKAGE_VERSION"
+  GOOS=$BUILD_OS GOARCH=$BUILD_ARCH make
+
+  echo "Moving binaries to build directory..."
+  mv gitlab-* build
+
+  generate_metadata build
+  generate_checksums build
+
+  cd "$CI_PROJECT_DIR" || exit 1
+  support/package-helper workhorse upload
+}
+
+main() {
+  required_vars=(PROJECT BUILD_OS BUILD_ARCH)
+
+  for var in "${required_vars[@]}"; do
+    if [[ -z "${!var}" ]]; then
+      echo "Error: $var environment variable is not set"
+      exit 1
+    fi
+  done
+
+  install_os_deps
+  install_common_deps
+
+  case "$PROJECT" in
+    gitaly)
+      compile_gitaly
+      ;;
+    gitlab-shell)
+      compile_khulnasoft_shell
+      ;;
+    workhorse)
+      compile_workhorse
+      ;;
+    *)
+      echo "Usage: $0 [gitaly|gitlab-shell|workhorse]"
+      exit 1
+      ;;
+  esac
+}
+
+main "$@"

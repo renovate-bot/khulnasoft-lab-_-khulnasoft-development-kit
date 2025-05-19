@@ -1,0 +1,91 @@
+#!/usr/bin/env ruby
+
+# frozen_string_literal: true
+
+require 'yaml'
+require 'pathname'
+
+TMP_PATH = Pathname.new(__FILE__).expand_path.join('..', '..', '..', 'tmp')
+TIMING_FILE = TMP_PATH.join('kdk_update_timing.yml')
+
+ALLOWED_ACTIONS = %w[time-service-start time-service-end start summarize].freeze
+
+def action_and_service_name_from_args(args)
+  if args.empty? || !ALLOWED_ACTIONS.include?(args[0])
+    puts "ERROR: Usage - #{__FILE__} <#{ALLOWED_ACTIONS.join('|')}> [<service>]"
+    exit(1)
+  end
+
+  args
+end
+
+def skeleton_timings
+  { 'services' => {} }
+end
+
+def current_timings
+  TIMING_FILE.exist? ? YAML.load_file(TIMING_FILE.to_s) : skeleton_timings
+end
+
+def update_timings(data)
+  TMP_PATH.mkpath unless TMP_PATH.exist?
+  TIMING_FILE.write(data.to_yaml)
+end
+
+def now
+  Time.now.to_i
+end
+
+def cleanup!
+  TIMING_FILE.delete if TIMING_FILE.exist?
+end
+
+#################################################################################
+
+exit 0 if %w[1 yes true].include?(ENV['KDK_SKIP_MAKEFILE_TIMEIT'])
+
+action, service_name = action_and_service_name_from_args(ARGV)
+
+case action
+when 'start'
+  cleanup!
+  new_yaml = skeleton_timings.merge('start' => now)
+
+  update_timings(new_yaml)
+
+when 'time-service-start'
+  new_yaml = current_timings
+  new_yaml['services'][service_name] = { 'start' => now }
+
+  update_timings(new_yaml)
+when 'time-service-end'
+  if TIMING_FILE.exist?
+    new_yaml = current_timings
+
+    if new_yaml['services'][service_name]
+      new_yaml['services'][service_name]['end'] = now
+
+      update_timings(new_yaml)
+    else
+      warn "WARNING: Service '#{service_name}' does not have a corresponding 'start' key."
+    end
+  end
+when 'summarize'
+  updated_timings = current_timings.merge('end' => now)
+
+  puts unless updated_timings['services'].empty?
+
+  updated_timings['services'].each do |name, timings|
+    took = if timings['end'] && timings['start']
+             timings['end'] - timings['start']
+           else
+             'unknown'
+           end
+
+    puts "#{name}: #{took} sec(s)"
+  end
+
+  if updated_timings['start'] && updated_timings['end'] # rubocop:disable Style/IfUnlessModifier
+    puts "\nTook #{updated_timings['end'] - updated_timings['start']} sec(s) total"
+  end
+end

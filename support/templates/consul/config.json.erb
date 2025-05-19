@@ -1,0 +1,24 @@
+{
+  "data_dir": "consul/data",
+  "enable_local_script_checks": true,
+  "services": [
+    <% (min_port..max_port).each_with_index do |port, index| %>
+    <%= index == 0 ? "" : "," %>
+    {
+      "id": "pgbouncer-<%= port %>",
+      "name": "pgbouncer",
+      "port": <%= port %>,
+      "address": "127.0.0.1",
+      "tags": [
+        "replica"
+      ],
+      "checks": [
+        {
+          "args": ["psql", "-U", "<%= config.__whoami %>", "-h", "localhost", "-p", "<%= port %>", "-d", "gitlabhq_development", "-c", "select 1"],
+          "interval": "2s"
+        }
+      ]
+    }
+    <% end %>
+  ]
+}

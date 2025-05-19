@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+khulnasoft_dir="$1"
+
+if [[ -f "${khulnasoft_dir}/.tool-versions" ]]; then
+	ASDF_RUBY_VERSION=$(grep -E '^ruby ' "${khulnasoft_dir}/.tool-versions" | awk '{ print $2 }')
+fi
+
+if [[ -n "$ASDF_RUBY_VERSION" ]]; then
+	RUBY_BIN_PATH="${HOME}/.asdf/installs/ruby/${ASDF_RUBY_VERSION}/bin"
+
+	if [[ ":$PATH:" != *":$RUBY_BIN_PATH:"* ]]; then
+		PATH="${RUBY_BIN_PATH}:${PATH}"
+	fi
+fi
+
+echo "${PATH}"

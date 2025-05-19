@@ -1,0 +1,12 @@
+---
+name: khulnasoft_docs.RelativeLinks
+description: |
+  Checks for the presence of absolute hyperlinks that should be relative.
+extends: existence
+message: "Use a relative link instead of a URL, and ensure the file name ends in .md and not .html."
+link: https://docs.gitlab.com/development/documentation/styleguide/#links
+vocab: false
+level: error
+scope: raw
+raw:
+  - '\[[^\]]+\]\(https?:\/\/gitlab.com\/gitlab-org\/khulnasoft-development-kit\/-\/blob\/main\/doc.*\)'

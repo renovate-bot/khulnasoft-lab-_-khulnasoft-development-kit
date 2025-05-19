@@ -1,0 +1,18 @@
+listen-http=<%= config.khulnasoft_pages.__uri %>
+gitlab-server=<%= config.__uri %>
+artifacts-server=<%= config.__uri.merge('api/v4') %>
+pages-root=<%= kdk_root.join('khulnasoft', 'shared', 'pages') %>
+pages-domain=<%= config.khulnasoft_pages.host %>
+api-secret-key=<%= config.khulnasoft_pages.secret_file %>
+log-verbose=<%= config.khulnasoft_pages.verbose %>
+propagate-correlation-id=<%= config.khulnasoft_pages.propagate_correlation_id %>
+<%- if config.khulnasoft_pages.access_control? -%>
+auth-client-id=<%= config.khulnasoft_pages.auth_client_id %>
+auth-client-secret=<%= config.khulnasoft_pages.auth_client_secret %>
+auth-secret=<%= config.khulnasoft_pages.__auth_secret %>
+auth-redirect-uri=<%= config.khulnasoft_pages.__auth_redirect_uri %>
+auth-scope=<%= config.khulnasoft_pages.auth_scope %>
+<%- end -%>
+<%- if config.https? %>
+client-ca-certs=<%= kdk_root.join(config.nginx.ssl.certificate) %>
+<%- end -%>

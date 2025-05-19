@@ -1,0 +1,8 @@
+development:
+  adapter: redis
+  url: unix:<%= config.redis.__socket_file %>
+  channel_prefix: development_
+test:
+  adapter: redis
+  url: unix:<%= config.redis.__socket_file %>
+  channel_prefix: test_

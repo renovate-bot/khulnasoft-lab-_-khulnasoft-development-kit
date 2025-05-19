@@ -1,0 +1,73 @@
+#!/usr/bin/env bash
+
+# This script is executed on every Gitpod workspace start.
+# https://www.gitpod.io/docs/config-start-tasks/
+#
+# This script can be controlled with the following env vars:
+# - KHULNASOFT_UPDATE_KDK=true         update KDK on every workspace start
+# - KHULNASOFT_RUN_DB_MIGRATIONS=true  run DB migrations on every workspace start
+# - KHULNASOFT_FIX_DB_KEY=true         fix DB key on every workspace start
+#
+# Set this env var in Gitpod with `gp env KEY=value` or here: https://gitpod.io/settings/
+# see https://www.gitpod.io/docs/environment-variables/.
+
+set -eo pipefail
+
+# shellcheck disable=SC1091
+source "$HOME/gitpod-common"
+
+# shellcheck disable=SC1091
+[[ -f /workspace/gitpod_start_time.sh ]] && source /workspace/gitpod_start_time.sh
+
+SECONDS=0
+cd /workspace/khulnasoft-development-kit
+
+log "Updating KDK"
+kdk update
+
+# Ensure kdk.yml has correct instance settings
+if is_gitpod_instance; then
+  export DEV_SERVER_PUBLIC_ADDR=$(gp url 3808)
+  export RAILS_HOSTS=$(gp url 3000 | sed -e 's+^http[s]*://++')
+  kdk config set gitlab.rails.hostname "$RAILS_HOSTS"
+fi
+
+# Reconfigure KDK
+log "Reconfiguring KDK"
+kdk reconfigure
+
+# Start KDK
+log "Starting KDK"
+kdk start
+
+# Run DB migrations when env var KHULNASOFT_RUN_DB_MIGRATIONS in https://gitpod.io/settings/ is set to true
+if [[ "$KHULNASOFT_RUN_DB_MIGRATIONS" == true ]]; then
+    log "Running DB migrations"
+    bundle exec rake gitlab-db-migrate
+fi
+
+# Ensure db/structure.sql is checked out
+cd /workspace/khulnasoft-development-kit/gitlab
+git checkout db/structure.sql
+
+# Waiting for KhulnaSoft ..
+cd /workspace/khulnasoft-development-kit
+
+if is_gitpod_instance; then
+  gp ports await 3000
+  KHULNASOFT_URL=$(gp url 3000)
+  # Give Gitpod a few more seconds to set up everything ...
+  sleep 5
+else
+  KHULNASOFT_URL="http://127.0.0.1:3000"
+fi
+
+is_khulnasoft_available "$KHULNASOFT_URL"
+log "$(printf "KhulnaSoft is up (took ~%.1f minutes)\n" "$((10*SECONDS/60))e-1")"
+
+if is_gitpod_instance; then
+  gp preview "$KHULNASOFT_URL" || true
+
+  PREBUILD_LOG="/workspace/.gitpod/prebuild-log-*"
+  [[ -f /workspace/gitpod_start_time.sh ]] && log "$(printf "Took %.1f minutes from https://gitlab.com/gitlab-org/gitlab/-/blob/master/.gitpod.yml being executed through to completion %s\n" "$((10*(($(date +%s)-"$START_TIME_IN_SECONDS"))/60))e-1" "$([[ -f "$PREBUILD_LOG" ]] && echo "With Prebuilds")")"
+fi

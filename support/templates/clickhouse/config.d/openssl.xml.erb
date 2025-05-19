@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<clickhouse>
+    <openSSL>
+        <server>
+            <certificateFile><%= config.clickhouse.dir.join('server.crt') %></certificateFile>
+            <privateKeyFile><%= config.clickhouse.dir.join('server.key') %></privateKeyFile>
+            <dhParamsFile><%= config.clickhouse.dir.join('dhparam.pem') %></dhParamsFile>
+        </server>
+    </openSSL>
+</clickhouse>

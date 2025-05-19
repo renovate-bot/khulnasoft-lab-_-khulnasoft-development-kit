@@ -1,0 +1,9 @@
+port = <%= config.postgresql.geo.port %>
+random_page_cost = '1'
+work_mem = '16MB'
+maintenance_work_mem = '64MB'
+shared_buffers = '256MB'
+synchronous_commit = 'off'
+timezone = 'UTC'
+# Turning off fsync speeds up 'rake db:test:prepare'
+fsync = 'off'

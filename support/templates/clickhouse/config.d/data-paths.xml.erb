@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<clickhouse>
+    <path><%= config.clickhouse.data_dir %></path>
+    <tmp_path><%= config.clickhouse.data_dir.join('tmp') %></tmp_path>
+    <user_files_path><%= config.clickhouse.data_dir.join('user_files') %></user_files_path>
+    <format_schema_path><%= config.clickhouse.data_dir.join('format_schemas') %></format_schema_path>
+</clickhouse>

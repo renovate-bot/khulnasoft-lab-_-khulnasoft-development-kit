@@ -1,0 +1,21 @@
+AllowUsers <%= config.sshd.user %>
+AuthenticationMethods publickey
+<%- config.sshd.host_keys.each do |key| -%>
+HostKey <%= key %>
+<%- end -%>
+ListenAddress <%= config.sshd.listen_address %>:<%= config.sshd.listen_port %>
+LogLevel VERBOSE
+PasswordAuthentication no
+PidFile none
+Protocol 2
+StrictModes no
+UseLogin no
+UsePAM no
+UsePrivilegeSeparation no
+
+AcceptEnv GIT_PROTOCOL
+
+Match User <%= config.sshd.user %>
+AuthorizedKeysFile <%= config.sshd.authorized_keys_file %>
+
+<%= config.sshd.additional_config -%>

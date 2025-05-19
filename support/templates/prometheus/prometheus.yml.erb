@@ -1,0 +1,49 @@
+global:
+  # By default, scrape targets every 15 seconds.
+  scrape_interval: 15s
+
+  # Attach these labels to any time series or alerts when communicating with
+  # external systems (federation, remote storage, Alertmanager).
+  external_labels:
+    monitor: 'kdk-monitor'
+
+# A scrape configuration containing four endpoints to scrape. Requires that
+# `<%= config.hostname %>` is configured. See doc/index.md#set-up-kdktest-hostname for more
+# information.
+scrape_configs:
+  # The job name is added as a label `job=<job_name>` to any timeseries scraped
+  # from this configuration.
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['<%= config.hostname %>:<%= config.prometheus.port %>']
+  - job_name: 'khulnasoft'
+    scrape_interval: 30s
+    metrics_path: '/-/metrics'
+    static_configs:
+      - targets: ['<%= config.hostname %>:<%= config.port %>']
+  - job_name: 'gitaly'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['<%= config.hostname %>:<%= config.prometheus.gitaly_exporter_port %>']
+  - job_name: 'praefect'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['<%= config.hostname %>:<%= config.prometheus.praefect_exporter_port %>']
+  - job_name: 'gitlab-shell'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['<%= config.hostname %>:<%= config.prometheus.khulnasoft_shell_exporter_port %>']
+  - job_name: 'khulnasoft-workhorse'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['<%= config.hostname %>:<%= config.prometheus.workhorse_exporter_port %>']
+  - job_name: 'gitlab-sidekiq'
+    scrape_interval: 30s
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['<%= config.hostname %>:<%= config.gitlab.rails_background_jobs.sidekiq_exporter_port %>']
+  - job_name: 'gitlab-ai-gateway'
+    scrape_interval: 5s
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['<%= config.hostname %>:<%= config.prometheus.khulnasoft_ai_gateway_exporter_port %>']

@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+# Initialize asdf
+source "$HOME/.asdf/asdf.sh"
+
+if [[ ! -d /workspace/khulnasoft-development-kit ]]; then
+  # Depending on the state of the Gitpod image, the KDK:init task may not
+  # have executed yet, so we should not attempt to go any further.
+  return
+fi
+
+# skip if gp is not installed
+hash gp 2>/dev/null || return
+
+(
+  cd /workspace/khulnasoft-development-kit
+
+  # set RAILS_HOSTS for Gitpod
+  port=$(kdk config get port)
+  rails_hosts=$(gp url "${port}" | sed -e 's+^http[s]*://++')
+  export RAILS_HOSTS=$rails_hosts
+
+  # set DEV_SERVER_PUBLIC_ADDR
+  webpack_port=$(kdk config get webpack.port)
+  webpack_url=$(gp url "${webpack_port}")
+  export DEV_SERVER_PUBLIC_ADDR=$webpack_url
+)

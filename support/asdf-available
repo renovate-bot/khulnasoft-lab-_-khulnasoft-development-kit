@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+CDPATH=''
+ROOT_PATH="$(cd "$(dirname "${BASH_SOURCE[${#BASH_SOURCE[@]} - 1]}")/.." || exit ; pwd -P)"
+# Borrowed from https://stackoverflow.com/a/76156715
+ASDF_OPT_OUT=$(awk -v k1=asdf -v k2=opt_out 'BEGIN{FS=":[[:space:]]*"}/^[[:alpha:]]/{k=$0;next}{$0=k $0}k1==$1&&k2==$2{f=1;print $3}END{if(!f){print "false"}}' "${ROOT_PATH}/kdk.yml" 2>/dev/null || echo 'false')
+ASDF=$(command -v asdf 2>/dev/null || true)
+
+if [ "${ASDF_OPT_OUT}" = "true" ] || [ -z "${ASDF}" ]; then
+  echo false
+else
+  echo true
+fi

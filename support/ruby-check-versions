@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+ROOT_PATH="$(cd "$(dirname "$0")/.." || exit ; pwd -P)"
+
+ruby_version=$(grep -Ev '^(#.*|$)' "${ROOT_PATH}/.ruby-version" | tail -n 1)
+tool_versions_ruby_version=$(grep -E '^ruby ' "${ROOT_PATH}/.tool-versions" | awk '{ print $2 }')
+
+if [[ "${ruby_version}" != "${tool_versions_ruby_version}" ]]; then
+  echo "ERROR: Ruby version in .ruby-version is '${ruby_version}' but default Ruby version in .tool-versions is '${tool_versions_ruby_version}'" >&2
+  exit 1
+fi

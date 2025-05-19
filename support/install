@@ -1,0 +1,203 @@
+#!/usr/bin/env bash
+
+# This is the KDK one line installation. For more information, please visit:
+# https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/main/doc/index.md#one-line-installation
+#
+# Wrap everything in a function to ensure a partially downloaded install script
+# is not executed. Inspired by https://install.sandstorm.io/
+#
+# Valid args are:
+#
+# 1 = directory in which to clone into, default is kdk (KDK_INSTALL_DIR)
+# 2 = git SHA/branch to checkout once cloned, default is main (KDK_CLONE_BRANCH)
+_() {
+
+set -eo pipefail
+
+DEFAULT_KDK_INSTALL_DIR="kdk"
+DEFAULT_KDK_REPO_URL="https://github.com/khulnasoft-lab/khulnasoft-development-kit.git"
+DEFAULT_KHULNASOFT_REPO_URL="https://gitlab.com/gitlab-org/gitlab.git"
+DEFAULT_TOOL_VERSION_MANAGER="mise"
+CURRENT_ASDF_DIR="${ASDF_DIR:-${HOME}/.asdf}"
+ASDF_SH_PATH="${CURRENT_ASDF_DIR}/asdf.sh"
+ASDF_FISH_PATH="${CURRENT_ASDF_DIR}/asdf.fish"
+ASDF_ELVISH_PATH="${CURRENT_ASDF_DIR}/asdf.elv"
+ASDF_NUSHELL_PATH="${CURRENT_ASDF_DIR}/asdf.nu"
+
+REQUIRED_COMMANDS=(git make)
+
+error() {
+  echo "ERROR: ${1}" >&2
+  exit 1
+}
+
+ensure_required_commands_exist() {
+  for command in "${REQUIRED_COMMANDS[@]}"; do
+    if ! command -v "${command}" > /dev/null 2>&1; then
+      error "Please ensure ${command} is installed."
+    fi
+  done
+}
+
+ensure_not_root() {
+  if [[ ${EUID} -eq 0 ]]; then
+    return 1
+  fi
+
+  return 0
+}
+
+clone_kdk_if_needed() {
+  if [[ -d ${KDK_INSTALL_DIR} ]]; then
+    echo "INFO: A ${KDK_INSTALL_DIR} directory already exists in the current working directory, resuming.."
+  else
+      git clone "${KDK_REPO_URL}" "${KDK_INSTALL_DIR}"
+  fi
+}
+
+ensure_kdk_clone_branch_checked_out() {
+  git -C "${PWD}/${KDK_INSTALL_DIR}" fetch origin "${KDK_CLONE_BRANCH}"
+  git -C "${PWD}/${KDK_INSTALL_DIR}" checkout "${KDK_CLONE_BRANCH}"
+}
+
+setup_tool_version_manager() {
+  local kdk_yml="${PWD}/kdk.yml"
+
+  echo "INFO: Setting up tool version manager: ${TOOL_VERSION_MANAGER}"
+
+  mkdir -p "$(dirname "${kdk_yml}")"
+
+  if [[ "${TOOL_VERSION_MANAGER}" == "mise" ]]; then
+    cat << EOF > "${kdk_yml}"
+---
+asdf:
+  opt_out: true
+mise:
+  enabled: true
+EOF
+  else
+    cat << EOF > "${kdk_yml}"
+---
+asdf:
+  opt_out: false
+EOF
+  fi
+
+  local full_path
+  full_path=$(readlink -f "${kdk_yml}")
+
+  echo "INFO: Tool version manager settings saved to ${full_path}:"
+  cat "${kdk_yml}"
+}
+
+bootstrap() {
+  make bootstrap
+}
+
+kdk_install() {
+  install_prefix=""
+
+  if [[ "$TOOL_VERSION_MANAGER" == "mise" ]]; then
+    echo "Running 'kdk install' using mise.."
+    install_prefix="mise exec --"
+  elif [[ "$TOOL_VERSION_MANAGER" == "asdf" ]]; then
+    echo "Running 'kdk install' using asdf.."
+    install_prefix="asdf exec"
+  else
+    echo "Running 'kdk install' without mise or asdf.."
+  fi
+
+  $install_prefix kdk install khulnasoft_repo="$KHULNASOFT_REPO_URL" telemetry_enabled="$ENABLE_TELEMETRY"
+}
+
+echo
+echo "INFO: This is the KDK one line installation. For more information, please visit:"
+echo "INFO: https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/main/doc/index.md#one-line-installation"
+echo "INFO:"
+echo "INFO: The source for the installation script can be viewed at:"
+echo "INFO: https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/main/support/install"
+echo
+
+if [ $# -eq 1 ]; then
+  echo "Where would you like to install the KDK? [./${DEFAULT_KDK_INSTALL_DIR}]"
+  read -r KDK_INSTALL_DIR </dev/tty
+  echo
+  echo "Which KhulnaSoft repo URL would you like to clone? [${DEFAULT_KHULNASOFT_REPO_URL}]"
+  echo
+  echo "ATTENTION: For members of the wider community, it is recommended to use the community fork (https://gitlab.com/gitlab-community/gitlab-org/gitlab.git)."
+  echo "See https://gitlab.com/gitlab-community/meta for instructions on how to join."
+  echo "If you'd prefer to use your own repository, please ensure that its visibility is set to public."
+  read -r KHULNASOFT_REPO_URL </dev/tty
+  echo
+  echo "Which tool version manager would you like to use?"
+  echo "1) mise (default)"
+  echo "2) asdf"
+  echo "Enter your choice [1]: "
+  read -r choice </dev/tty
+  case "$choice" in
+    1|"") TOOL_VERSION_MANAGER="mise" ;;
+    2)    TOOL_VERSION_MANAGER="asdf" ;;
+    *)    echo "Invalid choice. Defaulting to ${DEFAULT_TOOL_VERSION_MANAGER}."; TOOL_VERSION_MANAGER=${DEFAULT_TOOL_VERSION_MANAGER} ;;
+  esac
+  echo
+  echo "To improve KDK, KhulnaSoft would like to collect basic error and usage, including your platform and architecture."
+  echo
+  echo "Would you like to send telemetry anonymously to KhulnaSoft? [y/N]:"
+  read -r consent </dev/tty
+  case "$consent" in
+    [yY]) ENABLE_TELEMETRY="true" ;;
+    *)    ENABLE_TELEMETRY="false" ;;
+  esac
+else
+  # Note: Passing arguments this way is meant for CI.
+  # If you're running this manually, don't rely on the argument order as it may change.
+  KDK_INSTALL_DIR="${2-kdk}"
+  KDK_CLONE_BRANCH="${3-main}"
+  TOOL_VERSION_MANAGER="${4-mise}"
+  ENABLE_TELEMETRY="${5-false}"
+fi
+
+# Set defaults for any unset variables.
+KDK_INSTALL_DIR=${KDK_INSTALL_DIR:-${DEFAULT_KDK_INSTALL_DIR}}
+KDK_CLONE_BRANCH=${KDK_CLONE_BRANCH:-main}
+TOOL_VERSION_MANAGER=${TOOL_VERSION_MANAGER:-${DEFAULT_TOOL_VERSION_MANAGER}}
+KHULNASOFT_REPO_URL=${KHULNASOFT_REPO_URL:-${DEFAULT_KHULNASOFT_REPO_URL}}
+KDK_REPO_URL=${KDK_REPO_URL:-${DEFAULT_KDK_REPO_URL}}
+
+if ! ensure_not_root; then
+  error "Running as root is not supported."
+fi
+
+ensure_required_commands_exist
+clone_kdk_if_needed
+ensure_kdk_clone_branch_checked_out
+cd "${KDK_INSTALL_DIR}" || exit
+setup_tool_version_manager
+bootstrap
+kdk_install
+
+if [[ ${TOOL_VERSION_MANAGER} == "asdf" ]]; then
+  echo "INFO: To make sure KDK commands are available in this shell, please run the command corresponding to your shell."
+  echo
+  echo "sh / bash / zsh:"
+  echo "source \"${ASDF_SH_PATH}\""
+  echo
+  echo "fish:"
+  echo "source \"${ASDF_FISH_PATH}\""
+  echo
+  echo "elvish:"
+  echo "source \"${ASDF_ELVISH_PATH}\""
+  echo
+  echo "nushell:"
+  echo "source \"${ASDF_NUSHELL_PATH}\""
+  echo
+fi
+
+echo "INFO: To ensure you're in the newly installed KDK directory, please run:"
+echo "cd ${KDK_INSTALL_DIR}"
+echo
+}
+
+# If we've reached here, the entire install script has been downloaded and
+# "should" be safe to execute.
+_ "$0" "$@"

@@ -1,0 +1,12 @@
+---
+name: khulnasoft_base.Possessive
+description: |
+  The word KhulnaSoft should not be used in the possessive form.
+extends: existence
+message: "Remove 's from %s."
+level: error
+ignorecase: true
+link: https://docs.gitlab.com/development/documentation/styleguide/word_list/#gitlab
+vocab: false
+tokens:
+  - KhulnaSoft's

@@ -1,0 +1,61 @@
+#!/usr/bin/env ruby
+#
+# frozen_string_literal: true
+
+require 'open3'
+
+def log(msg)
+  puts "(support/self-update-git-worktree) > #{msg}"
+end
+
+def run(cmd)
+  log cmd.join(' ')
+  system(*cmd)
+end
+
+def remote_branch?(branch_name)
+  # We do not care for the output
+  _, status = Open3.capture2e(%(git rev-parse --verify origin/#{branch_name}))
+  status.success?
+rescue StandardError
+  false
+end
+
+def determine_default_branch
+  return 'master' unless remote_branch?('main')
+  return 'main' if !remote_branch?('master') || main_ahead_of_master?
+
+  'master'
+end
+
+def main_ahead_of_master?
+  # Check whether origin/main is ahead of master to guard against people
+  # switching too early
+  return false unless remote_branch?('main')
+
+  stdout, status = Open3.capture2e('git rev-list --count origin/master..origin/main')
+  status.success? && stdout.to_i.positive?
+rescue StandardError
+  false
+end
+
+ci_project_dir = ENV.fetch('CI_PROJECT_DIR', nil)
+ci_sha = ENV.fetch('CI_COMMIT_SHA', nil)
+
+# We need to retrieve the commit SHA if the source project is a fork
+if ci_project_dir && ci_sha
+  run(%W[git remote add source #{ci_project_dir}])
+  run(%W[git fetch source #{ci_sha}])
+end
+
+if ci_sha
+  run(%W[git checkout #{ci_sha}])
+else
+  run(%w[git fetch])
+
+  default_branch = determine_default_branch
+  log "Default Branch: #{default_branch}"
+
+  run(%W[git checkout #{default_branch}])
+  run(%W[git merge --ff-only origin/#{default_branch}])
+end

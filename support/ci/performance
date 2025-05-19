@@ -1,0 +1,65 @@
+#!/bin/bash
+
+set -euo pipefail
+
+COMMIT_SHA="${CI_MERGE_REQUEST_SOURCE_BRANCH_SHA:-$CI_COMMIT_SHA}"
+
+run_kdk() {
+  if [ "$(cat /tmp/.hyperfine-git-ref)" != "$1" ]; then
+    git checkout "$1"
+    git pull
+    echo "$1" > /tmp/.hyperfine-git-ref
+  fi
+
+  kdk "${@:2}"
+}
+
+run_hyperfine() {
+  local start_date
+  start_date=$(date +%s)
+  export -f run_kdk
+
+  hyperfine \
+    -i \
+    --min-runs "${HYPERFINE_MAX_RUNS:-10}" \
+    --shell bash \
+    --export-markdown tmp/summary.md \
+    --warmup 2 --time-unit second \
+    "run_kdk $COMMIT_SHA $*" "run_kdk main $*" \
+    -n "MR: kdk $*" -n "main: kdk $*"
+
+  printf "\n### \`%s\`\n\n" "$*" >> tmp/performance.md
+
+  cat tmp/summary.md >> tmp/performance.md
+  rm tmp/summary.md
+  local end_date
+  end_date=$(date +%s)
+  local runtime=$((end_date-start_date))
+  printf "=> Measured \e[34m%s\e[0m in \e[32m%d seconds\e[0m.\n" "kdk $*" "$runtime"
+}
+
+if [ "$COMMIT_SHA" == "" ]; then
+  echo "neither CI_MERGE_REQUEST_SOURCE_BRANCH_SHA or CI_COMMIT_SHA is set"
+  exit 1
+fi
+
+printf "## ⚡ Performance\n" > tmp/performance.md
+
+run_hyperfine status
+run_hyperfine config list
+HYPERFINE_MAX_RUNS=5 run_hyperfine reconfigure
+run_hyperfine diff-config
+run_hyperfine doctor
+
+cat tmp/performance.md
+
+if [ "$DANGER_KHULNASOFT_API_TOKEN" == "" ]; then
+  echo "DANGER_KHULNASOFT_API_TOKEN is not set, not sending comment. See Markdown output above."
+  rm tmp/performance.md
+  exit 2
+fi
+
+git checkout "$COMMIT_SHA"
+
+danger_id=$(echo -n "${DANGER_KHULNASOFT_API_TOKEN}" | md5sum | awk '{print $1}' | cut -c5-10)
+bundle exec danger --dangerfile=danger/performance/Dangerfile --fail-on-errors=true --verbose --base="${CI_MERGE_REQUEST_DIFF_BASE_SHA}" --head="${CI_MERGE_REQUEST_SOURCE_BRANCH_SHA:-$CI_COMMIT_SHA}" "--danger_id=kdk-performance-${danger_id}"

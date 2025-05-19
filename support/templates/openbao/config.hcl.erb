@@ -1,0 +1,11 @@
+cluster_addr  = "http://<%= config.hostname %>:<%= config.openbao.cluster_port %>"
+api_addr      = "http://<%= config.openbao.__listen %>"
+
+storage "file" {
+  path = "<%= config.kdk_root.join('openbao/data') %>"
+}
+
+listener "tcp" {
+    address = "<%= config.openbao.__listen %>"
+    tls_disable = true
+}

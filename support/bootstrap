@@ -1,0 +1,225 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+parent_path=$(dirname "$0")
+
+# shellcheck source=support/bootstrap-common.sh
+source "${parent_path}"/bootstrap-common.sh
+
+ASDF_VERSION_TO_INSTALL="v0.15.0"
+
+KDK_BOOTSTRAPPED_FILE="${KDK_CACHE_DIR}/.kdk_bootstrapped"
+
+asdf_install() {
+  if [[ ! -d "${CURRENT_ASDF_DIR}" ]]; then
+    git clone https://github.com/asdf-vm/asdf.git "${CURRENT_ASDF_DIR}" --branch ${ASDF_VERSION_TO_INSTALL}
+
+    add_tool_initializer "${HOME}/.bashrc" "asdf.sh"
+    add_tool_initializer "${HOME}/.zshrc" "asdf.sh"
+    add_tool_initializer "${HOME}/.config/fish/config.fish" "asdf.fish"
+    add_tool_initializer "${HOME}/.config/elvish/rc.elv" "asdf.elv"
+    add_tool_initializer "${HOME}/.config/nushell/config.nu" "asdf.nu"
+
+    return 0
+  fi
+
+  return 0
+}
+
+add_tool_initializer() {
+  local shell_file="$1"
+  local init_command="$2"
+
+  [[ -f "${shell_file}" ]] && {
+    if ! grep -Fq "${init_command}" "${shell_file}"; then
+      echo -e "\n# Added by KDK bootstrap\n${init_command}" >> "${shell_file}"
+    fi
+  }
+
+  return 0
+}
+
+asdf_install_tools() {
+  header_print "Installing asdf tools..."
+  # Install all tools specified in .tool-versions
+  local asdf_arch_opts
+
+  asdf_arch_opts=""
+
+  if [[ "${OSTYPE}" == "darwin"* ]]; then
+    if [[ "${CPU_TYPE}" == "arm64" && "${KDK_MACOS_ARM64_NATIVE}" == "false" ]]; then
+      # Support running brew under Rosetta 2 on Apple Silicon machines
+      asdf_arch_opts="arch -x86_64"
+    fi
+  fi
+
+  generic_install_tools "asdf install" "${asdf_arch_opts}"
+
+  return $?
+}
+
+generic_install_tools() {
+  install_command=$1
+  arch_opts=${2:-}
+
+  # Install Rust before Ruby to ensure YJIT is available.
+  echo "INFO: Installing Rust before Ruby..."
+  export RUST_WITHOUT=rust-docs
+  grep -E '^rust' .tool-versions | awk '{ print $1 " " $2 }' | xargs -I {} sh -c "${install_command} {}"
+  rust_version=$(grep -E '^rust' .tool-versions | awk '{ print $2 }')
+
+  # Ruby attempts to find a rustc in the PATH, but the version has to be
+  # set for asdf or mise to use it. Setting the version in the
+  # environment avoids the need to set this in ~/.tool-versions.
+  if [[ "${install_command}" == asdf* ]]; then
+      echo "INFO: Setting ASDF_RUST_VERSION to ${rust_version}"
+      export ASDF_RUST_VERSION=${rust_version}
+  elif [[ "${install_command}" == mise* ]]; then
+      echo "INFO: Setting MISE_RUST_VERSION to ${rust_version}"
+      export MISE_RUST_VERSION=${rust_version}
+  fi
+
+  # We need to manually install Ruby patches for now as it's not supported to
+  # set version specific patches e.g. https://github.com/asdf-vm/asdf-ruby/pull/202
+  #
+  # shellcheck disable=SC2034
+  MISC_RUBY_PATCHES_3_2_4=$'https://gitlab.com/gitlab-org/gitlab-build-images/-/raw/d95e4efae87d5e3696f22d12a6c4e377a22f3c95/patches/ruby/3.2/thread-memory-allocations.patch'
+  # shellcheck disable=SC2034
+  MISC_RUBY_PATCHES_3_3_7=$'https://gitlab.com/gitlab-org/gitlab-build-images/-/raw/e1be2ad5ff2a0bf0b27f86ef75b73824790b4b26/patches/ruby/3.3/thread-memory-allocations.patch'
+
+  grep -E "^ruby " ".tool-versions" | while IFS= read -r line
+  do
+    echo "$line" | cut -d ' ' -f2- | xargs -n1 | while IFS= read -r version
+    do
+      version_patches=$(echo "MISC_RUBY_PATCHES_${version}" | tr '.' '_')
+
+      bash -c "MISC_RUBY_APPLY_PATCHES='${!version_patches}' ${install_command} ruby ${version}"
+    done
+  done
+
+  # Install Node.js first for later installation of Node.js-based dependencies (for example, markdownlint-cli2)
+  bash -c "MAKELEVEL=0 ${arch_opts:+$arch_opts }${install_command} nodejs"
+
+  bash -c "MAKELEVEL=0 ${arch_opts:+$arch_opts }${install_command}"
+
+  return $?
+}
+
+mise_install() {
+  if [[ "${OSTYPE}" == "darwin"* ]] && ! command -v mise &> /dev/null; then
+    error "mise is not installed. Run the following commands:
+      rm $PWD/.cache/.kdk_platform_setup $PWD/.cache/.kdk_bootstrapped\n
+      make bootstrap"
+  elif ! [[ -x "$MISE_INSTALL_PATH" ]]; then
+    header_print "Installing mise..."
+    curl -fsSL https://mise.run | bash
+  fi
+
+  # For more information on setting up mise in different shells, see https://mise.jdx.dev/installing-mise.html#shells.
+  add_tool_initializer "${HOME}/.bashrc" "eval \"\$(${MISE_INSTALL_PATH} activate bash)\""
+  add_tool_initializer "${HOME}/.zshrc" "eval \"\$(${MISE_INSTALL_PATH} activate zsh)\""
+  add_tool_initializer "${HOME}/.config/fish/config.fish" "${MISE_INSTALL_PATH} activate fish | source"
+  add_tool_initializer "${HOME}/.config/elvish/rc.elv" "var mise: = (ns [&])\neval (\$(${MISE_INSTALL_PATH} activate elvish | slurp)) &ns=\$mise: &on-end={|ns| set mise: = \$ns }\nmise:activate"
+  add_tool_initializer "${HOME}/.config/nushell/env.nu" "let mise_path = \$nu.default-config-dir | path join mise.nu\n^mise activate nu | save \$mise_path --force"
+  add_tool_initializer "${HOME}/.config/nushell/config.nu" "use (\$nu.default-config-dir | path join mise.nu)"
+
+  return 0
+}
+
+mise_activate() {
+  if [[ ! "$PATH" =~ "mise/shims" ]] && [[ -z "${CI:-}" ]]; then
+    # We need to enable shims here so mise picks up new tools as they're added,
+    # since this script is running non-interactively.
+    # https://mise.jdx.dev/dev-tools/shims.html#shims-vs-path
+    eval "$($MISE_INSTALL_PATH activate bash --shims)"
+  fi
+}
+
+mise_install_tools() {
+  header_print "Installing mise tools..."
+  generic_install_tools "mise install -y"
+  return $?
+}
+
+set_mise_paths() {
+  local mise_detected_path
+  mise_detected_path=$(type -p mise | cut -d' ' -f3 2>/dev/null) || true
+
+  MISE_INSTALL_PATH="${MISE_INSTALL_PATH:-$HOME/.local/bin/mise}"
+  MISE_DATA_DIR="${MISE_DATA_DIR:-$HOME/.local/share/mise}"
+
+  if [[ -x "$mise_detected_path" ]]; then
+    MISE_INSTALL_PATH="$mise_detected_path"
+  elif [[ "${OSTYPE}" == "darwin"* ]] && [[ -x "$(brew --prefix 2>/dev/null)/bin/mise" ]]; then
+    MISE_INSTALL_PATH="$(brew --prefix)/bin/mise"
+  fi
+}
+
+kdk_mark_bootstrapped() {
+  mkdir -p "${KDK_CACHE_DIR}"
+  touch "${KDK_BOOTSTRAPPED_FILE}"
+
+  echo
+  info "Bootstrap successful!"
+}
+
+###############################################################################
+
+if [[ -f "${KDK_BOOTSTRAPPED_FILE}" ]]; then
+  info "This KDK has already been bootstrapped."
+  info "Remove '${KDK_BOOTSTRAPPED_FILE}' to re-bootstrap."
+  exit 0
+fi
+
+if ! common_preflight_checks; then
+  error "Failed to perform preflight checks." >&2
+fi
+
+if ! setup_platform; then
+  error "Failed to install set up platform." >&2
+fi
+
+if mise_config_enabled; then
+  set_mise_paths
+
+  if ! mise_install; then
+    error "Failed to install mise." >&2
+  fi
+
+  mise_activate
+
+  if ! ensure_kdk_in_default_gems; then
+    error "Failed to ensure kdk is in default gems." >&2
+  fi
+
+  if ! mise_install_tools; then
+    error "Failed to install some mise tools." >&2
+  fi
+else
+  if ! asdf_install; then
+    error "Failed to install asdf." >&2
+  fi
+
+  if ! ensure_kdk_in_default_gems; then
+    error "Failed to ensure kdk is in default gems." >&2
+  fi
+
+  if ! asdf_install_update_plugins; then
+    error "Failed to install some asdf plugins." >&2
+  fi
+
+  if ! asdf_install_tools; then
+    error "Failed to install some asdf tools." >&2
+  fi
+fi
+
+if ! kdk_install_kdk_clt; then
+  error "Failed to run kdk_install_kdk_clt()." >&2
+fi
+
+if ! configure_ruby; then
+  error "Failed to configure Ruby." >&2
+fi
+
+kdk_mark_bootstrapped

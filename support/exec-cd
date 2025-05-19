@@ -1,0 +1,27 @@
+#!/usr/bin/env ruby
+#
+# frozen_string_literal: true
+
+# This script implements 'cd foo && exec bar' without the need to invoke
+# /bin/sh for the ' && '.
+
+require_relative '../lib/kdk'
+
+abort "Usage: #{$PROGRAM_NAME} DIRECTORY COMMAND [ARGUMENTS ...]" if ARGV.count < 2
+
+Dir.chdir(ARGV.shift)
+
+cmd = ARGV
+if KDK::Dependencies.asdf_available?
+  cmd = %w[asdf env ruby] + cmd
+elsif KDK::Dependencies.mise_available?
+  cmd = %w[mise exec --] + cmd
+end
+
+if KDK::Dependencies.bundler_loaded?
+  Bundler.with_unbundled_env do
+    exec(*cmd)
+  end
+else
+  exec(*cmd)
+end

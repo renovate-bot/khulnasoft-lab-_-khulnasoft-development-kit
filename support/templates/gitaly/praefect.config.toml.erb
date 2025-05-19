@@ -1,0 +1,40 @@
+# Example Praefect configuration file
+# # TCP address to listen on
+# listen_addr = "<%= config.hostname %>:2305"
+
+# # Praefect can listen on a socket when placed on the same machine as all clients
+socket_path = "<%= config.praefect.address %>"
+# # Praefect will only replicate whitelisted repositories
+# # Optional: export metrics via Prometheus
+<%= '#' unless config.prometheus.enabled? %>prometheus_listen_addr = "<%= config.hostname %>:<%= config.prometheus.praefect_exporter_port %>"
+
+# # You can optionally configure Praefect to output JSON-formatted log messages to stdout
+[logging]
+format = "json"
+# # Optional: Set log level to only log entries with that severity or above
+# # One of, in order: debug, info, warn, errror, fatal, panic
+# # Defaults to "info"
+#   level = "warn"
+
+[failover]
+read_only_after_failover = false # favors availability over consistency
+
+[[virtual_storage]]
+name = 'default'
+
+# # One or more Gitaly servers need to be configured to be managed. The names
+# of each server are used to link multiple nodes, or `gitaly_server`s together
+# as shard. listen_addr should be unique for all nodes.
+# Requires the protocol to be defined, e.g. tcp://host.tld:1234
+
+<% config.praefect.__nodes.each do |praefect_node| %>
+[[virtual_storage.node]]
+  storage = "<%= praefect_node[:storage] %>"
+  address = "unix:<%= praefect_node[:address] %>"
+<% end %>
+
+[database]
+host = "<%= config.praefect.database.host %>"
+port = <%= config.praefect.database.port %>
+dbname = "<%= config.praefect.database.dbname %>"
+sslmode = "<%= config.praefect.database.sslmode %>"

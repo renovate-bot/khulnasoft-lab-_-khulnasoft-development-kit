@@ -1,0 +1,101 @@
+# Example Gitaly configuration file
+
+socket_path = "<%= node.address %>"
+
+# The directory where Gitaly's executables are stored
+bin_dir = "<%= config.gitaly.__build_bin_path %>"
+# The directory where Gitaly creates all data required at runtime.
+runtime_dir = "<%= node.runtime_dir %>"
+
+# # Optional: listen on a TCP socket. This is insecure (no authentication)
+# listen_addr = "<%= config.hostname %>:9999"
+# tls_listen_addr = "<%= config.hostname %>:8888
+
+# # Optional: export metrics via Prometheus
+<%= '#' unless config.prometheus.enabled? %>prometheus_listen_addr = "<%= config.hostname %>:<%= config.prometheus.gitaly_exporter_port %>"
+
+# # Optional: authenticate Gitaly requests using a shared secret
+[auth]
+<% if config.gitaly.auth_token != '' %>
+token = "<%= config.gitaly.auth_token %>"
+<% else %>
+# token = 'abc123secret'
+<% end %>
+# transitioning = false # Set `transitioning` to true to temporarily allow unauthenticated while rolling out authentication.
+
+# [tls]
+# certificate_path = '/home/git/cert.cert'
+# key_path = '/home/git/key.pem'
+
+<%- if config.gitaly.backup? -%>
+[backup]
+go_cloud_url = "<%= config.gitaly.backup.go_cloud_url %>"
+<%- end -%>
+
+# # Git settings
+[git]
+use_bundled_binaries = true
+catfile_cache_size = 10
+ignore_gitconfig = true
+
+<%- node.gitconfig.each do |gitconfig| -%>
+[[git.config]]
+key = "<%= gitconfig["key"] %>"
+value = "<%= gitconfig["value"] %>"
+
+<%- end -%>
+<%- node.__storages.each do |storage| -%>
+[[storage]]
+name = "<%= storage.name %>"
+path = "<%= storage.path %>"
+
+<%- end -%>
+
+# # You can optionally configure more storages for this Gitaly instance to serve up
+#
+# [[storage]]
+# name = "other_storage"
+# path = "/mnt/other_storage/repositories"
+#
+
+# # You can optionally configure Gitaly to output JSON-formatted log messages to stdout
+[logging]
+# # Optional: Set log level to only log entries with that severity or above
+# # One of, in order: debug, info, warn, errror, fatal, panic
+# # Defaults to "info"
+level = "info"
+format = "json"
+dir = "<%= node.log_dir %>"
+
+# # Additionally exceptions from the Go server can be reported to Sentry
+# sentry_dsn = "https://<key>:<secret>@sentry.io/<project>"
+
+# # You can optionally configure Gitaly to record histogram latencies on GRPC method calls
+# [prometheus]
+# grpc_latency_buckets = [0.001, 0.005, 0.025, 0.1, 0.5, 1.0, 10.0, 30.0, 60.0, 300.0, 1500.0]
+
+[hooks]
+custom_hooks_dir = "<%= kdk_root.join('gitaly-custom-hooks') %>"
+
+[gitlab]
+url = "<%= config.__uri %>"
+secret_file = "<%= config.khulnasoft_shell.dir.join('.khulnasoft_shell_secret') %>"
+
+[gitlab.http-settings]
+<%- unless config.common.ca_path.empty? -%>
+ca_path = "<%= config.common.ca_path %>"
+<%- end -%>
+<%- if config.https? -%>
+ca_file = "<%= kdk_root.join('localhost.crt') %>"
+<%- end -%>
+self_signed_cert = false
+
+# # You can adjust the concurrency of each RPC endpoint
+# [[concurrency]]
+# rpc = "/gitaly.RepositoryService/GarbageCollect"
+# max_per_repo = 1
+
+<%- if config.gitaly.transactions.enabled? -%>
+[transactions]
+enabled = true
+<% end %>

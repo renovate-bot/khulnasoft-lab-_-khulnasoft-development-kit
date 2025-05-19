@@ -1,0 +1,48 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: kdk
+  labels:
+    app: kdk
+spec:
+  ports:
+    - port: 3000
+  selector:
+    app: kdk
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kdk
+spec:
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: kdk
+  template:
+    metadata:
+      labels:
+        app: kdk
+    spec:
+      containers:
+        - name: kdk
+          image: khulnasoft-lab/khulnasoft-development-kit
+          imagePullPolicy: Always
+          ports:
+          - name: kdk
+            containerPort: 3000
+          command:
+            - /bin/bash
+            - -c
+            - >
+              source /home/kdk/.bash_profile;
+              gem install khulnasoft-development-kit;
+              cd /home/kdk;
+              git clone https://github.com/khulnasoft-lab/khulnasoft-development-kit.git;
+              cd khulnasoft-development-kit;
+              echo 'hostname: 0.0.0.0' > kdk.yml;
+              kdk install;
+              kdk start;
+              kdk tail

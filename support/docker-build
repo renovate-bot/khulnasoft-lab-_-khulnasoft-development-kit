@@ -1,0 +1,54 @@
+#!/bin/bash
+#
+# Build docker image $1 from dir $2 for CI branch and repo
+
+set -e
+
+DIR="$1"
+IMAGE="$2"
+
+if [[ -z $DIR ]]; then
+  echo "Error: Directory must exist"
+  echo "Usage: $0 <dir> [image]"
+  echo
+  echo "Build docker <image> from <dir> for current CI commit and repo"
+  echo
+  echo "Example:"
+  echo "  ./support/docker-build support/gitpod"
+  echo "  ./support/docker-build support/gitlab-remote-development workspace"
+  exit 1
+fi
+
+if [[ -z $IMAGE ]]; then
+  IMAGE="$(basename "$DIR"):local"
+fi
+if [[ -n $CI_REGISTRY_IMAGE ]]; then
+  IMAGE="$CI_REGISTRY_IMAGE/$IMAGE"
+fi
+
+REPO_URL="$CI_MERGE_REQUEST_SOURCE_PROJECT_URL"
+COMMIT="${CI_MERGE_REQUEST_SOURCE_BRANCH_SHA:-${CI_COMMIT_SHA}}"
+
+# import yellow
+# shellcheck source=support/bashlib/echo.sh
+source "$(dirname "$0")/bashlib/echo.sh"
+
+yellow "Bulding image: $IMAGE"
+yellow "From path:     $DIR"
+yellow "For repo:      $REPO_URL"
+yellow "For commit:    $COMMIT"
+
+cd "$DIR" || { echo "Failed to change directory to $DIR"; exit 1; }
+
+docker build \
+  --progress=plain \
+  --build-arg CI="$CI" \
+  --build-arg git_remote_origin_url="$REPO_URL" \
+  --build-arg git_checkout_branch="$COMMIT" \
+  --tag "$IMAGE" .
+
+if [[ -n $CI_REGISTRY_IMAGE ]]; then
+  docker push "$IMAGE"
+else
+  yellow "Registry is disabled, not pushing the $IMAGE image."
+fi

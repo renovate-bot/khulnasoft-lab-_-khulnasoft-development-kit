@@ -1,0 +1,19 @@
+# shellcheck disable=SC2086,SC2154 shell=bash
+ARG from_image
+FROM ${from_image}
+
+ARG KHULNASOFT_CI_CACHE_DIR
+ARG KHULNASOFT_CI_CACHE_GO_DIR
+ARG SHA
+ARG REPO_URL
+ARG KDK_DEBUG
+
+RUN cd /home/kdk/kdk && git remote add integration "$REPO_URL" && git fetch integration "$SHA" && git checkout "$SHA"
+RUN cd /home/kdk/kdk && KDK_SELF_UPDATE=0 kdk update && \
+  (cd /home/kdk/kdk && KDK_KILL_CONFIRM=true kdk kill) && \
+  (du -smx "${KHULNASOFT_CI_CACHE_DIR}"/* || true) && \
+  (sudo rm -rf "${KHULNASOFT_CI_CACHE_GO_DIR}" || true) && \
+  (du -smx "${KHULNASOFT_CI_CACHE_DIR}"/* || true) && \
+  (du -smx /home/kdk/.cache/* || true) && \
+  (sudo rm -rf /home/kdk/.cache/yarn || true) && \
+  (du -smx /home/kdk/.cache/* || true)

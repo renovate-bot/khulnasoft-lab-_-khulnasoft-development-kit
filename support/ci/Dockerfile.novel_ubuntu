@@ -1,0 +1,23 @@
+# shellcheck disable=SC2086,SC2154 shell=bash
+FROM ubuntu:22.04
+
+ARG BRANCH=main
+ARG TOOL_VERSION_MANAGER=mise
+
+ENV DEBIAN_FRONTEND=noninteractive
+RUN export LC_ALL=en_US.UTF-8
+RUN export LANG=en_US.UTF-8
+RUN export LANGUAGE=en_US.UTF-8
+ENV TOOL_VERSION_MANAGER="${TOOL_VERSION_MANAGER}"
+
+RUN apt update && apt install -y curl git make sudo locales locales-all
+
+RUN useradd --user-group --create-home --groups sudo --shell /bin/bash kdk
+RUN echo "kdk ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/kdk_no_password
+
+USER kdk
+WORKDIR /home/kdk
+
+SHELL ["/bin/bash", "-i", "-c"]
+
+RUN curl --fail "https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/raw/${BRANCH}/support/install" | bash -s - kdk "${BRANCH}" "${TOOL_VERSION_MANAGER}" "true"

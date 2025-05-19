@@ -1,0 +1,600 @@
+---
+action_cable:
+  worker_pool_size: 4
+asdf:
+  opt_out: false
+cells:
+  enabled: false
+  instance_count: 0
+  instances: []
+  port_offset: 0
+  postgresql_clusterwide:
+    host: "/home/git/kdk/postgresql"
+    port: 5432
+charts_khulnasoft:
+  auto_update: true
+  enabled: false
+clickhouse:
+  bin: "/usr/bin/clickhouse"
+  data_dir: "/home/git/kdk/clickhouse/data"
+  dir: "/home/git/kdk/clickhouse"
+  enabled: false
+  http_port: 8123
+  interserver_http_port: 9009
+  log_dir: "/home/git/kdk/log/clickhouse"
+  log_level: trace
+  max_memory_usage: 1000000000
+  max_server_memory_usage: 2000000000
+  max_thread_pool_size: 1000
+  tcp_port: 9001
+common:
+  ca_path: ''
+dev:
+  checkmake:
+    version: 8915bd4
+docs_khulnasoft_com:
+  auto_update: true
+  enabled: false
+  port: 1313
+duo_workflow:
+  auto_update: true
+  debug: true
+  enabled: false
+  executor_binary_url: http://127.0.0.1:3000/assets/duo-workflow-executor.tar.gz
+  executor_build_arch: amd64
+  executor_build_os: linux
+  llm_cache: false
+  port: 50052
+elasticsearch:
+  enabled: false
+  version: 8.17.4
+env:
+  RAILS_ENV: development
+  CUSTOMER_PORTAL_URL: https://customers.staging.khulnasoft.com
+  KHULNASOFT_LICENSE_MODE: test
+kdk:
+  ask_to_restart_after_update: true
+  auto_rebase_projects: false
+  auto_reconfigure: true
+  debug: false
+  overwrite_changes: false
+  preflight_checks_opt_out: false
+  protected_config_files: []
+  rubygems_update_opt_out: false
+  runit_wait_secs: 20
+  start_hooks:
+    after: []
+    before: []
+  stop_hooks:
+    after: []
+    before: []
+  system_packages_opt_out: false
+  update_hooks:
+    after: []
+    before:
+    - support/exec-cd khulnasoft bin/spring stop || true
+  use_bash_shim: false
+geo:
+  enabled: false
+  experimental:
+    allow_secondary_tests_in_primary: false
+  node_name: kdk
+  registry_replication:
+    enabled: false
+    primary_api_url: http://localhost:5100
+  secondary: false
+git:
+  bin: "/usr/local/bin/git"
+git_repositories: []
+gitaly:
+  address: "/home/git/kdk/gitaly.socket"
+  assembly_dir: "/home/git/kdk/gitaly/assembly"
+  auth_token: ''
+  auto_update: true
+  backup:
+    enabled: false
+    go_cloud_url: s3://gitaly-backups?awssdk=v2&disable_https=true&use_path_style=true&region=kdk&endpoint=http%3A%2F%2F127.0.0.1%3A9000
+  config_file: "/home/git/kdk/gitaly/gitaly.config.toml"
+  dir: "/home/git/kdk/gitaly"
+  enable_all_feature_flags: false
+  enabled: false
+  env:
+    AWS_ACCESS_KEY_ID: minio
+    AWS_SECRET_ACCESS_KEY: kdk-minio
+  gitconfig: []
+  log_dir: "/home/git/kdk/log/gitaly"
+  repository_storages: "/home/git/kdk/repository_storages"
+  runtime_dir: "/home/git/kdk/tmp"
+  skip_compile: true
+  skip_setup: false
+  storage_count: 1
+  storage_dir: "/home/git/kdk/repositories"
+  transactions:
+    enabled: false
+khulnasoft:
+  auto_update: true
+  cache_classes: false
+  cell:
+    database:
+      skip_sequence_alteration: true
+    id: 1
+  default_branch: master
+  dir: "/home/git/kdk/khulnasoft"
+  gitaly_disable_request_limits: false
+  lefthook_enabled: true
+  log_dir: "/home/git/kdk/khulnasoft/log"
+  rails:
+    address: ''
+    allowed_hosts: []
+    application_settings_cache_seconds: 60
+    bootsnap: true
+    bundle_gemfile: "/home/git/kdk/khulnasoft/Gemfile"
+    databases:
+      ci:
+        enabled: true
+        use_main_database: false
+      embedding:
+        enabled: false
+      sec:
+        enabled: false
+        use_main_database: true
+    hostname: 127.0.0.1
+    https:
+      enabled: false
+    multiple_databases: false
+    port: 3000
+    puma:
+      threads_max: 4
+      threads_min: 1
+      workers: 2
+    session_store:
+      cookie_key: _khulnasoft_session
+      session_cookie_token_prefix: cell-1
+      unique_cookie_key_postfix: false
+  rails_background_jobs:
+    enabled: true
+    sidekiq_exporter_enabled: false
+    sidekiq_exporter_port: 3807
+    sidekiq_health_check_enabled: false
+    sidekiq_health_check_port: 3907
+    sidekiq_queues:
+    - default
+    - mailers
+    sidekiq_routing_rules:
+    - - "*"
+      - default
+    timeout: 10
+    verbose: false
+  sidekiq_cron:
+    enabled: false
+    sidekiq_queues:
+    - cronjob
+    timeout: 10
+    verbose: false
+  topology_service:
+    address: 127.0.0.1:9095
+    ca_file: "/home/git/kdk/khulnasoft-topology-service/tmp/certs/ca-cert.pem"
+    certificate_file: "/home/git/kdk/khulnasoft-topology-service/tmp/certs/client-cert.pem"
+    enabled: true
+    private_key_file: "/home/git/kdk/khulnasoft-topology-service/tmp/certs/client-key.pem"
+khulnasoft_ai_gateway:
+  auto_update: true
+  enabled: false
+  port: 5052
+  version: main
+khulnasoft_elasticsearch_indexer:
+  auto_update: true
+khulnasoft_http_router:
+  auto_update: true
+  enabled: true
+  khulnasoft_rules_config: session_prefix
+  port: 9393
+  use_distinct_port: false
+khulnasoft_k8s_agent:
+  agent_listen_address: 127.0.0.1:8150
+  agent_listen_network: tcp
+  auto_update: true
+  autoflow:
+    enabled: false
+    temporal:
+      certificate_file: ''
+      enable_tls: false
+      host_port: localhost:7233
+      key_file: ''
+      namespace: default
+      workflow_data_encryption:
+        codec_server:
+          authorized_user_emails: []
+          listen:
+            address: 127.0.0.1:8142
+            network: tcp
+          nginx_url_path: "/-/autoflow/codec-server/"
+          temporal_oidc_url: https://login.tmprl.cloud/.well-known/openid-configuration
+          temporal_web_ui_url: https://cloud.temporal.io
+        enabled: false
+  configure_only: false
+  enabled: false
+  internal_api_listen_address: 127.0.0.1:8153
+  internal_api_listen_network: tcp
+  k8s_api_listen_address: 127.0.0.1:8154
+  k8s_api_listen_network: tcp
+  otlp_ca_certificate_file: ''
+  otlp_endpoint: ''
+  otlp_token_secret_file: ''
+  private_api_listen_address: 127.0.0.1:8155
+  private_api_listen_network: tcp
+  run_from_source: false
+khulnasoft_observability_backend:
+  auto_update: true
+  enabled: false
+khulnasoft_operator:
+  auto_update: true
+  enabled: false
+khulnasoft_pages:
+  access_control: false
+  auth_client_id: ''
+  auth_client_secret: ''
+  auth_scope: api
+  auto_update: true
+  enable_custom_domains: false
+  enabled: false
+  host: 127.0.0.1.nip.io
+  port: 3010
+  propagate_correlation_id: false
+  secret_file: "/home/git/kdk/khulnasoft-pages-secret"
+  verbose: false
+khulnasoft_runner:
+  auto_update: true
+  enabled: false
+khulnasoft_shell:
+  auto_update: true
+  dir: "/home/git/kdk/khulnasoft-shell"
+  lfs:
+    pure_ssh_protocol_enabled: false
+  pat:
+    allowed_scopes: []
+    enabled: true
+  skip_compile: true
+  skip_setup: false
+khulnasoft_topology_service:
+  auto_update: true
+  certificate_file: "/home/git/kdk/khulnasoft-topology-service/tmp/certs/server-cert.pem"
+  client_certificate_file: "/home/git/kdk/khulnasoft-topology-service/tmp/certs/client-cert.pem"
+  enabled: true
+  grpc_port: 9095
+  key_file: "/home/git/kdk/khulnasoft-topology-service/tmp/certs/server-key.pem"
+  rest_port: 9096
+khulnasoft_ui:
+  auto_update: true
+  enabled: false
+grafana:
+  enabled: false
+  port: 4000
+hostname: 127.0.0.1
+https:
+  enabled: false
+license:
+  customer_portal_url: https://customers.staging.khulnasoft.com
+  license_mode: test
+listen_address: 127.0.0.1
+load_balancing:
+  discover:
+    enabled: false
+  enabled: false
+mattermost:
+  enabled: false
+  image: mattermost/mattermost-preview
+  port: 8065
+mise:
+  enabled: false
+nats:
+  auto_update: true
+  enabled: false
+nginx:
+  bin: "/usr/local/bin/nginx"
+  enabled: false
+  http:
+    enabled: false
+    port: 8080
+  http2:
+    enabled: false
+  listen_address: 127.0.0.1
+  sendfile:
+    enabled: true
+  ssl:
+    certificate: localhost.crt
+    key: localhost.key
+object_store:
+  backup_remote_directory: ''
+  connection:
+    provider: AWS
+    aws_access_key_id: minio
+    aws_secret_access_key: kdk-minio
+    region: kdk
+    endpoint: http://127.0.0.1:9000
+    path_style: true
+  console_port: 9002
+  consolidated_form: false
+  enabled: false
+  host: 127.0.0.1
+  objects:
+    artifacts:
+      bucket: artifacts
+    backups:
+      bucket: backups
+    external_diffs:
+      bucket: external-diffs
+    lfs:
+      bucket: lfs-objects
+    uploads:
+      bucket: uploads
+    packages:
+      bucket: packages
+    dependency_proxy:
+      bucket: dependency-proxy
+    terraform_state:
+      bucket: terraform
+    pages:
+      bucket: pages
+    ci_secure_files:
+      bucket: ci-secure-files
+    gitaly_backups:
+      bucket: gitaly-backups
+  port: 9000
+omniauth:
+  github:
+    client_id: ''
+    client_secret: ''
+    enabled: false
+  khulnasoft:
+    app_id: ''
+    app_secret: ''
+    enabled: false
+    scope: read_user
+  google_oauth2:
+    client_id: ''
+    client_secret: ''
+    enabled: false
+  group_saml:
+    enabled: false
+  openid_connect:
+    args: {}
+    enabled: false
+omnibus_khulnasoft:
+  auto_update: true
+  enabled: false
+openbao:
+  auto_update: true
+  bin: "/home/git/kdk/openbao/bin/bao"
+  cluster_port: 8201
+  dev_token: dev-only-token
+  enabled: false
+  port: 8200
+  root_token: ''
+  unseal_key: ''
+  vault_proxy:
+    bin: "/home/git/kdk/openbao/bin/bao"
+    enabled: false
+    port: 8100
+openldap:
+  alt:
+    host: 127.0.0.1
+  enabled: false
+  main:
+    host: 127.0.0.1
+packages: {}
+pgbouncer_replicas:
+  enabled: false
+pgvector:
+  auto_update: false
+  enabled: false
+  repo: https://github.com/pgvector/pgvector.git
+  version: v0.7.2
+port: 3000
+port_offset: 0
+postgresql:
+  active_version: '16.8'
+  bin: "/usr/local/bin/postgres"
+  bin_dir: "/usr/local/bin"
+  data_dir: "/home/git/kdk/postgresql/data"
+  dir: "/home/git/kdk/postgresql"
+  enabled: true
+  geo:
+    dir: "/home/git/kdk/postgresql-geo"
+    host: "/home/git/kdk/postgresql-geo"
+    port: 5431
+  host: "/home/git/kdk/postgresql"
+  max_connections: 100
+  multiple_replicas:
+    enabled: false
+  port: 5432
+  replica:
+    data_directory: "/home/git/kdk/postgresql-replica/data"
+    enabled: false
+    host: "/home/git/kdk/postgresql-replica"
+    port1: 6432
+    port2: 6433
+    root_directory: "/home/git/kdk/postgresql-replica"
+  replica_2:
+    data_directory: "/home/git/kdk/postgresql-replica-2/data"
+    enabled: false
+    host: "/home/git/kdk/postgresql-replica-2"
+    port1: 6434
+    port2: 6435
+    root_directory: "/home/git/kdk/postgresql-replica-2"
+  replica_data_dir: "/home/git/kdk/postgresql-replica/data"
+  replica_dir: "/home/git/kdk/postgresql-replica"
+  replication_user: khulnasoft_replication
+praefect:
+  address: "/home/git/kdk/praefect.socket"
+  config_file: "/home/git/kdk/gitaly/praefect.config.toml"
+  database:
+    dbname: praefect_development
+    host: "/home/git/kdk/postgresql"
+    port: 5432
+    sslmode: disable
+  enabled: true
+  node_count: 1
+prometheus:
+  enabled: false
+  extra_hosts: []
+  gitaly_exporter_port: 9236
+  khulnasoft_ai_gateway_exporter_port: 8082
+  khulnasoft_shell_exporter_port: 9122
+  port: 9090
+  praefect_exporter_port: 10101
+  workhorse_exporter_port: 9229
+rails_web:
+  enabled: true
+redis:
+  custom_config: {}
+  databases:
+    development:
+      cache: 2
+      queues: 1
+      rate_limiting: 4
+      repository_cache: 2
+      sessions: 5
+      shared_state: 0
+      trace_chunks: 3
+    test:
+      cache: 12
+      queues: 11
+      rate_limiting: 14
+      repository_cache: 12
+      sessions: 15
+      shared_state: 10
+      trace_chunks: 13
+  dir: "/home/git/kdk/redis"
+  enabled: true
+redis_cluster:
+  dev_port_1: 6000
+  dev_port_2: 6001
+  dev_port_3: 6002
+  dir: "/home/git/kdk/redis-cluster"
+  enabled: false
+  test_port_1: 6003
+  test_port_2: 6004
+  test_port_3: 6005
+registry:
+  api_host: 127.0.0.1
+  auth_enabled: true
+  auto_update: true
+  compatibility_schema1_enabled: false
+  database:
+    dbname: registry_dev
+    enabled: false
+    host: "/home/git/kdk/postgresql"
+    port: 5432
+    sslmode: disable
+  dir: "/home/git/kdk/container-registry"
+  enabled: false
+  host: 127.0.0.1
+  listen_address: 127.0.0.1
+  notifications_enabled: false
+  port: 5100
+  read_only_maintenance_enabled: false
+  self_signed: false
+  version: v4.14.0-khulnasoft
+relative_url_root: ''
+repositories_root: "/home/git/kdk/repositories"
+repository_storages: "/home/git/kdk/repository_storages"
+restrict_cpu_count: -1
+runner:
+  bin: "/usr/local/bin/khulnasoft-runner"
+  concurrent: 1
+  config_file: "/home/git/kdk/khulnasoft-runner-config.toml"
+  docker_host: ''
+  docker_pull: always
+  enabled: false
+  executor: docker
+  extra_hosts: []
+  image: khulnasoft/khulnasoft-runner:latest
+  install_mode: binary
+  network_mode_host: false
+  pull_policy: if-not-present
+  token: 'DEFAULT TOKEN: Register your runner to get a valid token'
+siphon:
+  auto_update: true
+  enabled: false
+  tables:
+  - namespaces
+  - projects
+smartcard:
+  enabled: false
+  hostname: smartcard.kdk.test
+  port: 3444
+  san_extensions: true
+  ssl:
+    certificate: smartcard.kdk.test.pem
+    client_cert_ca: "/mkcert/rootCA.pem"
+    key: smartcard.kdk.test-key.pem
+snowplow_micro:
+  enabled: false
+  image: snowplow/snowplow-micro:latest
+  port: 9091
+sshd:
+  additional_config: ''
+  authorized_keys_file: "/home/git/kdk/.ssh/authorized_keys"
+  bin: "/usr/local/sbin/sshd"
+  enabled: true
+  host_key: ''
+  host_key_algorithms:
+  - rsa
+  - ed25519
+  host_keys:
+  - "/home/git/kdk/openssh/ssh_host_rsa_key"
+  - "/home/git/kdk/openssh/ssh_host_ed25519_key"
+  listen_address: 127.0.0.1
+  listen_port: 2222
+  proxy_protocol: false
+  use_khulnasoft_sshd: true
+  user: git
+  web_listen: ''
+telemetry:
+  enabled: false
+  environment: native
+  username: ''
+tracer:
+  build_tags: tracer_static tracer_static_jaeger
+  jaeger:
+    enabled: false
+    listen_address: 127.0.0.1
+    version: 1.21.0
+username: git
+vite:
+  enabled: false
+  hot_module_reloading: true
+  https:
+    enabled: false
+  port: 3038
+  vue_version: 2
+webpack:
+  allowed_hosts: []
+  enabled: true
+  host: 127.0.0.1
+  incremental: true
+  incremental_ttl: 30
+  live_reload: true
+  port: 3808
+  public_address: ''
+  sourcemaps: true
+  static: false
+  vendor_dll: false
+  vue_version: 2
+workhorse:
+  ci_long_polling_seconds: 0
+  configured_port: 3333
+  enabled: true
+  skip_compile: true
+  skip_setup: false
+zoekt:
+  auto_update: true
+  enabled: false
+  index_port_dev_1: 6080
+  index_port_dev_2: 6081
+  index_port_test: 6060
+  indexer_version: main
+  web_port_dev_1: 6090
+  web_port_dev_2: 6091
+  web_port_test: 6070

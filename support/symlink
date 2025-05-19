@@ -1,0 +1,21 @@
+#!/usr/bin/env ruby
+#
+# frozen_string_literal: true
+
+require 'fileutils'
+require 'time'
+
+def main(symlink, target)
+  return if File.symlink?(symlink)
+
+  if File.exist?(symlink)
+    # there is an old directory at the symlink location
+    FileUtils.mv(symlink, "#{symlink}.#{Time.now.iso8601}")
+  end
+
+  FileUtils.ln_s(target, symlink)
+end
+
+abort "Usage: #{$PROGRAM_NAME} SYMLINK TARGET" if ARGV.count != 2
+
+main(*ARGV)

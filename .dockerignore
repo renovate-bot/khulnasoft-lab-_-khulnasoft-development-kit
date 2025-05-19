@@ -1,0 +1,10 @@
+# https://docs.docker.com/engine/reference/builder/#dockerignore-file
+# Clear build context, and include only paths used by Dockerfile
+/*
+!/.gitlab-ci-cache
+!/.tool-versions
+!/bin
+!/gem
+!/packages*.txt
+!/support/bootstrap
+!/support/bootstrap-common.sh

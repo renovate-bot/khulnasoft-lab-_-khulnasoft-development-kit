@@ -1,0 +1,10 @@
+development:
+  cluster:
+    - "redis://<%= config.hostname%>:<%= config.redis_cluster.dev_port_1%>"
+    - "redis://<%= config.hostname%>:<%= config.redis_cluster.dev_port_2%>"
+    - "redis://<%= config.hostname%>:<%= config.redis_cluster.dev_port_3%>"
+test:
+  cluster:
+    - "redis://<%= config.hostname%>:<%= config.redis_cluster.test_port_1%>"
+    - "redis://<%= config.hostname%>:<%= config.redis_cluster.test_port_2%>"
+    - "redis://<%= config.hostname%>:<%= config.redis_cluster.test_port_3%>"

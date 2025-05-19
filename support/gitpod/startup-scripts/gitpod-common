@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+set -e
+
+log() {
+  echo "$(date) – $1" | tee -a /workspace/startup.log
+}
+
+is_gitpod_instance() {
+  [ -n "$GITPOD_WORKSPACE_ID" ]
+}
+
+is_khulnasoft_available() {
+  # Check /users/sign_in which returns JSON, but we're only interested in the exit code
+  #
+  # We use http://127.0.0.1:3000 instead of the public hostname
+  # because it's no longer possible to access as specific cookies are required
+  printf "Waiting for KhulnaSoft at %s/users/sign_in to be up and returning true ..." "$1"
+  timeout 15m bash -c "until curl --silent --no-buffer --fail http://127.0.0.1:3000/users/sign_in > /dev/null 2>&1; do printf '.'; sleep 5; done"
+}

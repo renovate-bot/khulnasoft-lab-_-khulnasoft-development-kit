@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+exit_and_error () {
+  echo "Error: $1"
+  exit 1
+}
+
+cd ~/khulnasoft-development-kit/gitlab || exit_and_error "Could not change directory to '~/khulnasoft-development-kit/gitlab'"
+
+if ! git -P config --get --global user.email 2&>1 > /dev/null; then
+  echo "---"
+  echo "KDK in a box setup. Please answer the following questions to configure your git client."
+  echo "---"
+  echo "What is your name?"
+  read -r name </dev/tty
+  echo "What is your e-mail address?"
+  read -r email </dev/tty
+  git config --global user.email "$email"
+  git config --global user.name "$name"
+else
+  echo "Git client already configured."
+  echo "Name: $(git -P config --get --global user.name)"
+  echo "Email: $(git -P config --get --global user.email)"
+fi
+
+if [ -f ~/.local/bin/mise ]; then
+  MISE_PREFIX="mise x --"
+else
+  MISE_PREFIX=""
+fi
+
+git remote set-url --push origin git@gitlab.com:gitlab-community/gitlab-org/gitlab.git
+${MISE_PREFIX} kdk config set telemetry.environment 'kdk-in-a-box'
+git config --global core.editor "code --wait"
+
+if [ ! -f ~/.ssh/id_ed25519 ]; then
+  echo "Generating SSH key..."
+  ssh-keygen -t ed25519 -C "KDK-in-a-box" -N "" -f ~/.ssh/id_ed25519 -q
+else
+  echo "Existing SSH key found in ~/.ssh/id_ed25519 - not regenerating..."
+fi
+
+echo "Please add this key to your profile https://gitlab.com/-/user_settings/ssh_keys"
+cat ~/.ssh/id_ed25519.pub
+
+echo "Press any key to continue"
+read -n 1 -s -r -p "" < /dev/tty
+
+${MISE_PREFIX} kdk telemetry </dev/tty

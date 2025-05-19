@@ -1,0 +1,41 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+USAGE = "GIT_REVISION=<revision> #{$PROGRAM_NAME} [git_options] <repo_url> <component_name>".freeze
+
+require_relative '../lib/kdk'
+
+def clone(git_clone_args)
+  default_args = %w[
+    --quiet
+    -c feature.manyFiles=true
+    -c core.fsmonitor=true
+  ]
+  command = %w[git clone] + default_args + git_clone_args
+
+  3.times do
+    sh = KDK::Shellout.new(command)
+    sh.stream
+    return true if sh.success?
+  end
+
+  false
+end
+
+def checkout(clone_dir, revision)
+  KDK::Shellout.new(%w[git -C] + [clone_dir, 'checkout', revision]).execute
+end
+
+def main(argv)
+  revision = ENV.fetch('GIT_REVISION', nil)
+  abort unless clone(argv)
+
+  return unless revision
+
+  clone_dir = argv.last
+  checkout(clone_dir, revision)
+end
+
+abort USAGE unless ARGV.count > 1
+
+main(ARGV)

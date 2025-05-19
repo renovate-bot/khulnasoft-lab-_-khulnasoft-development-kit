@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require_relative '../lib/kdk'
+
+abort "usage: #{File.basename(__FILE__)} COMPONENT WORKTREE REVISION DEFAULT_BRANCH" if ARGV.count < 4
+
+component_name, worktree, revision, default_branch = ARGV
+
+begin
+  exit(1) unless KDK::Project::Base.new(component_name, KDK.config.kdk_root.join(worktree), default_branch).update(revision)
+rescue StandardError => e
+  KDK::Output.abort(e)
+end

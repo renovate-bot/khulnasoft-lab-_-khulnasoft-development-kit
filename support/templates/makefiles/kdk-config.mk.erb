@@ -1,0 +1,135 @@
+asdf_opt_out = <%= config.asdf.opt_out? %>
+mise_enabled = <%= config.mise.enabled? %>
+elasticsearch_enabled = <%= config.elasticsearch.enabled? %>
+elasticsearch_version = <%= config.elasticsearch.version %>
+elasticsearch_architecture = <%= config.elasticsearch.__architecture %>
+<%-# dev -%>
+dev_checkmake_binary = <%= config.dev.checkmake.__versioned_binary %>
+<%-# -%>
+kdk_ask_to_restart_after_update = <%= config.kdk.ask_to_restart_after_update %>
+kdk_debug = <%= config.kdk.__debug? %>
+kdk_root = <%= kdk_root %>
+pgvector_enabled = <%= config.pgvector.enabled? %>
+pgvector_repo = <%= config.pgvector.repo %>
+pgvector_version = <%= config.pgvector.version %>
+geo_enabled = <%= config.geo? %>
+geo_secondary = <%= config.geo.secondary? %>
+gitaly_repo = <%= config.repositories.gitaly %>
+gitaly_build_bin_dir = <%= config.gitaly.__build_bin_path %>
+gitaly_skip_compile = <%= config.gitaly.skip_compile? %>
+gitaly_skip_setup = <%= config.gitaly.skip_setup? %>
+gitaly_version = <%= config.gitaly.__version %>
+khulnasoft_development_root = <%= kdk_root %>
+khulnasoft_http_router_version = <%= config.khulnasoft_http_router.__version %>
+khulnasoft_topology_service_version = <%= config.khulnasoft_topology_service.__version %>
+<%-# KhulnaSoft Docs -%>
+docs_khulnasoft_com_enabled = <%= config.docs_khulnasoft_com.enabled? %>
+docs_khulnasoft_com_repo = <%= config.repositories.docs_khulnasoft_com %>
+<%-# See also runner_enabled -%>
+khulnasoft_runner_enabled = <%= config.khulnasoft_runner.enabled? %>
+khulnasoft_runner_repo = <%= config.repositories.khulnasoft_runner %>
+<%-# -%>
+omnibus_khulnasoft_enabled = <%= config.omnibus_gitlab.enabled? %>
+omnibus_khulnasoft_repo = <%= config.repositories.omnibus_gitlab %>
+<%-# -%>
+charts_khulnasoft_enabled = <%= config.charts_gitlab.enabled? %>
+charts_khulnasoft_repo = <%= config.repositories.charts_gitlab %>
+<%-# -%>
+khulnasoft_operator_enabled = <%= config.khulnasoft_operator.enabled? %>
+khulnasoft_operator_repo = <%= config.repositories.khulnasoft_operator %>
+<%-# -%>
+khulnasoft_elasticsearch_indexer_enabled = <%= config.elasticsearch.enabled %>
+khulnasoft_elasticsearch_indexer_repo = <%= config.repositories.khulnasoft_elasticsearch_indexer %>
+khulnasoft_elasticsearch_indexer_version = <%= config.khulnasoft_elasticsearch_indexer.__version %>
+<%-# -%>
+khulnasoft_zoekt_indexer_repo = <%= config.repositories.khulnasoft_zoekt_indexer %>
+khulnasoft_zoekt_indexer_version = <%= config.zoekt.indexer_version %>
+<%-# -%>
+khulnasoft_ai_gateway_repo = <%= config.repositories.khulnasoft_ai_gateway %>
+khulnasoft_ai_gateway_enabled = <%= config.khulnasoft_ai_gateway.enabled %>
+khulnasoft_ai_gateway_version = <%= config.khulnasoft_ai_gateway.version %>
+<%-# -%>
+khulnasoft_http_router_repo = <%= config.repositories.khulnasoft_http_router %>
+khulnasoft_http_router_enabled = <%= config.khulnasoft_http_router.enabled %>
+<%-# -%>
+khulnasoft_observability_backend_repo = <%= config.repositories.khulnasoft_observability_backend %>
+khulnasoft_observability_backend_enabled = <%= config.khulnasoft_observability_backend.enabled %>
+<%-# -%>
+siphon_enabled = <%= config.siphon.enabled %>
+siphon_repo = <%= config.repositories.siphon %>
+<%-# -%>
+nats_enabled = <%= config.nats.enabled %>
+<%-# -%>
+khulnasoft_topology_service_repo = <%= config.repositories.khulnasoft_topology_service %>
+khulnasoft_topology_service_enabled = <%= config.khulnasoft_topology_service.enabled %>
+<%-# -%>
+openbao_internal_repo = <%= config.repositories.openbao_internal %>
+openbao_enabled = <%= config.openbao.enabled %>
+<%-# -%>
+zoekt_enabled = <%= config.zoekt.enabled? %>
+khulnasoft_k8s_agent_enabled = <%= config.khulnasoft_k8s_agent? %>
+khulnasoft_k8s_agent_repo = <%= config.repositories.khulnasoft_k8s_agent %>
+khulnasoft_k8s_agent_version = <%= config.khulnasoft_k8s_agent.__version %>
+khulnasoft_pages_enabled = <%= config.khulnasoft_pages.enabled? %>
+khulnasoft_pages_port = <%= config.khulnasoft_pages.port %>
+khulnasoft_pages_repo = <%= config.repositories.khulnasoft_pages %>
+khulnasoft_pages_version = <%= config.khulnasoft_pages.__version %>
+khulnasoft_repo = <%= config.repositories.gitlab %>
+khulnasoft_shell_repo = <%= config.repositories.khulnasoft_shell %>
+khulnasoft_shell_version = <%= config.khulnasoft_shell.__version %>
+khulnasoft_shell_skip_compile = <%= config.khulnasoft_shell.skip_compile? %>
+khulnasoft_shell_skip_setup = <%= config.khulnasoft_shell.skip_setup? %>
+<%-# -%>
+khulnasoft_ui_enabled = <%= config.khulnasoft_ui? %>
+khulnasoft_ui_repo = <%= config.repositories.khulnasoft_ui %>
+khulnasoft_default_branch = <%= config.gitlab.default_branch %>
+khulnasoft_lefthook_enabled = <%= config.gitlab.lefthook_enabled? %>
+grafana_enabled = <%= config.grafana.enabled? %>
+hostname = <%= config.hostname %>
+https = <%= config.https? %>
+jaeger_server_enabled = <%= config.tracer.jaeger? %>
+jaeger_version = <%= config.tracer.jaeger.version %>
+openldap_enabled = <%= config.openldap.enabled? %>
+platform = <%= config.__platform %>
+port = <%= config.port %>
+postgresql_bin_dir = <%= config.postgresql.bin_dir %>
+postgresql_data_dir = <%= config.postgresql.data_dir %>
+postgresql_dir = <%= config.postgresql.dir %>
+postgresql_geo_dir = <%= config.postgresql.geo.dir %>
+postgresql_geo_host = <%= config.postgresql.geo.host %>
+postgresql_geo_port = <%= config.postgresql.geo.port %>
+postgresql_host = <%= config.postgresql.host %>
+postgresql_port = <%= config.postgresql.port %>
+postgresql_max_connections = <%= config.postgresql.max_connections %>
+postgresql_replica_enabled = <%= config.postgresql.replica.enabled %>
+postgresql_replica_dir = <%= config.postgresql.replica.root_directory %>
+postgresql_replica_data_dir = <%= config.postgresql.replica.data_directory %>
+postgresql_replica_enabled2 = <%= config.postgresql.replica_2.enabled %>
+postgresql_replica_dir2 = <%= config.postgresql.replica_2.root_directory %>
+postgresql_replica_data_dir2 = <%= config.postgresql.replica_2.data_directory %>
+postgresql_replication_user = <%= config.postgresql.replication_user %>
+praefect_enabled = <%= config.praefect.enabled? %>
+registry_enabled = <%= config.registry? %>
+registry_database_enabled = <%= config.registry.database.enabled? %>
+registry_host = <%= config.registry.host %>
+registry_port = <%= config.registry.port %>
+registry_repo = <%= config.repositories.registry %>
+registry_version = <%= config.registry.version %>
+relative_url_root = <%= config.relative_url_root %>
+restrict_cpu_count = <%= config.restrict_cpu_count %>
+<%-# See also khulnasoft_runner_enabled -%>
+runner_enabled = <%= config.runner.enabled %>
+<%-# -%>
+snowplow_micro_enabled = <%= config.snowplow_micro.enabled %>
+sshd_bin = <%= config.sshd.bin %>
+sshd_hostkeys = <%= config.sshd.host_keys.join(' ') %>
+username = <%= config.username %>
+ci_database_enabled = <%= config.gitlab.rails.databases.ci.enabled %>
+workhorse_skip_compile = <%= config.workhorse.skip_compile? %>
+workhorse_skip_setup = <%= config.workhorse.skip_setup? %>
+duo_workflow_enabled = <%= config.duo_workflow.enabled? %>
+duo_workflow_llm_cache = <%= config.duo_workflow.llm_cache %>
+duo_workflow_executor_repo = <%= config.repositories.duo_workflow_executor %>
+duo_workflow_executor_build_os = <%= config.duo_workflow.executor_build_os %>
+duo_workflow_executor_build_arch = <%= config.duo_workflow.executor_build_arch %>
+duo_workflow_executor_version = <%= config.duo_workflow.__executor_version %>

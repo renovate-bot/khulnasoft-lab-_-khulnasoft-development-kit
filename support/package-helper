@@ -1,0 +1,49 @@
+#!/usr/bin/env ruby
+#
+# frozen_string_literal: true
+
+require 'optparse'
+require_relative '../lib/kdk/package_helper'
+
+options = {}
+OptionParser.new do |opt|
+  opt.banner = 'Usage: support/package-helper [package_name] [command]'
+  opt.separator ''
+  opt.separator 'Commands:'
+  opt.separator '  upload   Upload a package'
+  opt.separator '  download Download a package'
+  opt.separator ''
+  opt.separator 'Options:'
+
+  opt.on('-p', '--package PACKAGE', 'Package name (gitaly, khulnasoft_shell, or workhorse)') do |package|
+    options[:package] = package
+  end
+
+  opt.on('-c', '--command COMMAND', 'Command to execute (upload or download)') do |command|
+    options[:command] = command
+  end
+
+  opt.on('-h', '--help', 'Prints this help') do
+    exit 1
+  end
+end.parse!
+
+package = options[:package]&.to_sym || ARGV[0]&.to_sym
+command = options[:command] || ARGV[1]
+
+unless package && KDK::PackageConfig.project(package)
+  puts 'Error: You must specify a valid package (gitaly, khulnasoft_shell, or workhorse)'
+  exit 1
+end
+
+package_helper = KDK::PackageHelper.new(package: package)
+
+case command
+when 'upload'
+  package_helper.upload_package
+when 'download'
+  package_helper.download_package
+else
+  puts 'Error: You must specify a valid command (upload or download)'
+  exit 1
+end

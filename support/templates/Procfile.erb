@@ -1,0 +1,51 @@
+# KDK Procfile services:
+# - all commands must start with 'exec'
+# - no inline shell scripts ('&&' or ';')
+#
+
+# Datasources
+#
+<%= '#' unless config.postgresql.replica_2? %>postgresql-replica-2: exec support/postgresql-signal-wrapper <%= config.postgresql.bin %> -D <%= config.postgresql.replica_2.data_directory %> -k <%= config.postgresql.replica_2.root_directory %> -h '' -c max_connections=<%= config.postgresql.max_connections %>
+<%= '#' unless config.pgbouncer_replicas? %>pgbouncer1: exec pgbouncer pgbouncers/pgbouncer-replica-1.ini
+<%= '#' unless config.pgbouncer_replicas? %>pgbouncer2: exec pgbouncer pgbouncers/pgbouncer-replica-2.ini
+<%= '#' unless config.pgbouncer_replicas? && config.postgresql.replica_2? %>pgbouncer2-1: exec pgbouncer pgbouncers/pgbouncer-replica-2-1.ini
+<%= '#' unless config.pgbouncer_replicas? && config.postgresql.replica_2? %>pgbouncer2-2: exec pgbouncer pgbouncers/pgbouncer-replica-2-2.ini
+
+# Geo
+#
+<%= '#' unless config.geo? && config.geo.secondary? %>postgresql-geo: exec support/postgresql-signal-wrapper <%= config.postgresql.bin %> -D <%= config.postgresql.geo.dir.join('data') %> -k <%= config.postgresql.geo.dir %> -h '<%= config.postgresql.geo.__active_host %>'
+<%= '#' unless config.geo? && config.geo.secondary? %>geo-cursor: exec /usr/bin/env RAILS_RELATIVE_URL_ROOT=<%= config.relative_url_root %> KDK_GEO_SECONDARY=1 support/geo-logcursor
+
+# Backend services
+#
+<% if config.praefect? -%>
+praefect: exec <%= config.praefect.__praefect_build_bin_path %> --config <%= config.praefect.config_file %> serve
+<% config.praefect.__nodes.each_with_index do |praefect_node, index| -%>
+<%= praefect_node.service_name %>: exec /usr/bin/env <% config.gitaly.env.each do |k, v| %><%= k %>=<%= v %> <% end %>GITALY_TESTING_ENABLE_ALL_FEATURE_FLAGS=<%= config.gitaly.enable_all_feature_flags? %> GITALY_LOG_REQUEST_METHOD_DENY_PATTERN="^/grpc.health.v1.Health/Check$" support/exec-cd gitaly <%= config.gitaly.__gitaly_build_bin_path %> serve <%= kdk_root.join(praefect_node.config_file) %>
+<% end -%>
+<% end -%>
+
+# Frontend services
+#
+<%= '#' unless config.khulnasoft_pages? %>gitlab-pages: exec gitlab-pages/bin/gitlab-pages -config=<%= kdk_root.join('gitlab-pages', 'gitlab-pages.conf') %>
+
+# Additional services
+#
+<%= '#' unless config.zoekt? %>khulnasoft-zoekt-indexer-development-1: exec khulnasoft-zoekt-indexer/bin/khulnasoft-zoekt indexer -index_dir zoekt-data/development/index -listen :<%= config.zoekt.index_port_dev_1 %> -secret_path <%= config.khulnasoft_shell.dir.join('.khulnasoft_shell_secret') %> -self_url "http://localhost:<%= config.zoekt.index_port_dev_1 %>" -search_url "http://localhost:<%= config.zoekt.web_port_dev_1 %>" -khulnasoft_url <%= config.__uri %>
+<%= '#' unless config.zoekt? %>khulnasoft-zoekt-indexer-development-2: exec khulnasoft-zoekt-indexer/bin/khulnasoft-zoekt indexer -index_dir zoekt-data/development/index-2 -listen :<%= config.zoekt.index_port_dev_2 %> -secret_path <%= config.khulnasoft_shell.dir.join('.khulnasoft_shell_secret') %> -self_url "http://localhost:<%= config.zoekt.index_port_dev_2 %>" -search_url "http://localhost:<%= config.zoekt.web_port_dev_2 %>" -khulnasoft_url <%= config.__uri %>
+<%= '#' unless config.zoekt? %>khulnasoft-zoekt-indexer-test: exec khulnasoft-zoekt-indexer/bin/khulnasoft-zoekt indexer -index_dir zoekt-data/test/index -listen :<%= config.zoekt.index_port_test %> -secret_path <%= config.khulnasoft_shell.dir.join('.khulnasoft_shell_secret') %>
+<%= '#' unless config.zoekt? %>khulnasoft-zoekt-webserver-test: exec khulnasoft-zoekt-indexer/bin/khulnasoft-zoekt webserver -index_dir zoekt-data/test/index -rpc -listen :<%= config.zoekt.web_port_test %> -secret_path <%= config.khulnasoft_shell.dir.join('.khulnasoft_shell_secret') %>
+<%= '#' unless config.zoekt? %>khulnasoft-zoekt-webserver-development-1: exec khulnasoft-zoekt-indexer/bin/khulnasoft-zoekt webserver -index_dir zoekt-data/development/index -rpc -listen :<%= config.zoekt.web_port_dev_1 %> -secret_path <%= config.khulnasoft_shell.dir.join('.khulnasoft_shell_secret') %>
+<%= '#' unless config.zoekt? %>khulnasoft-zoekt-webserver-development-2: exec khulnasoft-zoekt-indexer/bin/khulnasoft-zoekt webserver -index_dir zoekt-data/development/index-2 -rpc -listen :<%= config.zoekt.web_port_dev_2 %> -secret_path <%= config.khulnasoft_shell.dir.join('.khulnasoft_shell_secret') %>
+
+# Khulnasoft Runner Binary
+#
+<%= '#' unless config.runner.__install_mode_binary %>runner: exec <%= config.runner.bin %> --log-level debug run --config <%= config.runner.config_file %>
+
+# Khulnasoft Runner Docker
+#
+<%= '#' unless config.runner.__install_mode_docker && !config.https? %>runner: exec docker run --rm <%= config.runner.__add_host_flags %> -v '<%= config.runner.config_file %>:/etc/gitlab-runner/config.toml' -v /var/run/docker.sock:/var/run/docker.sock --pull <%= config.runner.docker_pull %> <%= config.runner.image %>
+
+# Khulnasoft Runner Docker with HTTPS
+#
+<%= '#' unless config.runner.__install_mode_docker && config.https? %>runner: exec docker run --rm <%= config.runner.__add_host_flags %> -v '<%= config.runner.config_file %>:/etc/gitlab-runner/config.toml' -v '<%= kdk_root.join(config.nginx.ssl.certificate) %>:/etc/gitlab-runner/certs/<%= config.runner.__ssl_certificate %>' -v /var/run/docker.sock:/var/run/docker.sock --pull <%= config.runner.docker_pull %> <%= config.runner.image %>

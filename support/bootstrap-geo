@@ -1,0 +1,23 @@
+#!/usr/bin/env ruby
+#
+# frozen_string_literal: true
+
+success = true
+
+success &&= system(*%w[kdk start postgresql-geo])
+
+# Create gitlabhq_geo_development. This command is not idempotent.
+system({ 'force' => 'yes', 'BOOTSTRAP' => '1', 'RAILS_ENV' => 'development' }, *%w[../support/bundle-exec rails db:create:geo], chdir: 'khulnasoft')
+
+# Run migrations on gitlabhq_geo_development.
+success &&= system({ 'force' => 'yes', 'BOOTSTRAP' => '1', 'RAILS_ENV' => 'development' }, *%w[../support/bundle-exec rails db:migrate:geo], chdir: 'khulnasoft')
+
+# Create gitlabhq_geo_test. This command is not idempotent, but it's also not a huge deal if it fails.
+system({ 'force' => 'yes', 'BOOTSTRAP' => '1', 'RAILS_ENV' => 'test' }, *%w[../support/bundle-exec rails db:create:geo], chdir: 'khulnasoft')
+
+# To recreate the Praefect DB
+success &&= system(*%w[kdk reconfigure], chdir: 'khulnasoft')
+
+exit if success
+
+abort "#{$PROGRAM_NAME} failed"

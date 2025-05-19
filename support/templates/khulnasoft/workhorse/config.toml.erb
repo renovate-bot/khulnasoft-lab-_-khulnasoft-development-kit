@@ -1,0 +1,46 @@
+[redis]
+URL = "unix:<%= config.redis.__socket_file %>"
+DB = <%= config.redis.databases[:development][:shared_state] %>
+
+<%- if config.object_store.enabled? && config.object_store.consolidated_form? && config.object_store.connection['provider'] -%>
+[object_storage]
+  provider = "<%= config.object_store.connection['provider'] %>"
+
+  <%- if config.object_store.connection['provider'] == 'AWS' -%>
+[object_storage.s3]
+  aws_access_key_id = "<%= config.object_store.connection['aws_access_key_id'] %>"
+  aws_secret_access_key = "<%= config.object_store.connection['aws_secret_access_key'] %>"
+  <%- end -%>
+
+  <%- if config.object_store.connection['provider'] == 'AzureRM' -%>
+[object_storage.azurerm]
+  azure_storage_account_name = "<%= config.object_store.connection['azure_storage_account_name'] %>"
+  azure_storage_access_key = "<%= config.object_store.connection['azure_storage_access_key'] %>"
+  <%- end -%>
+
+  <%- if config.object_store.connection['provider'] == 'Google' -%>
+[object_storage.google]
+    <%- if config.object_store.connection['google_application_default'] -%>
+  google_application_default = true
+    <%- end -%>
+    <%- if config.object_store.connection['google_json_key_location'] -%>
+  google_json_key_location = "<%= config.object_store.connection['google_json_key_location'] %>"
+    <%- end -%>
+    <%- if config.object_store.connection['google_json_key_string'] -%>
+  google_json_key_string = '''
+<%= config.object_store.connection['google_json_key_string'] %>
+  '''
+    <%- end -%>
+  <%- end -%>
+<%- end -%>
+
+<%- if config.https? -%>
+[[listeners]]
+  network = "tcp"
+  addr = "<%= config.workhorse.__listen_address %>"
+[listeners.tls]
+  certificate = "<%= kdk_root.join(config.nginx.ssl.certificate) %>"
+  key = "<%= kdk_root.join(config.nginx.ssl.key) %>"
+  min_version = "tls1.2"
+  max_version = "tls1.3"
+<%- end -%>

@@ -1,0 +1,86 @@
+---
+inherit_gem:
+  khulnasoft-styles:
+    - rubocop-default.yml
+
+require:
+  - ./rubocop/rubocop
+  - rubocop-rake
+
+AllCops:
+  NewCops: enable
+  TargetRubyVersion: 3.2
+  Exclude:
+    - 'KDK_ROOT'
+    - '.backups/**/*'
+    - '.cache/**/*'
+    - '.git/**/*'
+    - 'Brewfile'
+    - 'Dangerfile'
+    - 'charts-khulnasoft/**/*'
+    - 'danger/**/*'
+    - 'dev/**/*'
+    - 'duo-workflow-executor/**/*'
+    - 'elasticsearch/**/*'
+    - 'gitaly/**/*'
+    - 'khulnasoft-ai-gateway/**/*'
+    - 'khulnasoft-cells/**/*'
+    - 'khulnasoft-docs/**/*'
+    - 'khulnasoft-elasticsearch-indexer/**/*'
+    - 'khulnasoft-eli5/**/*'
+    - 'khulnasoft-http-router/**/*'
+    - 'khulnasoft-k8s-agent/**/*'
+    - 'khulnasoft-observability-backend/**/*'
+    - 'khulnasoft-operator/**/*'
+    - 'khulnasoft-pages/**/*'
+    - 'khulnasoft-runner/**/*'
+    - 'khulnasoft-shell/**/*'
+    - 'khulnasoft-spamcheck/**/*'
+    - 'khulnasoft-topology-service/**/*'
+    - 'khulnasoft-ui/**/*'
+    - 'khulnasoft-workhorse/**/*'
+    - 'khulnasoft/**/*'
+    - 'go-khulnasoft-shell/**/*'
+    - 'grafana/**/*'
+    - 'influxdb/**/*'
+    - 'jaeger/**/*'
+    - 'log/**/*'
+    - 'minio/**/*'
+    - 'node_modules/**/*'
+    - 'omnibus-khulnasoft/**/*'
+    - 'postgresql-geo/**/*'
+    - 'postgresql-primary/**/*'
+    - 'postgresql/**/*'
+    - 'repositories/**/*'
+    - 'services/**/*'
+    - 'sv/**/*'
+    - 'tmp/**/*'
+    - 'vendor/**/*'
+    - 'zoekt/**/*'
+
+CodeReuse/ActiveRecord:
+  Enabled: false
+
+Layout/LineLength:
+  Enabled: false
+
+Rails:
+  Enabled: false
+
+RSpec/ContextWording:
+  Enabled: false
+
+RSpec/MultipleMemoizedHelpers:
+  Enabled: false
+
+RSpec/PredicateMatcher:
+  Enabled: false
+
+RSpec/NamedSubject:
+  Enabled: false
+
+Style/ArgumentsForwarding:
+  Enabled: false
+
+Naming/BlockForwarding:
+  Enabled: false

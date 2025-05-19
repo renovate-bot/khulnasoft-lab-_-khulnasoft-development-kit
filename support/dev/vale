@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+root="$(cd "$(dirname "$0")/../.." || exit ; pwd -P)"
+
+does_vale_exist() {
+  command -v vale > /dev/null 2>&1
+}
+
+attempt_vale_install() {
+  "${root}"/support/dev/package-install vale
+}
+
+run() {
+  vale --minAlertLevel error -- doc README.md
+}
+
+if ! does_vale_exist; then
+  attempt_vale_install
+fi
+
+if ! does_vale_exist; then
+  echo "ERROR: vale is not available, please ensure it's installed on your platform." >&2
+  exit 1
+fi
+
+/bin/echo -n "Vale: "
+
+if run; then
+  exit 0
+else
+  exit 1
+fi

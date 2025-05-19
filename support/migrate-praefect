@@ -1,0 +1,4 @@
+#!/bin/sh
+set -e
+
+$(kdk config get praefect.__praefect_build_bin_path) -config gitaly/praefect.config.toml sql-migrate

@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+exit(0) if ARGV.empty?
+
+require_relative '../lib/kdk'
+
+display_output = ENV.fetch('KDK_EXECUTE_DISPLAY_OUTPUT', KDK::Shellout::DEFAULT_EXECUTE_DISPLAY_OUTPUT).to_s == 'true'
+retry_attempts = ENV.fetch('KDK_EXECUTE_RETRY_ATTEMPTS', 3).to_i
+retry_delay_secs = ENV.fetch('KDK_EXECUTE_RETRY_DELAY_SECS', KDK::Shellout::DEFAULT_EXECUTE_RETRY_DELAY_SECS).to_i
+
+exit(KDK::Shellout.new(ARGV).execute(retry_attempts: retry_attempts, retry_delay_secs: retry_delay_secs, display_output: display_output).success?)

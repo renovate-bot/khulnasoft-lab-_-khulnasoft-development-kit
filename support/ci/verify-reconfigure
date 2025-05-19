@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+set -ex
+
+parent_path=$(dirname "$0")
+
+# shellcheck source=support/ci/functions.sh
+source "${parent_path}"/functions.sh
+
+# shellcheck disable=SC2119
+init
+reconfigure

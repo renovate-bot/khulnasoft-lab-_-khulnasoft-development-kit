@@ -1,0 +1,1 @@
+yardoc -o public/yard --no-private --protected lib/**/*.rb gem/**/*.rb - README.md CONTRIBUTING.md LICENSE

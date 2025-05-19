@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<clickhouse>
+    <logger>
+        <level><%= config.clickhouse.log_level %></level>
+        <log><%= config.clickhouse.log_dir.join('clickhouse-server.log') %></log>
+        <errorlog><%= config.clickhouse.log_dir.join('clickhouse-server.err.log') %></errorlog>
+    </logger>
+</clickhouse>

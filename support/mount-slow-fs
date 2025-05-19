@@ -1,0 +1,97 @@
+#!/usr/bin/env bash
+
+# This script mounts a given path at a given location using SSHFS while slowing
+# down traffic on the loopback interface. This combination can be used to
+# replicate a slow file system without having to set up an entire NFS cluster.
+#
+# Requirements:
+#
+# * Bash 4 or newer
+# * Linux
+# * sshfs (https://github.com/libfuse/sshfs)
+# * sshd running locally
+# * pgrep
+
+function print_usage {
+    echo 'Usage: mount-slow-fs [SOURCE DIRECTORY] [MOUNTPOINT]'
+    exit 1
+}
+
+function main {
+    local os
+    local source_dir
+    local mountpoint
+
+    os="$(uname -s)"
+    source_dir="${1}"
+    mountpoint="${2}"
+
+    if [[ "${source_dir}" == "" || "${mountpoint}" == "" ]]
+    then
+        print_usage
+    fi
+
+    if [[ "${os,,}" != "linux" ]]
+    then
+        echo 'Only Linux is supported'
+        exit 1
+    fi
+
+    if ! test -d "${source_dir}"
+    then
+        print_usage
+    fi
+
+    if ! test -d "${mountpoint}"
+    then
+        print_usage
+    fi
+
+    if ! hash sshfs 2>/dev/null
+    then
+        echo 'sshfs is not installed'
+        exit 1
+    fi
+
+    if ! hash tc 2>/dev/null
+    then
+        echo 'The "tc" command could not be found'
+        exit 1
+    fi
+
+    if ! hash sudo 2>/dev/null
+    then
+        echo 'The "sudo" command could not be found'
+        exit 1
+    fi
+
+    if ! hash pgrep 2>/dev/null
+    then
+        echo 'The "pgrep" command could not be found'
+        exit 1
+    fi
+
+    if [[ "$(pgrep sshd)" == "" ]]
+    then
+        echo 'sshd does not appear to be running locally'
+        exit 1
+    fi
+
+    echo 'Delaying loopback interface, you may be prompted for your password...'
+
+    # This command may fail if no existing rules are present, in that case we'll
+    # just ignore the output.
+    sudo tc qdisc del dev lo root 2>/dev/null
+
+    sudo tc qdisc add dev lo root netem delay 2ms
+
+    echo "Mounting under ${mountpoint}, exit with ^C"
+
+    sshfs -o cache=no -f "${USER}@localhost:${source_dir}" "${mountpoint}"
+
+    echo 'Removing loopback delay, you may be prompted for your password...'
+
+    sudo tc qdisc del dev lo root
+}
+
+main "$@"

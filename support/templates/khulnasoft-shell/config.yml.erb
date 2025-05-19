@@ -1,0 +1,84 @@
+#
+# If you change this file in a Merge Request, please also create
+# a Merge Request on https://gitlab.com/gitlab-org/omnibus-gitlab/merge_requests
+#
+
+# KhulnaSoft user. git by default
+user: <%= config.sshd.user %>
+
+# URL to KhulnaSoft instance, used for API calls. Default: http://localhost:8080.
+# For relative URL support read http://doc.gitlab.com/ce/install/relative_url.html
+# You only have to change the default if you have configured Puma
+# to listen on a custom port, or if you have configured Puma to
+# only listen on a Unix domain socket. For Unix domain sockets use
+# "http+unix://<urlquoted-path-to-socket>", e.g.
+# "http+unix://%2Fpath%2Fto%2Fsocket"
+khulnasoft_url: "<%= config.__uri %>"
+
+# See installation.md#using-https for additional HTTPS configuration details.
+http_settings:
+#  read_timeout: 300
+#  user: someone
+#  password: somepass
+#  ca_path: /etc/pki/tls/certs
+  self_signed_cert: false
+  <%- if config.https? -%>
+  ca_file: "<%= kdk_root.join(config.nginx.ssl.certificate) %>"
+  <%- else -%>
+#  ca_file: /etc/ssl/cert.pem
+  <%- end -%>
+
+# File used as authorized_keys for gitlab user
+auth_file: "<%= config.sshd.authorized_keys_file %>"
+
+<%- unless config.common.ca_path.empty? -%>
+# SSL certificate dir where custom certificates can be placed
+# https://golang.org/pkg/crypto/x509/
+ssl_cert_dir: "<%= config.common.ca_path %>"
+<%- end -%>
+
+# File that contains the secret key for verifying access to KhulnaSoft.
+# Default is .khulnasoft_shell_secret in the gitlab-shell directory.
+# secret_file: "<%= config.khulnasoft_shell.dir %>/.khulnasoft_shell_secret"
+
+# Log file.
+# Default is gitlab-shell.log in the root directory.
+log_file: "<%= config.sshd.__log_file %>"
+
+# Log level. INFO by default
+log_level: INFO
+
+# Log format. 'text' by default
+# log_format: json
+
+# Audit usernames.
+# Set to true to see real usernames in the logs instead of key ids, which is easier to follow, but
+# incurs an extra API call on every gitlab-shell command.
+audit_usernames: false
+
+# Distributed Tracing. KhulnaSoft-Shell has distributed tracing instrumentation.
+# For more details, visit https://docs.gitlab.com/ee/development/distributed_tracing.html
+<%= '#' unless config.tracer.jaeger? -%>
+khulnasoft_tracing: "<%= config.tracer.jaeger.__tracer_url %>"
+
+sshd:
+  # Address which the SSH server listens on. Defaults to [::]:22.
+  listen: "<%= config.sshd.__listen %>"
+  # Set to true if gitlab-sshd is being fronted by a load balancer that implements
+  # the PROXY protocol.
+  proxy_protocol: <%= config.sshd.proxy_protocol %>
+  # Address which the server listens on HTTP for monitoring/health checks. Defaults to localhost:9122.
+  web_listen: "<%= config.sshd.web_listen %>"
+  # Maximum number of concurrent sessions allowed on a single SSH connection. Defaults to 10.
+  concurrent_sessions_limit: 10
+  # SSH host key files.
+  host_key_files:<%- config.sshd.host_keys.each do |host_key| %>
+    - "<%= host_key %>"<%- end %>
+
+lfs:
+  # See https://gitlab.com/groups/gitlab-org/-/epics/11872 for context
+  pure_ssh_protocol: <%= config.khulnasoft_shell.lfs.pure_ssh_protocol_enabled %>
+
+pat:
+  enabled: <%= config.khulnasoft_shell.pat.enabled %>
+  allowed_scopes: <%= config.khulnasoft_shell.pat.allowed_scopes %>

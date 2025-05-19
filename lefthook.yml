@@ -1,0 +1,26 @@
+# Lefthook configuration. For more information, see:
+# https://github.com/Arkweid/lefthook/blob/master/docs/full_guide.md
+
+pre-push:
+  parallel: true
+  commands:
+    markdownlint:
+      files: git diff --name-only --diff-filter=d $(git merge-base origin/main HEAD)..HEAD
+      glob: '*.md'
+      run: make markdownlint
+    rubocop:
+      files: git diff --name-only --diff-filter=d $(git merge-base origin/main HEAD)..HEAD
+      glob: '{support/*,*.{rb,rake}}'
+      run: bundle exec rubocop --config .rubocop-kdk.yml --force-exclusion {files}
+    vale:
+      run: make vale
+    check-links:
+      run: make check-links
+    shellcheck:
+      run: make shellcheck
+    rspec:
+      run: make rspec
+    verify-kdk-example-yml:
+      run: make verify-kdk-example-yml
+    verify-makefile-config:
+      run: make verify-makefile-config

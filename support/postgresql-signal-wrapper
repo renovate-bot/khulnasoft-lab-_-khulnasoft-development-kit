@@ -1,0 +1,19 @@
+#!/usr/bin/env ruby
+#
+# frozen_string_literal: true
+
+# Translate SIGTERM to SIGINT to request a 'fast shutdown' from Postgres.
+
+Signal.trap('TERM') do
+  # rubocop:disable Style/GlobalVars
+  puts "Sending INT to #{$pid}"
+  Process.kill('INT', $pid)
+  # rubocop:enable Style/GlobalVars
+end
+
+# rubocop:disable Style/GlobalVars
+$pid = spawn(*ARGV)
+Process.wait($pid)
+
+# rubocop:enable Style/GlobalVars
+exit($CHILD_STATUS&.exitstatus || 0)

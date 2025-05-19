@@ -1,0 +1,55 @@
+extensions:
+  zpages: {}
+  memory_ballast:
+    size_mib: 165
+  gitlaboidc:
+    oidc_providers: ${env:PROVIDER_URLS}
+
+receivers:
+  otlp:
+    protocols:
+      http:
+        include_metadata: true
+        endpoint: :4318
+        traces_url_path: /observability/v1/traces
+        metrics_url_path: /observability/v1/metrics
+        logs_url_path: /observability/v1/logs
+        auth:
+          authenticator: gitlaboidc
+
+processors:
+  attributes/pid:
+    actions:
+      - action: upsert
+        key: gitlab.target_project_id
+        from_context: auth.projectid
+      - action: upsert
+        key: gitlab.target_namespace_id
+        from_context: auth.namespaceid
+      - action: upsert
+        key: gitlab.target_tenant_id
+        from_context: auth.tenantid
+  batch: {}
+  memory_limiter:
+    limit_mib: 400
+    check_interval: 5s
+
+exporters:
+  gitlabobservability:
+    clickhouse_dsn: "tcp://localhost:9001/tracing"
+
+service:
+  extensions: [zpages, memory_ballast, gitlaboidc]
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [attributes/pid, memory_limiter, batch]
+      exporters: [gitlabobservability]
+    metrics:
+      receivers: [otlp]
+      processors: [attributes/pid, memory_limiter, batch]
+      exporters: [gitlabobservability]
+    logs:
+      receivers: [otlp]
+      processors: [attributes/pid, memory_limiter, batch]
+      exporters: [gitlabobservability]
