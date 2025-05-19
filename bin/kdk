@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+
+ERROR_CODE_ASDF_SHIM_BINARY_NOT_FOUND=126
+
+debug() {
+  local msg="$1"
+
+  if [[ $KDK_DEBUG == 1 || $KDK_DEBUG == true ]]; then
+    echo "DEBUG: $msg"
+  fi
+}
+
+find_kdk_root() {
+  if [[ "${1}" == "/" ]]; then
+    exit 1
+  fi
+
+  if [[ -f "${1}/KDK_ROOT" && -x "${1}/gem/bin/kdk" ]]; then
+    echo "${1}"
+  else
+    one_path_back="$(cd "${1}/.." || exit ; pwd)"
+    find_kdk_root "${one_path_back}"
+  fi
+}
+
+kdk_root_path=$(find_kdk_root "$(pwd)")
+debug "kdk_root_path: $kdk_root_path"
+
+if [[ -d "${kdk_root_path}" ]]; then
+  "${kdk_root_path}/gem/bin/kdk" "${@}"
+  kdk_exit_status=$?
+  debug "ruby KDK exit status ${kdk_exit_status}"
+
+  if [[ $kdk_exit_status == "$ERROR_CODE_ASDF_SHIM_BINARY_NOT_FOUND" ]]; then
+    echo -e "\nERROR: failed to run 'gem/bin/kdk' Ruby script, try 'asdf' recovery procedure by running:" >&2
+    echo "  (cd ${kdk_root_path} && asdf plugin-update ruby && asdf install ruby)"
+  fi
+else
+  echo "ERROR: The current working directory is not a KDK." >&2
+fi
