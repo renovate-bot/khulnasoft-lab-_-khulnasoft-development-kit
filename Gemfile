@@ -13,7 +13,7 @@ group :development do
 end
 
 group :test do
-  gem 'gitlab-styles', '~> 13.0.2', require: false
+  gem 'gitlab-styles', '~> 13.1.0', require: false
   gem 'irb', '~> 1.15.1', require: false
   gem 'rspec', '~> 3.13.0', require: false
   gem 'rspec_junit_formatter', '~> 0.6.0', require: false
