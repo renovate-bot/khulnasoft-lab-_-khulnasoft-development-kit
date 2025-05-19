@@ -21,7 +21,7 @@ postgres 16.8 14.9
 
 # Rust is needed before Ruby to support YJIT. However, asdf will sort this
 # file and prevent that: https://github.com/asdf-vm/asdf/issues/929.
-rust 1.73.0
+rust 1.87.0
 
 # Ruby version must be set
 ruby 3.4.4 3.2.4
