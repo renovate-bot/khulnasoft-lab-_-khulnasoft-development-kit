@@ -1,0 +1,10 @@
+bin/
+etc/
+include/
+lib/
+libexec/
+openldap-*.tgz
+openldap-*/
+sbin/
+share/
+slapd.d/
