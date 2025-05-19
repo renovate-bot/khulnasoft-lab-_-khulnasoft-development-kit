@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+# Having values in `$CDPATH` makes `cd` announce the directory its moving to,
+# if the directory is within the $CDPATH values.
+CDPATH=""
+ROOT_PATH="$(cd "$(dirname "$0")/.." || exit ; pwd -P)"
+export KDK_MACOS_ARM64_NATIVE="${KDK_MACOS_ARM64_NATIVE:-true}"
+
+# shellcheck disable=SC1091 disable=SC1090
+source "${ROOT_PATH}/.kdkrc"
+
+exec bash -c "$@"
