@@ -64,7 +64,7 @@ added.
 If you wish to create more users and groups, run:
 
 ```shell
-cd <kdk-directory>/gitlab-openldap
+cd <kdk-directory>/khulnasoft-openldap
 make large
 ```
 
@@ -85,7 +85,7 @@ More groups will be created with the following username and group ranges:
 ## Manual setup instructions
 
 ```shell
-cd <kdk-directory>/gitlab-openldap
+cd <kdk-directory>/khulnasoft-openldap
 make # compile openldap and bootstrap an LDAP server to run out of slapd.d
 ```
 
@@ -104,7 +104,7 @@ Then run the daemon:
 We can add individual users, groups, and their membership as well if we so desire:
 
 ```shell
- cd <kdk-directory>/gitlab-openldap
+ cd <kdk-directory>/khulnasoft-openldap
 ```
 
 Create an LDIF file with following content. Feel free to change user, group metadata:
@@ -163,7 +163,7 @@ ldapadd -H "ldap://127.0.0.1:3890" -x -D "cn=admin,dc=example,dc=com" -w passwor
 ### Configuring KhulnaSoft
 
 In `<kdk-directory>/gitlab/config/gitlab.yml` under `production:` and `ldap:`, change the following keys to the values
-given below (see [defaults](https://gitlab.com/gitlab-org/gitlab/-/blob/master/config/gitlab.yml.example#L550-769)):
+given below (see [defaults](https://github.com/khulnasoft-lab/khulnasoft/-/blob/master/config/gitlab.yml.example#L550-769)):
 
 ```yaml
   enabled: true
@@ -200,7 +200,7 @@ Run `kdk restart` to restart the modified services.
 ### Repopulate the database
 
 ```shell
-cd <kdk-directory>/gitlab-openldap
+cd <kdk-directory>/khulnasoft-openldap
 make clean default
 ```
 

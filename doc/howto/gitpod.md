@@ -18,14 +18,14 @@ an iPad!
 
 **If you are a KhulnaSoft team member**, either:
 
-- Open [this link](https://gitpod.io/#https://gitlab.com/gitlab-org/gitlab/).
-- Click the **Gitpod** button in the [KhulnaSoft repository](https://gitlab.com/gitlab-org/gitlab/).
+- Open [this link](https://gitpod.io/#https://github.com/khulnasoft-lab/khulnasoft/).
+- Click the **Gitpod** button in the [KhulnaSoft repository](https://github.com/khulnasoft-lab/khulnasoft/).
   This might require you to [enable the Gitpod integration](https://docs.gitlab.com/ee/integration/gitpod.html)
   in your user settings.
 
 **If you are a community contributor**:
 
-1. Fork the [KhulnaSoft repository](https://gitlab.com/gitlab-org/gitlab/),
+1. Fork the [KhulnaSoft repository](https://github.com/khulnasoft-lab/khulnasoft/),
 1. Click the **Gitpod** button in the repository view of your fork.
 
 Hint: If you don't see a "Gitpod" button, open the dropdown of the "Web IDE" split button.
@@ -303,8 +303,8 @@ the KDK.
 
 ### `stable` tag
 
-When running [Gitpod for KhulnaSoft](https://gitlab.com/gitlab-org/gitlab), it uses the
-[`registry.github.com/khulnasoft-lab/khulnasoft-development-kit/gitpod-workspace:stable`](https://gitlab.com/gitlab-org/gitlab/-/blob/master/.gitpod.yml#L1)
+When running [Gitpod for KhulnaSoft](https://github.com/khulnasoft-lab/khulnasoft), it uses the
+[`registry.github.com/khulnasoft-lab/khulnasoft-development-kit/gitpod-workspace:stable`](https://github.com/khulnasoft-lab/khulnasoft/-/blob/master/.gitpod.yml#L1)
 Docker image which uses the `stable` tag.
 
 ### Promote `main` tag to `stable`

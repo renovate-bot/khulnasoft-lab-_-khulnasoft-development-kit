@@ -31,7 +31,7 @@ Before you register a runner in your KDK, you first must have a runner binary ei
   for your specific operating system. Avoid following the instructions in the **Containers** section, as it's simpler
   to let the KDK manage the runner process.
 - Compiled from source. To build from source, follow [the runner development instructions](https://docs.gitlab.com/runner/development/).
-  See the official [KhulnaSoft Runner repository](https://gitlab.com/gitlab-org/gitlab-runner).
+  See the official [KhulnaSoft Runner repository](https://github.com/khulnasoft-lab/khulnasoft-runner).
 
 By default, KDK expects the runner binary to be at `/usr/local/bin/gitlab-runner`. To specify a custom `gitlab-runner`
 binary location, add the following to `kdk.yml`:

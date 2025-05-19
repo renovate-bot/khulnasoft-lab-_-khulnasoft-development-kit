@@ -143,7 +143,7 @@ compile_gitaly() {
 
 compile_khulnasoft_shell() {
   fetch_version "gitlab-shell" "$KHULNASOFT_SHELL_VERSION_FILE_URL"
-  clone_repository "https://gitlab.com/gitlab-org/gitlab-shell.git" "v$PACKAGE_VERSION" "gitlab-shell"
+  clone_repository "https://github.com/khulnasoft-lab/khulnasoft-shell.git" "v$PACKAGE_VERSION" "gitlab-shell"
   setup_build_environment
 
   echo "Building KhulnaSoft Shell..."
@@ -161,7 +161,7 @@ compile_khulnasoft_shell() {
 
 compile_workhorse() {
   fetch_version "workhorse" "$KHULNASOFT_WORKHORSE_VERSION_FILE_URL"
-  clone_repository "https://gitlab.com/gitlab-org/gitlab.git" "master" "gitlab/workhorse"
+  clone_repository "https://github.com/khulnasoft-lab/khulnasoft.git" "master" "gitlab/workhorse"
   setup_build_environment
 
   echo "Building KhulnaSoft Workhorse..."

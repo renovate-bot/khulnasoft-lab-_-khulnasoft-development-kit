@@ -19,8 +19,8 @@ RSpec.describe KDK::ToolVersionsUpdater do
     let(:khulnasoft_branch) { 'master' }
     let(:khulnasoft_shell_version) { 'v1.0.0' }
     let(:gitaly_version) { 'a' * 40 }
-    let(:khulnasoft_url) { "https://gitlab.com/gitlab-org/gitlab/-/raw/#{khulnasoft_branch}/.tool-versions" }
-    let(:khulnasoft_shell_url) { "https://gitlab.com/gitlab-org/gitlab-shell/-/raw/#{khulnasoft_shell_version}/.tool-versions" }
+    let(:khulnasoft_url) { "https://github.com/khulnasoft-lab/khulnasoft/-/raw/#{khulnasoft_branch}/.tool-versions" }
+    let(:khulnasoft_shell_url) { "https://github.com/khulnasoft-lab/khulnasoft-shell/-/raw/#{khulnasoft_shell_version}/.tool-versions" }
     let(:gitaly_url) { "https://gitlab.com/gitlab-org/gitaly/-/raw/#{gitaly_version}/.tool-versions" }
 
     before do

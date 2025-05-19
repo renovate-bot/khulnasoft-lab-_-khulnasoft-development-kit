@@ -80,12 +80,12 @@ Product analytics features are behind feature flags and must be enabled to use t
 
 | Feature flag                                 | Default enabled | Introduced by                                                  |
 |----------------------------------------------|-----------------|----------------------------------------------------------------|
-| `product_analytics_admin_settings`           | `false`         | `https://gitlab.com/gitlab-org/gitlab/-/merge_requests/167192` |
-| `product_analytics_features`                 | `false`         | `https://gitlab.com/gitlab-org/gitlab/-/merge_requests/167296` |
-| `product_analytics_billing`                  | `true`          | `https://gitlab.com/gitlab-org/gitlab/-/merge_requests/141624` |
-| `product_analytics_billing_override`         | `false`         | `https://gitlab.com/gitlab-org/gitlab/-/merge_requests/148991` |
-| `product_analytics_usage_quota_annual_data`  | `false`         | `https://gitlab.com/gitlab-org/gitlab/-/merge_requests/136932` |
-| `generate_cube_query`                        | `false`         | `https://gitlab.com/gitlab-org/gitlab/-/merge_requests/140107` |
+| `product_analytics_admin_settings`           | `false`         | `https://github.com/khulnasoft-lab/khulnasoft/-/merge_requests/167192` |
+| `product_analytics_features`                 | `false`         | `https://github.com/khulnasoft-lab/khulnasoft/-/merge_requests/167296` |
+| `product_analytics_billing`                  | `true`          | `https://github.com/khulnasoft-lab/khulnasoft/-/merge_requests/141624` |
+| `product_analytics_billing_override`         | `false`         | `https://github.com/khulnasoft-lab/khulnasoft/-/merge_requests/148991` |
+| `product_analytics_usage_quota_annual_data`  | `false`         | `https://github.com/khulnasoft-lab/khulnasoft/-/merge_requests/136932` |
+| `generate_cube_query`                        | `false`         | `https://github.com/khulnasoft-lab/khulnasoft/-/merge_requests/140107` |
 
 To enable a feature flag, run:
 

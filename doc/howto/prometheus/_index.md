@@ -88,7 +88,7 @@ minikube requires virtualization. Install the appropriate driver for your operat
 
 The following command starts minikube, running the first few containers with Kubernetes components.
 
-**Compatibility Note:** We are not yet supporting Kubernetes 1.16, please use 1.15 the following until <https://gitlab.com/gitlab-org/gitlab/issues/32721> is resolved.
+**Compatibility Note:** We are not yet supporting Kubernetes 1.16, please use 1.15 the following until <https://github.com/khulnasoft-lab/khulnasoft/issues/32721> is resolved.
 
 For MacOS:
 

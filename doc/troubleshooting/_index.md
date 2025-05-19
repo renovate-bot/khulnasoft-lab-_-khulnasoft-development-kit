@@ -319,7 +319,7 @@ To fix this for the future, add the line above to `~/.bash_profile` or `~/.zshrc
 You might get the following error when updating the application:
 
 ```plaintext
-# gitlab.com/gitlab-org/gitlab-elasticsearch-indexer
+# github.com/khulnasoft-lab/khulnasoft-elasticsearch-indexer
 /usr/local/Cellar/go/1.14.2_1/libexec/pkg/tool/darwin_amd64/link: running clang failed: exit status 1
 ld: warning: directory not found for option '-L/usr/local/Cellar/icu4c/64.2/lib'
 ld: library not found for -licui18n

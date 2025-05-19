@@ -70,7 +70,7 @@ You can run the KhulnaSoft Docs site using HTTPS. For more information, see [NGI
 ### Include more documentation
 
 The full published documentation suite [includes additional documentation](https://docs.gitlab.com/development/documentation/site_architecture/)
-from outside the [`gitlab` project](https://gitlab.com/gitlab-org/gitlab).
+from outside the [`gitlab` project](https://github.com/khulnasoft-lab/khulnasoft).
 
 To make and preview changes to the additional documentation:
 

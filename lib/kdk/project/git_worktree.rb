@@ -185,8 +185,8 @@ module KDK
         # Sample output
         # com     git@gitlab.com:gitlab-community/gitlab-org/gitlab-shell.git (fetch)
         # com     git@gitlab.com:gitlab-community/gitlab-org/gitlab-shell.git (push)
-        # origin  https://gitlab.com/gitlab-org/gitlab-shell.git (fetch)
-        # origin  https://gitlab.com/gitlab-org/gitlab-shell.git (push)
+        # origin  https://github.com/khulnasoft-lab/khulnasoft-shell.git (fetch)
+        # origin  https://github.com/khulnasoft-lab/khulnasoft-shell.git (push)
         lines = output.split("\n").select { |line| line.include?('(fetch)') }
 
         lines.filter_map do |line|

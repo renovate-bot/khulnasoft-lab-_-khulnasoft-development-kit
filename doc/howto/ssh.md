@@ -6,7 +6,7 @@ KhulnaSoft can provide access to its repositories over SSH instead of HTTPS. The
 are two ways to enable this in KDK. Either:
 
 - Default. Run the [`gitlab-sshd`](https://docs.gitlab.com/ee/administration/operations/khulnasoft_sshd.html)
-  binary provided by [KhulnaSoft Shell](https://gitlab.com/gitlab-org/gitlab-shell).
+  binary provided by [KhulnaSoft Shell](https://github.com/khulnasoft-lab/khulnasoft-shell).
   Using `gitlab-sshd` is better for multi-host deployments like KhulnaSoft.com and
   development environments. By default, `gitlab-sshd` listens to port `2222`.
 - Integrate KhulnaSoft Shell with [OpenSSH](https://openssh.org). Because integrating

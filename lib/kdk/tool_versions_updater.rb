@@ -4,9 +4,9 @@ module KDK
   class ToolVersionsUpdater
     COMBINED_TOOL_VERSIONS_FILE = '.combined-tool-versions'
     RUBY_PATCHES = {
-      '3.2.4' => 'https://gitlab.com/gitlab-org/gitlab-build-images/-/raw/d95e4efae87d5e3696f22d12a6c4e377a22f3c95/patches/ruby/3.2/thread-memory-allocations.patch',
-      '3.3.7' => 'https://gitlab.com/gitlab-org/gitlab-build-images/-/raw/e1be2ad5ff2a0bf0b27f86ef75b73824790b4b26/patches/ruby/3.3/thread-memory-allocations.patch',
-      '3.4.2' => 'https://gitlab.com/gitlab-org/gitlab-build-images/-/raw/d077c90c540ac99ae75c396b91dcfcb136281059/patches/ruby/3.4/thread-memory-allocations.patch'
+      '3.2.4' => 'https://github.com/khulnasoft-lab/khulnasoft-build-images/-/raw/d95e4efae87d5e3696f22d12a6c4e377a22f3c95/patches/ruby/3.2/thread-memory-allocations.patch',
+      '3.3.7' => 'https://github.com/khulnasoft-lab/khulnasoft-build-images/-/raw/e1be2ad5ff2a0bf0b27f86ef75b73824790b4b26/patches/ruby/3.3/thread-memory-allocations.patch',
+      '3.4.2' => 'https://github.com/khulnasoft-lab/khulnasoft-build-images/-/raw/d077c90c540ac99ae75c396b91dcfcb136281059/patches/ruby/3.4/thread-memory-allocations.patch'
     }.freeze
 
     def self.enabled_services

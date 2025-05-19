@@ -16,7 +16,7 @@ set -eo pipefail
 
 DEFAULT_KDK_INSTALL_DIR="kdk"
 DEFAULT_KDK_REPO_URL="https://github.com/khulnasoft-lab/khulnasoft-development-kit.git"
-DEFAULT_KHULNASOFT_REPO_URL="https://gitlab.com/gitlab-org/gitlab.git"
+DEFAULT_KHULNASOFT_REPO_URL="https://github.com/khulnasoft-lab/khulnasoft.git"
 DEFAULT_TOOL_VERSION_MANAGER="mise"
 CURRENT_ASDF_DIR="${ASDF_DIR:-${HOME}/.asdf}"
 ASDF_SH_PATH="${CURRENT_ASDF_DIR}/asdf.sh"

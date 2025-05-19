@@ -13,7 +13,7 @@ if ! is_gitpod_instance; then
   sudo mkdir -p /workspace
   sudo chown gitpod /workspace
   log "Cloning KhulnaSoft"
-  git clone --depth 1 https://gitlab.com/gitlab-org/gitlab.git /workspace/gitlab
+  git clone --depth 1 https://github.com/khulnasoft-lab/khulnasoft.git /workspace/gitlab
   export GITPOD_REPO_ROOT="/workspace/gitlab"
 fi
 

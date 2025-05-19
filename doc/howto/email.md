@@ -79,7 +79,7 @@ In order to enable SMTP delivery:
 ### macOS OpenSSL-specific configuration
 
 If you're using macOS, there's
-[known issues with the OpenSSL certificates in macOS Ruby](https://gitlab.com/gitlab-org/gitlab/issues/13914),
+[known issues with the OpenSSL certificates in macOS Ruby](https://github.com/khulnasoft-lab/khulnasoft/issues/13914),
 a workaround is to:
 
 1. Install OpenSSL with brew:

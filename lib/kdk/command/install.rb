@@ -5,7 +5,7 @@ module KDK
     # Handles `kdk install` command execution
     #
     # This command accepts the following parameters:
-    # - khulnasoft_repo=<url to repository> (defaults to: "https://gitlab.com/gitlab-org/gitlab")
+    # - khulnasoft_repo=<url to repository> (defaults to: "https://github.com/khulnasoft-lab/khulnasoft")
     # - telemetry_enabled=<true|false> (defaults to: false)
     class Install < BaseCommand
       def run(args = [])

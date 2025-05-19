@@ -9,7 +9,7 @@ module KDK
       end
 
       def command
-        %(support/exec-cd gitlab-openldap libexec/slapd -F slapd.d -d2 -h "#{ldap_url}")
+        %(support/exec-cd khulnasoft-openldap libexec/slapd -F slapd.d -d2 -h "#{ldap_url}")
       end
 
       def enabled?

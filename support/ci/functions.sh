@@ -63,7 +63,7 @@ set_khulnasoft_upstream() {
     return
   fi
 
-  git remote add "${remote_name}" "https://gitlab.com/gitlab-org/gitlab.git"
+  git remote add "${remote_name}" "https://github.com/khulnasoft-lab/khulnasoft.git"
 
   git remote set-url --push "${remote_name}" none # make 'upstream' fetch-only
   echo "Fetching ${default_branch} from ${remote_name}..."

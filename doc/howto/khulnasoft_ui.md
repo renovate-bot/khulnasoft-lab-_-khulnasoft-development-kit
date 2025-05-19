@@ -2,7 +2,7 @@
 title: KhulnaSoft UI
 ---
 
-If you wish to clone and keep an updated [KhulnaSoft UI](https://gitlab.com/gitlab-org/gitlab-ui/)
+If you wish to clone and keep an updated [KhulnaSoft UI](https://github.com/khulnasoft-lab/khulnasoft-ui/)
 as part of your KDK:
 
 1. Add the following settings in your `kdk.yml`:
@@ -16,4 +16,4 @@ as part of your KDK:
 
 ## Testing local changes
 
-[Link your local `@gitlab/ui` package to the KhulnaSoft project](https://gitlab.com/gitlab-org/gitlab-ui/-/blob/main/doc/contributing/khulnasoft_integration_test.md).
+[Link your local `@gitlab/ui` package to the KhulnaSoft project](https://github.com/khulnasoft-lab/khulnasoft-ui/-/blob/main/doc/contributing/khulnasoft_integration_test.md).

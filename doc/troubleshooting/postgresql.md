@@ -69,7 +69,7 @@ To resolve this:
 ## `kdk update` leaves `gitlab/db/` with uncommitted changes
 
 When you run `kdk update`, you can have uncommitted changes in `gitlab/db/`. For more information, see
-[issue 300251](https://gitlab.com/gitlab-org/gitlab/-/issues/300251).
+[issue 300251](https://github.com/khulnasoft-lab/khulnasoft/-/issues/300251).
 
 To avoid leaving uncommitted changes in `gitlab/db/` from a `kdk update`, either:
 
@@ -261,7 +261,7 @@ In case you use the same database for both CE and EE development, sometimes you
 can get stuck in a situation when the migration is up in `rake db:migrate:status`,
 but in reality the database doesn't have it.
 
-For example, <https://gitlab.com/gitlab-org/gitlab-foss/merge_requests/3186>
+For example, <https://github.com/khulnasoft-lab/khulnasoft-foss/merge_requests/3186>
 introduced some changes when a few EE migrations were added to CE. If you were
 using the same db for CE and EE you would get hit by the following error:
 

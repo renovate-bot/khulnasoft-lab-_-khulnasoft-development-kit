@@ -9,7 +9,7 @@ RSpec.describe KDK::Services::OpenLDAP do
 
   describe '#command' do
     it 'returns the necessary command to run OpenLDAP' do
-      expect(subject.command).to eq('support/exec-cd gitlab-openldap libexec/slapd -F slapd.d -d2 -h "ldap://127.0.0.1:3890"')
+      expect(subject.command).to eq('support/exec-cd khulnasoft-openldap libexec/slapd -F slapd.d -d2 -h "ldap://127.0.0.1:3890"')
     end
   end
 

@@ -46,7 +46,7 @@ module KDK
         str.encode('UTF-8', invalid: :replace, undef: :replace)
       end
 
-      # Borrowed from https://gitlab.com/gitlab-org/gitlab/-/blob/0a06e1dcb2474f866e2f335cee2d0cb3c6886db3/lib/gitlab/encoding_helper.rb#L165-172
+      # Borrowed from https://github.com/khulnasoft-lab/khulnasoft/-/blob/0a06e1dcb2474f866e2f335cee2d0cb3c6886db3/lib/gitlab/encoding_helper.rb#L165-172
       def force_encode_utf8(message)
         return message if message.encoding == Encoding::UTF_8 && message.valid_encoding?
 

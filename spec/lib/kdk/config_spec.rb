@@ -247,7 +247,7 @@ RSpec.describe KDK::Config do
   describe 'repositories' do
     describe 'khulnasoft_ui' do
       it 'returns the gitlab-ui repository URL' do
-        expect(config.repositories.khulnasoft_ui).to eq('https://gitlab.com/gitlab-org/gitlab-ui.git')
+        expect(config.repositories.khulnasoft_ui).to eq('https://github.com/khulnasoft-lab/khulnasoft-ui.git')
       end
     end
   end

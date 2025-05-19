@@ -45,7 +45,7 @@ To update the default PostgreSQL:
    
    For example, see:
    - [Add 16.8 to KDK](https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/merge_requests/4667)
-   - [Add 16.8 to KhulnaSoft](https://gitlab.com/gitlab-org/gitlab/-/merge_requests/185192)
+   - [Add 16.8 to KhulnaSoft](https://github.com/khulnasoft-lab/khulnasoft/-/merge_requests/185192)
 
 1. Verify installation:
    1. Monitor for [installation issues reported by users](https://dashboards.quality.gitlab.net/d/feiggichlw64gf/kdk-command-failure-rates?var-time_interval=1h&orgId=1&from=now-2d&to=now&timezone=browser&var-commands=rake%20update:tool-versions).

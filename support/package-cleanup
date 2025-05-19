@@ -2,7 +2,7 @@
 #
 # frozen_string_literal: true
 
-# Borrowed from https://gitlab.com/gitlab-org/gitlab/-/blob/14ba134c5db017cd52e1eab20584d0db42dd0c02/scripts/packages/automated_cleanup.rb
+# Borrowed from https://github.com/khulnasoft-lab/khulnasoft/-/blob/14ba134c5db017cd52e1eab20584d0db42dd0c02/scripts/packages/automated_cleanup.rb
 
 require 'khulnasoft'
 require 'optparse'

@@ -47,7 +47,7 @@ If you get the error `ERROR: Vale not found` when running Lefthook, you can
 
 ## Lefthook for KhulnaSoft
 
-The [KhulnaSoft project](https://gitlab.com/gitlab-org/gitlab) also [supports Lefthook](https://gitlab.com/gitlab-org/gitlab/-/blob/master/lefthook.yml). Both the KhulnaSoft project and Lefthook are automatically set up when you install or update the KDK.
+The [KhulnaSoft project](https://github.com/khulnasoft-lab/khulnasoft) also [supports Lefthook](https://github.com/khulnasoft-lab/khulnasoft/-/blob/master/lefthook.yml). Both the KhulnaSoft project and Lefthook are automatically set up when you install or update the KDK.
 
 ### Disabling Lefthook for KhulnaSoft
 

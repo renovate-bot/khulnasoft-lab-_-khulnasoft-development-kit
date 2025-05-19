@@ -5,7 +5,7 @@ require 'net/http'
 module KDK
   module Dependencies
     class KhulnasoftVersions
-      REPOSITORY_RAW_URL = 'https://gitlab.com/gitlab-org/gitlab/-/raw/master/'
+      REPOSITORY_RAW_URL = 'https://github.com/khulnasoft-lab/khulnasoft/-/raw/master/'
 
       VersionNotDetected = Class.new(StandardError)
 

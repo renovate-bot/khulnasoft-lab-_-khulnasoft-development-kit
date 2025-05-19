@@ -112,7 +112,7 @@ sshd:
 
 Or vice versa, you can specify non-default ports for your secondary site.
 
-Note that the Git clone over SSH URL found in project show pages will always display the primary site's Git SSH URL, even if the primary site's SSH service is disabled. There is [an issue](https://gitlab.com/gitlab-org/gitlab/-/issues/370377) to improve this behavior.
+Note that the Git clone over SSH URL found in project show pages will always display the primary site's Git SSH URL, even if the primary site's SSH service is disabled. There is [an issue](https://github.com/khulnasoft-lab/khulnasoft/-/issues/370377) to improve this behavior.
 
 For more information, see [SSH](ssh.md).
 

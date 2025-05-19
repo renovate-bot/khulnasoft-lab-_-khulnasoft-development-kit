@@ -31,7 +31,7 @@ projects.
 ### Install using KhulnaSoft FOSS project
 
 Learn [how to create a fork](https://docs.gitlab.com/ee/user/project/repository/forking_workflow.html#creating-a-fork)
-of [KhulnaSoft FOSS](https://gitlab.com/gitlab-org/gitlab-foss).
+of [KhulnaSoft FOSS](https://github.com/khulnasoft-lab/khulnasoft-foss).
 
 After cloning the `khulnasoft-development-kit` project and running `make bootstrap`, to:
 
@@ -44,13 +44,13 @@ After cloning the `khulnasoft-development-kit` project and running `make bootstr
 - Clone `gitlab-foss` using HTTPS, run:
 
   ```shell
-  kdk install khulnasoft_repo=https://gitlab.com/gitlab-org/gitlab-foss.git
+  kdk install khulnasoft_repo=https://github.com/khulnasoft-lab/khulnasoft-foss.git
   ```
 
 ### Install using your own KhulnaSoft fork
 
 Learn [how to create a fork](https://docs.gitlab.com/ee/user/project/repository/forking_workflow.html#creating-a-fork)
-of [KhulnaSoft FOSS](https://gitlab.com/gitlab-org/gitlab-foss).
+of [KhulnaSoft FOSS](https://github.com/khulnasoft-lab/khulnasoft-foss).
 
 After cloning the `khulnasoft-development-kit` project and running `make bootstrap`, to:
 
@@ -63,5 +63,5 @@ After cloning the `khulnasoft-development-kit` project and running `make bootstr
 - Clone `gitlab-foss` using HTTPS, run:
 
   ```shell
-  kdk install khulnasoft_repo=https://gitlab.com/gitlab-org/gitlab-foss.git
+  kdk install khulnasoft_repo=https://github.com/khulnasoft-lab/khulnasoft-foss.git
   ```

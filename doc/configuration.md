@@ -356,14 +356,14 @@ Under the `khulnasoft_runner` key, you can define the following settings:
 
 | Setting                      | Default | Description                                                                                                  |
 |:-----------------------------|:--------|:-------------------------------------------------------------------------------------------------------------|
-| `khulnasoft_runner.enabled`      | `false` | Set to `true` to enable [`gitlab-runner`](https://gitlab.com/gitlab-org/gitlab-runner) to be managed by KDK. |
+| `khulnasoft_runner.enabled`      | `false` | Set to `true` to enable [`gitlab-runner`](https://github.com/khulnasoft-lab/khulnasoft-runner) to be managed by KDK. |
 | `khulnasoft_runner.auto_update`  | `true`  | Set to `false` to disable updating the `gitlab-runner` checkout.                                             |
 
 Under the `khulnasoft_pages` key, you can define the following settings:
 
 | Setting                                  | Default                          | Description                                                                                                 |
 |:-----------------------------------------|:---------------------------------|:------------------------------------------------------------------------------------------------------------|
-| `khulnasoft_pages.enabled`                   | `false`                          | Enable [`gitlab-pages`](https://gitlab.com/gitlab-org/gitlab-pages) to be managed by KDK.                   |
+| `khulnasoft_pages.enabled`                   | `false`                          | Enable [`gitlab-pages`](https://github.com/khulnasoft-lab/khulnasoft-pages) to be managed by KDK.                   |
 | `khulnasoft_pages.auto_update`               | `true`                           | Set to `false` to disable updating the `gitlab-pages` checkout.                                             |
 | `khulnasoft_pages.host`                      | `127.0.0.1.nip.io`               | Set `gitlab-pages` host.                                                                                    |
 | `khulnasoft_pages.port`                      | `3010`                           | Set `gitlab-pages` port.                                                                                    |
@@ -524,12 +524,12 @@ Vite also consumes less memory.
 These improvements are possible because Vite uses [esbuild](https://esbuild.github.io/) under the hood.
 For more details on the implementation of Vite at KhulnaSoft, see the RFC [frontend/rfcs#106](https://gitlab.com/gitlab-org/frontend/rfcs/-/issues/106).
 
-If you are using Vite, please [leave feedback](https://gitlab.com/gitlab-org/gitlab/-/issues/423851) of your experience.
+If you are using Vite, please [leave feedback](https://github.com/khulnasoft-lab/khulnasoft/-/issues/423851) of your experience.
 There are some known caveats, they are linked to the feedback issue. Please make sure to check those. There are two caveats worth calling out:
 
-1. `vite` serves files directly, so ad blockers might [block them based on their name](https://gitlab.com/gitlab-org/gitlab/-/issues/433361).
+1. `vite` serves files directly, so ad blockers might [block them based on their name](https://github.com/khulnasoft-lab/khulnasoft/-/issues/433361).
    The workaround is to turn ad blockers off for the KDK.
-1. `vite` on Linux watches a lot of files, so you might need to raise the [max_watch_files](https://gitlab.com/gitlab-org/gitlab/-/issues/434329) limit.
+1. `vite` on Linux watches a lot of files, so you might need to raise the [max_watch_files](https://github.com/khulnasoft-lab/khulnasoft/-/issues/434329) limit.
 
 To enable Vite for your KDK:
 

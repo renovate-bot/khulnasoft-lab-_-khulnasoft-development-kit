@@ -1,0 +1,96 @@
+#!/usr/bin/env ruby
+#
+# frozen_string_literal: true
+
+require 'erb'
+
+abort "Usage: #{$PROGRAM_NAME} USER_COUNT" if ARGV.count != 1
+
+user_count = Integer(ARGV.first) # rubocop:disable Lint/UselessAssignment
+ERB.new(DATA.read).run
+
+__END__
+<% user_count.times do |i| %>
+dn: uid=john<%= i %>,ou=people,dc=example,dc=com
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+uid: john<%= i %>
+sn: Doe
+givenName: John
+cn: John<%= i %> Doe
+displayName: John Doe
+uidNumber: 1000
+gidNumber: 10000
+# hashed value for 'password'
+userPassword: {SSHA}qqLFjamdd1cru4RV815+FiSxh/54rfbd
+gecos: John Doe
+loginShell: /bin/bash
+homeDirectory: /home/john
+shadowExpire: -1
+shadowFlag: 0
+shadowWarning: 7
+shadowMin: 8
+shadowMax: 999999
+shadowLastChange: 10877
+mail: john<%= i %>.doe@example.com
+postalCode: 31000
+l: Toulouse
+o: Example
+mobile: +33 (0)6 xx xx xx xx
+homePhone: +33 (0)5 xx xx xx xx
+title: System Administrator
+postalAddress:
+initials: JD
+
+dn: uid=mary<%= i %>,ou=people,dc=example,dc=com
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+uid: Mary<%= i %>
+sn: Jane
+givenName: Mary Jane
+cn: Mary<%= i %> Jane
+displayName: Mary Jane
+uidNumber: 1001
+gidNumber: 10001
+# hashed value for 'password'
+userPassword: {SSHA}qqLFjamdd1cru4RV815+FiSxh/54rfbd
+mail: mary.jane<%= i %>@example.com
+gecos: Mary
+loginShell: /bin/bash
+homeDirectory: /home/mary
+shadowExpire: -1
+shadowFlag: 0
+shadowWarning: 7
+shadowMin: 8
+shadowMax: 999999
+shadowLastChange: 10877
+postalCode: 31000
+l: Toulouse
+o: Example
+mobile: +33 (0)6 xx xx xx xx
+homePhone: +33 (0)5 xx xx xx xx
+title: System Administrator
+postalAddress:
+initials: JD
+<% end %>
+
+<%
+(1...user_count.to_s.length).each do |group_size|
+  group_size = 10 ** group_size
+  (user_count/group_size + 1).times do |group_count|
+    cn = "group-#{group_size}-#{group_count}"
+%>
+
+dn: cn=<%= cn %>,ou=groups,dc=example,dc=com
+objectClass: groupofnames
+ou: groups
+cn: <%= cn %> <% (group_size/2).times do |i| %>
+member: uid=john<%= i %>,ou=people,dc=example,dc=com
+member: uid=mary<%= i %>,ou=people,dc=example,dc=com<% end %>
+
+<%
+  end
+end
+%>

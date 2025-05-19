@@ -1,0 +1,13 @@
+#!/usr/bin/env sh
+
+umask 077
+
+if [ "$(uname)" = "Linux" ]; then
+  libexec/slapd -F slapd.d -d2 -h \
+    "ldapi://slapd.socket ldap://127.0.0.1:3890"
+elif [ "$(uname)" = "Darwin" ]; then
+  /usr/libexec/slapd -F slapd.d -d1 -h \
+    "ldapi://slapd.socket ldap://127.0.0.1:3891"
+else
+  echo "Unknown operating system. Consider adding support to https://github.com/khulnasoft-lab/khulnasoft-development-kit/blob/main/khulnasoft-openldap/run-slapd"
+fi

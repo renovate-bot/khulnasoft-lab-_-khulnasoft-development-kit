@@ -21,7 +21,7 @@ repository. The URL can always be modified to point to any KhulnaSoft instance f
 changed to use the KhulnaSoft repository instead of the KDK.
 
 All environment variables mentioned should be entered as a semicolon separated list. The full list of
-[supported KhulnaSoft environment variables](https://gitlab.com/gitlab-org/gitlab-qa/-/blob/master/docs/what_tests_can_be_run.md#supported-gitlab-environment-variables)
+[supported KhulnaSoft environment variables](https://github.com/khulnasoft-lab/khulnasoft-qa/-/blob/master/docs/what_tests_can_be_run.md#supported-gitlab-environment-variables)
  can be used when setting up either of the RSpec configurations.
 
 Both sets of instructions require that you select the Ruby SDK **qa**. If this option is not available, you need to

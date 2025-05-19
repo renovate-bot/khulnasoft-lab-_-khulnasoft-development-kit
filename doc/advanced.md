@@ -557,7 +557,7 @@ You might need to increase your memory allocation. See [Performance](#performanc
 
 Using a directory path with a space in it causes the install to fail (for example, using the default home directory of the Windows user, where you've possibly used your full name). This is [an open issue](https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/issues/1380).
 
-Additionally, using a directory path in Windows file system mount points (such as `/mnt/c` or `/mnt/d`) [results in permissions issues](https://gitlab.com/gitlab-org/gitlab/-/issues/347422#note_757891300). Instead, you must use a path inside the WSL OS, such as inside `/home/<user>/`. If you must access the files from Windows, you can go to `\\wsl$` in Explorer to browse the file system. For example, `/home/sid/dev/kdk` would be visible at `\\wsl$\Ubuntu-20.04\home\sid\dev\kdk`.
+Additionally, using a directory path in Windows file system mount points (such as `/mnt/c` or `/mnt/d`) [results in permissions issues](https://github.com/khulnasoft-lab/khulnasoft/-/issues/347422#note_757891300). Instead, you must use a path inside the WSL OS, such as inside `/home/<user>/`. If you must access the files from Windows, you can go to `\\wsl$` in Explorer to browse the file system. For example, `/home/sid/dev/kdk` would be visible at `\\wsl$\Ubuntu-20.04\home\sid\dev\kdk`.
 
 #### Performance
 
@@ -567,7 +567,7 @@ Increase the allocation to WSL to meet the minimum requirements. See [Supported 
 
 ## Apply custom patches for Ruby
 
-Some functions (and specs) require a special Ruby installed with additional [patches](https://gitlab.com/gitlab-org/gitlab-build-images/-/tree/master/patches/ruby).
+Some functions (and specs) require a special Ruby installed with additional [patches](https://github.com/khulnasoft-lab/khulnasoft-build-images/-/tree/master/patches/ruby).
 These patches are already applied when running on KhulnaSoft CI/CD or when using KhulnaSoft Compose Kit,
 but since KhulnaSoft Development Kit uses `mise` they must be manually enabled.
 
@@ -578,7 +578,7 @@ mise uninstall ruby
 
 # Compile Ruby 3.3.7
 export RUBY_APPLY_PATCHES="$(cat <<EOF
-https://gitlab.com/gitlab-org/gitlab-build-images/-/raw/master/patches/ruby/3.3/thread-memory-allocations.patch
+https://github.com/khulnasoft-lab/khulnasoft-build-images/-/raw/master/patches/ruby/3.3/thread-memory-allocations.patch
 EOF
 )"
 mise install ruby 3.3.7

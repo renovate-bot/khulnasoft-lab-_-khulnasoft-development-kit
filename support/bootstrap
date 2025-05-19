@@ -84,9 +84,9 @@ generic_install_tools() {
   # set version specific patches e.g. https://github.com/asdf-vm/asdf-ruby/pull/202
   #
   # shellcheck disable=SC2034
-  MISC_RUBY_PATCHES_3_2_4=$'https://gitlab.com/gitlab-org/gitlab-build-images/-/raw/d95e4efae87d5e3696f22d12a6c4e377a22f3c95/patches/ruby/3.2/thread-memory-allocations.patch'
+  MISC_RUBY_PATCHES_3_2_4=$'https://github.com/khulnasoft-lab/khulnasoft-build-images/-/raw/d95e4efae87d5e3696f22d12a6c4e377a22f3c95/patches/ruby/3.2/thread-memory-allocations.patch'
   # shellcheck disable=SC2034
-  MISC_RUBY_PATCHES_3_3_7=$'https://gitlab.com/gitlab-org/gitlab-build-images/-/raw/e1be2ad5ff2a0bf0b27f86ef75b73824790b4b26/patches/ruby/3.3/thread-memory-allocations.patch'
+  MISC_RUBY_PATCHES_3_3_7=$'https://github.com/khulnasoft-lab/khulnasoft-build-images/-/raw/e1be2ad5ff2a0bf0b27f86ef75b73824790b4b26/patches/ruby/3.3/thread-memory-allocations.patch'
 
   grep -E "^ruby " ".tool-versions" | while IFS= read -r line
   do

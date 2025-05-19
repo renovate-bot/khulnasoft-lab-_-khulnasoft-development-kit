@@ -13,7 +13,7 @@ RSpec.describe KDK::Dependencies::KhulnasoftVersions do
 
     context 'with remote file' do
       before do
-        stub_request(:get, "https://gitlab.com/gitlab-org/gitlab/-/raw/master/.ruby-version")
+        stub_request(:get, "https://github.com/khulnasoft-lab/khulnasoft/-/raw/master/.ruby-version")
           .to_return(status: 200, body: '3.2.4')
       end
 

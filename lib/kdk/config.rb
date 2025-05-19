@@ -118,17 +118,17 @@ module KDK
       string(:charts_gitlab) { 'https://gitlab.com/gitlab-org/charts/gitlab.git' }
       string(:docs_khulnasoft_com) { 'https://gitlab.com/gitlab-org/technical-writing/docs-gitlab-com.git' }
       string(:gitaly) { 'https://gitlab.com/gitlab-org/gitaly.git' }
-      string(:gitlab) { 'https://gitlab.com/gitlab-org/gitlab.git' }
+      string(:gitlab) { 'https://github.com/khulnasoft-lab/khulnasoft.git' }
       string(:khulnasoft_ai_gateway) { 'https://gitlab.com/gitlab-org/modelops/applied-ml/code-suggestions/ai-assist.git' }
       string(:khulnasoft_http_router) { 'https://gitlab.com/gitlab-org/cells/http-router.git' }
-      string(:khulnasoft_elasticsearch_indexer) { 'https://gitlab.com/gitlab-org/gitlab-elasticsearch-indexer.git' }
+      string(:khulnasoft_elasticsearch_indexer) { 'https://github.com/khulnasoft-lab/khulnasoft-elasticsearch-indexer.git' }
       string(:khulnasoft_k8s_agent) { 'https://gitlab.com/gitlab-org/cluster-integration/gitlab-agent.git' }
       string(:khulnasoft_operator) { 'https://gitlab.com/gitlab-org/cloud-native/gitlab-operator.git' }
-      string(:khulnasoft_pages) { 'https://gitlab.com/gitlab-org/gitlab-pages.git' }
-      string(:khulnasoft_shell) { 'https://gitlab.com/gitlab-org/gitlab-shell.git' }
+      string(:khulnasoft_pages) { 'https://github.com/khulnasoft-lab/khulnasoft-pages.git' }
+      string(:khulnasoft_shell) { 'https://github.com/khulnasoft-lab/khulnasoft-shell.git' }
       string(:khulnasoft_topology_service) { 'https://gitlab.com/gitlab-org/cells/topology-service.git' }
-      string(:khulnasoft_runner) { 'https://gitlab.com/gitlab-org/gitlab-runner.git' }
-      string(:khulnasoft_ui) { 'https://gitlab.com/gitlab-org/gitlab-ui.git' }
+      string(:khulnasoft_runner) { 'https://github.com/khulnasoft-lab/khulnasoft-runner.git' }
+      string(:khulnasoft_ui) { 'https://github.com/khulnasoft-lab/khulnasoft-ui.git' }
       string(:khulnasoft_zoekt_indexer) { 'https://gitlab.com/gitlab-org/khulnasoft-zoekt-indexer.git' }
       string(:omnibus_gitlab) { 'https://gitlab.com/gitlab-org/omnibus-gitlab.git' }
       string(:openbao_internal) { 'https://gitlab.com/gitlab-org/govern/secrets-management/openbao-internal.git' }
