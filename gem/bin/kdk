@@ -1,0 +1,85 @@
+#!/usr/bin/env ruby
+
+# frozen_string_literal: true
+
+require 'yaml'
+require 'pathname'
+
+$LOAD_PATH.unshift(File.expand_path('../lib', __dir__))
+require 'khulnasoft_development_kit'
+
+# Khulnasoft Development Kit CLI launcher
+#
+# Note to contributors: this script must not change (much) because it is
+# installed outside the khulnasoft-development-kit repository with 'gem
+# install'. Edit lib/kdk.rb to define new commands.
+module KDK
+  DEFAULT_INIT_DIRECTORY = File.join(Dir.pwd, 'kdk')
+
+  module CommandBasic
+    class Main
+      def initialize(args)
+        @args = args
+      end
+
+      def run
+        return KDK::CommandBasic::Version.new.run if kdk_version?
+
+        if kdk_root
+          require(kdk_root.join('lib/kdk.rb'))
+          KDK.main
+        else
+          warn_not_kdk_dir
+          false
+        end
+      end
+
+      private
+
+      attr_reader :args
+
+      def warn_not_kdk_dir
+        warn <<~NOT_A_KDK_DIR
+
+          The current working directory is not inside a khulnasoft-development-kit
+          installation. Use 'cd' to go to your khulnasoft-development-kit.
+
+          # Default: #{DEFAULT_INIT_DIRECTORY}
+
+        NOT_A_KDK_DIR
+      end
+
+      def kdk_root
+        @kdk_root ||= find_root(Pathname.new(ENV.fetch('PWD', nil)))
+      end
+
+      def kdk_version?
+        # If kdk_root == true, fall through to allow lib/kdk.rb to handle
+        %w[version --version].include?(args.first) && !kdk_root
+      end
+
+      def find_root(current)
+        if current.join('KDK_ROOT').exist?
+          current.realpath
+        elsif fs_root?(current)
+          nil
+        else
+          find_root(current.join('..'))
+        end
+      end
+
+      def fs_root?(path)
+        path.realpath.root? || path.realpath.to_s == path.join('..').realpath.to_s
+      end
+    end
+
+    class Version
+      def run
+        puts KDK::VERSION
+        true
+      end
+    end
+  end
+end
+
+exit(KDK::CommandBasic::Main.new(ARGV).run)
