@@ -34,4 +34,4 @@ markdownlint-cli2 0.18.0
 vale 3.11.2
 
 # To allow gitaly to build in rspec in the khulnasoft/ directory
-golang 1.24.0
+golang 1.24.3
