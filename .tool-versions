@@ -30,7 +30,7 @@ ruby 3.3.7 3.2.4
 shellcheck 0.10.0
 
 # For linting KDK documentation
-markdownlint-cli2 0.18.0
+markdownlint-cli2 0.18.1
 vale 3.11.2
 
 # To allow gitaly to build in rspec in the khulnasoft/ directory
