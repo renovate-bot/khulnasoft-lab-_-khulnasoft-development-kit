@@ -20,16 +20,16 @@ module KDK
         self
       end
 
-      # Execute rake tasks in the `gitlab` rails environment
+      # Execute rake tasks in the `khulnasoft` rails environment
       #
       # @param [Array] *args any arg that Shellout#execute accepts
-      def execute_in_gitlab(**args)
+      def execute_in_khulnasoft(**args)
         if KDK::Dependencies.bundler_loaded?
           Bundler.with_unbundled_env do
-            @shellout = Shellout.new(rake_command, chdir: KDK.config.gitlab.dir).execute(**args)
+            @shellout = Shellout.new(rake_command, chdir: KDK.config.khulnasoft.dir).execute(**args)
           end
         else
-          @shellout = Shellout.new(rake_command, chdir: KDK.config.gitlab.dir).execute(**args)
+          @shellout = Shellout.new(rake_command, chdir: KDK.config.khulnasoft.dir).execute(**args)
         end
 
         self

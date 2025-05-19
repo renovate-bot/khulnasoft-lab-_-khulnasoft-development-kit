@@ -13,9 +13,9 @@ In order to enable SMTP delivery:
 
 1. You need an SMTP-capable account. An option is to create a dummy account
    on Gmail for this purpose.
-1. Copy `gitlab/config/initializers/smtp_settings.rb.sample` to `smtp_settings.rb`
+1. Copy `khulnasoft/config/initializers/smtp_settings.rb.sample` to `smtp_settings.rb`
    and configure the SMTP connection details (see the
-   [Omnibus SMTP documentation](https://docs.gitlab.com/omnibus/settings/smtp.html)):
+   [Omnibus SMTP documentation](https://docs.khulnasoft.com/omnibus/settings/smtp.html)):
 
    ```ruby
    # if Rails.env.production?
@@ -40,7 +40,7 @@ In order to enable SMTP delivery:
      the configuration with the `development` Rails environment.
    - In the sample Gmail is used as SMTP provider (you need to [enable 2FA](https://support.google.com/accounts/answer/185839), then
      [create an application password](https://support.google.com/accounts/answer/185833)).
-1. In `gitlab/config/environments/development.rb`, make sure that ActionMailer
+1. In `khulnasoft/config/environments/development.rb`, make sure that ActionMailer
    logs delivery errors. This helps you troubleshoot SMTP delivery:
 
    ```ruby
@@ -102,7 +102,7 @@ a workaround is to:
 
 ## Enabling S/MIME delivery
 
-You can follow the [official S/MIME emails documentation](https://docs.gitlab.com/ee/administration/smime_signing_email.html)
+You can follow the [official S/MIME emails documentation](https://docs.khulnasoft.com/ee/administration/smime_signing_email.html)
 and combine it with the SMTP configuration above to test actual delivery of
 signed messages.
 

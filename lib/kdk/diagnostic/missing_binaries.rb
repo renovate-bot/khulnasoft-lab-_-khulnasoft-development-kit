@@ -14,7 +14,7 @@ module KDK
 
         setup_commands = {
           gitaly: 'make gitaly-setup',
-          khulnasoft_shell: 'make gitlab-shell-setup',
+          khulnasoft_shell: 'make khulnasoft-shell-setup',
           workhorse: 'make khulnasoft-workhorse-setup'
         }
 
@@ -46,9 +46,9 @@ module KDK
         return true if binary == :graphql_schema
 
         if binary == :workhorse
-          # Check if any file starting with 'gitlab-' exists and is executable in any of the paths
+          # Check if any file starting with 'khulnasoft-' exists and is executable in any of the paths
           binary_paths.any? do |path|
-            Dir.glob(File.join(path, 'gitlab-*')).any? do |file|
+            Dir.glob(File.join(path, 'khulnasoft-*')).any? do |file|
               File.exist?(file) && File.executable?(file)
             end
           end

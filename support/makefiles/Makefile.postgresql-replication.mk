@@ -26,7 +26,7 @@ postgresql-replication-primary-create-slot: postgresql-replication/slot
 
 postgresql-replication/backup:
 	$(Q)bundle exec rake geo:replication_backup
-	$(Q)$(MAKE) ${postgresql_data_dir}/gitlab.conf ${QQ}
+	$(Q)$(MAKE) ${postgresql_data_dir}/khulnasoft.conf ${QQ}
 
 postgresql-replication/slot:
 	$(Q)$(psql) -h ${postgresql_host} -p ${postgresql_port} -d postgres -c "SELECT * FROM pg_create_physical_replication_slot('khulnasoft_kdk_replication_slot');"

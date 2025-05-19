@@ -9,31 +9,31 @@ RSpec.describe Support::Rake::Update do
     it 'returns all make targets' do
       expect(described_class.make_tasks.map(&:target)).to match_array(%w[
         khulnasoft/.git
-        gitlab-config
-        gitlab-asdf-install
-        .gitlab-bundle
-        .gitlab-lefthook
-        .gitlab-yarn
+        khulnasoft-config
+        khulnasoft-asdf-install
+        .khulnasoft-bundle
+        .khulnasoft-lefthook
+        .khulnasoft-yarn
         .khulnasoft-translations
         postgresql
-        gitlab/doc/api/graphql/reference/khulnasoft_schema.json
+        khulnasoft/doc/api/graphql/reference/khulnasoft_schema.json
         preflight-checks
         preflight-update-checks
         gitaly-update
         ensure-databases-setup
-        gitlab-shell-update
+        khulnasoft-shell-update
         unlock-dependency-installers
         khulnasoft-http-router-update
         khulnasoft-topology-service-update
-        docs-gitlab-com-update
-        gitlab-elasticsearch-indexer-update
+        docs-khulnasoft-com-update
+        khulnasoft-elasticsearch-indexer-update
         khulnasoft-k8s-agent-update
-        gitlab-pages-update
+        khulnasoft-pages-update
         khulnasoft-translations-unlock
-        gitlab-ui-update
+        khulnasoft-ui-update
         khulnasoft-workhorse-update
         khulnasoft-zoekt-update
-        gitlab-ai-gateway-update
+        khulnasoft-ai-gateway-update
         grafana-update
         jaeger-update
         object-storage-update
@@ -42,19 +42,19 @@ RSpec.describe Support::Rake::Update do
         openbao-update
         siphon-update
         nats-update
-        gitlab-runner-update
+        khulnasoft-runner-update
       ])
     end
 
     it 'notes which tasks a skipped by default' do
       expect(described_class.make_tasks.filter(&:skip?).map(&:target)).to match_array(%w[
-        docs-gitlab-com-update
-        gitlab-elasticsearch-indexer-update
+        docs-khulnasoft-com-update
+        khulnasoft-elasticsearch-indexer-update
         khulnasoft-k8s-agent-update
-        gitlab-pages-update
-        gitlab-ui-update
+        khulnasoft-pages-update
+        khulnasoft-ui-update
         khulnasoft-zoekt-update
-        gitlab-ai-gateway-update
+        khulnasoft-ai-gateway-update
         grafana-update
         jaeger-update
         object-storage-update
@@ -63,7 +63,7 @@ RSpec.describe Support::Rake::Update do
         openbao-update
         siphon-update
         nats-update
-        gitlab-runner-update
+        khulnasoft-runner-update
       ])
     end
 

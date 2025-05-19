@@ -29,11 +29,11 @@ docs_khulnasoft_com_repo = <%= config.repositories.docs_khulnasoft_com %>
 khulnasoft_runner_enabled = <%= config.khulnasoft_runner.enabled? %>
 khulnasoft_runner_repo = <%= config.repositories.khulnasoft_runner %>
 <%-# -%>
-omnibus_khulnasoft_enabled = <%= config.omnibus_gitlab.enabled? %>
-omnibus_khulnasoft_repo = <%= config.repositories.omnibus_gitlab %>
+omnibus_khulnasoft_enabled = <%= config.omnibus_khulnasoft.enabled? %>
+omnibus_khulnasoft_repo = <%= config.repositories.omnibus_khulnasoft %>
 <%-# -%>
-charts_khulnasoft_enabled = <%= config.charts_gitlab.enabled? %>
-charts_khulnasoft_repo = <%= config.repositories.charts_gitlab %>
+charts_khulnasoft_enabled = <%= config.charts_khulnasoft.enabled? %>
+charts_khulnasoft_repo = <%= config.repositories.charts_khulnasoft %>
 <%-# -%>
 khulnasoft_operator_enabled = <%= config.khulnasoft_operator.enabled? %>
 khulnasoft_operator_repo = <%= config.repositories.khulnasoft_operator %>
@@ -74,7 +74,7 @@ khulnasoft_pages_enabled = <%= config.khulnasoft_pages.enabled? %>
 khulnasoft_pages_port = <%= config.khulnasoft_pages.port %>
 khulnasoft_pages_repo = <%= config.repositories.khulnasoft_pages %>
 khulnasoft_pages_version = <%= config.khulnasoft_pages.__version %>
-khulnasoft_repo = <%= config.repositories.gitlab %>
+khulnasoft_repo = <%= config.repositories.khulnasoft %>
 khulnasoft_shell_repo = <%= config.repositories.khulnasoft_shell %>
 khulnasoft_shell_version = <%= config.khulnasoft_shell.__version %>
 khulnasoft_shell_skip_compile = <%= config.khulnasoft_shell.skip_compile? %>
@@ -82,8 +82,8 @@ khulnasoft_shell_skip_setup = <%= config.khulnasoft_shell.skip_setup? %>
 <%-# -%>
 khulnasoft_ui_enabled = <%= config.khulnasoft_ui? %>
 khulnasoft_ui_repo = <%= config.repositories.khulnasoft_ui %>
-khulnasoft_default_branch = <%= config.gitlab.default_branch %>
-khulnasoft_lefthook_enabled = <%= config.gitlab.lefthook_enabled? %>
+khulnasoft_default_branch = <%= config.khulnasoft.default_branch %>
+khulnasoft_lefthook_enabled = <%= config.khulnasoft.lefthook_enabled? %>
 grafana_enabled = <%= config.grafana.enabled? %>
 hostname = <%= config.hostname %>
 https = <%= config.https? %>
@@ -124,7 +124,7 @@ snowplow_micro_enabled = <%= config.snowplow_micro.enabled %>
 sshd_bin = <%= config.sshd.bin %>
 sshd_hostkeys = <%= config.sshd.host_keys.join(' ') %>
 username = <%= config.username %>
-ci_database_enabled = <%= config.gitlab.rails.databases.ci.enabled %>
+ci_database_enabled = <%= config.khulnasoft.rails.databases.ci.enabled %>
 workhorse_skip_compile = <%= config.workhorse.skip_compile? %>
 workhorse_skip_setup = <%= config.workhorse.skip_setup? %>
 duo_workflow_enabled = <%= config.duo_workflow.enabled? %>

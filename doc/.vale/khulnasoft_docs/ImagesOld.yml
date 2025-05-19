@@ -4,7 +4,7 @@ description: |
   Checks for images that are not from supported versions of KhulnaSoft.
 extends: existence
 message: "Review this image. It might be out of date."
-link: https://docs.gitlab.com/development/documentation/styleguide/#anchor-links
+link: https://docs.khulnasoft.com/development/documentation/styleguide/#anchor-links
 vocab: false
 level: suggestion
 scope: raw

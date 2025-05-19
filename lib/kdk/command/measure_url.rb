@@ -14,7 +14,7 @@ module KDK
       attr_reader :urls_or_paths
 
       def check!
-        KDK::Output.abort('Please add URL(s) as an argument (e.g. http://localhost:3000/explore, /explore or https://gitlab.com/explore)', report_error: false) if urls.empty?
+        KDK::Output.abort('Please add URL(s) as an argument (e.g. http://localhost:3000/explore, /explore or https://khulnasoft.com/explore)', report_error: false) if urls.empty?
         super
       end
 

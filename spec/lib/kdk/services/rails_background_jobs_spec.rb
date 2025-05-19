@@ -11,7 +11,7 @@ RSpec.describe KDK::Services::RailsBackgroundJobs do
 
   describe '#command' do
     it 'returns the necessary command to run KhulnaSoft Rails background jobs' do
-      expect(subject.command).to eq(%(support/exec-cd gitlab bin/background_jobs start_foreground --timeout 10))
+      expect(subject.command).to eq(%(support/exec-cd khulnasoft bin/background_jobs start_foreground --timeout 10))
     end
   end
 

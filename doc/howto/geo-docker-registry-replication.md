@@ -48,7 +48,7 @@ In this example:
 
 ### Configure the primary node
 
-Add the secret from the Registry configuration above to `config/gitlab.yml`:
+Add the secret from the Registry configuration above to `config/khulnasoft.yml`:
 
 ```yaml
 registry:

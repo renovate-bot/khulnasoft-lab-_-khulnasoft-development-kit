@@ -113,7 +113,7 @@ module KDK
     end
 
     def default_database
-      'gitlabhq_development'
+      'khulnasofthq_development'
     end
   end
 end

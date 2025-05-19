@@ -21,11 +21,11 @@ repository. The URL can always be modified to point to any KhulnaSoft instance f
 changed to use the KhulnaSoft repository instead of the KDK.
 
 All environment variables mentioned should be entered as a semicolon separated list. The full list of
-[supported KhulnaSoft environment variables](https://github.com/khulnasoft-lab/khulnasoft-qa/-/blob/master/docs/what_tests_can_be_run.md#supported-gitlab-environment-variables)
+[supported KhulnaSoft environment variables](https://github.com/khulnasoft-lab/khulnasoft-qa/-/blob/master/docs/what_tests_can_be_run.md#supported-khulnasoft-environment-variables)
  can be used when setting up either of the RSpec configurations.
 
 Both sets of instructions require that you select the Ruby SDK **qa**. If this option is not available, you need to
-close the project and open it again from `<Path to KDK folder/gitlab/qa`. This is a temporary step to get the **qa**
+close the project and open it again from `<Path to KDK folder/khulnasoft/qa`. This is a temporary step to get the **qa**
 option to appear. You do not need to open the project from this folder every time.
 
 #### Starting tests using the RubyMine **Run** menu
@@ -37,9 +37,9 @@ The steps below set up a new configuration with RubyMine that allows you to Run/
 1. Select the **+** icon and select **Ruby**
 1. Give the new configuration a meaningful name
 1. Fill in the **Configuration** tab with the following
-   - Ruby script: `<Path to KDK folder>/gitlab/qa/bin/qa`
+   - Ruby script: `<Path to KDK folder>/khulnasoft/qa/bin/qa`
    - Script arguments: `Test::Instance::All <KhulnaSoft URL> -- qa/specs/features/browser_ui/1_manage/login/log_in_spec.rb`
-   - Working directory: `<Path to KDK folder>/gitlab/qa`
+   - Working directory: `<Path to KDK folder>/khulnasoft/qa`
    - Environment variables: Optional
      - If you'd like to see your script run; `WEBDRIVER_HEADLESS=false`
      - If you have a token to use, you can save time from creating one; `KHULNASOFT_QA_ACCESS_TOKEN=<token>`
@@ -78,14 +78,14 @@ configure them to work with our framework.
 
 Making the below changes alters the template that RubyMine uses when creating RSpec configurations. This means that
 any RSpec test you try to run for the first time creates a template with these settings. As a result, any tests that
-are outside of the `gitlab/qa/qa/specs` do not work with this set up. For other tests such as `gitlab/spec`, you
+are outside of the `khulnasoft/qa/qa/specs` do not work with this set up. For other tests such as `khulnasoft/spec`, you
 need to alter the configuration after it is created.
 
 1. Select **Edit Configurations...** from the **Run** menu
 1. Expand the **Templates** option and select the **RSpec** template
 1. Fill in the **Configuration** tab with the following:
-   - Enable the "Use custom RSpec runner script" option and set it to `<Path to KDK folder>/gitlab/qa/bin/rubymine`
-   - Working directory: `<Path to KDK folder>/gitlab/qa`
+   - Enable the "Use custom RSpec runner script" option and set it to `<Path to KDK folder>/khulnasoft/qa/bin/rubymine`
+   - Working directory: `<Path to KDK folder>/khulnasoft/qa`
    - Environment variables:
      - URL for KhulnaSoft, this is a mandatory variable; `KHULNASOFT_URL=<KhulnaSoft URL>`
      - If you'd like to see your script run; `WEBDRIVER_HEADLESS=false`

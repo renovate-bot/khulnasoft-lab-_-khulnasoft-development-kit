@@ -52,8 +52,8 @@ To continue, you must log in. Would you like to log in (Y/n)? Y
 After you have logged in, select your default project and zone.
 After you have logged in, select your default project and zone. Use one of the following GCP projects:
 
-- `gitlab-internal-153318`: Use this project for general development and testing.
-- `gitlab-qa-resources`: Use this project for composing and running the [Auto DevOps](https://github.com/khulnasoft-lab/khulnasoft/-/tree/master/qa/qa/specs/features/browser_ui/7_configure/auto_devops) tests.
+- `khulnasoft-internal-153318`: Use this project for general development and testing.
+- `khulnasoft-qa-resources`: Use this project for composing and running the [Auto DevOps](https://github.com/khulnasoft-lab/khulnasoft/-/tree/master/qa/qa/specs/features/browser_ui/7_configure/auto_devops) tests.
 
 Next, install `kubectl` as a component of `gcloud` :
 
@@ -87,16 +87,16 @@ is outside your network.
 ### Runner on K8s cluster is outside of your network
 
 Assuming that you choose to run the K8s cluster on GKE you may also wish to use
-the [1 click install](https://docs.gitlab.com/ee/user/project/clusters/#installing-applications)
+the [1 click install](https://docs.khulnasoft.com/ee/user/project/clusters/#installing-applications)
 to install the Runner on this cluster. This means that in addition to the
 registry (which is a separate server on your machine), you also need the
 KhulnaSoft instance to be internet accessible because now the runner is not on your
 network.
 
-### Test changes to `Auto-DevOps.gitlab-ci.yml` on KhulnaSoft.com
+### Test changes to `Auto-DevOps.khulnasoft-ci.yml` on KhulnaSoft.com
 
-If you are only changing `Auto-DevOps.gitlab-ci.yml`, you are
-able to just copy and paste this into a `.gitlab-ci.yml` on a project on
+If you are only changing `Auto-DevOps.khulnasoft-ci.yml`, you are
+able to just copy and paste this into a `.khulnasoft-ci.yml` on a project on
 KhulnaSoft.com to test it out. This doesn't work if you're also testing this
 with corresponding changes to code.
 

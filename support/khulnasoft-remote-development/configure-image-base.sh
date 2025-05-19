@@ -21,8 +21,8 @@ install_runner() {
   # --- Install KhulnaSoft Runner
   # KDK doesn't install it, but it is needed for running pipelines
   # https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/master/doc/howto/runner.md
-  curl -L https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh | sudo bash
-  apt-get install gitlab-runner -y
+  curl -L https://packages.khulnasoft.com/install/repositories/runner/khulnasoft-runner/script.deb.sh | sudo bash
+  apt-get install khulnasoft-runner -y
 }
 
 configure_user() {

@@ -5,7 +5,7 @@ title: How to use KhulnaSoft Development Kit
 Before using the KDK features below, see [install instructions](../_index.md).
 
 Main purpose of KhulnaSoft Development Kit is to make KhulnaSoft development easier.
-Please see [KhulnaSoft Contributor documentation](https://docs.gitlab.com/ee/development/index.html)
+Please see [KhulnaSoft Contributor documentation](https://docs.khulnasoft.com/ee/development/index.html)
 to learn how to contribute to KhulnaSoft.
 
 ## Basic
@@ -43,7 +43,7 @@ to learn how to contribute to KhulnaSoft.
 - [KhulnaSoft AI Gateway](khulnasoft_ai_gateway.md)
 - [KhulnaSoft Observability Backend (formerly opstrace)](khulnasoft_observability_backend.md)
 - [KhulnaSoft Geo](geo.md)
-- [KhulnaSoft.com OAuth2](gitlab-oauth2.md)
+- [KhulnaSoft.com OAuth2](khulnasoft-oauth2.md)
 - [Gitaly and Praefect](gitaly.md)
 - [Google OAuth2](google-oauth2.md)
 - [HTTPS](nginx.md)
@@ -66,7 +66,7 @@ to learn how to contribute to KhulnaSoft.
 - [Siphon](siphon.md)
 - [Snowplow Micro](snowplow_micro.md)
 - [Start a Rails console](rails_console.md)
-- [Tracing and Jaeger](https://docs.gitlab.com/ee/development/distributed_tracing.html#using-jaeger-in-the-khulnasoft-development-kit)
+- [Tracing and Jaeger](https://docs.khulnasoft.com/ee/development/distributed_tracing.html#using-jaeger-in-the-khulnasoft-development-kit)
 - [Update external dependencies](update_external_dependencies.md)
 - [Use Container Registry with KDK](registry.md)
 - [Use KhulnaSoft Runner with KDK](runner.md)

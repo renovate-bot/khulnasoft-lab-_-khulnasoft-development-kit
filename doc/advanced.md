@@ -18,7 +18,7 @@ KDK supports macOS 10.14 (Mojave) and later. To install dependencies for macOS:
    [`Brewfile`](https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/master/Brewfile).
    You can:
      - Reuse an existing checkout if you have one, but make sure it's up to date.
-     - Use this check out again when you [use KDK to install KhulnaSoft](_index.md#use-kdk-to-install-gitlab).
+     - Use this check out again when you [use KDK to install KhulnaSoft](_index.md#use-kdk-to-install-khulnasoft).
 
 1. Install [`nvm`](https://github.com/nvm-sh/nvm#installing-and-updating). It should automatically
    configure it for your shell.
@@ -136,7 +136,7 @@ LTS release (16.04, 18.04, 20.04, 22.04) or higher, and Debian:
    ```
 
 1. Complete the rest of the [manual instructions](_index.md#install-dependencies-manually), then
-   [use KDK to install KhulnaSoft](_index.md#use-kdk-to-install-gitlab).
+   [use KDK to install KhulnaSoft](_index.md#use-kdk-to-install-khulnasoft).
 
 ## Install dependencies for other Linux distributions
 
@@ -307,7 +307,7 @@ Follow [runit install instruction](#runit) to install it manually.
 > [!note]
 > Although RHEL8 has a FIPS-compliant mode and KhulnaSoft can be installed with it
 > enabled, KhulnaSoft is not FIPS-compliant and doesn't run correctly with it
-> enabled. [Epic &5104](https://gitlab.com/groups/gitlab-org/-/epics/5104) tracks
+> enabled. [Epic &5104](https://khulnasoft.com/groups/khulnasoft-org/-/epics/5104) tracks
 > the status of KhulnaSoft FIPS compliance.
 
 ### OpenSUSE
@@ -604,7 +604,7 @@ https://dl.min.io/
 https://dl.yarnpkg.com/
 https://ftp.postgresql.org/
 https://github.com/
-https://gitlab.com/
+https://khulnasoft.com/
 https://index.rubygems.org/
 https://nodejs.org/
 https://objects.githubusercontent.com/
@@ -615,4 +615,4 @@ https://static.rust-lang.org/
 
 ## Next Steps
 
-After you've completed the steps on this page, [use KDK to install KhulnaSoft](_index.md#use-kdk-to-install-gitlab).
+After you've completed the steps on this page, [use KDK to install KhulnaSoft](_index.md#use-kdk-to-install-khulnasoft).

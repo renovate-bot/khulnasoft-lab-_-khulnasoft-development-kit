@@ -7,28 +7,28 @@ module KDK
         package_name: 'gitaly',
         project_path: 'gitaly',
         upload_path: 'build',
-        download_paths: ['gitaly/_build/bin', 'gitlab/tmp/tests/gitaly/_build/bin'],
+        download_paths: ['gitaly/_build/bin', 'khulnasoft/tmp/tests/gitaly/_build/bin'],
         platform_specific: true
       },
       khulnasoft_shell: {
-        package_name: 'gitlab-shell',
-        project_path: 'gitlab-shell',
+        package_name: 'khulnasoft-shell',
+        project_path: 'khulnasoft-shell',
         upload_path: 'build',
-        download_paths: ['gitlab-shell/bin'],
+        download_paths: ['khulnasoft-shell/bin'],
         platform_specific: true
       },
       workhorse: {
         package_name: 'workhorse',
-        project_path: 'gitlab/workhorse',
+        project_path: 'khulnasoft/workhorse',
         upload_path: 'build',
-        download_paths: ['gitlab/workhorse'],
+        download_paths: ['khulnasoft/workhorse'],
         platform_specific: true
       },
       graphql_schema: {
         package_name: 'graphql-schema',
         project_path: 'khulnasoft',
-        upload_path: 'tmp/tests/graphql', # Uploaded in gitlab-org/gitlab
-        download_paths: ['gitlab/tmp/tests/graphql'],
+        upload_path: 'tmp/tests/graphql', # Uploaded in khulnasoft-org/khulnasoft
+        download_paths: ['khulnasoft/tmp/tests/graphql'],
         platform_specific: false
       }
     }.freeze

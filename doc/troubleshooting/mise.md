@@ -51,20 +51,20 @@ echo 'eval "$(mise activate zsh)"' >> ~/.zshrc
 In some cases, you may get into a situation where `mise` doesn't read/parse your existing config. In this state, `mise config` will return an empty list, despite your config being stored in a known config path (e.g. `~/.config/mise/config.toml`)
 
 ```shell
-kdk@c2c644400e13:/gitlab-kdk$ mise config
+kdk@c2c644400e13:/khulnasoft-kdk$ mise config
 Path  Tools
-kdk@c2c644400e13:/gitlab-kdk$ ls ~/.config/mise/config.toml
+kdk@c2c644400e13:/khulnasoft-kdk$ ls ~/.config/mise/config.toml
 /home/kdk/.config/mise/config.toml
 ```
 
 This could be due to a previous command setting that config file to untrusted. To reverse this, you can execute `mise trust <file>` and it should resolve the issue.
 
 ```shell
-kdk@c2c644400e13:/gitlab-kdk$ mise config
+kdk@c2c644400e13:/khulnasoft-kdk$ mise config
 Path  Tools
-kdk@c2c644400e13:/gitlab-kdk$ mise trust ~/.config/mise/config.toml
+kdk@c2c644400e13:/khulnasoft-kdk$ mise trust ~/.config/mise/config.toml
 mise trusted /home/kdk
-kdk@c2c644400e13:/gitlab-kdk$ mise config
+kdk@c2c644400e13:/khulnasoft-kdk$ mise config
 Path                        Tools
 ~/.config/mise/config.toml  (none)
 ```

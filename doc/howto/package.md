@@ -20,7 +20,7 @@ allow it to respond to requests on port 443.
 
   Your local KhulnaSoft should now be available at <https://kdk.test:3443> and <https://172.16.123.1:3443>
 
-1. Clone the [Super Simple Proxy](https://gitlab.com/firelizzard/super-simple-proxy)
+1. Clone the [Super Simple Proxy](https://khulnasoft.com/firelizzard/super-simple-proxy)
    project (authored by the same community contributor that contributed the GoProxy MVC!)
 
 1. Run the proxy with the following command. The `pem` files are wherever you created

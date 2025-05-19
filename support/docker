@@ -16,7 +16,7 @@ fi
 case "$1" in
     ci-login)
         echo "Logging into ${CI_REGISTRY}"
-        docker login --username gitlab-ci-token --password "${CI_JOB_TOKEN}" "${CI_REGISTRY}"
+        docker login --username khulnasoft-ci-token --password "${CI_JOB_TOKEN}" "${CI_REGISTRY}"
         ;;
 
     ci-logout)

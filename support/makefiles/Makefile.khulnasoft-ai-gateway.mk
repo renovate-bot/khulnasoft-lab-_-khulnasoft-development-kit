@@ -1,25 +1,25 @@
-khulnasoft_ai_gateway_dir = ${khulnasoft_development_root}/gitlab-ai-gateway
+khulnasoft_ai_gateway_dir = ${khulnasoft_development_root}/khulnasoft-ai-gateway
 
-.PHONY: gitlab-ai-gateway-setup
+.PHONY: khulnasoft-ai-gateway-setup
 ifeq ($(khulnasoft_ai_gateway_enabled),true)
-gitlab-ai-gateway-setup: gitlab-ai-gateway-setup-timed
+khulnasoft-ai-gateway-setup: khulnasoft-ai-gateway-setup-timed
 else
-gitlab-ai-gateway-setup:
+khulnasoft-ai-gateway-setup:
 	@true
 endif
 
-.PHONY: gitlab-ai-gateway-setup-run
-gitlab-ai-gateway-setup-run: gitlab-ai-gateway/.git gitlab-ai-common-setup gitlab-ai-gateway-gcloud-setup
+.PHONY: khulnasoft-ai-gateway-setup-run
+khulnasoft-ai-gateway-setup-run: khulnasoft-ai-gateway/.git khulnasoft-ai-common-setup khulnasoft-ai-gateway-gcloud-setup
 
-.PHONY: gitlab-ai-common-setup
-gitlab-ai-common-setup: gitlab-ai-gateway/.env gitlab-ai-gateway-llm-cache gitlab-ai-gateway-asdf-install gitlab-ai-gateway-poetry-install
+.PHONY: khulnasoft-ai-common-setup
+khulnasoft-ai-common-setup: khulnasoft-ai-gateway/.env khulnasoft-ai-gateway-llm-cache khulnasoft-ai-gateway-asdf-install khulnasoft-ai-gateway-poetry-install
 
-gitlab-ai-gateway/.env:
+khulnasoft-ai-gateway/.env:
 	$(Q)cd ${khulnasoft_ai_gateway_dir} && cp example.env .env
 	$(Q)cd ${khulnasoft_ai_gateway_dir} && echo -e "\n# KDK additions" >> .env
 
-.PHONY: gitlab-ai-gateway-poetry-install
-gitlab-ai-gateway-poetry-install:
+.PHONY: khulnasoft-ai-gateway-poetry-install
+khulnasoft-ai-gateway-poetry-install:
 	@echo
 	@echo "${DIVIDER}"
 	@echo "Performing poetry steps for ${khulnasoft_ai_gateway_dir}"
@@ -28,27 +28,27 @@ gitlab-ai-gateway-poetry-install:
 	$(Q)egrep '^python ' ${khulnasoft_ai_gateway_dir}/.tool-versions | awk '{ print $$2 }' | support/asdf-exec ${khulnasoft_ai_gateway_dir} xargs -L 1 poetry env use
 	$(Q)support/asdf-exec ${khulnasoft_ai_gateway_dir} poetry install
 
-.PHONY: gitlab-ai-gateway-gcloud-setup
-gitlab-ai-gateway-gcloud-setup:
+.PHONY: khulnasoft-ai-gateway-gcloud-setup
+khulnasoft-ai-gateway-gcloud-setup:
 	@echo
 	@echo "${DIVIDER}"
 	@echo "Logging into Google Cloud for ${khulnasoft_ai_gateway_dir}"
 	@echo "${DIVIDER}"
 	$(Q)cd ${khulnasoft_ai_gateway_dir} && gcloud auth application-default login
 
-.PHONY: gitlab-ai-gateway-update
+.PHONY: khulnasoft-ai-gateway-update
 ifeq ($(khulnasoft_ai_gateway_enabled),true)
-gitlab-ai-gateway-update: gitlab-ai-gateway-update-timed
+khulnasoft-ai-gateway-update: khulnasoft-ai-gateway-update-timed
 else
-gitlab-ai-gateway-update:
+khulnasoft-ai-gateway-update:
 	@true
 endif
 
-.PHONY: gitlab-ai-gateway-update-run
-gitlab-ai-gateway-update-run: gitlab-ai-gateway/.git/pull gitlab-ai-common-setup
+.PHONY: khulnasoft-ai-gateway-update-run
+khulnasoft-ai-gateway-update-run: khulnasoft-ai-gateway/.git/pull khulnasoft-ai-common-setup
 
-.PHONY: gitlab-ai-gateway-asdf-install
-gitlab-ai-gateway-asdf-install:
+.PHONY: khulnasoft-ai-gateway-asdf-install
+khulnasoft-ai-gateway-asdf-install:
 ifeq ($(asdf_opt_out),false)
 	@echo
 	@echo "${DIVIDER}"
@@ -70,25 +70,25 @@ else
 	@true
 endif
 
-gitlab-ai-gateway/.git:
-	$(Q)GIT_REVISION="${khulnasoft_ai_gateway_version}" support/component-git-clone ${git_params} ${khulnasoft_ai_gateway_repo} gitlab-ai-gateway
+khulnasoft-ai-gateway/.git:
+	$(Q)GIT_REVISION="${khulnasoft_ai_gateway_version}" support/component-git-clone ${git_params} ${khulnasoft_ai_gateway_repo} khulnasoft-ai-gateway
 
-.PHONY: gitlab-ai-gateway/.git/pull
-gitlab-ai-gateway/.git/pull: gitlab-ai-gateway/.git
+.PHONY: khulnasoft-ai-gateway/.git/pull
+khulnasoft-ai-gateway/.git/pull: khulnasoft-ai-gateway/.git
 	@echo
 	@echo "${DIVIDER}"
-	@echo "Updating gitlab-org/gitlab-ai-gateway"
+	@echo "Updating khulnasoft-org/khulnasoft-ai-gateway"
 	@echo "${DIVIDER}"
-	$(Q)support/component-git-update khulnasoft_ai_gateway gitlab-ai-gateway "${khulnasoft_ai_gateway_version}" main
+	$(Q)support/component-git-update khulnasoft_ai_gateway khulnasoft-ai-gateway "${khulnasoft_ai_gateway_version}" main
 
-.PHONY: gitlab-ai-gateway-llm-cache
+.PHONY: khulnasoft-ai-gateway-llm-cache
 ifeq ($(duo_workflow_llm_cache),true)
-gitlab-ai-gateway-llm-cache: gitlab-ai-gateway/.env
+khulnasoft-ai-gateway-llm-cache: khulnasoft-ai-gateway/.env
 	# Add LLM_CACHE=true only if no LLM_CACHE line exists. Also add
 	# newline just in case it does not end in a newline already
-	grep -q 'LLM_CACHE' gitlab-ai-gateway/.env || echo -e '\nLLM_CACHE=true' >> gitlab-ai-gateway/.env
+	grep -q 'LLM_CACHE' khulnasoft-ai-gateway/.env || echo -e '\nLLM_CACHE=true' >> khulnasoft-ai-gateway/.env
 else
-gitlab-ai-gateway-llm-cache:
+khulnasoft-ai-gateway-llm-cache:
 	# Remove the LLM_CACHE line from the file
-	grep -v LLM_CACHE gitlab-ai-gateway/.env > gitlab-ai-gateway/.env.temp && mv gitlab-ai-gateway/.env.temp gitlab-ai-gateway/.env
+	grep -v LLM_CACHE khulnasoft-ai-gateway/.env > khulnasoft-ai-gateway/.env.temp && mv khulnasoft-ai-gateway/.env.temp khulnasoft-ai-gateway/.env
 endif

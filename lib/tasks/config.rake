@@ -53,16 +53,16 @@ tasks.template_tasks.each do |task|
   end
 end
 
-desc 'Generate postgresql/data/gitlab.conf'
-file 'postgresql/data/gitlab.conf' => ['support/templates/postgresql/data/gitlab.conf.erb', KDK::Config::FILE] do |t|
+desc 'Generate postgresql/data/khulnasoft.conf'
+file 'postgresql/data/khulnasoft.conf' => ['support/templates/postgresql/data/khulnasoft.conf.erb', KDK::Config::FILE] do |t|
   created = !File.exist?(t.name)
   modified = KDK::Templates::ErbRenderer.new(t.source).safe_render!(t.name)
 
   KDK::Command::Restart.new.run(['postgresql']) if created || modified
 end
 
-desc 'Generate postgresql-geo/data/gitlab.conf'
-file 'postgresql-geo/data/gitlab.conf' => ['support/templates/postgresql-geo/data/gitlab.conf.erb', KDK::Config::FILE] do |t|
+desc 'Generate postgresql-geo/data/khulnasoft.conf'
+file 'postgresql-geo/data/khulnasoft.conf' => ['support/templates/postgresql-geo/data/khulnasoft.conf.erb', KDK::Config::FILE] do |t|
   created = !File.exist?(t.name)
   modified = KDK::Templates::ErbRenderer.new(t.source).safe_render!(t.name)
 

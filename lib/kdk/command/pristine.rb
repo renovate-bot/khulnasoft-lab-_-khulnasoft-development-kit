@@ -77,26 +77,26 @@ module KDK
       end
 
       def khulnasoft_bundle
-        notice('Ensuring gitlab/ Ruby gems are installed and pristine..')
+        notice('Ensuring khulnasoft/ Ruby gems are installed and pristine..')
         khulnasoft_bundle_install && khulnasoft_bundle_pristine
       end
 
       def khulnasoft_bundle_install
-        shellout(bundle_install_cmd, chdir: config.gitlab.dir)
+        shellout(bundle_install_cmd, chdir: config.khulnasoft.dir)
       end
 
       def khulnasoft_bundle_pristine
-        shellout(BUNDLE_PRISTINE_CMD, chdir: config.gitlab.dir)
+        shellout(BUNDLE_PRISTINE_CMD, chdir: config.khulnasoft.dir)
       end
 
       def khulnasoft_yarn_clean
-        notice('Cleaning gitlab/ Yarn cache..')
-        shellout(YARN_CLEAN_CMD, chdir: config.gitlab.dir)
+        notice('Cleaning khulnasoft/ Yarn cache..')
+        shellout(YARN_CLEAN_CMD, chdir: config.khulnasoft.dir)
       end
 
       def khulnasoft_tmp_clean
-        notice('Cleaning gitlab/tmp/ ..')
-        shellout(GIT_CLEAN_TMP_CMD, chdir: config.gitlab.dir)
+        notice('Cleaning khulnasoft/tmp/ ..')
+        shellout(GIT_CLEAN_TMP_CMD, chdir: config.khulnasoft.dir)
       end
 
       def shellout(cmd, **opts)

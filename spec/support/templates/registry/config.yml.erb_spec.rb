@@ -9,7 +9,7 @@ RSpec.describe 'support/templates/registry/config.yml.erb' do
       'auth' => {
         'token' => {
           'autoredirect' => false,
-          'issuer' => 'gitlab-issuer',
+          'issuer' => 'khulnasoft-issuer',
           'realm' => 'http://127.0.0.1:3000/jwt/auth',
           'rootcertbundle' => '/home/git/kdk/localhost.crt',
           'service' => 'container_registry'
@@ -58,7 +58,7 @@ RSpec.describe 'support/templates/registry/config.yml.erb' do
         'notifications' => {
           'endpoints' => [
             {
-              'name' => 'gitlab-rails',
+              'name' => 'khulnasoft-rails',
               'url' => 'http://127.0.0.1:3000/api/v4/container_registry_event/events',
               'headers' => {
                 'Authorization' => ['notifications_secret']

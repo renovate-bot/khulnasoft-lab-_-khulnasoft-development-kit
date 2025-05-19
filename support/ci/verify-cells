@@ -19,5 +19,5 @@ kdk cells up
 kdk cells start
 kdk cells status
 
-export KDK_DIR="/home/kdk/kdk/gitlab-cells/cell-2"
+export KDK_DIR="/home/kdk/kdk/khulnasoft-cells/cell-2"
 support/ci/test_url

@@ -8,7 +8,7 @@ ENV GIT_CHECKOUT_BRANCH $git_checkout_branch
 ARG git_remote_origin_url
 ENV GIT_REMOTE_ORIGIN_URL $git_remote_origin_url
 
-ARG workspace_user=gitlab-workspaces
+ARG workspace_user=khulnasoft-workspaces
 ENV WORKSPACE_USER ${workspace_user}
 
 ENV HOME=/home/${WORKSPACE_USER}

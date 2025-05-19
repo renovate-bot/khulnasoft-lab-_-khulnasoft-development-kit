@@ -100,7 +100,7 @@ registry is running, the output of `kdk tail` changes.
 If you're not using a self-signed certificate, you can instruct Docker to consider the registry as insecure. For example, Docker-in-Docker builds require an additional flag, `--insecure-registry`:
 
 ```yaml
-# .gitlab-ci.yml
+# .khulnasoft-ci.yml
 
 services:
   - name: docker:stable-dind
@@ -125,7 +125,7 @@ volumes = ["/Users/hfyngvason/.docker/certs.d:/etc/docker/certs.d", "/certs/clie
 
 ### Interacting with the local container registry
 
-In this section, we assume you have obtained a [Personal Access Token](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html) with all permissions, and exported it as `KHULNASOFT_TOKEN` in your environment:
+In this section, we assume you have obtained a [Personal Access Token](https://docs.khulnasoft.com/ee/user/profile/personal_access_tokens.html) with all permissions, and exported it as `KHULNASOFT_TOKEN` in your environment:
 
 ```shell
 export KHULNASOFT_TOKEN=...
@@ -139,7 +139,7 @@ export KHULNASOFT_TOKEN=...
 ##### Log in to the registry
 
 ```shell
-docker login kdk.test:5100 -u gitlab-token -p "$KHULNASOFT_TOKEN"
+docker login kdk.test:5100 -u khulnasoft-token -p "$KHULNASOFT_TOKEN"
 ```
 
 ##### Build and tag an image
@@ -160,7 +160,7 @@ docker push kdk.test:5100/custom-docker-image
 - If you have authentication enabled, you must obtain a bearer token for your requests:
 
   ```shell
-  export KHULNASOFT_REGISTRY_JWT=`curl "http://gitlab-token:$KHULNASOFT_TOKEN@kdk.test:3000/jwt/auth?service=container_registry&scope=$SCOPE" | jq -r .token`
+  export KHULNASOFT_REGISTRY_JWT=`curl "http://khulnasoft-token:$KHULNASOFT_TOKEN@kdk.test:3000/jwt/auth?service=container_registry&scope=$SCOPE" | jq -r .token`
   ```
 
   where `$SCOPE` should be
@@ -289,15 +289,15 @@ pipelines.
    docker build -t kdk.test:5100/custom-docker-image .
    ```
 
-1. Push the image to the registry. (See [Configuring the KhulnaSoft Docker runner to automatically pull images](#configuring-the-gitlab-docker-runner-to-automatically-pull-images) for the preferred method which doesn't require you to constantly push the image after each change.)
+1. Push the image to the registry. (See [Configuring the KhulnaSoft Docker runner to automatically pull images](#configuring-the-khulnasoft-docker-runner-to-automatically-pull-images) for the preferred method which doesn't require you to constantly push the image after each change.)
 
    ```shell
    docker push kdk.test:5100/custom-docker-image
    ```
 
-   You should follow the directions given in the [Configuring the KhulnaSoft Docker runner to automatically pull images](#configuring-the-gitlab-docker-runner-to-automatically-pull-images) section to avoid pushing images altogether.
+   You should follow the directions given in the [Configuring the KhulnaSoft Docker runner to automatically pull images](#configuring-the-khulnasoft-docker-runner-to-automatically-pull-images) section to avoid pushing images altogether.
 
-1. Create a `.gitlab-ci.yml` and add it to the Git repository for the project. Configure the `image` directive in the `.gitlab-ci.yml` file to reference the `custom-docker-image` which was tagged and pushed in previous steps:
+1. Create a `.khulnasoft-ci.yml` and add it to the Git repository for the project. Configure the `image` directive in the `.khulnasoft-ci.yml` file to reference the `custom-docker-image` which was tagged and pushed in previous steps:
 
    ```yaml
    image: kdk.test:5100/custom-docker-image
@@ -328,7 +328,7 @@ if it isn't present. This can be done by setting `pull_policy = "if-not-present"
 in the Runner's config.
 
 ```toml
-# ~/.gitlab-runner/config.toml
+# ~/.khulnasoft-runner/config.toml
 
 [[runners]]
   name = "docker-executor"
@@ -347,11 +347,11 @@ in the Runner's config.
 ### Building and pushing images to your local KhulnaSoft container registry in a build step
 
 It's sometimes necessary to use the local KhulnaSoft container registry in a pipeline. For
-example, the [container scanning](https://docs.gitlab.com/ee/user/application_security/container_scanning/#example)
+example, the [container scanning](https://docs.khulnasoft.com/ee/user/application_security/container_scanning/#example)
 feature requires a build step that builds and pushes a Docker image to the registry before it can analyze the image.
 
 To add a custom `build` step as part of a pipeline for use in later jobs
-such as container scanning, add the following to your `.gitlab-yml.ci`:
+such as container scanning, add the following to your `.khulnasoft-yml.ci`:
 
 ```yaml
 image: docker:stable
@@ -376,9 +376,9 @@ build:
 
 To verify that the build stage has successfully pushed an image to your local KhulnaSoft container registry, follow the instructions in the section [List tags for a specific image](#list-tags-for-a-specific-image).
 
-**Some notes about the above `.gitlab-yml.ci` configuration file:**
+**Some notes about the above `.khulnasoft-yml.ci` configuration file:**
 
-- The variable `DOCKER_TLS_CERTDIR: ""` is required in the `build` stage because of a breaking change introduced by Docker 19.03, described [here](https://about.gitlab.com/2019/07/31/docker-in-docker-with-docker-19-dot-03/).
+- The variable `DOCKER_TLS_CERTDIR: ""` is required in the `build` stage because of a breaking change introduced by Docker 19.03, described [here](https://about.khulnasoft.com/2019/07/31/docker-in-docker-with-docker-19-dot-03/).
 - It's only necessary to set `--insecure-registry=kdk.test:5100` for the `docker:stable-dind` if you have not set up a [trusted self-signed registry](#set-up-pushing-and-pulling-of-images-over-https).
 
 ### Pushing multi-arch images to local KhulnaSoft container registry
@@ -436,12 +436,12 @@ To verify that the build stage has successfully pushed an image to your local Kh
 ### Running container scanning on a local Docker image created by a build step in your pipeline
 
 It's possible to use a `build` step to create a custom Docker image and then execute a
-[container scan](https://gitlab.com/gitlab-org/security-products/analyzers/container-scanning) against this newly
-built Docker image. This can be achieved by using the following `.gitlab-ci.yml`:
+[container scan](https://khulnasoft.com/khulnasoft-org/security-products/analyzers/container-scanning) against this newly
+built Docker image. This can be achieved by using the following `.khulnasoft-ci.yml`:
 
 ```yaml
 include:
-  template: Container-Scanning.gitlab-ci.yml
+  template: Container-Scanning.khulnasoft-ci.yml
 
 image: docker:stable
 
@@ -469,20 +469,20 @@ container_scanning:
 ```
 
 > [!note]
-> The contents of the above `.gitlab-ci.yml` file differs depending on how the container registry has been configured:
+> The contents of the above `.khulnasoft-ci.yml` file differs depending on how the container registry has been configured:
 
 1. When the local container registry is insecure because `registry.self_signed: false` has been
-   configured, the above `.gitlab-ci.yml` file can be used.
+   configured, the above `.khulnasoft-ci.yml` file can be used.
 
    It's necessary to set `CS_REGISTRY_INSECURE: "true"` in the `container_scanning` job for the
-   KhulnaSoft Container Scanning tool ([`gcs`](https://gitlab.com/gitlab-org/security-products/analyzers/container-scanning/))
+   KhulnaSoft Container Scanning tool ([`gcs`](https://khulnasoft.com/khulnasoft-org/security-products/analyzers/container-scanning/))
    to fetch the image from our registry using `HTTPS`, meanwhile our registry is running insecurely over `HTTP`.
-   Setting the `CS_REGISTRY_INSECURE` as documented [here](https://docs.gitlab.com/ee/user/application_security/container_scanning/#available-cicd-variables),
+   Setting the `CS_REGISTRY_INSECURE` as documented [here](https://docs.khulnasoft.com/ee/user/application_security/container_scanning/#available-cicd-variables),
    forces `gcs` to use `HTTP` when fetching the container image from our insecure registry.
 
 1. When the registry is secure because `registry.self_signed: true` has been configured, but we
    haven't referenced the self-signed certificate, then the following `services` and
-   `container_scanning` sections of the above `.gitlab-ci.yml` must be used (the rest of the file
+   `container_scanning` sections of the above `.khulnasoft-ci.yml` must be used (the rest of the file
    has been omitted for brevity):
 
    ```yaml
@@ -498,7 +498,7 @@ container_scanning:
 
 1. When the registry is secure because `registry.self_signed: true` has been configured, **and** we
    reference the self-signed certificate, then the following `services` and `container_scanning`
-   sections of the above `.gitlab-ci.yml` must be used (the rest of the file has been omitted for
+   sections of the above `.khulnasoft-ci.yml` must be used (the rest of the file has been omitted for
    brevity):
 
    ```yaml
@@ -510,7 +510,7 @@ container_scanning:
        ADDITIONAL_CA_CERT_BUNDLE: "-----BEGIN CERTIFICATE----- certificate-goes-here -----END CERTIFICATE-----"
    ```
 
-   By configuring the `ADDITIONAL_CA_CERT_BUNDLE`, this instructs `gcs` to use the provided certificate when accessing the local container registry. Normally, the `ADDITIONAL_CA_CERT_BUNDLE` would be [configured in the UI](https://docs.gitlab.com/ee/ci/variables/#create-a-custom-variable-in-the-ui), but it's displayed here in the `.gitlab-ci.yml` for demonstration purposes.
+   By configuring the `ADDITIONAL_CA_CERT_BUNDLE`, this instructs `gcs` to use the provided certificate when accessing the local container registry. Normally, the `ADDITIONAL_CA_CERT_BUNDLE` would be [configured in the UI](https://docs.khulnasoft.com/ee/ci/variables/#create-a-custom-variable-in-the-ui), but it's displayed here in the `.khulnasoft-ci.yml` for demonstration purposes.
 
 ### Switching Between `docker-desktop-on-mac` and `docker-machine`
 
@@ -537,7 +537,7 @@ unset DOCKER_CERT_PATH DOCKER_HOST DOCKER_MACHINE_NAME DOCKER_TLS_VERIFY
 
 To test development versions of the container registry against KDK:
 
-1. Within the [container registry](https://gitlab.com/gitlab-org/container-registry) project root, create a branch with your changes, for example a branch called `registry_dev`.
+1. Within the [container registry](https://khulnasoft.com/khulnasoft-org/container-registry) project root, create a branch with your changes, for example a branch called `registry_dev`.
 
 1. Under the `registry` section in your `kdk.yml` file, make sure that `version` is set to the branch name (e.g. `registry_dev`). You can do this by running `kdk config set registry.version registry_dev`.
 
@@ -583,11 +583,11 @@ When testing AutoDevops pipelines with a local registry, you can receive errors 
   ```
 
 To fix such issues, you can customize your `build` job as a part of an AutoDevOps pipeline,
-by adding the following to your `.gitlab-ci.yml`:
+by adding the following to your `.khulnasoft-ci.yml`:
 
 ```yaml
 include:
-  - template: Auto-DevOps.gitlab-ci.yml
+  - template: Auto-DevOps.khulnasoft-ci.yml
 
 build:
   services:
@@ -632,7 +632,7 @@ Then the AutoDevOps pipeline should be able to build images and run them inside 
 
 ### Notifications
 
-Some KhulnaSoft features, such as calculating the [storage usage](https://docs.gitlab.com/ee/user/usage_quotas.html) of the Container Registry images, requires the
+Some KhulnaSoft features, such as calculating the [storage usage](https://docs.khulnasoft.com/ee/user/usage_quotas.html) of the Container Registry images, requires the
 [Container Registry Notifications](https://docker-docs.uclv.cu/registry/notifications/) to be enabled. When enabled, upon different events, such as pushing a container image, the
 Container Registry sends a notification to the Rails backend.
 
@@ -651,7 +651,7 @@ in the Rails backend.
 
 ### Metadata Database
 
-The [Container Registry uses a PostgreSQL database](https://docs.gitlab.com/ee/administration/packages/container_registry_metadata_database.html)
+The [Container Registry uses a PostgreSQL database](https://docs.khulnasoft.com/ee/administration/packages/container_registry_metadata_database.html)
 to enable features like online garbage collection.
 
 To use the Container Registry metadata database, you can either:

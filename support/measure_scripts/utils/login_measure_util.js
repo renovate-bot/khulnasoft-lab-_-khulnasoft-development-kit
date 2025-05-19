@@ -5,8 +5,8 @@ module.exports = async function (baseUrl, context, commands) {
   try {
     console.log('Starting Login')
 
-    const userName = 'root'; // context.options.gitlab.user;
-    const password = '5iveL!fe'; // context.options.gitlab.password;
+    const userName = 'root'; // context.options.khulnasoft.user;
+    const password = '5iveL!fe'; // context.options.khulnasoft.password;
 
     await commands.addText.bySelector(userName, '[data-qa-selector="login_field"]');
     await commands.addText.bySelector(password, '[data-qa-selector="password_field"]');

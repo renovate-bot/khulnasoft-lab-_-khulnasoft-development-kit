@@ -15,7 +15,7 @@ module KDK
         end
 
         # Don't save config after this
-        config.bury!('gitlab.default_branch', branch)
+        config.bury!('khulnasoft.default_branch', branch)
 
         success = KDK::Hooks.with_hooks(config.kdk.update_hooks, 'kdk switch') do
           run_rake('update_branch', branch)

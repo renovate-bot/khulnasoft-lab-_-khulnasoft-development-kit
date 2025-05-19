@@ -4,7 +4,7 @@ description: |
   Checks for words that need a noun for clarity.
 extends: existence
 message: "Instead of '%s', try starting this sentence with a specific subject and verb."
-link: https://docs.gitlab.com/development/documentation/styleguide/word_list/#this-these-that-those
+link: https://docs.khulnasoft.com/development/documentation/styleguide/word_list/#this-these-that-those
 vocab: false
 level: warning
 ignorecase: false

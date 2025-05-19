@@ -3,9 +3,9 @@
 require_relative '../../../lib/kdk/version_manager'
 
 RSpec.describe KDK::VersionManager do
-  let(:gitaly_version_file) { '/home/git/kdk/gitlab/GITALY_SERVER_VERSION' }
-  let(:khulnasoft_shell_version_file) { '/home/git/kdk/gitlab/KHULNASOFT_SHELL_VERSION' }
-  let(:khulnasoft_workhorse_version_file) { '/home/git/kdk/gitlab/KHULNASOFT_WORKHORSE_VERSION' }
+  let(:gitaly_version_file) { '/home/git/kdk/khulnasoft/GITALY_SERVER_VERSION' }
+  let(:khulnasoft_shell_version_file) { '/home/git/kdk/khulnasoft/KHULNASOFT_SHELL_VERSION' }
+  let(:khulnasoft_workhorse_version_file) { '/home/git/kdk/khulnasoft/KHULNASOFT_WORKHORSE_VERSION' }
 
   before do
     allow(KDK.config.kdk_root).to receive(:join).with('khulnasoft', 'GITALY_SERVER_VERSION').and_return(gitaly_version_file)

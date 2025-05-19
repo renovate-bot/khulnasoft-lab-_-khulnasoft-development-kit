@@ -31,23 +31,23 @@ After setting up the main KDK instance, you can enable the additional cells usin
 1. Run `kdk config set cells.instance_count 1`
 1. Run `kdk reconfigure`, this will restart `khulnasoft-topology-service` to include new cells config.
 1. Run `kdk cells up` to install the cell instance to the
-   `gitlab-cells/cell-2` directory and bootstrap the standard services.
+   `khulnasoft-cells/cell-2` directory and bootstrap the standard services.
 
    Every time after you change `cells.instance_count` or `cells.instances`
    in your `kdk.yml`, run `kdk reconfigure` and `kdk cells up` to set them up.
 1. Run `kdk cells start` to start all cell instances:
 
    ```shell
-   ok: run: /path/to/kdk/gitlab-cells/cell-2/services/postgresql: (pid 16197) 1s, normally down
-   ok: run: /path/to/kdk/gitlab-cells/cell-2/services/redis: (pid 16213) 0s, normally down
-   ok: run: /path/to/kdk/gitlab-cells/cell-2/services/praefect: (pid 16234) 1s, normally down
-   ok: run: /path/to/kdk/gitlab-cells/cell-2/services/praefect-gitaly-0: (pid 16235) 1s, normally down
-   ok: run: /path/to/kdk/gitlab-cells/cell-2/services/khulnasoft-http-router: (pid 16243) 0s, normally down
-   ok: run: /path/to/kdk/gitlab-cells/cell-2/services/khulnasoft-workhorse: (pid 16244) 0s, normally down
-   ok: run: /path/to/kdk/gitlab-cells/cell-2/services/rails-background-jobs: (pid 16245) 0s, normally down
-   ok: run: /path/to/kdk/gitlab-cells/cell-2/services/rails-web: (pid 16247) 0s, normally down
-   ok: run: /path/to/kdk/gitlab-cells/cell-2/services/sshd: (pid 16246) 0s, normally down
-   ok: run: /path/to/kdk/gitlab-cells/cell-2/services/vite: (pid 16248) 0s, normally down
+   ok: run: /path/to/kdk/khulnasoft-cells/cell-2/services/postgresql: (pid 16197) 1s, normally down
+   ok: run: /path/to/kdk/khulnasoft-cells/cell-2/services/redis: (pid 16213) 0s, normally down
+   ok: run: /path/to/kdk/khulnasoft-cells/cell-2/services/praefect: (pid 16234) 1s, normally down
+   ok: run: /path/to/kdk/khulnasoft-cells/cell-2/services/praefect-gitaly-0: (pid 16235) 1s, normally down
+   ok: run: /path/to/kdk/khulnasoft-cells/cell-2/services/khulnasoft-http-router: (pid 16243) 0s, normally down
+   ok: run: /path/to/kdk/khulnasoft-cells/cell-2/services/khulnasoft-workhorse: (pid 16244) 0s, normally down
+   ok: run: /path/to/kdk/khulnasoft-cells/cell-2/services/rails-background-jobs: (pid 16245) 0s, normally down
+   ok: run: /path/to/kdk/khulnasoft-cells/cell-2/services/rails-web: (pid 16247) 0s, normally down
+   ok: run: /path/to/kdk/khulnasoft-cells/cell-2/services/sshd: (pid 16246) 0s, normally down
+   ok: run: /path/to/kdk/khulnasoft-cells/cell-2/services/vite: (pid 16248) 0s, normally down
 
    => KhulnaSoft available at http://127.0.0.1:12001.
    =>   - Ruby: ruby 3.2.3 (2024-01-18 revision 52bb2ac0a6) [arm64-darwin23].
@@ -86,7 +86,7 @@ update it separately.
 
 The main KDK `kdk.yml` serves as the single source of truth. The command `kdk cells up` uses
 this configuration to infer values and generate cell-specific configurations in the
-`gitlab-cells/*/kdk.yml` files.
+`khulnasoft-cells/*/kdk.yml` files.
 
 You should not manually modify generated cell configuration.
 
@@ -111,7 +111,7 @@ Here's an example config with cell-specific configuration being overridden:
      instance_count: 1
      instances:
        config: # Only for cell-2
-         gitlab:
+         khulnasoft:
            rails:
              session_store:
                session_cookie_token_prefix: abcd
@@ -121,7 +121,7 @@ Here's an example config with cell-specific configuration being overridden:
 1. Verify the cell configuration:
 
    ```shell
-   kdk cells cell-2 config get gitlab.rails.session_store.session_cookie_token_prefix
+   kdk cells cell-2 config get khulnasoft.rails.session_store.session_cookie_token_prefix
    abcd
    ```
 
@@ -141,15 +141,15 @@ your disk, follow these steps:
 ### Excluding the primary cell (cell-1) from the cluster
 
 The primary cell (cell-1) is by default included in the cells cluster. That also means that all the session
-cookies that are generated on this cell, have the prefix `cell-1`. This represents [Phase 6](https://gitlab.com/groups/gitlab-org/-/epics/14513)
+cookies that are generated on this cell, have the prefix `cell-1`. This represents [Phase 6](https://khulnasoft.com/groups/khulnasoft-org/-/epics/14513)
 in the roadmap
-of releasing [Cells 1.0](https://handbook.gitlab.com/handbook/engineering/architecture/design-documents/cells/iterations/cells-1.0/).
+of releasing [Cells 1.0](https://handbook.khulnasoft.com/handbook/engineering/architecture/design-documents/cells/iterations/cells-1.0/).
 Which is when the legacy cell becomes part of the cluster.
 
 But if for some reason it's needed to exclude the primary cell, to simulate prior phases (Phases 3 - 5), you can
 follow the following steps.
 
-1. Disable Topology service client for the primary cell by running `kdk config set gitlab.topology_service.enabled false`
+1. Disable Topology service client for the primary cell by running `kdk config set khulnasoft.topology_service.enabled false`
 1. Enable Topology service client for all the rest of cells in your primary `kdk.yml` by having something looks like this:
 so your `kdk.yml` can look like this:
 
@@ -159,7 +159,7 @@ so your `kdk.yml` can look like this:
       instance_count: 1
       instances:
       - config:
-          gitlab:
+          khulnasoft:
             topology_service:
               enabled: true
     ```
@@ -178,17 +178,17 @@ To completely remove all local cell instances:
 1. Run `kdk cells stop`
 1. Run `kdk config set cells.enabled false`
 1. Run `kdk reconfigure`
-1. Delete the `gitlab-cells` folder
+1. Delete the `khulnasoft-cells` folder
 1. Optionally [disable the HTTP router](#enabling-the-http-router)
 
 ## Enabling the HTTP router
 
-The [HTTP router](https://gitlab.com/gitlab-org/cells/http-router) is enabled
+The [HTTP router](https://khulnasoft.com/khulnasoft-org/cells/http-router) is enabled
 by default in KDK.
 
 It sits in front of Workhorse, and [NGINX](nginx.md) (if enabled).
 
-Refer to <https://gitlab.com/gitlab-org/cells/http-router/-/blob/master/README.md> for details.
+Refer to <https://khulnasoft.com/khulnasoft-org/cells/http-router/-/blob/master/README.md> for details.
 
 ### Using the HTTP router
 
@@ -222,13 +222,13 @@ kdk config set khulnasoft_http_router.khulnasoft_rules_config session_token
 **note**: When using `session_prefix`, the `unique_cookie_key_postfix` variable must be set to `false` (default).
 
 ```shell
-kdk config get gitlab.rails.session_store.unique_cookie_key_postfix # => should be false
+kdk config get khulnasoft.rails.session_store.unique_cookie_key_postfix # => should be false
 
 # Otherwise, set it to false
-kdk config set gitlab.rails.session_store.unique_cookie_key_postfix false
+kdk config set khulnasoft.rails.session_store.unique_cookie_key_postfix false
 ```
 
-Refer to <https://gitlab.com/gitlab-org/cells/http-router/-/blob/master/docs/config.md#routing-rules> for details.
+Refer to <https://khulnasoft.com/khulnasoft-org/cells/http-router/-/blob/master/docs/config.md#routing-rules> for details.
 
 ## Disabling the HTTP router
 
@@ -266,11 +266,11 @@ kdk restart
 
 ### Topology Service configuration
 
-In the KhulnaSoft Rails app, the topology service is configured in the `config/gitlab.yml` file using
-the KDK setting `gitlab.topology_service`.
+In the KhulnaSoft Rails app, the topology service is configured in the `config/khulnasoft.yml` file using
+the KDK setting `khulnasoft.topology_service`.
 
 If `khulnasoft_topology_service.enabled` is `true` and thus the Topology Service is enabled, then the
-KDK configuration setting `gitlab.topology_service.*` will point by default to the Topology Service.
+KDK configuration setting `khulnasoft.topology_service.*` will point by default to the Topology Service.
 
-You can override the settings under `gitlab.topology_service` to point them to another Topology
+You can override the settings under `khulnasoft.topology_service` to point them to another Topology
 Service. These settings are inherited by all the cells.

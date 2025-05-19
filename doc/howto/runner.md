@@ -2,8 +2,8 @@
 title: Using KhulnaSoft Runner with KDK
 ---
 
-Most features of [KhulnaSoft CI/CD](http://docs.gitlab.com/ee/ci/) need a
-[runner](https://docs.gitlab.com/runner/) to be registered with
+Most features of [KhulnaSoft CI/CD](http://docs.khulnasoft.com/ee/ci/) need a
+[runner](https://docs.khulnasoft.com/runner/) to be registered with
 the KhulnaSoft installation. This how-to takes you through the necessary steps to
 do so when KhulnaSoft is running under KDK.
 
@@ -27,18 +27,18 @@ You can set up a runner to execute using either of the following approaches:
 
 Before you register a runner in your KDK, you first must have a runner binary either:
 
-- Pre-built. To use a pre-built binary, follow [the runner installation instructions](https://docs.gitlab.com/runner/install/#binaries)
+- Pre-built. To use a pre-built binary, follow [the runner installation instructions](https://docs.khulnasoft.com/runner/install/#binaries)
   for your specific operating system. Avoid following the instructions in the **Containers** section, as it's simpler
   to let the KDK manage the runner process.
-- Compiled from source. To build from source, follow [the runner development instructions](https://docs.gitlab.com/runner/development/).
+- Compiled from source. To build from source, follow [the runner development instructions](https://docs.khulnasoft.com/runner/development/).
   See the official [KhulnaSoft Runner repository](https://github.com/khulnasoft-lab/khulnasoft-runner).
 
-By default, KDK expects the runner binary to be at `/usr/local/bin/gitlab-runner`. To specify a custom `gitlab-runner`
+By default, KDK expects the runner binary to be at `/usr/local/bin/khulnasoft-runner`. To specify a custom `khulnasoft-runner`
 binary location, add the following to `kdk.yml`:
 
 ```yaml
 runner:
-  bin: <path_to_khulnasoft_runner_binary>/gitlab-runner-darwin-amd64
+  bin: <path_to_khulnasoft_runner_binary>/khulnasoft-runner-darwin-amd64
 ```
 
 ### Create and register a local runner
@@ -60,27 +60,27 @@ To create and register a local runner for your instance:
 1. Follow the on-screen instructions to register the runner from the command-line:
 
      ```shell
-     gitlab-runner register \
+     khulnasoft-runner register \
        --url "<KDK URL>" \
        --token <TOKEN>
      ```
 
-    If your `gitlab-runner` configuration file is stored in a different location than `~/.gitlab-runner/config.toml`, then you must use the `--config` option to specify the location of the file:
+    If your `khulnasoft-runner` configuration file is stored in a different location than `~/.khulnasoft-runner/config.toml`, then you must use the `--config` option to specify the location of the file:
 
      ```shell
-     gitlab-runner register \
+     khulnasoft-runner register \
        --url "<KDK URL>" \
        --token <TOKEN> \
-       --config <path-to-kdk>/gitlab-runner-config.toml
+       --config <path-to-kdk>/khulnasoft-runner-config.toml
      ```
 
    When prompted:
    - For `executor`, use either `shell` or `docker`:
 
       - `shell`. If you intend to run simple jobs, use the `shell` executor. Builds run directly on the host computer.
-         If you choose this configuration, don't use random `.gitlab-ci.yml` files from the internet unless you
+         If you choose this configuration, don't use random `.khulnasoft-ci.yml` files from the internet unless you
          understand them fully as this could be a security risk. If you need a basic pipeline, see an
-         [example configuration from our documentation](https://docs.gitlab.com/ee/ci/environments/#configure-manual-deployments)
+         [example configuration from our documentation](https://docs.khulnasoft.com/ee/ci/environments/#configure-manual-deployments)
          that you can use.
 
       - `docker`
@@ -141,14 +141,14 @@ To create and register a local runner for your instance:
 1. Start your runner:
 
    ```shell
-   gitlab-runner run --config <path-to-kdk>/gitlab-runner-config.toml
+   khulnasoft-runner run --config <path-to-kdk>/khulnasoft-runner-config.toml
    ```
 
 After you register the runner, the configuration and the authentication token are stored in
-`gitlab-runner-config.toml`, which is in KDK's `.gitignore` file.
+`khulnasoft-runner-config.toml`, which is in KDK's `.gitignore` file.
 
 To ensure the runner token persists between subsequent runs of `kdk reconfigure`, add the
-authentication token from `gitlab-runner-config.toml` to your `kdk.yml` file and set `executor` to `shell`:
+authentication token from `khulnasoft-runner-config.toml` to your `kdk.yml` file and set `executor` to `shell`:
 
 ```yaml
 runner:
@@ -159,14 +159,14 @@ runner:
 
 Finally, run `kdk update` to rebuild your `Procfile`. This allows you to manage the runner along with your other KDK processes.
 
-Alternately, run `gitlab-runner --log-level debug run --config <path-to-kdk>/gitlab-runner-config.toml`
+Alternately, run `khulnasoft-runner --log-level debug run --config <path-to-kdk>/khulnasoft-runner-config.toml`
 to get a long-lived runner process, using the configuration you created in the
 last step. It stays in the foreground, outputting logs as it executes
 builds, so run it in its own terminal session.
 
 The **Runners** page (`/admin/runners`) now lists the runners. Create a project in the KhulnaSoft UI and add a
-[`.gitlab-ci.yml`](https://docs.gitlab.com/ee/ci/examples/) file,
-or clone an [example project](https://gitlab.com/groups/gitlab-examples), and
+[`.khulnasoft-ci.yml`](https://docs.khulnasoft.com/ee/ci/examples/) file,
+or clone an [example project](https://khulnasoft.com/groups/khulnasoft-examples), and
 watch as the runner processes the builds just as it would on a "real" install!
 
 ## Executing a runner from within Docker
@@ -205,8 +205,8 @@ containerized runner for you.
 [Create a runner](#create-and-register-a-local-runner), which generates the runner token you need before you can
 register the runner.
 
-To [register a runner](https://docs.gitlab.com/runner/register/index.html#docker) in your KDK, you can run the
-`gitlab/gitlab-runner` Docker image. You **must ensure** that the runner saves the configuration to a file that is
+To [register a runner](https://docs.khulnasoft.com/runner/register/index.html#docker) in your KDK, you can run the
+`khulnasoft/khulnasoft-runner` Docker image. You **must ensure** that the runner saves the configuration to a file that is
 accessible to the host after the registration is complete.
 
 In these instructions, we use a location known to KDK so that KDK can manage the configuration. Docker doesn't know about the custom host name `kdk.test`, so you must use
@@ -215,7 +215,7 @@ In these instructions, we use a location known to KDK so that KDK can manage the
 To register a runner, run the following command in the root for your KDK directory:
 
 ```shell
-docker run --rm -it --add-host kdk.test:172.16.123.1 -v $(pwd)/tmp/gitlab-runner:/etc/gitlab-runner gitlab/gitlab-runner register --url "http://kdk.test:3000" --token <runner-token> --config /etc/gitlab-runner/gitlab-runner-config.toml --docker-extra-hosts kdk.test:172.16.123.1
+docker run --rm -it --add-host kdk.test:172.16.123.1 -v $(pwd)/tmp/khulnasoft-runner:/etc/khulnasoft-runner khulnasoft/khulnasoft-runner register --url "http://kdk.test:3000" --token <runner-token> --config /etc/khulnasoft-runner/khulnasoft-runner-config.toml --docker-extra-hosts kdk.test:172.16.123.1
 ```
 
 <details>
@@ -227,7 +227,7 @@ automatically mounts your certificate into the Docker container when you start t
 manually when registering your runner:
 
 ```shell
-docker run --rm -it -v "$(pwd)/kdk.test.pem:/etc/gitlab-runner/certs/kdk.test.crt" -v $(pwd)/tmp/gitlab-runner:/etc/gitlab-runner gitlab/gitlab-runner register --url <kdk-url> --token <runner-token> --config /etc/gitlab-runner/gitlab-runner-config.toml
+docker run --rm -it -v "$(pwd)/kdk.test.pem:/etc/khulnasoft-runner/certs/kdk.test.crt" -v $(pwd)/tmp/khulnasoft-runner:/etc/khulnasoft-runner khulnasoft/khulnasoft-runner register --url <kdk-url> --token <runner-token> --config /etc/khulnasoft-runner/khulnasoft-runner-config.toml
 ```
 
 </details>
@@ -235,7 +235,7 @@ docker run --rm -it -v "$(pwd)/kdk.test.pem:/etc/gitlab-runner/certs/kdk.test.cr
 
 The `register` subcommand requires the following information:
 
-- **Enter the KhulnaSoft instance URL (for example, <https://gitlab.com/>)**: Use `http://kdk.test:3000/`, or `http://<custom_IP_address>:3000/` if you customized your IP
+- **Enter the KhulnaSoft instance URL (for example, <https://khulnasoft.com/>)**: Use `http://kdk.test:3000/`, or `http://<custom_IP_address>:3000/` if you customized your IP
   address.
 - **Enter a description for the runner** (optional): A description of the runner.
 - **Enter an executor**: Because we are running our runner in Docker, choose `docker`.
@@ -244,11 +244,11 @@ The `register` subcommand requires the following information:
 
 ### Set up KDK to use the registered runner
 
-Now when the runner is registered we can find the token in `<path-to-kdk>/tmp/gitlab-runner/gitlab-runner-config.toml`.
+Now when the runner is registered we can find the token in `<path-to-kdk>/tmp/khulnasoft-runner/khulnasoft-runner-config.toml`.
 For example:
 
 ```shell
-# grep token <path-to-kdk>/gitlab-runner-config.toml
+# grep token <path-to-kdk>/khulnasoft-runner-config.toml
 token = "<runner-token>"
 ```
 
@@ -274,7 +274,7 @@ runner:
 <summary>Optional step for SSL users (expand)</summary>
 
 For SSL users, the KDK configures the Docker runner with
-[`tls_verify`](https://docs.gitlab.com/runner/configuration/advanced-configuration.html#the-runnersdocker-section)
+[`tls_verify`](https://docs.khulnasoft.com/runner/configuration/advanced-configuration.html#the-runnersdocker-section)
 set to `false`, so SSL verification is disabled by
 default.
 
@@ -282,22 +282,22 @@ default.
 
 To apply the settings:
 
-1. Run `kdk reconfigure` to update `<path-to-kdk>/gitlab-runner-config.toml` with KDK-specific settings.
+1. Run `kdk reconfigure` to update `<path-to-kdk>/khulnasoft-runner-config.toml` with KDK-specific settings.
 1. Run `kdk restart`.
-1. Verify the runner is connected at `<gitlab-instance-url>/admin/runners`.
+1. Verify the runner is connected at `<khulnasoft-instance-url>/admin/runners`.
 
 You should also be able to see the runner container up and running in `docker`:
 
 ```shell
 docker ps
 CONTAINER ID   IMAGE                         COMMAND                  CREATED              STATUS              PORTS     NAMES
-c0ee80a6910e   gitlab/gitlab-runner:latest   "/usr/bin/dumb-init …"   About a minute ago   Up About a minute             festive_edison
+c0ee80a6910e   khulnasoft/khulnasoft-runner:latest   "/usr/bin/dumb-init …"   About a minute ago   Up About a minute             festive_edison
 ```
 
 From now on you can use `kdk start runner` and `kdk stop runner` CLI commands to start and stop your runner.
 
 To customize the runner, you must configure through your `kdk.yml` file. Any customizations you make directly to the
-`<path-to-kdk>/gitlab-runner-config.toml` file are overwritten when you run `kdk update`. To add support for more
+`<path-to-kdk>/khulnasoft-runner-config.toml` file are overwritten when you run `kdk update`. To add support for more
 runner customizations through `kdk.yml`, raise a merge request to update
 [`lib/kdk/config.rb`](https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/master/lib/kdk/config.rb).
 
@@ -307,7 +307,7 @@ You are good to go! Now you can assign the runner to a project and verify your j
 <summary>Here's how (expand):</summary>
 
 1. Create a new project and ensure the new runner is available:
-1. Add a `.gitlab-ci.yml` file like this one:
+1. Add a `.khulnasoft-ci.yml` file like this one:
 
    ```yaml
    build-job:       # This job runs in the build stage, which runs first.
@@ -317,7 +317,7 @@ You are good to go! Now you can assign the runner to a project and verify your j
       - echo "Compile complete."
    ```
 
-1. After you commit the `.gitlab-ci.yml` file, you can check if the CI job passed successfully in the `Jobs` section under the `CI/CD` folder in your project.
+1. After you commit the `.khulnasoft-ci.yml` file, you can check if the CI job passed successfully in the `Jobs` section under the `CI/CD` folder in your project.
 
 </details>
 
@@ -334,7 +334,7 @@ An alternative to creating the dummy interface described above is to:
 
 1. Run `kdk reconfigure`
 
-This will add `network_mode = host` to the `gitlab-runner-config.toml` file:
+This will add `network_mode = host` to the `khulnasoft-runner-config.toml` file:
 
 ```toml
 [[runners]]
@@ -358,7 +358,7 @@ At the end of all these steps, your config files should look something like this
 <details>
 <summary>(expand)</summary>
 
-`~/gitlab-runner/config.toml`
+`~/khulnasoft-runner/config.toml`
 
 ```toml
    concurrent = 1
@@ -416,10 +416,10 @@ runner:
   offline, this suggests the runner registered successfully but is now
   unable to contact the server via a `POST /api/v4/jobs/request` request.
 - Run `kdk tail runner` to look for errors.
-- Check that the runner can access the hostname specified in `gitlab-runner-config.toml`.
+- Check that the runner can access the hostname specified in `khulnasoft-runner-config.toml`.
 - Select `Edit` on the desired runner and make sure the `Run untagged jobs` is unchecked. Runners
   that have been registered with a tag may ignore jobs that have no tags.
-- Run `tail -f gitlab/log/api_json.log | grep jobs` to see if the runner is attempting to request CI jobs.
+- Run `tail -f khulnasoft/log/api_json.log | grep jobs` to see if the runner is attempting to request CI jobs.
 
 #### Docker Daemon Connection Failure
 
@@ -467,7 +467,7 @@ You might need to set your `DOCKER_HOST` environment variable to the Colima sock
 You might need to modify the KhulnaSoft Runner config file.
 
 1. Run `docker context ls` and note the path to `docker.sock`.
-1. Open the KhulnaSoft Runner config file `/Users/<username>/.gitlab-runner/config.toml`.
+1. Open the KhulnaSoft Runner config file `/Users/<username>/.khulnasoft-runner/config.toml`.
 1. Under `[runners.docker]` add the following line:
 
    ```toml

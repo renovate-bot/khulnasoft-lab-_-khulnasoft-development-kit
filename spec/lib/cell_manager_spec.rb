@@ -67,7 +67,7 @@ RSpec.describe CellManager do
             enabled: false
           khulnasoft_http_router:
             enabled: false
-          gitlab:
+          khulnasoft:
             cell:
               id: 2
               database: { skip_sequence_alteration: false }
@@ -80,9 +80,9 @@ RSpec.describe CellManager do
             topology_service:
               address: other address
               enabled: true
-              ca_file: #{KDK.config.gitlab.topology_service.ca_file}
-              private_key_file: #{KDK.config.gitlab.topology_service.private_key_file}
-              certificate_file: #{KDK.config.gitlab.topology_service.certificate_file}
+              ca_file: #{KDK.config.khulnasoft.topology_service.ca_file}
+              private_key_file: #{KDK.config.khulnasoft.topology_service.private_key_file}
+              certificate_file: #{KDK.config.khulnasoft.topology_service.certificate_file}
         YAML
       end
 
@@ -96,7 +96,7 @@ RSpec.describe CellManager do
             enabled: true
           khulnasoft_http_router:
             enabled: false
-          gitlab:
+          khulnasoft:
             cell:
               id: 3
               database: { skip_sequence_alteration: false }
@@ -107,11 +107,11 @@ RSpec.describe CellManager do
                 unique_cookie_key_postfix: false
                 session_cookie_token_prefix: cell-3
             topology_service:
-              address: #{KDK.config.gitlab.topology_service.address}
+              address: #{KDK.config.khulnasoft.topology_service.address}
               enabled: true
               ca_file: other ca_file
-              private_key_file: #{KDK.config.gitlab.topology_service.private_key_file}
-              certificate_file: #{KDK.config.gitlab.topology_service.certificate_file}
+              private_key_file: #{KDK.config.khulnasoft.topology_service.private_key_file}
+              certificate_file: #{KDK.config.khulnasoft.topology_service.certificate_file}
         YAML
       end
 
@@ -125,7 +125,7 @@ RSpec.describe CellManager do
             enabled: false
           khulnasoft_http_router:
             enabled: false
-          gitlab:
+          khulnasoft:
             cell:
               id: 4
               database: { skip_sequence_alteration: false }
@@ -136,11 +136,11 @@ RSpec.describe CellManager do
                 unique_cookie_key_postfix: false
                 session_cookie_token_prefix: cell-4
             topology_service:
-              address: #{KDK.config.gitlab.topology_service.address}
+              address: #{KDK.config.khulnasoft.topology_service.address}
               enabled: true
-              ca_file: #{KDK.config.gitlab.topology_service.ca_file}
-              private_key_file: #{KDK.config.gitlab.topology_service.private_key_file}
-              certificate_file: #{KDK.config.gitlab.topology_service.certificate_file}
+              ca_file: #{KDK.config.khulnasoft.topology_service.ca_file}
+              private_key_file: #{KDK.config.khulnasoft.topology_service.private_key_file}
+              certificate_file: #{KDK.config.khulnasoft.topology_service.certificate_file}
         YAML
       end
 
@@ -150,7 +150,7 @@ RSpec.describe CellManager do
             enabled: true
           khulnasoft_topology_service:
             enabled: true
-          gitlab:
+          khulnasoft:
             rails:
               session_store:
                 unique_cookie_key_postfix: false
@@ -160,11 +160,11 @@ RSpec.describe CellManager do
             instance_count: 3
             instances:
             - config:
-                gitlab:
+                khulnasoft:
                   topology_service:
                     address: other address
             - config:
-                gitlab:
+                khulnasoft:
                   topology_service:
                     ca_file: other ca_file
                 khulnasoft_topology_service:
@@ -200,16 +200,16 @@ RSpec.describe CellManager do
             expect_kdk_command('git', 'clone', KDK.root.to_s, cell_dir(2))
             expect_kdk_command(*%w[git remote get-url origin], chdir: KDK.root, success: false)
             expect_kdk_command(*%w[git remote set-url origin https://github.com/khulnasoft-lab/khulnasoft-development-kit.git], chdir: cell_dir(2))
-            expect_kdk_cells_shellout(2, "install khulnasoft_repo=#{KDK.root}/gitlab")
+            expect_kdk_cells_shellout(2, "install khulnasoft_repo=#{KDK.root}/khulnasoft")
             expect_kdk_cells_shellout(2, 'reconfigure')
             expect_kdk_config(2, cell_2_config)
 
             stub_cell_exists(3, exists: false)
             stub_cell_exists(3, sub_directory: 'khulnasoft', exists: false)
             expect_kdk_command('git', 'clone', KDK.root.to_s, cell_dir(3))
-            expect_kdk_command(*%w[git remote get-url origin], chdir: KDK.root, stdout: "https://gitlab.com/gitlab-community/gitlab-org/khulnasoft-development-kit.git")
-            expect_kdk_command(*%w[git remote set-url origin https://gitlab.com/gitlab-community/gitlab-org/khulnasoft-development-kit.git], chdir: cell_dir(3))
-            expect_kdk_cells_shellout(3, "install khulnasoft_repo=#{KDK.root}/gitlab")
+            expect_kdk_command(*%w[git remote get-url origin], chdir: KDK.root, stdout: "https://khulnasoft.com/khulnasoft-community/khulnasoft-org/khulnasoft-development-kit.git")
+            expect_kdk_command(*%w[git remote set-url origin https://khulnasoft.com/khulnasoft-community/khulnasoft-org/khulnasoft-development-kit.git], chdir: cell_dir(3))
+            expect_kdk_cells_shellout(3, "install khulnasoft_repo=#{KDK.root}/khulnasoft")
             expect_kdk_cells_shellout(3, 'reconfigure')
             expect_kdk_config(3, cell_3_config)
 
@@ -218,7 +218,7 @@ RSpec.describe CellManager do
             expect_kdk_command('git', 'clone', KDK.root.to_s, cell_dir(4))
             expect_kdk_command(*%w[git remote get-url origin], chdir: KDK.root, success: false)
             expect_kdk_command(*%w[git remote set-url origin https://github.com/khulnasoft-lab/khulnasoft-development-kit.git], chdir: cell_dir(4))
-            expect_kdk_cells_shellout(4, "install khulnasoft_repo=#{KDK.root}/gitlab")
+            expect_kdk_cells_shellout(4, "install khulnasoft_repo=#{KDK.root}/khulnasoft")
             expect_kdk_cells_shellout(4, 'reconfigure')
             expect_kdk_config(4, cell_4_config)
 
@@ -464,6 +464,6 @@ RSpec.describe CellManager do
   end
 
   def cell_dir(cell_id)
-    "#{KDK.root}/gitlab-cells/cell-#{cell_id}"
+    "#{KDK.root}/khulnasoft-cells/cell-#{cell_id}"
   end
 end

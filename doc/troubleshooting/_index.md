@@ -8,7 +8,7 @@ modules, Ruby gems, and performing database migrations.
 Before attempting the specific troubleshooting steps documented below, try running the following commands first:
 
   ```shell
-  cd <kdk-dir>/gitlab
+  cd <kdk-dir>/khulnasoft
   yarn install && bundle install
   bundle exec rails db:migrate RAILS_ENV=development
   ```
@@ -217,7 +217,7 @@ a `kdk reconfigure`:
 1. `kdk reconfigure`
 
 For more information about Jaeger, visit the
-[distributed tracing KhulnaSoft developer documentation](https://docs.gitlab.com/ee/development/distributed_tracing.html).
+[distributed tracing KhulnaSoft developer documentation](https://docs.khulnasoft.com/ee/development/distributed_tracing.html).
 
 ## Gitaly
 
@@ -266,7 +266,7 @@ make[1]: *** [Makefile:424: /home/user/khulnasoft-development-kit/gitaly/_build/
 ```
 
 Check which version of Git you're running with `git --version`, and compare it against
-[KhulnaSoft requirements](https://docs.gitlab.com/ee/install/requirements.html#git-versions). You
+[KhulnaSoft requirements](https://docs.khulnasoft.com/ee/install/requirements.html#git-versions). You
 might be running an unsupported version.
 
 If the supported version is not available for you from pre-compiled packages, try following the
@@ -275,7 +275,7 @@ instructions for:
 - [Ubuntu or Debian](../_index.md#ubuntu-or-debian).
 - [Arch and Manjaro](../_index.md#arch-and-manjaro-linux).
 
-If that doesn't give you the supported version, you might have to [compile Git from source](https://docs.gitlab.com/ee/install/installation.html#git).
+If that doesn't give you the supported version, you might have to [compile Git from source](https://docs.khulnasoft.com/ee/install/installation.html#git).
 
 ## Elasticsearch
 
@@ -326,7 +326,7 @@ ld: library not found for -licui18n
 clang: error: linker command failed with exit code 1 (use -v to see invocation)
 
 make[1]: *** [build] Error 2
-make: *** [gitlab-elasticsearch-indexer/bin/gitlab-elasticsearch-indexer] Error 2
+make: *** [khulnasoft-elasticsearch-indexer/bin/khulnasoft-elasticsearch-indexer] Error 2
 ```
 
 This means Go is trying to link to brew's version of `icu4c` (`64.2` in the example), and failing.
@@ -340,7 +340,7 @@ $ ls /usr/local/Cellar/icu4c
 Clean Go's cache to fix this error. From the KDK's root directory:
 
 ```shell
-cd gitlab-elasticsearch-indexer/
+cd khulnasoft-elasticsearch-indexer/
 go clean -cache
 ```
 
@@ -365,7 +365,7 @@ For additional troubleshooting information, see the Homebrew [Common Issues](htt
 
 ## Live reloading
 
-If you previously compiled production assets with `bundle exec rake gitlab:assets:compile`, the KDK
+If you previously compiled production assets with `bundle exec rake khulnasoft:assets:compile`, the KDK
 serves the assets from the `public/assets/` directory, which means that changing SCSS files doesn't
 have any effect in development until you recompile the assets manually.
 
@@ -444,7 +444,7 @@ ERROR:  While executing gem ... (Gem::RemoteFetcher::FetchError)
 
 This indicates that `bundle` failed to connect to the `rubygems.org` server.
 
-If you are connected to the network and other network activities are working (i.e. `ping gitlab.com`), then this normally indicates
+If you are connected to the network and other network activities are working (i.e. `ping khulnasoft.com`), then this normally indicates
 an outage of `rubygems.org`. You can try manually running `bundle update` in the KDK root folder, and if it fails with a similar
 network error, you know this is the cause.
 
@@ -467,7 +467,7 @@ operating system documentation for detailed instructions.
 
 ### Unable to start as CE (FOSS_ONLY)
 
-If your KDK enters an infinite loop when running `FOSS_ONLY=1 kdk start`, try to remove `- { name: 'group_saml' }` option from your `config/gitlab.yml`. The favicon should be blue when in CE and green when in EE.
+If your KDK enters an infinite loop when running `FOSS_ONLY=1 kdk start`, try to remove `- { name: 'group_saml' }` option from your `config/khulnasoft.yml`. The favicon should be blue when in CE and green when in EE.
 
 ### Error due to `ActionController::InvalidAuthenticityToken`
 
@@ -524,12 +524,12 @@ To kill off the rogue processes, run `kdk kill`.
 If all the services are running after you run `kdk install`, but you cannot log
 in as `root`, you can reset the password through the Rails console.
 
-For more information about the Ruby on Rails console in KhulnaSoft, see [Rails console](https://docs.gitlab.com/ee/administration/operations/rails_console.html).
+For more information about the Ruby on Rails console in KhulnaSoft, see [Rails console](https://docs.khulnasoft.com/ee/administration/operations/rails_console.html).
 
 1. Open a new Rails console:
 
    ```shell
-   cd <kdk-dir>/gitlab
+   cd <kdk-dir>/khulnasoft
    bundle exec rails console
    ```
 

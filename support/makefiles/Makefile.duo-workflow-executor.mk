@@ -1,7 +1,7 @@
 duo_workflow_executor_dir =  ${khulnasoft_development_root}/duo-workflow-executor
 
 ifeq ($(duo_workflow_enabled),true)
-duo-workflow-executor-setup: gitlab/public/assets/duo-workflow-executor/bin/duo-workflow-executor.tar.gz
+duo-workflow-executor-setup: khulnasoft/public/assets/duo-workflow-executor/bin/duo-workflow-executor.tar.gz
 else
 duo-workflow-executor-setup:
 	@true
@@ -34,9 +34,9 @@ duo-workflow-executor/bin/duo-workflow-executor: duo-workflow-executor/.git/pull
 duo-workflow-executor/bin/duo-workflow-executor.tar.gz: duo-workflow-executor/bin/duo-workflow-executor
 	tar --no-xattrs -C duo-workflow-executor/bin -czvf duo-workflow-executor/bin/duo-workflow-executor.tar.gz duo-workflow-executor
 
-gitlab/public/assets/duo-workflow-executor/bin/duo-workflow-executor.tar.gz: duo-workflow-executor/bin/duo-workflow-executor.tar.gz
-	mkdir -p gitlab/public/assets
-	mv duo-workflow-executor/bin/duo-workflow-executor.tar.gz gitlab/public/assets/
+khulnasoft/public/assets/duo-workflow-executor/bin/duo-workflow-executor.tar.gz: duo-workflow-executor/bin/duo-workflow-executor.tar.gz
+	mkdir -p khulnasoft/public/assets
+	mv duo-workflow-executor/bin/duo-workflow-executor.tar.gz khulnasoft/public/assets/
 
 .PHONY: duo-workflow-executor/.git/pull
 duo-workflow-executor/.git/pull: duo-workflow-executor/.git

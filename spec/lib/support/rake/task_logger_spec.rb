@@ -49,9 +49,9 @@ RSpec.describe Support::Rake::TaskLogger do
     end
 
     context 'when the task name contains filesystem-relevant chracters' do
-      let(:task) { instance_double(Rake::Task, name: 'gitlab/doc/api/graphql/reference/khulnasoft_schema.json') }
+      let(:task) { instance_double(Rake::Task, name: 'khulnasoft/doc/api/graphql/reference/khulnasoft_schema.json') }
       let(:now) { DateTime.parse('2021-05-06 18:50:31.279931 +0000').to_time }
-      let(:expected_path) { Pathname("#{KDK.root}/log/kdk/rake-2021-05-06_18-50-31_279/gitlab-doc-api-graphql-reference-khulnasoft_schema-json.log") }
+      let(:expected_path) { Pathname("#{KDK.root}/log/kdk/rake-2021-05-06_18-50-31_279/khulnasoft-doc-api-graphql-reference-khulnasoft_schema-json.log") }
 
       it 'escapes the task name' do
         expect(subject.file_path).to eq(expected_path)

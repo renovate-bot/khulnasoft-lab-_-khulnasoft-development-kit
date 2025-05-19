@@ -3,7 +3,7 @@
 set -euo pipefail
 
 download_ssh_key () {
-  curl --clobber "https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/raw/main/support/kdk-in-a-box/kdk.local_rsa" -o ~/.ssh/kdk.local_rsa
+  curl --clobber "https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/raw/master/support/kdk-in-a-box/kdk.local_rsa" -o ~/.ssh/kdk.local_rsa
   chmod 600 ~/.ssh/kdk.local_rsa
   echo "SSH key imported."
 }

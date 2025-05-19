@@ -27,7 +27,7 @@ fi
 
 sudo /usr/sbin/sshd
 
-cd /gitlab-kdk/khulnasoft-development-kit
+cd /khulnasoft-kdk/khulnasoft-development-kit
 
 eval "$(~/.local/bin/mise activate bash)"
 

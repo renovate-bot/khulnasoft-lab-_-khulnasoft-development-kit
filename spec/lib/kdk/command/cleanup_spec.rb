@@ -160,7 +160,7 @@ RSpec.describe KDK::Command::Cleanup do
     end
 
     def expect_truncate_puts
-      expect(KDK::Output).to receive(:puts).with('- Truncate gitlab/log/* files', stderr: true).ordered
+      expect(KDK::Output).to receive(:puts).with('- Truncate khulnasoft/log/* files', stderr: true).ordered
       expect(KDK::Output).to receive(:puts).with("- Truncate #{KDK::Services::KhulnasoftHttpRouter::LOG_PATH} file", stderr: true).ordered
       expect(KDK::Output).to receive(:puts).with(stderr: true).ordered
     end
@@ -172,19 +172,19 @@ RSpec.describe KDK::Command::Cleanup do
     end
 
     def stub_rake_truncate
-      stub_rake_task('gitlab:truncate_logs', 'gitlab.rake')
+      stub_rake_task('khulnasoft:truncate_logs', 'khulnasoft.rake')
     end
 
     def stub_rake_http_router_truncate
-      stub_rake_task('gitlab:truncate_http_router_logs', 'gitlab.rake')
+      stub_rake_task('khulnasoft:truncate_http_router_logs', 'khulnasoft.rake')
     end
 
     def expect_rake_truncate
-      expect_rake_task('gitlab:truncate_logs', 'gitlab.rake', args: 'false')
+      expect_rake_task('khulnasoft:truncate_logs', 'khulnasoft.rake', args: 'false')
     end
 
     def expect_rake_http_router_truncate
-      expect_rake_task('gitlab:truncate_http_router_logs', 'gitlab.rake', args: 'false')
+      expect_rake_task('khulnasoft:truncate_http_router_logs', 'khulnasoft.rake', args: 'false')
     end
 
     def stub_rake_uninstall

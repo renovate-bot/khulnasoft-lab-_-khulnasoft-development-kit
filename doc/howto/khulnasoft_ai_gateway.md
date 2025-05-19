@@ -2,17 +2,17 @@
 title: KhulnaSoft AI Gateway
 ---
 
-Configure the [KhulnaSoft AI Gateway](https://gitlab.com/gitlab-org/modelops/applied-ml/code-suggestions/ai-assist)
+Configure the [KhulnaSoft AI Gateway](https://khulnasoft.com/khulnasoft-org/modelops/applied-ml/code-suggestions/ai-assist)
 to run locally in KDK.
 
 This installation method is a simpler alternative to
-[manually cloning, installing, and running the AI Gateway locally](https://gitlab.com/gitlab-org/modelops/applied-ml/code-suggestions/ai-assist#how-to-run-the-server-locally).
+[manually cloning, installing, and running the AI Gateway locally](https://khulnasoft.com/khulnasoft-org/modelops/applied-ml/code-suggestions/ai-assist#how-to-run-the-server-locally).
 
 ## Prerequisites
 
 - Access to [Google Cloud](#set-up-google-cloud-platform-in-ai-gateway).
 - Access to [Anthropic API](#set-up-anthropic-in-the-ai-gateway).
-- AI Gateway [tool dependencies](https://gitlab.com/gitlab-org/modelops/applied-ml/code-suggestions/ai-assist/-/blob/master/.tool-versions).
+- AI Gateway [tool dependencies](https://khulnasoft.com/khulnasoft-org/modelops/applied-ml/code-suggestions/ai-assist/-/blob/master/.tool-versions).
 
 ## Set up the AI Gateway
 
@@ -32,18 +32,18 @@ This installation method is a simpler alternative to
    > [!note]
    > If you update steps or documentation for setting up AI Gateway, check and update this Rake task as well if necessary.
 
-   You can watch the status of the service by running `kdk tail gitlab-ai-gateway`.
+   You can watch the status of the service by running `kdk tail khulnasoft-ai-gateway`.
 
    To check if your monolith is using the correct URL after restarting, run `bundle exec rake cache:clear` and then visit `http://<your-kdk-url>/help/instance_configuration#ai_gateway_url`.
 
    > [!note]
    > When you access the AI Gateway URL directly, you'll see a `{"error":"No authorization header presented"}` error message. This is expected and doesn't affect the usage of AI features locally in KDK.
-   > You can [bypass authentication](https://gitlab.com/gitlab-org/modelops/applied-ml/code-suggestions/ai-assist/-/blob/master/docs/auth.md#bypass-authentication-and-authorization-for-testing-features) by modifying the AI Gateway's environment configuration, but this should only be done for using the OpenAPI playground. Make sure to revert any authentication bypass changes before pushing to production.
+   > You can [bypass authentication](https://khulnasoft.com/khulnasoft-org/modelops/applied-ml/code-suggestions/ai-assist/-/blob/master/docs/auth.md#bypass-authentication-and-authorization-for-testing-features) by modifying the AI Gateway's environment configuration, but this should only be done for using the OpenAPI playground. Make sure to revert any authentication bypass changes before pushing to production.
 
 1. Go to the [AI Gateway OpenAPI playground](http://localhost:5052/docs)
    to verify that your local AI Gateway started successfully.
 
-1. Continue with the instructions for setting up KhulnaSoft Duo features to [set up an Ultimate license for your KDK](https://docs.gitlab.com/ee/development/ai_features/index.html#required-setup-licenses-in-gitlab-rails).
+1. Continue with the instructions for setting up KhulnaSoft Duo features to [set up an Ultimate license for your KDK](https://docs.khulnasoft.com/ee/development/ai_features/index.html#required-setup-licenses-in-khulnasoft-rails).
 
 ## Additional AI Gateway troubleshooting and configuration
 
@@ -51,14 +51,14 @@ This installation method is a simpler alternative to
 
 You must tell your local KhulnaSoft instance to talk to your local AI
 Gateway. Otherwise, your instance tries to talk to the production AI Gateway
-at `cloud.gitlab.com`, which results in an `A1001` error.
+at `cloud.khulnasoft.com`, which results in an `A1001` error.
 
 By default, the AI Gateway lives at `localhost:5052/docs`.
 
-You can host the AI Gateway at a different URL by updating the following values in the [application settings file](https://gitlab.com/gitlab-org/modelops/applied-ml/code-suggestions/ai-assist/-/blob/master/docs/application_settings.md):
+You can host the AI Gateway at a different URL by updating the following values in the [application settings file](https://khulnasoft.com/khulnasoft-org/modelops/applied-ml/code-suggestions/ai-assist/-/blob/master/docs/application_settings.md):
 
 ```shell
-# <KDK-root>/gitlab-ai-gateway/.env
+# <KDK-root>/khulnasoft-ai-gateway/.env
 
 AIGW_FASTAPI__API_HOST=0.0.0.0
 AIGW_FASTAPI__API_PORT=5052
@@ -87,7 +87,7 @@ You should use this project:
 
 To check if you have access to this existing project, go to the [Google Cloud console](https://console.cloud.google.com).
 
-If you do not have access, complete the [GCP access request template](https://gitlab.com/gitlab-com/it/infra/issue-tracker/-/issues/new?issuable_template=gcp_group_account_iam_update_request).
+If you do not have access, complete the [GCP access request template](https://khulnasoft.com/khulnasoft-com/it/infra/issue-tracker/-/issues/new?issuable_template=gcp_group_account_iam_update_request).
 
 #### Create a sandbox Google Cloud project
 
@@ -100,10 +100,10 @@ Prerequisites:
 To create a sandbox Google Cloud project:
 
 1. Authenticate locally with Google Cloud using [`gcloud auth application-default login`](https://cloud.google.com/sdk/gcloud/reference/auth/application-default/login).
-1. Update the [application settings file](https://gitlab.com/gitlab-org/modelops/applied-ml/code-suggestions/ai-assist/-/blob/master/docs/application_settings.md) in AI Gateway:
+1. Update the [application settings file](https://khulnasoft.com/khulnasoft-org/modelops/applied-ml/code-suggestions/ai-assist/-/blob/master/docs/application_settings.md) in AI Gateway:
 
    ```shell
-   # <KDK-root>/gitlab-ai-gateway/.env
+   # <KDK-root>/khulnasoft-ai-gateway/.env
 
    # PROJECT_ID = "ai-enablement-dev-69497ba7" for KhulnaSoft team members with access
    # to the shared project. This should be set by default
@@ -114,9 +114,9 @@ To create a sandbox Google Cloud project:
    AIGW_GOOGLE_CLOUD_PLATFORM__PROJECT='PROJECT_ID'
    ```
 
-1. [Create a sandbox project](https://handbook.gitlab.com/handbook/infrastructure-standards/#individual-environment).
+1. [Create a sandbox project](https://handbook.khulnasoft.com/handbook/infrastructure-standards/#individual-environment).
 
-If you are using an individual Google Cloud project, because some of the [KhulnaSoft Duo features](https://docs.gitlab.com/ee/user/khulnasoft_duo/) use the Vertex AI API, you might also have to enable the Vertex AI API:
+If you are using an individual Google Cloud project, because some of the [KhulnaSoft Duo features](https://docs.khulnasoft.com/ee/user/khulnasoft_duo/) use the Vertex AI API, you might also have to enable the Vertex AI API:
 
    1. Go to the [Google Cloud welcome page](https://console.cloud.google.com/welcome).
    1. Choose your project (for example: `jdoe-5d23dpe`).
@@ -136,12 +136,12 @@ If you are using an individual Google Cloud project, because some of the [Khulna
 
 You must set up Anthropic because some KhulnaSoft Duo features use Anthropic models.
 
-1. Complete an [access request](https://gitlab.com/gitlab-com/team-member-epics/access-requests/-/issues/new?description_template=Access_Change_Request).
+1. Complete an [access request](https://khulnasoft.com/khulnasoft-com/team-member-epics/access-requests/-/issues/new?description_template=Access_Change_Request).
 1. Sign up for an Anthropic account and [create an API key](https://docs.anthropic.com/en/docs/getting-access-to-claude).
-1. Update the [application settings file](https://gitlab.com/gitlab-org/modelops/applied-ml/code-suggestions/ai-assist/-/blob/master/docs/application_settings.md) in AI Gateway:
+1. Update the [application settings file](https://khulnasoft.com/khulnasoft-org/modelops/applied-ml/code-suggestions/ai-assist/-/blob/master/docs/application_settings.md) in AI Gateway:
 
    ```shell
-   # <KDK-root>/gitlab-ai-gateway/.env
+   # <KDK-root>/khulnasoft-ai-gateway/.env
 
    ANTHROPIC_API_KEY='<your-anthropic-api-key>'
    ```
@@ -150,10 +150,10 @@ You must set up Anthropic because some KhulnaSoft Duo features use Anthropic mod
 
 Logging makes it easier to debug any issues with KhulnaSoft Duo requests.
 
-To enable logging, update the [application settings file](https://gitlab.com/gitlab-org/modelops/applied-ml/code-suggestions/ai-assist/-/blob/master/docs/application_settings.md) in AI Gateway:
+To enable logging, update the [application settings file](https://khulnasoft.com/khulnasoft-org/modelops/applied-ml/code-suggestions/ai-assist/-/blob/master/docs/application_settings.md) in AI Gateway:
 
 ```shell
-# <KDK-root>/gitlab-ai-gateway/.env
+# <KDK-root>/khulnasoft-ai-gateway/.env
 
 AIGW_LOGGING__LEVEL=debug
 AIGW_LOGGING__FORMAT_JSON=false
@@ -161,10 +161,10 @@ AIGW_LOGGING__TO_FILE='./ai-gateway.log'
 ```
 
 For example, you can watch the log file with the following command when in the
-`gitlab-ai-gateway` directory:
+`khulnasoft-ai-gateway` directory:
 
 ```shell
-# <KDK-root>/gitlab-ai-gateway
+# <KDK-root>/khulnasoft-ai-gateway
 
 tail -f ai-gateway.log | fblog -a prefix -a suffix -a current_file_name -a suggestion -a language -a input -a parameters -a score -a exception
 ```
@@ -172,8 +172,8 @@ tail -f ai-gateway.log | fblog -a prefix -a suffix -a current_file_name -a sugge
 ### Optional: Run a different branch of AI Gateway and Duo Workflow Service
 
 The
-[AI Gateway repository](https://gitlab.com/gitlab-org/modelops/applied-ml/code-suggestions/ai-assist)
-is cloned into `<kdk-dir>/gitlab-ai-gateway`.
+[AI Gateway repository](https://khulnasoft.com/khulnasoft-org/modelops/applied-ml/code-suggestions/ai-assist)
+is cloned into `<kdk-dir>/khulnasoft-ai-gateway`.
 
 To configure KDK to run a specific branch, use either the branch name or SHA:
 
@@ -184,8 +184,8 @@ kdk reconfigure
 
 ## Error: `Activated Python version 3.XX.X is not supported`
 
-The Rake task calls a makefile, [`Make.gitlab-ai-gateway.mk`](https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/master/support/makefiles/Makefile.gitlab-ai-gateway.mk?ref_type=heads),
-that installs dependencies defined in the AI Gateway [tool version file](https://gitlab.com/gitlab-org/modelops/applied-ml/code-suggestions/ai-assist/-/blob/master/.tool-versions?ref_type=heads). The makefile will install Python version 3.10, but the system may return an error message if a different version of Python has been installed from a separate source:
+The Rake task calls a makefile, [`Make.khulnasoft-ai-gateway.mk`](https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/master/support/makefiles/Makefile.khulnasoft-ai-gateway.mk?ref_type=heads),
+that installs dependencies defined in the AI Gateway [tool version file](https://khulnasoft.com/khulnasoft-org/modelops/applied-ml/code-suggestions/ai-assist/-/blob/master/.tool-versions?ref_type=heads). The makefile will install Python version 3.10, but the system may return an error message if a different version of Python has been installed from a separate source:
 
 ```plaintext
 The currently activated Python version 3.XX.X is not supported by the project (~3.10.0).

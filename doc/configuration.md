@@ -43,8 +43,8 @@ all applied settings in a YAML structure.
 
 - [Notable settings](#notable-settings)
 - [KDK settings](#kdk-settings)
-- [KhulnaSoft settings](#gitlab-settings)
-- [KhulnaSoft Docs settings](#gitlab-docs-settings)
+- [KhulnaSoft settings](#khulnasoft-settings)
+- [KhulnaSoft Docs settings](#khulnasoft-docs-settings)
 - [Additional projects settings](#additional-projects-settings)
 - [NGINX settings](#nginx-settings)
 
@@ -92,19 +92,19 @@ Here are a few settings worth mentioning:
 | `port`                           | `3000`                | Select the port to run KDK on, useful when running multiple KDKs in parallel.              |
 | `port_offset`                    | `0`                   | Base value added to all KDK port numbers. Enables running multiple KDK instances simultaneously without port conflicts. |
 | `webpack.port`                   | `3808`                | Also useful to configure when running KDKs in parallel. [See below for more webpack options](#webpack-settings). |
-| `gitlab.rails.bundle_gemfile`    | `Gemfile`             | Set this to where KhulnaSoft should look for Gemfile. |
-| `gitlab.cache_classes`           | `false`               | Set this to `true` to disable the automatic reloading of Ruby classes when Ruby code is changed. |
-| `gitlab.default_branch`          |  `master`             | Set this to the desired default branch name in the KhulnaSoft repository. |
-| `gitlab.gitaly_disable_request_limits`  | `false`        | Set this to `true` to disable Gitaly request limit checks in development. |
+| `khulnasoft.rails.bundle_gemfile`    | `Gemfile`             | Set this to where KhulnaSoft should look for Gemfile. |
+| `khulnasoft.cache_classes`           | `false`               | Set this to `true` to disable the automatic reloading of Ruby classes when Ruby code is changed. |
+| `khulnasoft.default_branch`          |  `master`             | Set this to the desired default branch name in the KhulnaSoft repository. |
+| `khulnasoft.gitaly_disable_request_limits`  | `false`        | Set this to `true` to disable Gitaly request limit checks in development. |
 | `khulnasoft_pages.host`              | `127.0.0.1.nip.io`    | Specify KhulnaSoft Pages hostname. See also the [Pages guide](howto/pages.md#hostname). |
 | `khulnasoft_pages.port`              | `3010`                | Specify on which port KhulnaSoft Pages should run. See also the [Pages guide](howto/pages.md#port). |
-| `relative_url_root`              | `/`                   | When you want to test KhulnaSoft being available on a different path than `/`. For example, `/gitlab`. |
+| `relative_url_root`              | `/`                   | When you want to test KhulnaSoft being available on a different path than `/`. For example, `/khulnasoft`. |
 | `object_store.enabled`           | `false`               | Set this to `true` to enable Object Storage with MinIO.                                    |
-| `object_store.consolidated_form` | `false`               | Set this to `true` to use the [consolidated object storage configuration](https://docs.gitlab.com/ee/administration/object_storage.html#consolidated-object-storage-configuration). Required for Microsoft Azure. |
-| `object_store.connection`        | See `kdk.example.yml` | Specify the [object storage connection settings](https://docs.gitlab.com/ee/administration/object_storage.html#connection-settings). |
+| `object_store.consolidated_form` | `false`               | Set this to `true` to use the [consolidated object storage configuration](https://docs.khulnasoft.com/ee/administration/object_storage.html#consolidated-object-storage-configuration). Required for Microsoft Azure. |
+| `object_store.connection`        | See `kdk.example.yml` | Specify the [object storage connection settings](https://docs.khulnasoft.com/ee/administration/object_storage.html#connection-settings). |
 | `registry.enabled`               | `false`               | Set this to `true` to enable container registry.                                           |
 | `geo.enabled`                    | `false`               | Set this to `true` to enable Geo (for now it just enables `postgresql-geo` and `geo-cursor` services). |
-| `gitlab.rails.puma.workers`      | `2`                   | Set this to `0` to prevent Puma (webserver) running in a [Clustered mode](https://github.com/puma/puma/blob/master/docs/architecture.md). Running in Single mode provides significant memory savings if you work within a [memory-constrained environment](https://gitlab.com/groups/gitlab-org/-/epics/5303). |
+| `khulnasoft.rails.puma.workers`      | `2`                   | Set this to `0` to prevent Puma (webserver) running in a [Clustered mode](https://github.com/puma/puma/blob/master/docs/architecture.md). Running in Single mode provides significant memory savings if you work within a [memory-constrained environment](https://khulnasoft.com/groups/khulnasoft-org/-/epics/5303). |
 | `restrict_cpu_count`             | `-1` (not restricted) | Set the number of CPUs used when calling `bundle`. Defaults to using the number of CPUs available. |
 | `khulnasoft_ai_gateway.enabled`     | 'false'             | Set this to `true` to configure KhulnaSoft AI Gateway to run locally in KDK |
 
@@ -124,7 +124,7 @@ kdk reconfigure
 
 The following examples are a quick guide for configuring object storage
 for external S3 providers, Google Cloud Storage, or Microsoft Azure.
-See the [object storage settings](https://docs.gitlab.com/ee/administration/object_storage.html).
+See the [object storage settings](https://docs.khulnasoft.com/ee/administration/object_storage.html).
 You should set `consolidated_form` to `true`.
 
 In development, you may also use a single bucket for testing.
@@ -275,8 +275,8 @@ Before and after hooks are supported for `kdk start`, `kdk stop`, and `kdk updat
 > When running `kdk restart`, `kdk.stop_hooks` (both before & after) are executed before restarting and `kdk.start_hooks` (both before & after) are executed after restarting.
 
 A common use for KDK hooks is
-[removing uncommitted changes to `gitlab/db/structure.sql`](troubleshooting/postgresql.md#kdk-update-leaves-gitlabdb-with-uncommitted-changes),
-or [truncating the Rails logs in `gitlab/log`](troubleshooting/ruby.md#truncate-rails-logs).
+[removing uncommitted changes to `khulnasoft/db/structure.sql`](troubleshooting/postgresql.md#kdk-update-leaves-khulnasoftdb-with-uncommitted-changes),
+or [truncating the Rails logs in `khulnasoft/log`](troubleshooting/ruby.md#truncate-rails-logs).
 
 ### KhulnaSoft settings
 
@@ -284,27 +284,27 @@ or [truncating the Rails logs in `gitlab/log`](troubleshooting/ruby.md#truncate-
 
 | Setting | Default | Description |
 |---------|---------|-------------|
-| `gitlab.cache_classes` | `false`  | Set this to `true` to disable the automatic reloading of Ruby classes when Ruby code is changed. |
-| `gitlab.rails.hostname` | `127.0.0.1` | Specify the hostname value that Rails uses when generating URLs. |
-| `gitlab.rails.port` | `3000` | Specify the port value that Rails uses when generating URLs. |
-| `gitlab.rails.https.enabled` | `false` | Specify if HTTPS is enabled which Rails uses when generating URLs. |
-| `gitlab.rails.address` | `''`     | Specify whether Rails should listen to a UNIX socket or a TCP port. Useful for debugging with Wireshark. Use `host:port` to listen on a TCP port. Do **not** include `http://`. |
-| `gitlab.rails.multiple_databases` | `false` | Deprecated. Use `gitlab.rails.databases.ci` instead. Set this to `true` to configure [multiple database connections](https://docs.gitlab.com/ee/development/database/multiple_databases.html) in your `config/database.yml`. |
-| `gitlab.rails.databases.ci.enabled` | `true` | Set this to `true` to configure [multiple database connections](https://docs.gitlab.com/ee/development/database/multiple_databases.html) in your `config/database.yml`. |
-| `gitlab.rails.databases.ci.use_main_database` | `false` | When `true`, the CI database connection uses the same database as the main database (`gitlabhq_development`). When `false`, it uses a distinct database (`gitlabhq_development_ci`). Only relevant when `gitlab.rails.databases.ci.enabled` is enabled. |
-| `gitlab.rails.databases.sec.enabled` | `false` | Set this to `true` to configure [multiple database connections](https://docs.gitlab.com/ee/development/database/multiple_databases.html) in your `config/database.yml`. |
-| `gitlab.rails.databases.sec.use_main_database` | `true` | When `true`, the [`khulnasoft_sec` schema](https://docs.gitlab.com/ee/development/database/multiple_databases.html#gitlab-schema) uses the same database as the main database (`gitlabhq_development`). When `false`, it uses a distinct database (`gitlabhq_development_sec`). Only relevant when `gitlab.rails.databases.sec.enabled` is enabled. |
-| `gitlab.rails.puma.workers` | `2` | Set this to `0` to prevent Puma (webserver) running in a [Clustered mode](https://github.com/puma/puma/blob/master/docs/architecture.md). Running in Single mode provides significant memory savings if you work within a [memory-constrained environment](https://gitlab.com/groups/gitlab-org/-/epics/5303). |
-| `gitlab.rails.bootsnap` | `true` | Set this to `false` to disable [Bootsnap](https://github.com/Shopify/bootsnap). |
-| `gitlab.rails.allowed_hosts` | `[]` | Allows Rails to serve requests from specified hosts, other than its KDK's host. Configure this setting to allow a Geo primary site to handle forwarded requests from a Geo secondary site using a different `hostname`. When this setting is configured, the hosts are also added to the `webpack.allowed_hosts` setting. Example value: `["kdk2.test"]`. |
-| `gitlab.rails.application_settings_cache_seconds` | `60` | Sets the [application settings cache interval](https://docs.gitlab.com/ee/administration/application_settings_cache.html). Set to `0` to have changes take immediate effect, at the cost of loading the `application_settings` table for every request causing extra load on Redis and/or PostgreSQL. |
+| `khulnasoft.cache_classes` | `false`  | Set this to `true` to disable the automatic reloading of Ruby classes when Ruby code is changed. |
+| `khulnasoft.rails.hostname` | `127.0.0.1` | Specify the hostname value that Rails uses when generating URLs. |
+| `khulnasoft.rails.port` | `3000` | Specify the port value that Rails uses when generating URLs. |
+| `khulnasoft.rails.https.enabled` | `false` | Specify if HTTPS is enabled which Rails uses when generating URLs. |
+| `khulnasoft.rails.address` | `''`     | Specify whether Rails should listen to a UNIX socket or a TCP port. Useful for debugging with Wireshark. Use `host:port` to listen on a TCP port. Do **not** include `http://`. |
+| `khulnasoft.rails.multiple_databases` | `false` | Deprecated. Use `khulnasoft.rails.databases.ci` instead. Set this to `true` to configure [multiple database connections](https://docs.khulnasoft.com/ee/development/database/multiple_databases.html) in your `config/database.yml`. |
+| `khulnasoft.rails.databases.ci.enabled` | `true` | Set this to `true` to configure [multiple database connections](https://docs.khulnasoft.com/ee/development/database/multiple_databases.html) in your `config/database.yml`. |
+| `khulnasoft.rails.databases.ci.use_main_database` | `false` | When `true`, the CI database connection uses the same database as the main database (`khulnasofthq_development`). When `false`, it uses a distinct database (`khulnasofthq_development_ci`). Only relevant when `khulnasoft.rails.databases.ci.enabled` is enabled. |
+| `khulnasoft.rails.databases.sec.enabled` | `false` | Set this to `true` to configure [multiple database connections](https://docs.khulnasoft.com/ee/development/database/multiple_databases.html) in your `config/database.yml`. |
+| `khulnasoft.rails.databases.sec.use_main_database` | `true` | When `true`, the [`khulnasoft_sec` schema](https://docs.khulnasoft.com/ee/development/database/multiple_databases.html#khulnasoft-schema) uses the same database as the main database (`khulnasofthq_development`). When `false`, it uses a distinct database (`khulnasofthq_development_sec`). Only relevant when `khulnasoft.rails.databases.sec.enabled` is enabled. |
+| `khulnasoft.rails.puma.workers` | `2` | Set this to `0` to prevent Puma (webserver) running in a [Clustered mode](https://github.com/puma/puma/blob/master/docs/architecture.md). Running in Single mode provides significant memory savings if you work within a [memory-constrained environment](https://khulnasoft.com/groups/khulnasoft-org/-/epics/5303). |
+| `khulnasoft.rails.bootsnap` | `true` | Set this to `false` to disable [Bootsnap](https://github.com/Shopify/bootsnap). |
+| `khulnasoft.rails.allowed_hosts` | `[]` | Allows Rails to serve requests from specified hosts, other than its KDK's host. Configure this setting to allow a Geo primary site to handle forwarded requests from a Geo secondary site using a different `hostname`. When this setting is configured, the hosts are also added to the `webpack.allowed_hosts` setting. Example value: `["kdk2.test"]`. |
+| `khulnasoft.rails.application_settings_cache_seconds` | `60` | Sets the [application settings cache interval](https://docs.khulnasoft.com/ee/administration/application_settings_cache.html). Set to `0` to have changes take immediate effect, at the cost of loading the `application_settings` table for every request causing extra load on Redis and/or PostgreSQL. |
 
 #### Rails background jobs (Sidekiq)
 
 | Setting | Default | Description |
 |---------|---------|-------------|
-| `gitlab.rails_background_jobs.verbose` | `false`  | Set this to `true` to increase the level of logging Sidekiq produces. |
-| `gitlab.rails_background_jobs.timeout` | `10`  | Set this to the number of seconds to ask Sidekiq to wait before forcibly terminating. |
+| `khulnasoft.rails_background_jobs.verbose` | `false`  | Set this to `true` to increase the level of logging Sidekiq produces. |
+| `khulnasoft.rails_background_jobs.timeout` | `10`  | Set this to the number of seconds to ask Sidekiq to wait before forcibly terminating. |
 
 ### Skip compile
 
@@ -326,8 +326,8 @@ Under the `docs_khulnasoft_com` key, you can define the following settings:
 
 | Setting                       | Default | Description |
 |:------------------------------|:--------|:------------|
-| `docs_khulnasoft_com.enabled`     | `false` | Set to `true` to enable [`docs-gitlab-com`](https://gitlab.com/gitlab-org/technical-writing/docs-gitlab-com) to be managed by KDK. |
-| `docs_khulnasoft_com.auto_update` | `true`  | Set to `false` to disable updating the `docs-gitlab-com` checkout. |
+| `docs_khulnasoft_com.enabled`     | `false` | Set to `true` to enable [`docs-khulnasoft-com`](https://khulnasoft.com/khulnasoft-org/technical-writing/docs-khulnasoft-com) to be managed by KDK. |
+| `docs_khulnasoft_com.auto_update` | `true`  | Set to `false` to disable updating the `docs-khulnasoft-com` checkout. |
 | `docs_khulnasoft_com.port`        | `1313`  | The port for Hugo to listen on. |
 
 For more information on using KhulnaSoft Docs with KDK, see the [KhulnaSoft Docs how to](howto/khulnasoft_docs.md).
@@ -346,58 +346,58 @@ Under the `snowplow_micro` key, you can define the following settings:
 
 You can have KDK manage checkouts for these projects:
 
-- `gitlab-runner`
-- `gitlab-pages`
-- `omnibus-gitlab`
-- `charts/gitlab`
-- `cloud-native/gitlab-operator`
+- `khulnasoft-runner`
+- `khulnasoft-pages`
+- `omnibus-khulnasoft`
+- `charts/khulnasoft`
+- `cloud-native/khulnasoft-operator`
 
 Under the `khulnasoft_runner` key, you can define the following settings:
 
 | Setting                      | Default | Description                                                                                                  |
 |:-----------------------------|:--------|:-------------------------------------------------------------------------------------------------------------|
-| `khulnasoft_runner.enabled`      | `false` | Set to `true` to enable [`gitlab-runner`](https://github.com/khulnasoft-lab/khulnasoft-runner) to be managed by KDK. |
-| `khulnasoft_runner.auto_update`  | `true`  | Set to `false` to disable updating the `gitlab-runner` checkout.                                             |
+| `khulnasoft_runner.enabled`      | `false` | Set to `true` to enable [`khulnasoft-runner`](https://github.com/khulnasoft-lab/khulnasoft-runner) to be managed by KDK. |
+| `khulnasoft_runner.auto_update`  | `true`  | Set to `false` to disable updating the `khulnasoft-runner` checkout.                                             |
 
 Under the `khulnasoft_pages` key, you can define the following settings:
 
 | Setting                                  | Default                          | Description                                                                                                 |
 |:-----------------------------------------|:---------------------------------|:------------------------------------------------------------------------------------------------------------|
-| `khulnasoft_pages.enabled`                   | `false`                          | Enable [`gitlab-pages`](https://github.com/khulnasoft-lab/khulnasoft-pages) to be managed by KDK.                   |
-| `khulnasoft_pages.auto_update`               | `true`                           | Set to `false` to disable updating the `gitlab-pages` checkout.                                             |
-| `khulnasoft_pages.host`                      | `127.0.0.1.nip.io`               | Set `gitlab-pages` host.                                                                                    |
-| `khulnasoft_pages.port`                      | `3010`                           | Set `gitlab-pages` port.                                                                                    |
-| `khulnasoft_pages.secret_file`               | `$KDK_ROOT/gitlab-pages-secret`  | Set `gitlab-pages` file that contains the secret to communicate in the internal API.                        |
-| `khulnasoft_pages.verbose`                   | `false`                          | Set `gitlab-pages` verbose logging.                                                                         |
-| `khulnasoft_pages.propagate_correlation_id`  | `false`                          | Set `gitlab-pages` to propagate the `correlation_id` received.                                              |
-| `khulnasoft_pages.access_control`            | `false`                          | Enable `gitlab-pages` access control.                                                                       |
+| `khulnasoft_pages.enabled`                   | `false`                          | Enable [`khulnasoft-pages`](https://github.com/khulnasoft-lab/khulnasoft-pages) to be managed by KDK.                   |
+| `khulnasoft_pages.auto_update`               | `true`                           | Set to `false` to disable updating the `khulnasoft-pages` checkout.                                             |
+| `khulnasoft_pages.host`                      | `127.0.0.1.nip.io`               | Set `khulnasoft-pages` host.                                                                                    |
+| `khulnasoft_pages.port`                      | `3010`                           | Set `khulnasoft-pages` port.                                                                                    |
+| `khulnasoft_pages.secret_file`               | `$KDK_ROOT/khulnasoft-pages-secret`  | Set `khulnasoft-pages` file that contains the secret to communicate in the internal API.                        |
+| `khulnasoft_pages.verbose`                   | `false`                          | Set `khulnasoft-pages` verbose logging.                                                                         |
+| `khulnasoft_pages.propagate_correlation_id`  | `false`                          | Set `khulnasoft-pages` to propagate the `correlation_id` received.                                              |
+| `khulnasoft_pages.access_control`            | `false`                          | Enable `khulnasoft-pages` access control.                                                                       |
 | `khulnasoft_pages.auth_client_id`            | `''`                             | The OAuth application ID used when access control is enabled.                                               |
 | `khulnasoft_pages.auth_client_secret`        | `''`                             | The OAuth client secret used when access control is enabled.                                                |
 | `khulnasoft_pages.auth_scope`                | `'api'`                          | The OAuth client scope used when access control is enabled.                                                 |
-| `khulnasoft_pages.enable_custom_domains`     | `false`                          | Enable `gitlab-pages` custom domains.                                                                       |
+| `khulnasoft_pages.enable_custom_domains`     | `false`                          | Enable `khulnasoft-pages` custom domains.                                                                       |
 
-For further details check the [Contribute to KhulnaSoft Pages development](https://docs.gitlab.com/ee/development/pages/) documentation.
+For further details check the [Contribute to KhulnaSoft Pages development](https://docs.khulnasoft.com/ee/development/pages/) documentation.
 
-Under the `omnibus_gitlab` key, you can define the following settings:
+Under the `omnibus_khulnasoft` key, you can define the following settings:
 
 | Setting                       | Default | Description                                                                                                    |
 |:------------------------------|:--------|:---------------------------------------------------------------------------------------------------------------|
-| `omnibus_gitlab.enabled`      | `false` | Set to `true` to enable [`omnibus-gitlab`](https://gitlab.com/gitlab-org/omnibus-gitlab) to be managed by KDK. |
-| `omnibus_gitlab.auto_update`  | `true`  | Set to `false` to disable updating the `omnibus-gitlab` checkout.                                              |
+| `omnibus_khulnasoft.enabled`      | `false` | Set to `true` to enable [`omnibus-khulnasoft`](https://khulnasoft.com/khulnasoft-org/omnibus-khulnasoft) to be managed by KDK. |
+| `omnibus_khulnasoft.auto_update`  | `true`  | Set to `false` to disable updating the `omnibus-khulnasoft` checkout.                                              |
 
-Under the `charts_gitlab` key, you can define the following settings:
+Under the `charts_khulnasoft` key, you can define the following settings:
 
 | Setting                      | Default | Description                                                                                                  |
 |:-----------------------------|:--------|:-------------------------------------------------------------------------------------------------------------|
-| `charts_gitlab.enabled`      | `false` | Set to `true` to enable [`charts/gitlab`](https://gitlab.com/gitlab-org/charts/gitlab) to be managed by KDK. |
-| `charts_gitlab.auto_update`  | `true`  | Set to `false` to disable updating the `charts/gitlab` checkout.                                             |
+| `charts_khulnasoft.enabled`      | `false` | Set to `true` to enable [`charts/khulnasoft`](https://khulnasoft.com/khulnasoft-org/charts/khulnasoft) to be managed by KDK. |
+| `charts_khulnasoft.auto_update`  | `true`  | Set to `false` to disable updating the `charts/khulnasoft` checkout.                                             |
 
 Under the `khulnasoft_operator` key, you can define the following settings:
 
 | Setting                       | Default | Description                                                                                                                                |
 |:------------------------------|:--------|:-------------------------------------------------------------------------------------------------------------------------------------------|
-| `khulnasoft_operator.enabled`     | `false` | Set to `true` to enable [`cloud-native/gitlab-operator`](https://gitlab.com/gitlab-org/cloud-native/gitlab-operator) to be managed by KDK. |
-| `khulnasoft_operator.auto_update` | `true`  | Set to `false` to disable updating the `cloud-native/gitlab-operator` checkout.                                                            |
+| `khulnasoft_operator.enabled`     | `false` | Set to `true` to enable [`cloud-native/khulnasoft-operator`](https://khulnasoft.com/khulnasoft-org/cloud-native/khulnasoft-operator) to be managed by KDK. |
+| `khulnasoft_operator.auto_update` | `true`  | Set to `false` to disable updating the `cloud-native/khulnasoft-operator` checkout.                                                            |
 
 ### NGINX settings
 
@@ -430,7 +430,7 @@ More information on the available `kdk` commands is found in [KDK commands](kdk_
 
 Here are some details on how the configuration management is built. You can
 continue reading, or watch the [deep-dive](https://youtu.be/SFttPeywHf8)
-recorded by [Toon](http://gitlab.com/toon).
+recorded by [Toon](http://khulnasoft.com/toon).
 
 #### KDK::ConfigSettings
 
@@ -498,18 +498,18 @@ When you add a new setting:
 
 ## Runner settings
 
-Under the runner key you can define the following settings for the [KhulnaSoft Runner](https://docs.gitlab.com/runner/):
+Under the runner key you can define the following settings for the [KhulnaSoft Runner](https://docs.khulnasoft.com/runner/):
 
 | Setting | Default | Description |
 | --- | ------ | ----- |
 | `enabled` | `false` | Set this to `true` to enable the `runner` service. |
-| `config_file` | `$KDK_ROOT/gitlab-runner-config.toml` | Path to your runner's `config.toml`. Defaults to KDK-managed config file. |
-| `install_mode` | `binary` | Set this to `docker` in order to create a Docker container instead of using a local `gitlab-runner` binary. |
+| `config_file` | `$KDK_ROOT/khulnasoft-runner-config.toml` | Path to your runner's `config.toml`. Defaults to KDK-managed config file. |
+| `install_mode` | `binary` | Set this to `docker` in order to create a Docker container instead of using a local `khulnasoft-runner` binary. |
 | `executor` | `docker` | Set this to `shell` if you want to use a shell executor. |
-| `image` | `gitlab/gitlab-runner:latest` | Docker image to use for the runner when using `install_mode: docker`. |
+| `image` | `khulnasoft/khulnasoft-runner:latest` | Docker image to use for the runner when using `install_mode: docker`. |
 | `docker_pull` | `always` | Docker pull option when running the runner Docker image. For available options, see [`docker run`](https://docs.docker.com/engine/reference/commandline/run/#pull) documentation. |
 | `pull_policy` | `if-not-present` | Docker pull policy for the job image. |
-| `bin` | `/usr/loca/bin/gitlab-runner` | Path to local runner binary when using `install_mode: binary`. |
+| `bin` | `/usr/loca/bin/khulnasoft-runner` | Path to local runner binary when using `install_mode: binary`. |
 | `extra_hosts` | `[]` | Sets the value of the `extra_hosts = []` key under `[runners.docker]` in the runner config. If using the Docker runner, these hosts are added to the container as `--add-host` flags. |
 | `network_mode_host` | `false` | Set this to `true` to set `network_mode = "host"` for the `[runners.docker]` section (only on Linux). |
 | `token` | Empty | Runner token to add to the runner config. |
@@ -522,7 +522,7 @@ Vite compiles JavaScript and Vue files quickly and only as requested.
 Vite also consumes less memory.
 
 These improvements are possible because Vite uses [esbuild](https://esbuild.github.io/) under the hood.
-For more details on the implementation of Vite at KhulnaSoft, see the RFC [frontend/rfcs#106](https://gitlab.com/gitlab-org/frontend/rfcs/-/issues/106).
+For more details on the implementation of Vite at KhulnaSoft, see the RFC [frontend/rfcs#106](https://khulnasoft.com/khulnasoft-org/frontend/rfcs/-/issues/106).
 
 If you are using Vite, please [leave feedback](https://github.com/khulnasoft-lab/khulnasoft/-/issues/423851) of your experience.
 There are some known caveats, they are linked to the feedback issue. Please make sure to check those. There are two caveats worth calling out:
@@ -595,7 +595,7 @@ webpack:
 | `sourcemaps` | `true` | Setting this to `false` disables source maps. This reduces memory consumption for those who do not need to debug frontend code. |
 | `live_reload` | `true` | Setting this to `false` disables hot module replacement when changes are detected. |
 | `public_address` | | Allows to set a public address for webpack's live reloading feature. This setting is mainly utilized in GitPod, otherwise the address should be set correctly by default. |
-| `allowed_hosts` | `[]` | Webpack can serve requests from hosts other than its KDK's host. Use this setting on a Geo primary site that serves requests forwarded by Geo secondary sites. Defaults to `gitlab.rails.allowed_hosts`. You don't usually need to set this for Webpack. Example value: `["kdk2.test"]`. |
+| `allowed_hosts` | `[]` | Webpack can serve requests from hosts other than its KDK's host. Use this setting on a Geo primary site that serves requests forwarded by Geo secondary sites. Defaults to `khulnasoft.rails.allowed_hosts`. You don't usually need to set this for Webpack. Example value: `["kdk2.test"]`. |
 
 #### Incremental webpack compilation
 
@@ -662,15 +662,15 @@ want webpack to accept requests from other known hosts.
 
 The `webpack.allowed_hosts` setting takes an array of strings, for example `["kdk2.test", "kdk3.test"]`.
 
-When `webpack.allowed_hosts` is not explicitly configured in `kdk.yml`, it defaults to `gitlab.rails.allowed_hosts`. In that case, the
+When `webpack.allowed_hosts` is not explicitly configured in `kdk.yml`, it defaults to `khulnasoft.rails.allowed_hosts`. In that case, the
 configuration flow is:
 
 ```mermaid
 graph LR
-  A["kdk.yml<br>(gitlab.rails.allowed_hosts)"]
+  A["kdk.yml<br>(khulnasoft.rails.allowed_hosts)"]
 
   subgraph Template
-  B["gitlab.yml.erb<br>(gitlab.allowed_hosts)"]
+  B["khulnasoft.yml.erb<br>(khulnasoft.allowed_hosts)"]
   C["Procfile.erb<br>(DEV_SERVER_ALLOWED_HOSTS)"]
   end
 
@@ -678,7 +678,7 @@ graph LR
   A --> C
 
   subgraph Generated
-  D["gitlab.yml<br>(gitlab.allowed_hosts)"]
+  D["khulnasoft.yml<br>(khulnasoft.allowed_hosts)"]
   E["Procfile<br>(DEV_SERVER_ALLOWED_HOSTS)"]
   end
 
@@ -715,8 +715,8 @@ So what options do you have to make this work? You can either:
 - Let the `kdk2.test` webpack requests reach the primary site's webpack server. The requests would get blocked by default, and then you could
   unblock them with `webpack.allowed_hosts` setting.
 
-  In this case, you would already set `gitlab.rails.allowed_hosts` to `["kdk2.test"]`. This is why `webpack.allowed_hosts` defaults to
-  `gitlab.rails.allowed_hosts`.
+  In this case, you would already set `khulnasoft.rails.allowed_hosts` to `["kdk2.test"]`. This is why `webpack.allowed_hosts` defaults to
+  `khulnasoft.rails.allowed_hosts`.
 
 ### Webpack environment variables
 
@@ -736,7 +736,7 @@ These settings can be configured using [`env.runit`](runit.md#modify-service-con
 | WEBPACK_CACHE_PATH    | `./tmp/cache` | Path string to temporary dir     |
 | WEBPACK_REPORT        | false       | Generates bundle analysis report |
 | WEBPACK_VENDOR_DLL    | false       | Reduce webpack-dev-server memory requirements when vendor bundle has been precompiled with `yarn webpack-vendor` |
-| KHULNASOFT_UI_WATCH       | false | Use KDK's copy of `gitlab-ui` instead of the npm-installed version. |
+| KHULNASOFT_UI_WATCH       | false | Use KDK's copy of `khulnasoft-ui` instead of the npm-installed version. |
 
 <!-- markdownlint-enable MD044 -->
 
@@ -783,8 +783,8 @@ asdf:
 
 ## IDE settings
 
-To get alias completion and type hinting in the `gitlab` project, you need to create a `jsconfig.json` file.
-See [Type hinting aliases](https://docs.gitlab.com/ee/development/fe_guide/type_hinting.html#aliases).
+To get alias completion and type hinting in the `khulnasoft` project, you need to create a `jsconfig.json` file.
+See [Type hinting aliases](https://docs.khulnasoft.com/ee/development/fe_guide/type_hinting.html#aliases).
 
 ## Environment variables
 

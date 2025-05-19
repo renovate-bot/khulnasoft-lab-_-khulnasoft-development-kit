@@ -42,7 +42,7 @@ module KDK
 
       # Get all service names in the enabled list and include the required ones that are missing.
       service_names = self.class.enabled_services
-      service_names.push('khulnasoft', 'gitlab-shell')
+      service_names.push('khulnasoft', 'khulnasoft-shell')
 
       services = []
       service_names.each do |name|
@@ -89,9 +89,9 @@ module KDK
     end
 
     def git_fetch_version_files
-      branch = KDK.config.gitlab.default_branch
-      KDK::Shellout.new("git fetch origin #{branch}", chdir: KDK.config.gitlab.dir).execute
-      KDK::Shellout.new("git checkout origin/#{branch} -- '*_VERSION'", chdir: KDK.config.gitlab.dir).execute
+      branch = KDK.config.khulnasoft.default_branch
+      KDK::Shellout.new("git fetch origin #{branch}", chdir: KDK.config.khulnasoft.dir).execute
+      KDK::Shellout.new("git checkout origin/#{branch} -- '*_VERSION'", chdir: KDK.config.khulnasoft.dir).execute
     end
 
     def http_get(url)

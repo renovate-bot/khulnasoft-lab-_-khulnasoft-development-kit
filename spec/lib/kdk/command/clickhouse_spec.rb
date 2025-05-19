@@ -21,8 +21,8 @@ RSpec.describe KDK::Command::Clickhouse do
 
     context 'with extra arguments' do
       it 'executes clickhouse client passing extra arguments to the cli' do
-        expect_exec(%w[clickhouse --database=gitlab],
-          %w[/usr/bin/clickhouse client --port=9001 --database=gitlab])
+        expect_exec(%w[clickhouse --database=khulnasoft],
+          %w[/usr/bin/clickhouse client --port=9001 --database=khulnasoft])
       end
     end
   end

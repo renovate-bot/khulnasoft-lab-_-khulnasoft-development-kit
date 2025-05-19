@@ -42,7 +42,7 @@ To avoid usage of slow VirtualBox shared folders we use NFS here.
    up, and installs all the prerequisites.
 1. Run `vagrant ssh` to SSH into the box.
 1. Run `cd /vagrant`.
-1. [Use KDK to install KhulnaSoft](../_index.md#use-kdk-to-install-gitlab).
+1. [Use KDK to install KhulnaSoft](../_index.md#use-kdk-to-install-khulnasoft).
 
 ### Vagrant with Docker
 
@@ -72,7 +72,7 @@ OSes like Windows/macOS, you have to run the entire Docker hypervisor in a VM
   is `tcuser`(You may be asked to type-in the password several times, but for different operations thus you need to key in the same password: `tcuser`).
 - Follow the general [KDK setup documentation](../_index.md) but running the
   commands in the `vagrant ssh` session.
-- Files in the `gitlab`, `go-gitlab-shell` and `gitlab-runner` folders are synced between the
+- Files in the `khulnasoft`, `go-khulnasoft-shell` and `khulnasoft-runner` folders are synced between the
   host OS & guest OS so can be edited on either the host (under this folder) or
   guest OS (under `~/khulnasoft-development-kit/`).
 - When you want to shutdown Vagrant run `exit` from the guest OS and then
@@ -88,7 +88,7 @@ OSes like Windows/macOS, you have to run the entire Docker hypervisor in a VM
   enable virtualization technology via the BIOS.
 - If you have continuous problems starting Vagrant, you can uncomment
   `vb.gui = true` to view any error messages.
-- If you have problems running `support/edit-gitlab.yml` (bash script despite
+- If you have problems running `support/edit-khulnasoft.yml` (bash script despite
   file extension), see <https://stackoverflow.com/a/5514351/1233435>.
 - If you have errors with symlinks or Ruby during initialization, make sure you ran `vagrant up` from an elevated command prompt (Windows users).
 - If you see an error like `Incompatible loader version. This protected script has been encoded with a newer version of RubyEncoder`

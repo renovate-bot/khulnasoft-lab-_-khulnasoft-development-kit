@@ -102,7 +102,7 @@ For the loopback alias to work across reboots, the aliased IP address must be se
 
 #### macOS
 
-To automate this on macOS, create a file called `org.gitlab1.ifconfig.plist` at `/Library/LaunchDaemons/` containing:
+To automate this on macOS, create a file called `org.khulnasoft1.ifconfig.plist` at `/Library/LaunchDaemons/` containing:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -110,7 +110,7 @@ To automate this on macOS, create a file called `org.gitlab1.ifconfig.plist` at 
 <plist version="1.0">
 <dict>
     <key>Label</key>
-    <string>org.gitlab1.ifconfig</string>
+    <string>org.khulnasoft1.ifconfig</string>
     <key>RunAtLoad</key>
     <true/>
     <key>Nice</key>
@@ -129,8 +129,8 @@ To automate this on macOS, create a file called `org.gitlab1.ifconfig.plist` at 
 Ensure the created file has the correct permissions:
 
 ```shell
-sudo chown root:wheel /Library/LaunchDaemons/org.gitlab1.ifconfig.plist
-sudo chmod 644 /Library/LaunchDaemons/org.gitlab1.ifconfig.plist
+sudo chown root:wheel /Library/LaunchDaemons/org.khulnasoft1.ifconfig.plist
+sudo chmod 644 /Library/LaunchDaemons/org.khulnasoft1.ifconfig.plist
 ```
 
 #### Linux

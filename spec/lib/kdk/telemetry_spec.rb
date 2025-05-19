@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'fileutils'
-require 'gitlab-sdk'
+require 'khulnasoft-sdk'
 require 'sentry-ruby'
 require 'snowplow-tracker'
 
@@ -126,7 +126,7 @@ RSpec.describe KDK::Telemetry, :with_telemetry do
       described_class.instance_variable_set(:@client, nil)
     end
 
-    it 'initializes the gitlab sdk client with the production configuration' do
+    it 'initializes the khulnasoft sdk client with the production configuration' do
       expect(SnowplowTracker::LOGGER).to receive(:level=).with(Logger::WARN)
       expect(KhulnasoftSDK::Client).to receive(:new).with(
         app_id: described_class::ANALYTICS_APP_ID,
@@ -140,7 +140,7 @@ RSpec.describe KDK::Telemetry, :with_telemetry do
     context 'when in CI' do
       let(:ci) { true }
 
-      it 'initializes the gitlab sdk client with the CI configuration' do
+      it 'initializes the khulnasoft sdk client with the CI configuration' do
         expect(KhulnasoftSDK::Client).to receive(:new).with(
           app_id: described_class::CI_ANALYTICS_APP_ID,
           host: described_class::ANALYTICS_BASE_URL,
@@ -200,7 +200,7 @@ RSpec.describe KDK::Telemetry, :with_telemetry do
       allow(Sentry).to receive(:set_user)
       allow(KDK).to receive_message_chain(:config, :telemetry, :username).and_return('testuser')
 
-      expect(config).to receive(:dsn=).with('https://4e771163209528e15a6a66a6e674ddc3@new-sentry.gitlab.net/38')
+      expect(config).to receive(:dsn=).with('https://4e771163209528e15a6a66a6e674ddc3@new-sentry.khulnasoft.net/38')
       expect(config).to receive(:breadcrumbs_logger=).with([:sentry_logger])
       expect(config).to receive(:traces_sample_rate=).with(1.0)
       expect(config).to receive_message_chain(:logger, :level=).with(Logger::WARN)
@@ -243,8 +243,8 @@ RSpec.describe KDK::Telemetry, :with_telemetry do
 
     it { is_expected.to be(false) }
 
-    context 'when using an @gitlab.com email in Git' do
-      let(:git_email) { 'tanuki@gitlab.com' }
+    context 'when using an @khulnasoft.com email in Git' do
+      let(:git_email) { 'tanuki@khulnasoft.com' }
 
       it { is_expected.to be(true) }
     end
@@ -261,7 +261,7 @@ RSpec.describe KDK::Telemetry, :with_telemetry do
       end
 
       context 'when is enrolled in KhulnaSoft jamf' do
-        let(:server) { 'https://gitlab.jamfcloud.com/mdm/ServerURL' }
+        let(:server) { 'https://khulnasoft.jamfcloud.com/mdm/ServerURL' }
 
         it { is_expected.to be(true) }
       end
@@ -298,7 +298,7 @@ RSpec.describe KDK::Telemetry, :with_telemetry do
           let(:zoom_content) do
             <<~CONFIG
               key=value
-              conf.webserver.vendor.default=https://gitlab.zoom.us
+              conf.webserver.vendor.default=https://khulnasoft.zoom.us
               foo=bar
             CONFIG
           end

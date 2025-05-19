@@ -1,23 +1,23 @@
-khulnasoft_pages_dir = ${khulnasoft_development_root}/gitlab-pages
+khulnasoft_pages_dir = ${khulnasoft_development_root}/khulnasoft-pages
 
 ifeq ($(khulnasoft_pages_enabled),true)
-gitlab-pages-setup: gitlab-pages-update-timed
+khulnasoft-pages-setup: khulnasoft-pages-update-timed
 else
-gitlab-pages-setup:
+khulnasoft-pages-setup:
 	@true
 endif
 
 ifeq ($(khulnasoft_pages_enabled),true)
-gitlab-pages-update: gitlab-pages-update-timed
+khulnasoft-pages-update: khulnasoft-pages-update-timed
 else
-gitlab-pages-update:
+khulnasoft-pages-update:
 	@true
 endif
 
-.PHONY: gitlab-pages-update-run
-gitlab-pages-update-run: gitlab-pages-secret gitlab-pages/gitlab-pages.conf gitlab-pages/bin/gitlab-pages
+.PHONY: khulnasoft-pages-update-run
+khulnasoft-pages-update-run: khulnasoft-pages-secret khulnasoft-pages/khulnasoft-pages.conf khulnasoft-pages/bin/khulnasoft-pages
 
-gitlab-pages-asdf-install:
+khulnasoft-pages-asdf-install:
 ifeq ($(asdf_opt_out),false)
 	@echo
 	@echo "${DIVIDER}"
@@ -34,21 +34,21 @@ else
 	@true
 endif
 
-.PHONY: gitlab-pages/bin/gitlab-pages
-gitlab-pages/bin/gitlab-pages: gitlab-pages/.git/pull gitlab-pages-asdf-install
+.PHONY: khulnasoft-pages/bin/khulnasoft-pages
+khulnasoft-pages/bin/khulnasoft-pages: khulnasoft-pages/.git/pull khulnasoft-pages-asdf-install
 	@echo
 	@echo "${DIVIDER}"
-	@echo "Compiling gitlab-org/gitlab-pages"
+	@echo "Compiling khulnasoft-org/khulnasoft-pages"
 	@echo "${DIVIDER}"
-	$(Q)rm -f gitlab-pages/bin/gitlab-pages
+	$(Q)rm -f khulnasoft-pages/bin/khulnasoft-pages
 	$(Q)support/asdf-exec ${khulnasoft_pages_dir} $(MAKE) ${QQ}
 
-gitlab-pages/.git:
+khulnasoft-pages/.git:
 	$(Q)GIT_REVISION="${khulnasoft_pages_version}" support/component-git-clone ${git_params} ${khulnasoft_pages_repo} ${khulnasoft_pages_dir} ${QQ}
 
-gitlab-pages/.git/pull: gitlab-pages/.git
+khulnasoft-pages/.git/pull: khulnasoft-pages/.git
 	@echo
 	@echo "${DIVIDER}"
-	@echo "Updating gitlab-org/gitlab-pages to ${khulnasoft_pages_version}"
+	@echo "Updating khulnasoft-org/khulnasoft-pages to ${khulnasoft_pages_version}"
 	@echo "${DIVIDER}"
 	$(Q)support/component-git-update khulnasoft_pages "${khulnasoft_pages_dir}" "${khulnasoft_pages_version}" master

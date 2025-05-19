@@ -55,8 +55,8 @@ class ReplicationBackup
   end
 
   def replace_or_update_khulnasoft_conf
-    if File.exist?("#{backup_dir}/gitlab.conf")
-      FileUtils.cp("#{backup_dir}/gitlab.conf", current_data_dir)
+    if File.exist?("#{backup_dir}/khulnasoft.conf")
+      FileUtils.cp("#{backup_dir}/khulnasoft.conf", current_data_dir)
     else
       update_khulnasoft_conf
     end
@@ -66,9 +66,9 @@ class ReplicationBackup
     KDK::Output.info('Updating the Geo replication port...')
 
     db_port = KDK.config.postgresql.port
-    template = KDK.config.kdk_root.join('support/templates/postgresql/data/gitlab.conf.erb')
+    template = KDK.config.kdk_root.join('support/templates/postgresql/data/khulnasoft.conf.erb')
 
-    KDK::Templates::ErbRenderer.new(template, port: db_port).render(current_data_dir.join('gitlab.conf'))
+    KDK::Templates::ErbRenderer.new(template, port: db_port).render(current_data_dir.join('khulnasoft.conf'))
   end
 
   def configure_standby_server

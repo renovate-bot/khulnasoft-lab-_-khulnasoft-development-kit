@@ -5,7 +5,7 @@ title: Start the Rails console
 To start the Rails console in KDK:
 
 ```shell
-cd <kdk-dir>/gitlab
+cd <kdk-dir>/khulnasoft
 bundle exec rails console
 ```
 

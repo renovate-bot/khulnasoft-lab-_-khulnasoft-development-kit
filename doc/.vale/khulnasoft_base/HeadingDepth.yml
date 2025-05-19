@@ -4,7 +4,7 @@ description: |
   Checks that there are no headings greater than 3 levels.
 extends: existence
 message: "Refactor the section or page to avoid headings greater than H5."
-link: https://docs.gitlab.com/development/documentation/styleguide/#heading-levels-in-markdown
+link: https://docs.khulnasoft.com/development/documentation/styleguide/#heading-levels-in-markdown
 vocab: false
 level: suggestion
 scope: raw

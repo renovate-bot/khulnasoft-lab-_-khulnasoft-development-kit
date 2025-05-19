@@ -9,11 +9,11 @@ RSpec.describe KDK::Services::KhulnasoftWorkhorse do
 
   describe '#command' do
     it 'returns the necessary command to run KhulnaSoft Workhorse' do
-      expect(subject.command).to eq('/usr/bin/env PATH="/home/git/kdk/gitlab/workhorse:$PATH" GEO_SECONDARY_PROXY=0 ' \
-        'khulnasoft-workhorse -authSocket "/home/git/kdk/gitlab.socket" ' \
-        '-documentRoot "/home/git/kdk/gitlab/public" ' \
-        '-developmentMode -secretPath "/home/git/kdk/gitlab/.khulnasoft_workhorse_secret" ' \
-        '-config "/home/git/kdk/gitlab/workhorse/config.toml" ' \
+      expect(subject.command).to eq('/usr/bin/env PATH="/home/git/kdk/khulnasoft/workhorse:$PATH" GEO_SECONDARY_PROXY=0 ' \
+        'khulnasoft-workhorse -authSocket "/home/git/kdk/khulnasoft.socket" ' \
+        '-documentRoot "/home/git/kdk/khulnasoft/public" ' \
+        '-developmentMode -secretPath "/home/git/kdk/khulnasoft/.khulnasoft_workhorse_secret" ' \
+        '-config "/home/git/kdk/khulnasoft/workhorse/config.toml" ' \
         '-listenAddr "127.0.0.1:3333" -logFormat json ' \
         '-apiCiLongPollingDuration "0s"')
     end
@@ -27,13 +27,13 @@ RSpec.describe KDK::Services::KhulnasoftWorkhorse do
 
   describe 'when config has relative_url_root' do
     before do
-      allow(KDK.config).to receive(:relative_url_root).and_return('/gitlab')
+      allow(KDK.config).to receive(:relative_url_root).and_return('/khulnasoft')
     end
 
     describe '#command' do
       it 'returns the necessary command to run KhulnaSoft Workhorse' do
         expect(subject.command).to include(
-          '-authBackend "http://localhost:8080/gitlab"'
+          '-authBackend "http://localhost:8080/khulnasoft"'
         )
       end
     end

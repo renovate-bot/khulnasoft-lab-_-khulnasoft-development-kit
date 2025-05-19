@@ -3,7 +3,7 @@
 RSpec.describe KDK::Diagnostic::Bundler do
   include ShelloutHelper
 
-  let(:khulnasoft_dir) { Pathname.new('/home/git/kdk/gitlab') }
+  let(:khulnasoft_dir) { Pathname.new('/home/git/kdk/khulnasoft') }
   let(:force_ruby_platform) { false }
 
   before do
@@ -13,7 +13,7 @@ RSpec.describe KDK::Diagnostic::Bundler do
   end
 
   describe '#success?' do
-    context "when gitlab doesn't have BUNDLE_PATH configured" do
+    context "when khulnasoft doesn't have BUNDLE_PATH configured" do
       it 'returns true' do
         expect_bundle_path_not_set(khulnasoft_dir)
 
@@ -32,7 +32,7 @@ RSpec.describe KDK::Diagnostic::Bundler do
   end
 
   describe '#detail' do
-    context "when gitlab doesn't have BUNDLE_PATH configured" do
+    context "when khulnasoft doesn't have BUNDLE_PATH configured" do
       it 'returns no message' do
         expect_bundle_path_not_set(khulnasoft_dir)
 

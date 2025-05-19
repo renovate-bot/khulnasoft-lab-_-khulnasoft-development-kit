@@ -3,7 +3,7 @@
 postgres_dir=$(kdk config get postgresql.dir 2>/dev/null)
 pg_port=$(kdk config get postgresql.port 2>/dev/null)
 
-for db in gitlabhq_development gitlabhq_test; do
+for db in khulnasofthq_development khulnasofthq_test; do
   cat <<EOF
 \connect ${db}
 CREATE EXTENSION pg_trgm;

@@ -6,7 +6,7 @@ KDK-in-a-box provides a preconfigured virtual machine you can download and boot
 to instantly start developing.
 
 For information on downloading, installing, and connecting to KDK-in-a-box, see the
-[KhulnaSoft developer documentation](https://docs.gitlab.com/ee/development/contributing/first_contribution/configure-dev-env-kdk-in-a-box.html).
+[KhulnaSoft developer documentation](https://docs.khulnasoft.com/ee/development/contributing/first_contribution/configure-dev-env-kdk-in-a-box.html).
 
 ## Troubleshoot
 
@@ -14,7 +14,7 @@ If you have any issues, the simplest and fastest solution is to:
 
 - Delete the virtual machine.
 - Download the latest build.
-- Follow the [standard setup instructions](https://docs.gitlab.com/ee/development/contributing/first_contribution/configure-dev-env-kdk-in-a-box.html).
+- Follow the [standard setup instructions](https://docs.khulnasoft.com/ee/development/contributing/first_contribution/configure-dev-env-kdk-in-a-box.html).
 
 Some troubleshooting solutions are detailed in the [feedback issue](https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/issues/2035).
 

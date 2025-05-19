@@ -10,7 +10,7 @@ namespace :kdk do
   task migrate: migrations
 
   namespace :migrate do
-    desc 'Update settings to turn on telemetry for KhulnaSoft team members (determined by @gitlab.com email in git config) and anonymize usernames for all users'
+    desc 'Update settings to turn on telemetry for KhulnaSoft team members (determined by @khulnasoft.com email in git config) and anonymize usernames for all users'
     task :update_telemetry_settings do
       telemetry_enabled = KDK.config.telemetry.enabled
       is_team_member = KDK::Telemetry.team_member?

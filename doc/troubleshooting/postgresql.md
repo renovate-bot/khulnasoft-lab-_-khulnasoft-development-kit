@@ -25,7 +25,7 @@ To resolve this:
 
 ### Error: `pg_dump: error: server version: 16.8; pg_dump version: 14.9`
 
-This version mismatch occurs when your local `gitlab/` repository contains a `.tool-versions` file
+This version mismatch occurs when your local `khulnasoft/` repository contains a `.tool-versions` file
 with an older PostgreSQL version (14.9).
 
 To resolve this:
@@ -66,12 +66,12 @@ To resolve this:
    mise install postgres@16.8
    ```
 
-## `kdk update` leaves `gitlab/db/` with uncommitted changes
+## `kdk update` leaves `khulnasoft/db/` with uncommitted changes
 
-When you run `kdk update`, you can have uncommitted changes in `gitlab/db/`. For more information, see
+When you run `kdk update`, you can have uncommitted changes in `khulnasoft/db/`. For more information, see
 [issue 300251](https://github.com/khulnasoft-lab/khulnasoft/-/issues/300251).
 
-To avoid leaving uncommitted changes in `gitlab/db/` from a `kdk update`, either:
+To avoid leaving uncommitted changes in `khulnasoft/db/` from a `kdk update`, either:
 
 - If you are unfamiliar with `db/`, add [KDK hook](../configuration.md#hooks) to your
   `kdk.yml`:
@@ -80,11 +80,11 @@ To avoid leaving uncommitted changes in `gitlab/db/` from a `kdk update`, either
   kdk:
     update_hooks:
       after:
-        - cd gitlab && git checkout db/*
+        - cd khulnasoft && git checkout db/*
   ```
 
 - Refer to the developer documentation for
-  [schema changes](https://docs.gitlab.com/ee/development/migration_style_guide.html#schema-changes).
+  [schema changes](https://docs.khulnasoft.com/ee/development/migration_style_guide.html#schema-changes).
 
 ## Unable to build and install `pg` gem on KDK install
 
@@ -177,7 +177,7 @@ After running the KhulnaSoft Development Kit using `kdk start` and browsing to `
 
 To fix this error, the pending migration must be resolved. Perform the following steps in your terminal:
 
-1. Change to the `gitlab` directory using `cd gitlab`
+1. Change to the `khulnasoft` directory using `cd khulnasoft`
 1. Run the following command to perform the migration: `rails db:migrate RAILS_ENV=development`
 
 Once the operation is complete, refresh the page.
@@ -204,7 +204,7 @@ mv postgresql/data postgresql/data.bkp
 # Initialize a new data folder
 make postgresql/data
 
-# Initialize the gitlabhq_development / gitlabhq_development_ci database
+# Initialize the khulnasofthq_development / khulnasofthq_development_ci database
 kdk reconfigure
 
 # Start your database.
@@ -415,4 +415,4 @@ For more information, see [this thread](https://stackoverflow.com/a/8812934).
 
 ## Additional Debugging
 
-Additional information can be found in [the docs](https://docs.gitlab.com/ee/development/database/database_debugging.html).
+Additional information can be found in [the docs](https://docs.khulnasoft.com/ee/development/database/database_debugging.html).

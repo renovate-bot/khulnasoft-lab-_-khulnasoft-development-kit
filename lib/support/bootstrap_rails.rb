@@ -26,8 +26,8 @@ module Support
     private
 
     def bootstrap_main_db
-      if_db_not_found('gitlabhq_development') do
-        run_tasks(%w[db:drop db:create gitlab:db:configure]) &&
+      if_db_not_found('khulnasofthq_development') do
+        run_tasks(%w[db:drop db:create khulnasoft:db:configure]) &&
           set_feature_flags
       end
     end
@@ -38,25 +38,25 @@ module Support
     end
 
     def bootstrap_ci_db
-      return if !config.gitlab.rails.databases.ci.__enabled || config.gitlab.rails.databases.ci.__use_main_database
+      return if !config.khulnasoft.rails.databases.ci.__enabled || config.khulnasoft.rails.databases.ci.__use_main_database
 
-      if_db_not_found('gitlabhq_development_ci') do
+      if_db_not_found('khulnasofthq_development_ci') do
         run_tasks('dev:copy_db:ci')
       end
     end
 
     def bootstrap_sec_db
-      return if !config.gitlab.rails.databases.sec.__enabled || config.gitlab.rails.databases.sec.__use_main_database
+      return if !config.khulnasoft.rails.databases.sec.__enabled || config.khulnasoft.rails.databases.sec.__use_main_database
 
-      if_db_not_found('gitlabhq_development_sec') do
+      if_db_not_found('khulnasofthq_development_sec') do
         run_tasks('dev:copy_db:sec')
       end
     end
 
     def bootstrap_embedding_db
-      return unless config.gitlab.rails.databases.embedding.enabled
+      return unless config.khulnasoft.rails.databases.embedding.enabled
 
-      if_db_not_found('gitlabhq_development_embedding') do
+      if_db_not_found('khulnasofthq_development_embedding') do
         run_tasks('db:reset:embedding')
       end
     end
@@ -65,7 +65,7 @@ module Support
       test_gitaly_up!
 
       rake = KDK::Execute::Rake.new(*tasks)
-      unless rake.execute_in_gitlab(retry_attempts: 3).success?
+      unless rake.execute_in_khulnasoft(retry_attempts: 3).success?
         KDK::Output.abort <<~MESSAGE
           The rake task '#{tasks.join(' ')}' failed. Trying to run it again!
         MESSAGE

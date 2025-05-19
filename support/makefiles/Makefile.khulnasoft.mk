@@ -1,7 +1,7 @@
-khulnasoft_dir = ${khulnasoft_development_root}/gitlab
-khulnasoft_rake_cmd = $(in_gitlab) ${support_bundle_exec} rake
+khulnasoft_dir = ${khulnasoft_development_root}/khulnasoft
+khulnasoft_rake_cmd = $(in_khulnasoft) ${support_bundle_exec} rake
 khulnasoft_git_cmd = git -C $(khulnasoft_dir)
-in_gitlab = cd $(khulnasoft_dir) &&
+in_khulnasoft = cd $(khulnasoft_dir) &&
 default_branch ?= $(if $(khulnasoft_default_branch),$(khulnasoft_default_branch),master)
 
 ifeq ($(asdf_opt_out),false)
@@ -9,14 +9,14 @@ ifeq ($(asdf_opt_out),false)
 endif
 
 .PHONY: khulnasoft-setup
-khulnasoft-setup: khulnasoft/.git gitlab-config gitlab-asdf-install .gitlab-bundle .gitlab-lefthook .gitlab-yarn .khulnasoft-translations
+khulnasoft-setup: khulnasoft/.git khulnasoft-config khulnasoft-asdf-install .khulnasoft-bundle .khulnasoft-lefthook .khulnasoft-yarn .khulnasoft-translations
 
-gitlab/doc/api/graphql/reference/khulnasoft_schema.json: .gitlab-bundle
+khulnasoft/doc/api/graphql/reference/khulnasoft_schema.json: .khulnasoft-bundle
 	@echo
 	@echo "${DIVIDER}"
-	@echo "Generating gitlab GraphQL schema files"
+	@echo "Generating khulnasoft GraphQL schema files"
 	@echo "${DIVIDER}"
-	$(Q)$(khulnasoft_rake_cmd) gitlab:graphql:schema:dump ${QQ}
+	$(Q)$(khulnasoft_rake_cmd) khulnasoft:graphql:schema:dump ${QQ}
 
 khulnasoft/.git:
 	@echo
@@ -25,7 +25,7 @@ khulnasoft/.git:
 	@echo "${DIVIDER}"
 	$(Q)support/component-git-clone ${git_params} $(if $(realpath ${khulnasoft_repo}),--shared) ${khulnasoft_repo} ${khulnasoft_dir}
 
-gitlab-asdf-install:
+khulnasoft-asdf-install:
 ifeq ($(asdf_opt_out),false)
 	@echo
 	@echo "${DIVIDER}"
@@ -42,60 +42,60 @@ else
 	@true
 endif
 
-gitlab-config: touch-examples gitlab/public/uploads
+khulnasoft-config: touch-examples khulnasoft/public/uploads
 	$(Q)rake \
-		gitlab/config/gitlab.yml \
+		khulnasoft/config/khulnasoft.yml \
 		khulnasoft/config/database.yml \
-		gitlab/config/cable.yml \
-		gitlab/config/resque.yml \
-		gitlab/config/redis.cache.yml \
-		gitlab/config/redis.repository_cache.yml \
-		gitlab/config/redis.queues.yml \
-		gitlab/config/redis.shared_state.yml \
-		gitlab/config/redis.trace_chunks.yml \
-		gitlab/config/redis.rate_limiting.yml \
-		gitlab/config/redis.sessions.yml \
-		gitlab/config/vite.kdk.json \
-		gitlab/config/puma.rb
+		khulnasoft/config/cable.yml \
+		khulnasoft/config/resque.yml \
+		khulnasoft/config/redis.cache.yml \
+		khulnasoft/config/redis.repository_cache.yml \
+		khulnasoft/config/redis.queues.yml \
+		khulnasoft/config/redis.shared_state.yml \
+		khulnasoft/config/redis.trace_chunks.yml \
+		khulnasoft/config/redis.rate_limiting.yml \
+		khulnasoft/config/redis.sessions.yml \
+		khulnasoft/config/vite.kdk.json \
+		khulnasoft/config/puma.rb
 
-gitlab/public/uploads:
+khulnasoft/public/uploads:
 	$(Q)mkdir $@
 
-.PHONY: gitlab-bundle-prepare
-gitlab-bundle-prepare:
+.PHONY: khulnasoft-bundle-prepare
+khulnasoft-bundle-prepare:
 	@echo
 	@echo "${DIVIDER}"
 	@echo "Setting up Ruby bundler"
 	@echo "${DIVIDER}"
-	${Q}. ./support/bootstrap-common.sh ; configure_ruby_bundler_for_gitlab
+	${Q}. ./support/bootstrap-common.sh ; configure_ruby_bundler_for_khulnasoft
 
-.gitlab-bundle: gitlab-bundle-prepare
+.khulnasoft-bundle: khulnasoft-bundle-prepare
 	@echo
 	@echo "${DIVIDER}"
-	@echo "Installing gitlab-org/gitlab Ruby gems"
+	@echo "Installing khulnasoft-org/khulnasoft Ruby gems"
 	@echo "${DIVIDER}"
 	${Q}$(support_bundle_install) $(khulnasoft_dir)
 	$(Q)touch $@
 
 ifeq ($(khulnasoft_lefthook_enabled),true)
-.gitlab-lefthook:
+.khulnasoft-lefthook:
 	@echo
 	@echo "${DIVIDER}"
-	@echo "Enabling Lefthook for gitlab-org/gitlab"
+	@echo "Enabling Lefthook for khulnasoft-org/khulnasoft"
 	@echo "${DIVIDER}"
-	$(Q)$(in_gitlab) ${support_bundle_exec} lefthook install
+	$(Q)$(in_khulnasoft) ${support_bundle_exec} lefthook install
 	$(Q)touch $@
 else
-.gitlab-lefthook:
+.khulnasoft-lefthook:
 	@true
 endif
 
-.gitlab-yarn:
+.khulnasoft-yarn:
 	@echo
 	@echo "${DIVIDER}"
-	@echo "Installing gitlab-org/gitlab Node.js packages"
+	@echo "Installing khulnasoft-org/khulnasoft Node.js packages"
 	@echo "${DIVIDER}"
-	$(Q)$(in_gitlab) ${YARN} install --pure-lockfile ${QQ}
+	$(Q)$(in_khulnasoft) ${YARN} install --pure-lockfile ${QQ}
 	$(Q)touch $@
 
 .PHONY: khulnasoft-translations-unlock
@@ -111,8 +111,8 @@ khulnasoft-translations-run: .khulnasoft-translations
 .khulnasoft-translations:
 	@echo
 	@echo "${DIVIDER}"
-	@echo "Generating gitlab-org/gitlab Rails translations"
+	@echo "Generating khulnasoft-org/khulnasoft Rails translations"
 	@echo "${DIVIDER}"
-	$(Q)rake gitlab:recompile_translations
-	$(Q)$(khulnasoft_git_cmd) checkout locale/*/gitlab.po
+	$(Q)rake khulnasoft:recompile_translations
+	$(Q)$(khulnasoft_git_cmd) checkout locale/*/khulnasoft.po
 	$(Q)touch $@

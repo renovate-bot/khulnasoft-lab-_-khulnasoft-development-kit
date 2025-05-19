@@ -5,7 +5,7 @@ IFS=$'\n\t'
 
 clone_kdk() {
   echo "# --- Clone KDK ---"
-  sudo mkdir -p /workspace/gitlab
+  sudo mkdir -p /workspace/khulnasoft
   sudo chown -R gitpod:gitpod /workspace
   cd /workspace
   git clone https://github.com/khulnasoft-lab/khulnasoft-development-kit.git
@@ -39,9 +39,9 @@ configure_rails() {
   echo "# --- Configure Rails settings ---"
   # Disable bootsnap as it can cause temporary/cache files to remain, resulting
   # in Docker image creation to fail.
-  kdk config set gitlab.rails.bootsnap false
-  kdk config set gitlab.rails.port 443
-  kdk config set gitlab.rails.https.enabled true
+  kdk config set khulnasoft.rails.bootsnap false
+  kdk config set khulnasoft.rails.port 443
+  kdk config set khulnasoft.rails.https.enabled true
 }
 
 configure_webpack() {
@@ -67,8 +67,8 @@ install_kdk() {
   kdk stop || true
   KDK_KILL_CONFIRM=true kdk kill || true
   ps -ef || true
-  mv gitlab/config/secrets.yml .
-  rm -rf gitlab/ tmp/ || true
+  mv khulnasoft/config/secrets.yml .
+  rm -rf khulnasoft/ tmp/ || true
   git restore tmp
   cp ./support/completions/kdk.bash "$HOME/.bashrc.d/90-kdk"
   cd /workspace

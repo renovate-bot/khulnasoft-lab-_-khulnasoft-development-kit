@@ -77,11 +77,11 @@ dir = "<%= node.log_dir %>"
 [hooks]
 custom_hooks_dir = "<%= kdk_root.join('gitaly-custom-hooks') %>"
 
-[gitlab]
+[khulnasoft]
 url = "<%= config.__uri %>"
 secret_file = "<%= config.khulnasoft_shell.dir.join('.khulnasoft_shell_secret') %>"
 
-[gitlab.http-settings]
+[khulnasoft.http-settings]
 <%- unless config.common.ca_path.empty? -%>
 ca_path = "<%= config.common.ca_path %>"
 <%- end -%>

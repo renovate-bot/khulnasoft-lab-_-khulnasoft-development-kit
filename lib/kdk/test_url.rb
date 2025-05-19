@@ -90,10 +90,10 @@ module KDK
     end
 
     def store_khulnasoft_commit_sha
-      @sha ||= Shellout.new('git rev-parse HEAD', chdir: KDK.config.gitlab.dir).run
+      @sha ||= Shellout.new('git rev-parse HEAD', chdir: KDK.config.khulnasoft.dir).run
       KDK::Output.notice("  - KhulnaSoft Commit SHA: #{@sha}.")
 
-      File.write('gitlab-last-verified-sha.json', JSON.dump(khulnasoft_last_verified_sha: @sha.to_s))
+      File.write('khulnasoft-last-verified-sha.json', JSON.dump(khulnasoft_last_verified_sha: @sha.to_s))
     end
   end
 end

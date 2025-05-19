@@ -82,7 +82,7 @@ module MeasureHelper
 
   def stub_git_rev_parse(branch_name:)
     shellout_double = kdk_shellout_double(run: branch_name)
-    allow_kdk_shellout_command('git rev-parse --abbrev-ref HEAD', chdir: KDK.config.gitlab.dir).and_return(shellout_double)
+    allow_kdk_shellout_command('git rev-parse --abbrev-ref HEAD', chdir: KDK.config.khulnasoft.dir).and_return(shellout_double)
   end
 
   def stub_docker_check(is_running:)

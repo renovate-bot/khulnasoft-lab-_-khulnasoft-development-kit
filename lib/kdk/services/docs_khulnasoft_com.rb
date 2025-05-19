@@ -3,11 +3,11 @@
 module KDK
   module Services
     class DocsKhulnasoftCom < Base
-      BASE_COMMAND = "support/exec-cd docs-gitlab-com hugo serve --cleanDestinationDir --baseURL %{protocol}://%{hostname} --port %{port} --bind %{hostname}"
+      BASE_COMMAND = "support/exec-cd docs-khulnasoft-com hugo serve --cleanDestinationDir --baseURL %{protocol}://%{hostname} --port %{port} --bind %{hostname}"
       HTTPS_COMMAND = ' --tlsAuto'
 
       def name
-        'docs-gitlab-com'
+        'docs-khulnasoft-com'
       end
 
       def command

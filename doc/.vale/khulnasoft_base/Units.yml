@@ -4,7 +4,7 @@ description: |
   Recommends a space between a number and a unit of measure.
 extends: existence
 message: "Add a space between the number and the unit in '%s'."
-link: 'https://docs.gitlab.com/development/documentation/styleguide/'
+link: 'https://docs.khulnasoft.com/development/documentation/styleguide/'
 vocab: false
 nonword: true
 level: warning

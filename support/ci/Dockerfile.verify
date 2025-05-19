@@ -42,7 +42,7 @@ RUN if [ "$TOOL_VERSION_MANAGER" = "mise" ]; then \
     (cd kdk && KDK_KILL_CONFIRM=true kdk kill) && \
     (du -smx ${KHULNASOFT_CI_CACHE_DIR}/* || true) && \
     (sudo rm -rf ${KHULNASOFT_CI_CACHE_DIR}/nodejs || true) && \
-    (find .gitlab-ci-cache \( -path '*libexec/lefthook-*' -and -not -path '*lefthook-linux-x64*' \) -delete || true) && \
+    (find .khulnasoft-ci-cache \( -path '*libexec/lefthook-*' -and -not -path '*lefthook-linux-x64*' \) -delete || true) && \
     (sudo rm -rf ${KHULNASOFT_CI_CACHE_GO_DIR} || true) && \
     (du -smx ${KHULNASOFT_CI_CACHE_DIR}/* || true) && \
     (du -smx /home/kdk/.cache/* || true) && \
@@ -51,7 +51,7 @@ RUN if [ "$TOOL_VERSION_MANAGER" = "mise" ]; then \
 
 WORKDIR /home/kdk/kdk
 
-RUN kdk config set gitlab.cache_classes true && kdk config set webpack.live_reload false && kdk config set webpack.sourcemaps false && make Procfile
+RUN kdk config set khulnasoft.cache_classes true && kdk config set webpack.live_reload false && kdk config set webpack.sourcemaps false && make Procfile
 
 FROM verify_full as verify
 

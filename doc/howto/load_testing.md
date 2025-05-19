@@ -8,16 +8,16 @@ Load testing is done by simply running siege
 on a bunch of URLs at a regular interval. Monitoring of the results in turn is
 done using Prometheus.
 
-See the [Large Staging Collider repository](https://gitlab.com/gitlab-com/large-staging-collider/) for additional
+See the [Large Staging Collider repository](https://khulnasoft.com/khulnasoft-com/large-staging-collider/) for additional
 instructions.
 
 ## KhulnaSoft Load Kit
 
 KhulnaSoft Load Kit uses k6 to generate load.
 The author reports:
-> `gitlab-load-kit` is able to quick induce enough load from my laptop to start causing issues in staging
+> `khulnasoft-load-kit` is able to quick induce enough load from my laptop to start causing issues in staging
 
-See the [KhulnaSoft Load Kit repository](https://gitlab.com/andrewn/gitlab-load-kit/) for additional instructions.
+See the [KhulnaSoft Load Kit repository](https://khulnasoft.com/andrewn/khulnasoft-load-kit/) for additional instructions.
 
 ## JMeter
 

@@ -19,7 +19,7 @@ kdk config set redis_cluster.enabled true
 kdk reconfigure
 ```
 
-This will update all relevant `gitlab/config/redis.*.yml` and initialise the `redis_cluster` service.
+This will update all relevant `khulnasoft/config/redis.*.yml` and initialise the `redis_cluster` service.
 
 ## Interacting with Redis Cluster nodes
 

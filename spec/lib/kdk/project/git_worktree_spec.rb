@@ -121,11 +121,11 @@ RSpec.describe KDK::Project::GitWorktree do
 
       context 'when inferring remote name from git remote -v list' do
         let(:infer_remote_name_source) { :git_remote_list }
-        let(:remote_url) { 'https://example.gitlab.com/group/project' }
+        let(:remote_url) { 'https://example.khulnasoft.com/group/project' }
         let(:git_remote_list) do
           <<~OUT
-            com\tgit@gitlab.com:gitlab-community/gitlab-org/gitlab-shell.git (fetch)
-            com\tgit@gitlab.com:gitlab-community/gitlab-org/gitlab-shell.git (push)
+            com\tgit@khulnasoft.com:khulnasoft-community/khulnasoft-org/khulnasoft-shell.git (fetch)
+            com\tgit@khulnasoft.com:khulnasoft-community/khulnasoft-org/khulnasoft-shell.git (push)
             test-origin\t#{remote_url} (fetch)
             test-origin\t#{remote_url} (push)
           OUT
@@ -136,7 +136,7 @@ RSpec.describe KDK::Project::GitWorktree do
       end
     end
 
-    context 'when in gitlab-org/gitlab' do
+    context 'when in khulnasoft-org/khulnasoft' do
       let(:worktree_path) { KDK.config.kdk_root.join('khulnasoft') }
       let(:expected_fetch_type) { :fast }
 

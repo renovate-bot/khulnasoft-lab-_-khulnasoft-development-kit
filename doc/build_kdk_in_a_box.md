@@ -72,21 +72,21 @@ This documentation is the manual process for creating the KDK-in-a-box virtual m
    1. Download the SSH key and allow it to connect:
 
       ```shell
-      curl "https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/raw/main/support/kdk-in-a-box/kdk.local_rsa.pub" -o ~/.ssh/id_rsa.pub
+      curl "https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/raw/master/support/kdk-in-a-box/kdk.local_rsa.pub" -o ~/.ssh/id_rsa.pub
       cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
       ```
 
 1. Add the SSH key to your local machine:
 
    ```shell
-   curl "https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/raw/main/support/kdk-in-a-box/setup-ssh-key" | bash
+   curl "https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/raw/master/support/kdk-in-a-box/setup-ssh-key" | bash
    ```
 
 1. Log in with SSH to `debian@kdk.local`. You do not need a password to log in.
    1. Install mise: ```curl "https://mise.run" | sh```.
    1. Configure shell to automatically activate mise: ```echo 'eval "$(~/.local/bin/mise activate bash)"' >> ~/.bashrc```.
    1. Start a new shell (to activate mise).
-   1. Install KDK using the one-line installation method: ```curl "https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/raw/main/support/install" | bash```.
+   1. Install KDK using the one-line installation method: ```curl "https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/raw/master/support/install" | bash```.
    1. When prompted, configure KDK to:
       - Choose to install to `khulnasoft-development-kit` not `kdk`.
       - Use the KhulnaSoft community fork.
@@ -98,13 +98,13 @@ This documentation is the manual process for creating the KDK-in-a-box virtual m
       - With telemetry turned on, run:
     
         ```shell
-        kdk install khulnasoft_repo="https://gitlab.com/gitlab-community/gitlab-org/gitlab.git" telemetry_enabled="true"
+        kdk install khulnasoft_repo="https://khulnasoft.com/khulnasoft-community/khulnasoft-org/khulnasoft.git" telemetry_enabled="true"
         ```
 
       - With telemetry turned off, run:
 
         ```shell
-        kdk install khulnasoft_repo="https://gitlab.com/gitlab-community/gitlab-org/gitlab.git" telemetry_enabled="false"
+        kdk install khulnasoft_repo="https://khulnasoft.com/khulnasoft-community/khulnasoft-org/khulnasoft.git" telemetry_enabled="false"
         ```
 
    1. Enable Vite:
@@ -117,7 +117,7 @@ This documentation is the manual process for creating the KDK-in-a-box virtual m
    1. Configure KDK to listen outside on the local network:
 
       ```shell
-      kdk config set gitlab.rails.allowed_hosts kdk.local
+      kdk config set khulnasoft.rails.allowed_hosts kdk.local
       kdk config set listen_address 0.0.0.0
       ```
 
@@ -158,7 +158,7 @@ This documentation is the manual process for creating the KDK-in-a-box virtual m
 ## Publish
 
 1. Upload the zip file to [GCP](https://console.cloud.google.com/storage/browser/contributor-success-public).
-1. Update the short links in [campaign manager](https://campaign-manager.gitlab.com/campaigns/view/94).
+1. Update the short links in [campaign manager](https://campaign-manager.khulnasoft.com/campaigns/view/94).
 
 ## Updating an existing image
 
@@ -169,7 +169,7 @@ To save building each release from scratch, we update the latest image:
 1. Change into the KDK directory: `cd khulnasoft-development-kit`.
 1. Run `kdk update`.
 1. Run `kdk cleanup`.
-1. cd `gitlab`.
+1. cd `khulnasoft`.
 1. Run `bin/rspec spec/services/releases/create_service_spec.rb`.
    This ensures all dependencies are downloaded, compiled, and installed.
 1. Shutdown the virtual machine: `sudo shutdown -h now`.

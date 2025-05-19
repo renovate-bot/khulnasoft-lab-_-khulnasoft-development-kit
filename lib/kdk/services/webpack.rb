@@ -8,7 +8,7 @@ module KDK
       end
 
       def command
-        %(support/exec-cd gitlab yarn dev-server)
+        %(support/exec-cd khulnasoft yarn dev-server)
       end
 
       def enabled?

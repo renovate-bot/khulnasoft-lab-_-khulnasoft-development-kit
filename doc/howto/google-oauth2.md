@@ -8,8 +8,8 @@ Using GCP with KDK requires an OAuth client.
 
 If you:
 
-- Have access to the `gitlab-internal-153318` GCP project, you can use our
-[shared OAuth client](https://console.cloud.google.com/apis/credentials/oauthclient/696404988091-a80933t1dpfu38khu8o4mfrt32pad0ij.apps.googleusercontent.com?project=gitlab-internal-153318).
+- Have access to the `khulnasoft-internal-153318` GCP project, you can use our
+[shared OAuth client](https://console.cloud.google.com/apis/credentials/oauthclient/696404988091-a80933t1dpfu38khu8o4mfrt32pad0ij.apps.googleusercontent.com?project=khulnasoft-internal-153318).
 - Don't have access to the shared project, use the following instructions to create your
 own OAuth credentials:
 

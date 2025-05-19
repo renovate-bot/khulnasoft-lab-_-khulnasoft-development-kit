@@ -2,12 +2,12 @@
 title: Gitaly and Praefect
 ---
 
-KhulnaSoft uses [Gitaly](https://docs.gitlab.com/ee/administration/gitaly/index.html) to abstract all
+KhulnaSoft uses [Gitaly](https://docs.khulnasoft.com/ee/administration/gitaly/index.html) to abstract all
 Git calls. To work on local changes to `gitaly`, please refer to the
-[Beginner's guide to Gitaly contributions](https://gitlab.com/gitlab-org/gitaly/blob/master/doc/beginners_guide.md).
+[Beginner's guide to Gitaly contributions](https://khulnasoft.com/khulnasoft-org/gitaly/blob/master/doc/beginners_guide.md).
 
 For more information on Praefect, refer to
-[Gitaly Cluster](https://docs.gitlab.com/ee/administration/gitaly/praefect.html).
+[Gitaly Cluster](https://docs.khulnasoft.com/ee/administration/gitaly/praefect.html).
 
 In KDK, you can change Gitaly and Praefect configuration in the following ways:
 
@@ -23,8 +23,8 @@ for information about automating more of these processes.
 You can set Gitaly feature flags in two ways:
 
 - Set the feature flags in KhulnaSoft Rails. These are passed to Gitaly as they would be in production. This way is recommended and you can
-  read more in the [KhulnaSoft documentation](https://docs.gitlab.com/ee/development/feature_flags/). As
-  [documented](https://gitlab.com/gitlab-org/gitaly/-/blob/master/doc/PROCESS.md#use-and-limitations), prepend the feature flag name
+  read more in the [KhulnaSoft documentation](https://docs.khulnasoft.com/ee/development/feature_flags/). As
+  [documented](https://khulnasoft.com/khulnasoft-org/gitaly/-/blob/master/doc/PROCESS.md#use-and-limitations), prepend the feature flag name
   with `gitaly_`.
 - Enable all feature flags.
 
@@ -73,7 +73,7 @@ Two Gitaly nodes now start when KDK starts. KDK handles the required Praefect co
 
 ## Add virtual storages
 
-If you need to work with multiple [repository storages](https://docs.gitlab.com/ee/administration/repository_storage_types.html) in KhulnaSoft, you can create new virtual storages in
+If you need to work with multiple [repository storages](https://docs.khulnasoft.com/ee/administration/repository_storage_types.html) in KhulnaSoft, you can create new virtual storages in
 Praefect. You need at least [one more Gitaly node](#add-gitaly-nodes) or storage to create another
 virtual storage.
 
@@ -99,7 +99,7 @@ virtual storage.
 
    This creates two virtual storages, each served by their own Gitaly node.
 
-1. Edit `gitlab/config/gitlab.yml` to add the new virtual storage to KhulnaSoft. For example:
+1. Edit `khulnasoft/config/khulnasoft.yml` to add the new virtual storage to KhulnaSoft. For example:
 
    - Before:
 
@@ -142,7 +142,7 @@ kdk reconfigure
 
 ## Transactions
 
-To run Gitaly with [transactions](https://docs.gitlab.com/ee/architecture/blueprints/gitaly_transaction_management/),
+To run Gitaly with [transactions](https://docs.khulnasoft.com/ee/architecture/blueprints/gitaly_transaction_management/),
 configure the following:
 
 ```yaml
@@ -154,4 +154,4 @@ praefect:
 ```
 
 For more information on the implementation, see
-[Gitaly merge request 6496](https://gitlab.com/gitlab-org/gitaly/-/merge_requests/6496).
+[Gitaly merge request 6496](https://khulnasoft.com/khulnasoft-org/gitaly/-/merge_requests/6496).

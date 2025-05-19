@@ -11,7 +11,7 @@ RSpec.describe KDK::Diagnostic::Geo do
         main:
           adapter: postgresql
           encoding: unicode
-          database: gitlabhq_development
+          database: khulnasofthq_development
           username: postgres
           password: "secure password"
           host: localhost
@@ -26,7 +26,7 @@ RSpec.describe KDK::Diagnostic::Geo do
         main:
           adapter: postgresql
           encoding: unicode
-          database: gitlabhq_development
+          database: khulnasofthq_development
           username: postgres
           password: "secure password"
           host: localhost
@@ -36,7 +36,7 @@ RSpec.describe KDK::Diagnostic::Geo do
         geo:
           adapter: postgresql
           encoding: unicode
-          database: gitlabhq_geo_development
+          database: khulnasofthq_geo_development
           username: postgres
           password: "secure password"
           host: localhost

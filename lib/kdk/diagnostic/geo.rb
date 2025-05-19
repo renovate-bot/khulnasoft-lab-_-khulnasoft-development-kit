@@ -36,7 +36,7 @@ module KDK
       end
 
       def database_yml_file
-        @database_yml_file ||= config.gitlab.dir.join('config', 'database.yml').expand_path.to_s
+        @database_yml_file ||= config.khulnasoft.dir.join('config', 'database.yml').expand_path.to_s
       end
 
       def database_yml_file_exists?

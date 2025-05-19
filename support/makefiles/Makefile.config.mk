@@ -1,6 +1,6 @@
 # ---------------------------------------------------------------------------------------------
 # This file is used by the KDK to get interoperability between Make and Rake with the end
-# goal of getting rid of Make in the future: https://gitlab.com/groups/gitlab-org/-/epics/1556.
+# goal of getting rid of Make in the future: https://khulnasoft.com/groups/khulnasoft-org/-/epics/1556.
 # This file can be generated with the `rake support/makefiles/Makefile.config.mk` task.
 # ---------------------------------------------------------------------------------------------
 
@@ -8,33 +8,33 @@
 Procfile: 
 	$(Q)rake Procfile
 
-.PHONY: gitlab/config/cable.yml
-gitlab/config/cable.yml: 
-	$(Q)rake gitlab/config/cable.yml
+.PHONY: khulnasoft/config/cable.yml
+khulnasoft/config/cable.yml: 
+	$(Q)rake khulnasoft/config/cable.yml
 
 .PHONY: khulnasoft/config/database.yml
 khulnasoft/config/database.yml: 
 	$(Q)rake khulnasoft/config/database.yml
 
-.PHONY: gitlab/config/gitlab.yml
-gitlab/config/gitlab.yml: 
-	$(Q)rake gitlab/config/gitlab.yml
+.PHONY: khulnasoft/config/khulnasoft.yml
+khulnasoft/config/khulnasoft.yml: 
+	$(Q)rake khulnasoft/config/khulnasoft.yml
 
-.PHONY: gitlab/config/puma.rb
-gitlab/config/puma.rb: 
-	$(Q)rake gitlab/config/puma.rb
+.PHONY: khulnasoft/config/puma.rb
+khulnasoft/config/puma.rb: 
+	$(Q)rake khulnasoft/config/puma.rb
 
-.PHONY: gitlab/config/redis.queues.yml
-gitlab/config/redis.queues.yml: 
-	$(Q)rake gitlab/config/redis.queues.yml
+.PHONY: khulnasoft/config/redis.queues.yml
+khulnasoft/config/redis.queues.yml: 
+	$(Q)rake khulnasoft/config/redis.queues.yml
 
-.PHONY: gitlab/config/resque.yml
-gitlab/config/resque.yml: 
-	$(Q)rake gitlab/config/resque.yml
+.PHONY: khulnasoft/config/resque.yml
+khulnasoft/config/resque.yml: 
+	$(Q)rake khulnasoft/config/resque.yml
 
-.PHONY: gitlab/config/session_store.yml
-gitlab/config/session_store.yml: 
-	$(Q)rake gitlab/config/session_store.yml
+.PHONY: khulnasoft/config/session_store.yml
+khulnasoft/config/session_store.yml: 
+	$(Q)rake khulnasoft/config/session_store.yml
 
 .PHONY: gitaly/gitaly.config.toml
 gitaly/gitaly.config.toml: 
@@ -44,29 +44,29 @@ gitaly/gitaly.config.toml:
 gitaly/praefect.config.toml: 
 	$(Q)rake gitaly/praefect.config.toml
 
-.PHONY: gitlab/config/redis.rate_limiting.yml
-gitlab/config/redis.rate_limiting.yml: 
-	$(Q)rake gitlab/config/redis.rate_limiting.yml
+.PHONY: khulnasoft/config/redis.rate_limiting.yml
+khulnasoft/config/redis.rate_limiting.yml: 
+	$(Q)rake khulnasoft/config/redis.rate_limiting.yml
 
-.PHONY: gitlab/config/redis.cache.yml
-gitlab/config/redis.cache.yml: 
-	$(Q)rake gitlab/config/redis.cache.yml
+.PHONY: khulnasoft/config/redis.cache.yml
+khulnasoft/config/redis.cache.yml: 
+	$(Q)rake khulnasoft/config/redis.cache.yml
 
-.PHONY: gitlab/config/redis.repository_cache.yml
-gitlab/config/redis.repository_cache.yml: 
-	$(Q)rake gitlab/config/redis.repository_cache.yml
+.PHONY: khulnasoft/config/redis.repository_cache.yml
+khulnasoft/config/redis.repository_cache.yml: 
+	$(Q)rake khulnasoft/config/redis.repository_cache.yml
 
-.PHONY: gitlab/config/redis.sessions.yml
-gitlab/config/redis.sessions.yml: 
-	$(Q)rake gitlab/config/redis.sessions.yml
+.PHONY: khulnasoft/config/redis.sessions.yml
+khulnasoft/config/redis.sessions.yml: 
+	$(Q)rake khulnasoft/config/redis.sessions.yml
 
-.PHONY: gitlab/config/redis.shared_state.yml
-gitlab/config/redis.shared_state.yml: 
-	$(Q)rake gitlab/config/redis.shared_state.yml
+.PHONY: khulnasoft/config/redis.shared_state.yml
+khulnasoft/config/redis.shared_state.yml: 
+	$(Q)rake khulnasoft/config/redis.shared_state.yml
 
-.PHONY: gitlab/config/redis.trace_chunks.yml
-gitlab/config/redis.trace_chunks.yml: 
-	$(Q)rake gitlab/config/redis.trace_chunks.yml
+.PHONY: khulnasoft/config/redis.trace_chunks.yml
+khulnasoft/config/redis.trace_chunks.yml: 
+	$(Q)rake khulnasoft/config/redis.trace_chunks.yml
 
 .PHONY: khulnasoft-topology-service/config.toml
 khulnasoft-topology-service/config.toml: 
@@ -76,45 +76,45 @@ else
 	@true
 endif
 
-.PHONY: gitlab/config/vite.kdk.json
-gitlab/config/vite.kdk.json: 
-	$(Q)rake gitlab/config/vite.kdk.json
+.PHONY: khulnasoft/config/vite.kdk.json
+khulnasoft/config/vite.kdk.json: 
+	$(Q)rake khulnasoft/config/vite.kdk.json
 
-.PHONY: gitlab/workhorse/config.toml
-gitlab/workhorse/config.toml: 
-	$(Q)rake gitlab/workhorse/config.toml
+.PHONY: khulnasoft/workhorse/config.toml
+khulnasoft/workhorse/config.toml: 
+	$(Q)rake khulnasoft/workhorse/config.toml
 
 .PHONY: khulnasoft-k8s-agent-config.yml
 khulnasoft-k8s-agent-config.yml: 
 	$(Q)rake khulnasoft-k8s-agent-config.yml
 
-.PHONY: gitlab-kas-websocket-token-secret
-gitlab-kas-websocket-token-secret: 
-	$(Q)rake gitlab-kas-websocket-token-secret
+.PHONY: khulnasoft-kas-websocket-token-secret
+khulnasoft-kas-websocket-token-secret: 
+	$(Q)rake khulnasoft-kas-websocket-token-secret
 
-.PHONY: gitlab-kas-autoflow-temporal-workflow-data-encryption-secret
-gitlab-kas-autoflow-temporal-workflow-data-encryption-secret: 
-	$(Q)rake gitlab-kas-autoflow-temporal-workflow-data-encryption-secret
+.PHONY: khulnasoft-kas-autoflow-temporal-workflow-data-encryption-secret
+khulnasoft-kas-autoflow-temporal-workflow-data-encryption-secret: 
+	$(Q)rake khulnasoft-kas-autoflow-temporal-workflow-data-encryption-secret
 
-.PHONY: gitlab-pages/gitlab-pages.conf
-gitlab-pages/gitlab-pages.conf: gitlab-pages/.git/pull
-	$(Q)rake gitlab-pages/gitlab-pages.conf
+.PHONY: khulnasoft-pages/khulnasoft-pages.conf
+khulnasoft-pages/khulnasoft-pages.conf: khulnasoft-pages/.git/pull
+	$(Q)rake khulnasoft-pages/khulnasoft-pages.conf
 
-.PHONY: gitlab-pages-secret
-gitlab-pages-secret: 
-	$(Q)rake gitlab-pages-secret
+.PHONY: khulnasoft-pages-secret
+khulnasoft-pages-secret: 
+	$(Q)rake khulnasoft-pages-secret
 
-.PHONY: gitlab-runner-config.toml
-gitlab-runner-config.toml: 
+.PHONY: khulnasoft-runner-config.toml
+khulnasoft-runner-config.toml: 
 ifeq ($(runner_enabled),true)
-	$(Q)rake gitlab-runner-config.toml
+	$(Q)rake khulnasoft-runner-config.toml
 else
 	@true
 endif
 
-.PHONY: gitlab-shell/config.yml
-gitlab-shell/config.yml: gitlab-shell/.git
-	$(Q)rake gitlab-shell/config.yml
+.PHONY: khulnasoft-shell/config.yml
+khulnasoft-shell/config.yml: khulnasoft-shell/.git
+	$(Q)rake khulnasoft-shell/config.yml
 
 .PHONY: grafana/grafana.ini
 grafana/grafana.ini: 

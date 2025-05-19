@@ -2,14 +2,14 @@
 
 RSpec.describe KDK::Services::DocsKhulnasoftCom do
   describe '#name' do
-    it 'returns docs-gitlab-com' do
-      expect(subject.name).to eq('docs-gitlab-com')
+    it 'returns docs-khulnasoft-com' do
+      expect(subject.name).to eq('docs-khulnasoft-com')
     end
   end
 
   describe '#command' do
     it 'returns non-TLS command if HTTPS is not set' do
-      expect(subject.command).to eq("support/exec-cd docs-gitlab-com hugo serve --cleanDestinationDir --baseURL http://127.0.0.1 --port 1313 --bind 127.0.0.1")
+      expect(subject.command).to eq("support/exec-cd docs-khulnasoft-com hugo serve --cleanDestinationDir --baseURL http://127.0.0.1 --port 1313 --bind 127.0.0.1")
     end
 
     context 'when HTTPS is enabled' do
@@ -24,7 +24,7 @@ RSpec.describe KDK::Services::DocsKhulnasoftCom do
       end
 
       it 'returns TLS-enabled command' do
-        expect(subject.command).to eq("support/exec-cd docs-gitlab-com hugo serve --cleanDestinationDir --baseURL https://127.0.0.1 --port 1313 --bind 127.0.0.1 --tlsAuto")
+        expect(subject.command).to eq("support/exec-cd docs-khulnasoft-com hugo serve --cleanDestinationDir --baseURL https://127.0.0.1 --port 1313 --bind 127.0.0.1 --tlsAuto")
       end
     end
   end

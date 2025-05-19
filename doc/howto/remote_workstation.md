@@ -14,7 +14,7 @@ To create the workstation:
 1. [Set up SSH](#set-up-ssh)
 1. [Create a VM](#create-a-vm)
 1. [Set up SSH Agent Forwarding](#set-up-ssh-agent-forwarding)
-1. [Use KDK to install KhulnaSoft](#use-kdk-to-install-gitlab)
+1. [Use KDK to install KhulnaSoft](#use-kdk-to-install-khulnasoft)
 1. [Set up VS Code Remote](#set-up-vs-code-remote)
 
 ## Set up SSH
@@ -22,8 +22,8 @@ To create the workstation:
 1. Make sure you have at least OpenSSH 8.2 installed on your machine:
    - On macOS: `brew install openssh`
    - On Ubuntu/Debian: `sudo apt install openssh-client`
-1. [Generate an SSH key pair for your FIDO/U2F hardware security key](https://docs.gitlab.com/ee/ssh/#generate-an-ssh-key-pair-for-a-fidou2f-hardware-security-key)
-1. Add the newly generated public SSH key to your [KhulnaSoft](https://docs.gitlab.com/ee/ssh/#add-an-ssh-key-to-your-gitlab-account) and [GitHub](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account) profiles:
+1. [Generate an SSH key pair for your FIDO/U2F hardware security key](https://docs.khulnasoft.com/ee/ssh/#generate-an-ssh-key-pair-for-a-fidou2f-hardware-security-key)
+1. Add the newly generated public SSH key to your [KhulnaSoft](https://docs.khulnasoft.com/ee/ssh/#add-an-ssh-key-to-your-khulnasoft-account) and [GitHub](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account) profiles:
    - If you generated a resident ED25519-SK key, the profile is in `~/.ssh/id_ed25519_sk.pub`.
    - If you generated a non-resident ECDSA-SK key, the profile is in `~/.ssh/id_ecdsa_sk.pub`.
 
@@ -31,7 +31,7 @@ To create the workstation:
 
 ### Google Compute Engine
 
-You can create a Google Cloud Compute VM here - <https://console.cloud.google.com/compute/instances?project=gitlab-internal-153318>
+You can create a Google Cloud Compute VM here - <https://console.cloud.google.com/compute/instances?project=khulnasoft-internal-153318>
 
 Here are the recommended settings for creating a GCE VM:
 
@@ -52,12 +52,12 @@ Google Cloud REST API.
 Here's the `gcloud` equivalent terminal command:
 
 ```shell
-gcloud compute instances create [YOUR_INSTANCE_NAME] --project=gitlab-internal-153318 --zone=[YOUR_INSTANCE_ZONE] --machine-type=e2-standard-4 --network-interface=network-tier=PREMIUM,subnet=default --metadata=block-project-ssh-keys=true,ssh-keys=[YOUR_SSH_KEY] --maintenance-policy=MIGRATE --service-account=696404988091-compute@developer.gserviceaccount.com --scopes=https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/trace.append --create-disk=auto-delete=yes,boot=yes,device-name=instance-1,image=projects/ubuntu-os-cloud/global/images/ubuntu-minimal-2110-impish-v20211014,mode=rw,size=20,type=projects/gitlab-internal-153318/zones/[YOUR_INSTANCE_ZONE]/diskTypes/pd-balanced --shielded-secure-boot --shielded-vtpm --shielded-integrity-monitoring --reservation-affinity=any
+gcloud compute instances create [YOUR_INSTANCE_NAME] --project=khulnasoft-internal-153318 --zone=[YOUR_INSTANCE_ZONE] --machine-type=e2-standard-4 --network-interface=network-tier=PREMIUM,subnet=default --metadata=block-project-ssh-keys=true,ssh-keys=[YOUR_SSH_KEY] --maintenance-policy=MIGRATE --service-account=696404988091-compute@developer.gserviceaccount.com --scopes=https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/trace.append --create-disk=auto-delete=yes,boot=yes,device-name=instance-1,image=projects/ubuntu-os-cloud/global/images/ubuntu-minimal-2110-impish-v20211014,mode=rw,size=20,type=projects/khulnasoft-internal-153318/zones/[YOUR_INSTANCE_ZONE]/diskTypes/pd-balanced --shielded-secure-boot --shielded-vtpm --shielded-integrity-monitoring --reservation-affinity=any
 ```
 
 Here's the Google Cloud REST API equivalent:
 
-`POST https://www.googleapis.com/compute/v1/projects/gitlab-internal-153318/zones/[YOUR_INSTANCE_ZONE]/instances`
+`POST https://www.googleapis.com/compute/v1/projects/khulnasoft-internal-153318/zones/[YOUR_INSTANCE_ZONE]/instances`
 
 ```json
 {
@@ -75,7 +75,7 @@ Here's the Google Cloud REST API equivalent:
       "diskEncryptionKey": {},
       "initializeParams": {
         "diskSizeGb": "20",
-        "diskType": "projects/gitlab-internal-153318/zones/[YOUR_INSTANCE_ZONE]/diskTypes/pd-balanced",
+        "diskType": "projects/khulnasoft-internal-153318/zones/[YOUR_INSTANCE_ZONE]/diskTypes/pd-balanced",
         "labels": {},
         "sourceImage": "projects/ubuntu-os-cloud/global/images/ubuntu-minimal-2110-impish-v20211014"
       },
@@ -88,7 +88,7 @@ Here's the Google Cloud REST API equivalent:
   },
   "guestAccelerators": [],
   "labels": {},
-  "machineType": "projects/gitlab-internal-153318/zones/[YOUR_INSTANCE_ZONE]/machineTypes/e2-standard-4",
+  "machineType": "projects/khulnasoft-internal-153318/zones/[YOUR_INSTANCE_ZONE]/machineTypes/e2-standard-4",
   "metadata": {
     "items": [
       {
@@ -110,7 +110,7 @@ Here's the Google Cloud REST API equivalent:
           "networkTier": "PREMIUM"
         }
       ],
-      "subnetwork": "projects/gitlab-internal-153318/regions/[YOUR_INSTANCE_REGION]/subnetworks/default"
+      "subnetwork": "projects/khulnasoft-internal-153318/regions/[YOUR_INSTANCE_REGION]/subnetworks/default"
     }
   ],
   "reservationAffinity": {
@@ -142,7 +142,7 @@ Here's the Google Cloud REST API equivalent:
   "tags": {
     "items": []
   },
-  "zone": "projects/gitlab-internal-153318/zones/[YOUR_INSTANCE_ZONE]"
+  "zone": "projects/khulnasoft-internal-153318/zones/[YOUR_INSTANCE_ZONE]"
 }
 ```
 
@@ -172,7 +172,7 @@ Here's the Google Cloud REST API equivalent:
 1. Verify SSH authentication to KhulnaSoft.com and GitHub.com works as expected:
 
    ```shell
-   ssh git@gitlab.com
+   ssh git@khulnasoft.com
    # Welcome to KhulnaSoft, @[YOUR_KHULNASOFT_HANDLE]!
 
    ssh git@github.com
@@ -194,7 +194,7 @@ These steps are based on the instructions in <https://github.com/khulnasoft-lab/
 1. Use KDK to install KhulnaSoft:
 
    ```shell
-   curl "https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/raw/main/support/install" | bash
+   curl "https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/raw/master/support/install" | bash
    ```
 
 ### Manual installation
@@ -209,7 +209,7 @@ These steps are based on the instructions in <https://github.com/khulnasoft-lab/
    1. `sudo apt install postgresql postgresql-contrib`
    1. `sudo apt install golang`
 1. Clone the KDK repository from the home directory on your remote machine:
-   1. `git clone git@gitlab.com:gitlab-org/khulnasoft-development-kit.git kdk`
+   1. `git clone git@khulnasoft.com:khulnasoft-org/khulnasoft-development-kit.git kdk`
    1. `cd kdk`
 1. Install the pre-requisite packages:
    1. `make bootstrap-packages`
@@ -228,7 +228,7 @@ These steps are based on the instructions in <https://github.com/khulnasoft-lab/
    1. `source ~/.bashrc`
 1. Use KDK to install KhulnaSoft:
    1. `gem install khulnasoft-development-kit`
-   1. `kdk install khulnasoft_repo=git@gitlab.com:gitlab-org/gitlab.git`
+   1. `kdk install khulnasoft_repo=git@khulnasoft.com:khulnasoft-org/khulnasoft.git`
 
 ## Set up VS Code Remote
 
@@ -238,7 +238,7 @@ These steps are based on the instructions in <https://code.visualstudio.com/docs
 1. Install the [Remote - SSH](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-ssh) extension.
 1. Run `Remote-SSH: Connect to Host...` from the command palette.
 1. Connect to `username@remote-ip`.
-1. Open the `kdk/gitlab` directory.
+1. Open the `kdk/khulnasoft` directory.
 1. Trust the directory.
 1. Run `Forward a Port` from the command palette.
 1. Enter `3000` in the port number prompt.

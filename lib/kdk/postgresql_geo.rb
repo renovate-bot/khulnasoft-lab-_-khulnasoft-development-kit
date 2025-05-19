@@ -9,7 +9,7 @@ module KDK
     end
 
     def default_database
-      'gitlabhq_geo_development'
+      'khulnasofthq_geo_development'
     end
   end
 end

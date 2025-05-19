@@ -4,17 +4,17 @@ title: KhulnaSoft Remote Development
 
 ## Setting up Remote Development locally
 
-Follow [these steps](https://gitlab.com/gitlab-org/remote-development/khulnasoft-remote-development-docs/-/blob/master/doc/local-development-environment-setup.md) to set up remote development locally.
+Follow [these steps](https://khulnasoft.com/khulnasoft-org/remote-development/khulnasoft-remote-development-docs/-/blob/master/doc/local-development-environment-setup.md) to set up remote development locally.
 
 ## Develop KhulnaSoft with KhulnaSoft remote development workspaces
 
-KDK supports [KhulnaSoft remote development workspaces](https://docs.gitlab.com/ee/user/workspace/). You can use the integration to code directly in a cloud environment, which can reduce the time you spend troubleshooting issues in your local development setups.
+KDK supports [KhulnaSoft remote development workspaces](https://docs.khulnasoft.com/ee/user/workspace/). You can use the integration to code directly in a cloud environment, which can reduce the time you spend troubleshooting issues in your local development setups.
 
 This guide shows you how to create and connect a workspace from the KDK repository.
 
-To learn more about remote development in KhulnaSoft, see the [remote development documentation](https://docs.gitlab.com/ee/user/project/remote_development).
+To learn more about remote development in KhulnaSoft, see the [remote development documentation](https://docs.khulnasoft.com/ee/user/project/remote_development).
 
-This integration is available only to KhulnaSoft team members to encourage [dogfooding](https://about.gitlab.com/handbook/engineering/development/principles/#dogfooding).
+This integration is available only to KhulnaSoft team members to encourage [dogfooding](https://about.khulnasoft.com/handbook/engineering/development/principles/#dogfooding).
 [Issue #1982](https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/issues/1982) proposes to enable the integration for open source contributors.
 
 ### Prerequisites

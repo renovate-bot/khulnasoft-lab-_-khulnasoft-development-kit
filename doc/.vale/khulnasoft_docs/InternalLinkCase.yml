@@ -4,7 +4,7 @@ description: |
   Checks that anchor fragments on internal links are in lower-case.
 extends: existence
 message: "Use lowercase for the anchor link."
-link: https://docs.gitlab.com/development/documentation/styleguide/#anchor-links
+link: https://docs.khulnasoft.com/development/documentation/styleguide/#anchor-links
 vocab: false
 level: error
 scope: raw

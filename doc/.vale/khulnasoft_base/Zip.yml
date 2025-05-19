@@ -5,7 +5,7 @@ description: |
   due to the .zip top-level domain
 extends: existence
 message: "Wrap '%s' in backticks to prevent unintentional links to .zip domain names."
-link: 'https://docs.gitlab.com/development/documentation/styleguide/#inline-code'
+link: 'https://docs.khulnasoft.com/development/documentation/styleguide/#inline-code'
 vocab: false
 nonword: true
 level: error

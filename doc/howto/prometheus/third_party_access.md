@@ -55,7 +55,7 @@ Reference documentation:
    1. Create a cloud instance, ensuring that visibility is set to 'public'. See [instructions](#configuring-a-hosted-grafana-instance).
 1. Add a DataSource of type **Prometheus**.
 1. In the URL field, add `http://<ip>:<port>` as detailed in
-   [Exposing the Prometheus endpoint for a KhulnaSoft-managed cluster](#exposing-the-prometheus-endpoint-for-a-gitlab-managed-cluster).
+   [Exposing the Prometheus endpoint for a KhulnaSoft-managed cluster](#exposing-the-prometheus-endpoint-for-a-khulnasoft-managed-cluster).
 1. Click **Save**.
 1. Create a dashboard using Prometheus metrics. Refer to the following screenshot:
 
@@ -63,7 +63,7 @@ Reference documentation:
 
 ## How to connect Grafana to KhulnaSoft
 
-Refer to the documentation on [Embedding Grafana charts](https://docs.gitlab.com/ee/operations/metrics/embed_grafana.html#embedding-grafana-charts-core)
+Refer to the documentation on [Embedding Grafana charts](https://docs.khulnasoft.com/ee/operations/metrics/embed_grafana.html#embedding-grafana-charts-core)
 for details on configuring KhulnaSoft to integrate with Grafana.
 
 ## Configuring a hosted Grafana instance

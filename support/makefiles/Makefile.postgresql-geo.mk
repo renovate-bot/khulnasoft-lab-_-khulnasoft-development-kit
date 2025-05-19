@@ -1,4 +1,4 @@
-postgresql/geo: postgresql-geo/data postgresql-geo/data/gitlab.conf postgresql/geo/seed-data
+postgresql/geo: postgresql-geo/data postgresql-geo/data/khulnasoft.conf postgresql/geo/seed-data
 
 postgresql-geo/data:
 ifeq ($(geo_enabled), true)
@@ -9,12 +9,12 @@ else
 endif
 endif
 
-.PHONY: postgresql-geo/data/gitlab.conf
-postgresql-geo/data/gitlab.conf:
+.PHONY: postgresql-geo/data/khulnasoft.conf
+postgresql-geo/data/khulnasoft.conf:
 ifeq ($(geo_enabled), true)
 ifeq ($(geo_secondary), true)
-	$(Q). ./support/bootstrap-common.sh ; ensure_line_in_file "include 'gitlab.conf'" "postgresql-geo/data/postgresql.conf"
-	$(Q)rake postgresql-geo/data/gitlab.conf
+	$(Q). ./support/bootstrap-common.sh ; ensure_line_in_file "include 'khulnasoft.conf'" "postgresql-geo/data/postgresql.conf"
+	$(Q)rake postgresql-geo/data/khulnasoft.conf
 else
 	@true
 endif

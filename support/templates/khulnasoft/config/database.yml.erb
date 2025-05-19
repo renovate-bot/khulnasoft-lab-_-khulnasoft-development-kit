@@ -2,7 +2,7 @@ development:
   main:
     adapter: postgresql
     encoding: unicode
-    database: gitlabhq_development
+    database: khulnasofthq_development
     host: <%= config.postgresql.host %>
     port: <%= config.postgresql.port %>
     pool: 10
@@ -12,7 +12,7 @@ development:
       statement_timeout: 120s
 <%- if config.load_balancing.discover? -%>
     username: <%= config.__whoami %>
-    password: gitlab
+    password: khulnasoft
     load_balancing:
       discover:
         record: replica.pgbouncer.service.consul
@@ -33,15 +33,15 @@ development:
         <%- end -%>
   <%- end -%>
 <%- end -%>
-<%- if config.gitlab.rails.databases.ci.__enabled -%>
+<%- if config.khulnasoft.rails.databases.ci.__enabled -%>
   ci:
     adapter: postgresql
     encoding: unicode
-  <%- if config.gitlab.rails.databases.ci.__use_main_database -%>
-    database: gitlabhq_development
+  <%- if config.khulnasoft.rails.databases.ci.__use_main_database -%>
+    database: khulnasofthq_development
     database_tasks: false
   <%- else -%>
-    database: gitlabhq_development_ci
+    database: khulnasofthq_development_ci
   <%- end -%>
     host: <%= config.postgresql.host %>
     port: <%= config.postgresql.port %>
@@ -52,7 +52,7 @@ development:
       statement_timeout: 120s
     <%- if config.load_balancing.discover? -%>
     username: <%= config.__whoami %>
-    password: gitlab
+    password: khulnasoft
     load_balancing:
       discover:
         record: replica.pgbouncer.service.consul
@@ -62,15 +62,15 @@ development:
         use_tcp: true
     <%- end -%>
 <%- end -%>
-<%- if config.gitlab.rails.databases.sec.__enabled -%>
+<%- if config.khulnasoft.rails.databases.sec.__enabled -%>
   sec:
     adapter: postgresql
     encoding: unicode
-  <%- if config.gitlab.rails.databases.sec.__use_main_database -%>
-    database: gitlabhq_development
+  <%- if config.khulnasoft.rails.databases.sec.__use_main_database -%>
+    database: khulnasofthq_development
     database_tasks: false
   <%- else -%>
-    database: gitlabhq_development_sec
+    database: khulnasofthq_development_sec
   <%- end -%>
     host: <%= config.postgresql.host %>
     port: <%= config.postgresql.port %>
@@ -81,7 +81,7 @@ development:
       statement_timeout: 120s
     <%- if config.load_balancing.discover? -%>
     username: <%= config.__whoami %>
-    password: gitlab
+    password: khulnasoft
     load_balancing:
       discover:
         record: replica.pgbouncer.service.consul
@@ -91,11 +91,11 @@ development:
         use_tcp: true
     <%- end -%>
 <%- end -%>
-<%- if config.gitlab.rails.databases.embedding.__enabled -%>
+<%- if config.khulnasoft.rails.databases.embedding.__enabled -%>
   embedding:
     adapter: postgresql
     encoding: unicode
-    database: gitlabhq_development_embedding
+    database: khulnasofthq_development_embedding
     database_tasks: true
     host: <%= config.postgresql.host %>
     port: <%= config.postgresql.port %>
@@ -109,7 +109,7 @@ development:
   geo:
     adapter: postgresql
     encoding: unicode
-    database: gitlabhq_geo_development
+    database: khulnasofthq_geo_development
     database_tasks: true
     host: <%= config.postgresql.geo.host %>
     port: <%= config.postgresql.geo.port %>
@@ -121,7 +121,7 @@ test: &test
   main:
     adapter: postgresql
     encoding: unicode
-    database: gitlabhq_test
+    database: khulnasofthq_test
   <%- if config.geo? && config.geo.secondary? -%>
     host: <%= config.postgresql.geo.host %>
     port: <%= config.postgresql.geo.port %>
@@ -134,15 +134,15 @@ test: &test
     prepared_statements: false
     variables:
       statement_timeout: 120s
-<%- if config.gitlab.rails.databases.ci.__enabled -%>
+<%- if config.khulnasoft.rails.databases.ci.__enabled -%>
   ci:
     adapter: postgresql
     encoding: unicode
-  <%- if config.gitlab.rails.databases.ci.__use_main_database -%>
-    database: gitlabhq_test
+  <%- if config.khulnasoft.rails.databases.ci.__use_main_database -%>
+    database: khulnasofthq_test
     database_tasks: false
   <%- else -%>
-    database: gitlabhq_test_ci
+    database: khulnasofthq_test_ci
   <%- end -%>
   <%- if config.geo? && config.geo.secondary? -%>
     host: <%= config.postgresql.geo.host %>
@@ -157,15 +157,15 @@ test: &test
     variables:
       statement_timeout: 120s
 <%- end -%>
-<%- if config.gitlab.rails.databases.sec.__enabled -%>
+<%- if config.khulnasoft.rails.databases.sec.__enabled -%>
   sec:
     adapter: postgresql
     encoding: unicode
-  <%- if config.gitlab.rails.databases.sec.__use_main_database -%>
-    database: gitlabhq_test
+  <%- if config.khulnasoft.rails.databases.sec.__use_main_database -%>
+    database: khulnasofthq_test
     database_tasks: false
   <%- else -%>
-    database: gitlabhq_test_sec
+    database: khulnasofthq_test_sec
   <%- end -%>
   <%- if config.geo? && config.geo.secondary? -%>
     host: <%= config.postgresql.geo.host %>
@@ -180,11 +180,11 @@ test: &test
     variables:
       statement_timeout: 120s
 <%- end -%>
-<%- if config.gitlab.rails.databases.embedding.__enabled -%>
+<%- if config.khulnasoft.rails.databases.embedding.__enabled -%>
   embedding:
     adapter: postgresql
     encoding: unicode
-    database: gitlabhq_test_embedding
+    database: khulnasofthq_test_embedding
     database_tasks: true
     host: <%= config.postgresql.host %>
     port: <%= config.postgresql.port %>
@@ -198,7 +198,7 @@ test: &test
   geo:
     adapter: postgresql
     encoding: unicode
-    database: gitlabhq_geo_test
+    database: khulnasofthq_geo_test
     database_tasks: true
     host: <%= config.postgresql.geo.host %>
     port: <%= config.postgresql.geo.port %>
@@ -209,7 +209,7 @@ test: &test
   geo:
     adapter: postgresql
     encoding: unicode
-    database: gitlabhq_geo_test
+    database: khulnasofthq_geo_test
     database_tasks: true
     host: <%= config.postgresql.host %>
     port: <%= config.postgresql.port %>

@@ -1,8 +1,8 @@
 FROM debian:latest
 
-WORKDIR /gitlab-kdk
+WORKDIR /khulnasoft-kdk
 
-COPY additional_packages_*.txt /gitlab-kdk/
+COPY additional_packages_*.txt /khulnasoft-kdk/
 
 # Prepare the 'raw' container image for KDK
 RUN ARCH=$(uname -m) \
@@ -24,7 +24,7 @@ RUN ARCH=$(uname -m) \
     && rm -rf /var/lib/apt/lists/* \
     && rm additional_packages_*.txt \
     && useradd kdk -u 5001 -m -s /bin/bash \
-    && chown -Rv kdk:kdk /gitlab-kdk \
+    && chown -Rv kdk:kdk /khulnasoft-kdk \
     && sed -i "s|# en_US.UTF-8 UTF-8|en_US.UTF-8 UTF-8|" /etc/locale.gen \
     && sed -i "s|# C.UTF-8 UTF-8|C.UTF-8 UTF-8|" /etc/locale.gen \
     && locale-gen C.UTF-8 en_US.UTF-8
@@ -47,7 +47,7 @@ RUN mkdir -p ~/.config/mise \
 RUN eval "$(~/.local/bin/mise activate bash)" \
     && git clone https://github.com/khulnasoft-lab/khulnasoft-development-kit.git \
     && cd khulnasoft-development-kit \
-    && ln -s /gitlab-kdk/khulnasoft-development-kit ~/khulnasoft-development-kit \
+    && ln -s /khulnasoft-kdk/khulnasoft-development-kit ~/khulnasoft-development-kit \
     && echo -e "---\nasdf:\n  opt_out: true\nmise:\n  enabled: true\n" > kdk.yml \
     && make bootstrap \
     # KDK bootstrap runs _more_ apt actions, lets clean out the cache
@@ -57,15 +57,15 @@ RUN eval "$(~/.local/bin/mise activate bash)" \
 # Prepare the container for SSH access
 # We do some of these steps down here, because it's _after_ KDK installation
 RUN mkdir -p ~/.ssh \
-    && cp /gitlab-kdk/khulnasoft-development-kit/support/kdk-in-a-box/kdk.local_rsa.pub ~/.ssh/authorized_keys \
+    && cp /khulnasoft-kdk/khulnasoft-development-kit/support/kdk-in-a-box/kdk.local_rsa.pub ~/.ssh/authorized_keys \
     && chmod 600 ~/.ssh/authorized_keys \
     && sudo mkdir -p /run/sshd \
     && sudo mv /etc/ssh /etc/ssh-bootstrap \
     && sudo mkdir /etc/ssh
 
-WORKDIR /gitlab-kdk/khulnasoft-development-kit
+WORKDIR /khulnasoft-kdk/khulnasoft-development-kit
 
-COPY --chmod=755 --chown=kdk:kdk ./install-config-kdk.sh /gitlab-kdk/khulnasoft-development-kit/install-config-kdk.sh
+COPY --chmod=755 --chown=kdk:kdk ./install-config-kdk.sh /khulnasoft-kdk/khulnasoft-development-kit/install-config-kdk.sh
 
 # Install and configure KDK
 RUN ./install-config-kdk.sh

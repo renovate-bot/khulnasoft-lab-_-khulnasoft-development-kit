@@ -5,7 +5,7 @@ description: |
   complex sentence structures with lots of commas.
 extends: existence
 message: "Use a comma before the last 'and' or 'or' in a list of four or more items."
-link: https://docs.gitlab.com/development/documentation/styleguide/#punctuation
+link: https://docs.khulnasoft.com/development/documentation/styleguide/#punctuation
 vocab: false
 level: warning
 raw:

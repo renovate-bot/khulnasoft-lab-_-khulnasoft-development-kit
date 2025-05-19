@@ -43,7 +43,7 @@ To run the `pre-push` Git hook, run:
 ### Troubleshooting: Vale not found error
 
 If you get the error `ERROR: Vale not found` when running Lefthook, you can
-[install it manually](https://docs.gitlab.com/ee/development/documentation/testing.html#install-linters).
+[install it manually](https://docs.khulnasoft.com/ee/development/documentation/testing.html#install-linters).
 
 ## Lefthook for KhulnaSoft
 
@@ -54,7 +54,7 @@ The [KhulnaSoft project](https://github.com/khulnasoft-lab/khulnasoft) also [sup
 To disable Lefthook for KhulnaSoft, run:
 
 ```shell
-kdk config set gitlab.lefthook_enabled false
+kdk config set khulnasoft.lefthook_enabled false
 ```
 
 This:

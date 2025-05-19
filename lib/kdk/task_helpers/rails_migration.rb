@@ -4,7 +4,7 @@ require 'forwardable'
 
 module KDK
   module TaskHelpers
-    # Class to work with database migrations on gitlab-rails
+    # Class to work with database migrations on khulnasoft-rails
     class RailsMigration
       extend Forwardable
 
@@ -36,12 +36,12 @@ module KDK
         str = tasks.join(' and ')
 
         KDK::Output.divider
-        KDK::Output.puts("Processing gitlab #{str} DB migrations")
+        KDK::Output.puts("Processing khulnasoft #{str} DB migrations")
         KDK::Output.divider
       end
 
       def rake(tasks)
-        KDK::Execute::Rake.new(*tasks).execute_in_gitlab.success?
+        KDK::Execute::Rake.new(*tasks).execute_in_khulnasoft.success?
       end
 
       def geo_secondary?

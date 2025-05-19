@@ -29,7 +29,7 @@ scrape_configs:
     scrape_interval: 5s
     static_configs:
       - targets: ['<%= config.hostname %>:<%= config.prometheus.praefect_exporter_port %>']
-  - job_name: 'gitlab-shell'
+  - job_name: 'khulnasoft-shell'
     scrape_interval: 5s
     static_configs:
       - targets: ['<%= config.hostname %>:<%= config.prometheus.khulnasoft_shell_exporter_port %>']
@@ -37,12 +37,12 @@ scrape_configs:
     scrape_interval: 5s
     static_configs:
       - targets: ['<%= config.hostname %>:<%= config.prometheus.workhorse_exporter_port %>']
-  - job_name: 'gitlab-sidekiq'
+  - job_name: 'khulnasoft-sidekiq'
     scrape_interval: 30s
     metrics_path: '/metrics'
     static_configs:
-      - targets: ['<%= config.hostname %>:<%= config.gitlab.rails_background_jobs.sidekiq_exporter_port %>']
-  - job_name: 'gitlab-ai-gateway'
+      - targets: ['<%= config.hostname %>:<%= config.khulnasoft.rails_background_jobs.sidekiq_exporter_port %>']
+  - job_name: 'khulnasoft-ai-gateway'
     scrape_interval: 5s
     metrics_path: '/metrics'
     static_configs:

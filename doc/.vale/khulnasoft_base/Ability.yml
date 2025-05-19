@@ -7,7 +7,7 @@ message: "Try to replace ('%s') with more precise language, unless this content 
 ignorecase: true
 vocab: false
 level: suggestion
-link: https://docs.gitlab.com/development/documentation/styleguide/word_list/#ability-able
+link: https://docs.khulnasoft.com/development/documentation/styleguide/word_list/#ability-able
 tokens:
   - ability to
   - ability

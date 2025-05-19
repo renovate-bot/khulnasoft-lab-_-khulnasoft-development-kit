@@ -61,9 +61,9 @@ class SetupWorkspace
   def configure_kdk
     new_values = {
       'listen_address' => @ip_address.to_s,
-      'gitlab.rails.hostname' => @url.to_s,
-      'gitlab.rails.https.enabled' => true,
-      'gitlab.rails.port' => 443,
+      'khulnasoft.rails.hostname' => @url.to_s,
+      'khulnasoft.rails.https.enabled' => true,
+      'khulnasoft.rails.port' => 443,
       'khulnasoft_shell.skip_setup' => true,
       'gitaly.skip_setup' => true,
       'vite.enabled' => true,

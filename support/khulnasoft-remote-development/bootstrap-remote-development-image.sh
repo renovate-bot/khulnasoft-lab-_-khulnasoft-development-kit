@@ -5,7 +5,7 @@ IFS=$'\n\t'
 
 clone_kdk() {
   echo "# --- Clone KDK ---"
-  sudo mkdir -p "${WORKSPACE_DIR_NAME}/gitlab"
+  sudo mkdir -p "${WORKSPACE_DIR_NAME}/khulnasoft"
   sudo chown -R ${WORKSPACE_USER}:${WORKSPACE_USER} "${WORKSPACE_DIR_NAME}"
   cd "${WORKSPACE_DIR_NAME}"
   git clone https://github.com/khulnasoft-lab/khulnasoft-development-kit.git
@@ -39,9 +39,9 @@ configure_rails() {
   echo "# --- Configure Rails settings ---"
   # Disable bootsnap as it can cause temporary/cache files to remain, resulting
   # in Docker image creation to fail.
-  kdk config set gitlab.rails.bootsnap false
-  kdk config set gitlab.rails.port 443
-  kdk config set gitlab.rails.https.enabled true
+  kdk config set khulnasoft.rails.bootsnap false
+  kdk config set khulnasoft.rails.port 443
+  kdk config set khulnasoft.rails.https.enabled true
 }
 
 configure_go_projects() {
@@ -57,8 +57,8 @@ install_kdk() {
   kdk stop || true
   KDK_KILL_CONFIRM=true kdk kill || true
   ps -ef || true
-  mv gitlab/config/secrets.yml .
-  rm -rf gitlab/ tmp/ || true
+  mv khulnasoft/config/secrets.yml .
+  rm -rf khulnasoft/ tmp/ || true
   git restore tmp
   sudo cp ./support/completions/kdk.bash "/etc/profile.d/90-kdk.sh"
   cd "${WORKSPACE_DIR_NAME}"
@@ -76,7 +76,7 @@ set_permissions() {
 
 cleanup() {
   echo "# --- Cleanup build caches ---"
-  # Logged issue https://gitlab.com/gitlab-org/gitaly/-/issues/5459 to provide make
+  # Logged issue https://khulnasoft.com/khulnasoft-org/gitaly/-/issues/5459 to provide make
   # target in Gitaly to clean this up reliably
   sudo rm -rf "${WORKSPACE_DIR_NAME}/khulnasoft-development-kit/gitaly/_build/deps/libgit2/source"
   sudo rm -rf "${WORKSPACE_DIR_NAME}/khulnasoft-development-kit/gitaly/_build/cache"

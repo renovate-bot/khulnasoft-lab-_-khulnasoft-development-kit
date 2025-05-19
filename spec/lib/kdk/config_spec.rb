@@ -151,10 +151,10 @@ RSpec.describe KDK::Config do
     end
 
     context 'when a relative_url_root is set' do
-      it 'returns http://kdk.example.com:3000/gitlab' do
-        yaml['relative_url_root'] = '/gitlab/'
+      it 'returns http://kdk.example.com:3000/khulnasoft' do
+        yaml['relative_url_root'] = '/khulnasoft/'
 
-        expect(config.__uri.to_s).to eq('http://kdk.example.com:3000/gitlab')
+        expect(config.__uri.to_s).to eq('http://kdk.example.com:3000/khulnasoft')
       end
     end
 
@@ -246,7 +246,7 @@ RSpec.describe KDK::Config do
 
   describe 'repositories' do
     describe 'khulnasoft_ui' do
-      it 'returns the gitlab-ui repository URL' do
+      it 'returns the khulnasoft-ui repository URL' do
         expect(config.repositories.khulnasoft_ui).to eq('https://github.com/khulnasoft-lab/khulnasoft-ui.git')
       end
     end
@@ -345,13 +345,13 @@ RSpec.describe KDK::Config do
     describe '#__log_file' do
       subject { config.sshd.__log_file }
 
-      context 'when gitlab-sshd is disabled' do
+      context 'when khulnasoft-sshd is disabled' do
         let(:use_khulnasoft_sshd) { false }
 
-        it { is_expected.to eq("#{config.khulnasoft_shell.dir}/gitlab-shell.log") }
+        it { is_expected.to eq("#{config.khulnasoft_shell.dir}/khulnasoft-shell.log") }
       end
 
-      context 'when gitlab-sshd is enabled' do
+      context 'when khulnasoft-sshd is enabled' do
         let(:use_khulnasoft_sshd) { true }
 
         it { is_expected.to eq('/dev/stdout') }
@@ -1062,8 +1062,8 @@ RSpec.describe KDK::Config do
     end
 
     describe '#image' do
-      it 'returns gitlab/gitlab-runner:latest' do
-        expect(config.runner.image).to eq('gitlab/gitlab-runner:latest')
+      it 'returns khulnasoft/khulnasoft-runner:latest' do
+        expect(config.runner.image).to eq('khulnasoft/khulnasoft-runner:latest')
       end
     end
 
@@ -1080,9 +1080,9 @@ RSpec.describe KDK::Config do
     end
 
     describe '#bin' do
-      it 'returns gitlab-runner' do
-        found = Utils.find_executable('gitlab-runner')
-        path = found || '/usr/local/bin/gitlab-runner'
+      it 'returns khulnasoft-runner' do
+        found = Utils.find_executable('khulnasoft-runner')
+        path = found || '/usr/local/bin/khulnasoft-runner'
         expect(config.runner.bin).to eq(Pathname.new(path))
       end
     end
@@ -1328,7 +1328,7 @@ RSpec.describe KDK::Config do
   describe 'license' do
     describe 'customer_portal_url' do
       it 'returns staging customer portal URL by default' do
-        expect(config.license.customer_portal_url).to eq('https://customers.staging.gitlab.com')
+        expect(config.license.customer_portal_url).to eq('https://customers.staging.khulnasoft.com')
       end
     end
 
@@ -1342,97 +1342,97 @@ RSpec.describe KDK::Config do
   describe 'khulnasoft' do
     describe 'auto_update' do
       it 'is enabled by default' do
-        expect(config.gitlab.auto_update).to be(true)
-        expect(config.gitlab.auto_update?).to be(true)
+        expect(config.khulnasoft.auto_update).to be(true)
+        expect(config.khulnasoft.auto_update?).to be(true)
       end
     end
 
     describe 'default_branch' do
       it 'is set to master by default' do
-        expect(config.gitlab.default_branch).to be('master')
+        expect(config.khulnasoft.default_branch).to be('master')
       end
     end
 
     describe 'lefthook_enabled' do
       it 'is enabled by default' do
-        expect(config.gitlab.lefthook_enabled?).to be(true)
+        expect(config.khulnasoft.lefthook_enabled?).to be(true)
       end
     end
 
     describe '#dir' do
       it 'returns the KhulnaSoft directory' do
-        expect(config.gitlab.dir).to eq(Pathname.new('/home/git/kdk/gitlab'))
+        expect(config.khulnasoft.dir).to eq(Pathname.new('/home/git/kdk/khulnasoft'))
       end
     end
 
     describe '#log_dir' do
       it 'returns the KhulnaSoft log directory' do
-        expect(config.gitlab.log_dir).to eq(Pathname.new('/home/git/kdk/gitlab/log'))
+        expect(config.khulnasoft.log_dir).to eq(Pathname.new('/home/git/kdk/khulnasoft/log'))
       end
     end
 
     describe '#cache_classes' do
       it 'returns if Ruby classes should be cached' do
-        expect(config.gitlab.cache_classes).to be(false)
+        expect(config.khulnasoft.cache_classes).to be(false)
       end
     end
 
     describe '#gitaly_disable_request_limits' do
       it 'returns if Gitaly request limit checks should be disabled' do
-        expect(config.gitlab.gitaly_disable_request_limits).to be(false)
+        expect(config.khulnasoft.gitaly_disable_request_limits).to be(false)
       end
     end
 
     describe 'rails' do
       describe '#hostname' do
         it 'returns kdk.example.com by default' do
-          expect(config.gitlab.rails.hostname).to eq('kdk.example.com')
+          expect(config.khulnasoft.rails.hostname).to eq('kdk.example.com')
         end
       end
 
       describe '#port' do
         it 'returns 3000 by default' do
-          expect(config.gitlab.rails.port).to eq(3000)
+          expect(config.khulnasoft.rails.port).to eq(3000)
         end
       end
 
       describe '#bootsnap' do
         it 'returns true by default' do
-          expect(config.gitlab.rails.bootsnap?).to be(true)
+          expect(config.khulnasoft.rails.bootsnap?).to be(true)
         end
       end
 
       context 'https' do
         describe '#enabled' do
           it 'returns false by default' do
-            expect(config.gitlab.rails.https.enabled).to be(false)
-            expect(config.gitlab.rails.https.enabled?).to be(false)
-            expect(config.gitlab.rails.https?).to be(false)
+            expect(config.khulnasoft.rails.https.enabled).to be(false)
+            expect(config.khulnasoft.rails.https.enabled?).to be(false)
+            expect(config.khulnasoft.rails.https?).to be(false)
           end
         end
       end
 
       describe '#__socket_file' do
         it 'returns the KhulnaSoft socket path' do
-          expect(config.gitlab.rails.__socket_file).to eq(Pathname.new('/home/git/kdk/gitlab.socket'))
+          expect(config.khulnasoft.rails.__socket_file).to eq(Pathname.new('/home/git/kdk/khulnasoft.socket'))
         end
       end
 
       describe '#__socket_file_escaped' do
         it 'returns the KhulnaSoft socket path CGI escaped' do
-          expect(config.gitlab.rails.__socket_file_escaped.to_s).to eq('%2Fhome%2Fgit%2Fkdk%2Fgitlab.socket')
+          expect(config.khulnasoft.rails.__socket_file_escaped.to_s).to eq('%2Fhome%2Fgit%2Fkdk%2Fkhulnasoft.socket')
         end
       end
 
       describe '#listen_settings' do
         it 'defaults to UNIX socket' do
-          expect(config.gitlab.rails.address).to eq('')
-          expect(config.gitlab.rails.__bind).to eq('unix:///home/git/kdk/gitlab.socket')
-          expect(config.gitlab.rails.__workhorse_url).to eq('/home/git/kdk/gitlab.socket')
-          expect(config.gitlab.rails.__listen_settings.__protocol).to eq('unix')
-          expect(config.gitlab.rails.__listen_settings.__address).to eq('/home/git/kdk/gitlab.socket')
+          expect(config.khulnasoft.rails.address).to eq('')
+          expect(config.khulnasoft.rails.__bind).to eq('unix:///home/git/kdk/khulnasoft.socket')
+          expect(config.khulnasoft.rails.__workhorse_url).to eq('/home/git/kdk/khulnasoft.socket')
+          expect(config.khulnasoft.rails.__listen_settings.__protocol).to eq('unix')
+          expect(config.khulnasoft.rails.__listen_settings.__address).to eq('/home/git/kdk/khulnasoft.socket')
           expect(config.workhorse.__listen_settings.__type).to eq('authSocket')
-          expect(config.workhorse.__listen_settings.__address).to eq('/home/git/kdk/gitlab.socket')
+          expect(config.workhorse.__listen_settings.__address).to eq('/home/git/kdk/khulnasoft.socket')
         end
       end
 
@@ -1446,25 +1446,25 @@ RSpec.describe KDK::Config do
         end
 
         it 'sets listen_settings to HTTP port' do
-          expect(config.gitlab.rails.address).to eq('localhost:3443')
-          expect(config.gitlab.rails.__bind).to eq('tcp://localhost:3443')
-          expect(config.gitlab.rails.__workhorse_url).to eq('http://localhost:3443')
-          expect(config.gitlab.rails.__listen_settings.__protocol).to eq('tcp')
-          expect(config.gitlab.rails.__listen_settings.__address).to eq('localhost:3443')
+          expect(config.khulnasoft.rails.address).to eq('localhost:3443')
+          expect(config.khulnasoft.rails.__bind).to eq('tcp://localhost:3443')
+          expect(config.khulnasoft.rails.__workhorse_url).to eq('http://localhost:3443')
+          expect(config.khulnasoft.rails.__listen_settings.__protocol).to eq('tcp')
+          expect(config.khulnasoft.rails.__listen_settings.__address).to eq('localhost:3443')
           expect(config.workhorse.__listen_settings.__type).to eq('authBackend')
           expect(config.workhorse.__listen_settings.__address).to eq('http://localhost:3443')
         end
       end
 
       describe 'bundle_gemfile' do
-        it 'is /home/git/kdk/gitlab/Gemfile by default' do
-          expect(config.gitlab.rails.bundle_gemfile).to eq('/home/git/kdk/gitlab/Gemfile')
+        it 'is /home/git/kdk/khulnasoft/Gemfile by default' do
+          expect(config.khulnasoft.rails.bundle_gemfile).to eq('/home/git/kdk/khulnasoft/Gemfile')
         end
       end
 
       describe 'multiple_databases' do
         it 'is disabled by default' do
-          expect(config.gitlab.rails.multiple_databases).to be(false)
+          expect(config.khulnasoft.rails.multiple_databases).to be(false)
         end
       end
 
@@ -1472,22 +1472,22 @@ RSpec.describe KDK::Config do
         describe 'ci' do
           describe 'enabled' do
             it 'is enabled by default' do
-              expect(config.gitlab.rails.databases.ci.enabled).to be(true)
+              expect(config.khulnasoft.rails.databases.ci.enabled).to be(true)
             end
           end
 
           describe 'use_main_database' do
             it 'is disabled by default' do
-              expect(config.gitlab.rails.databases.ci.use_main_database).to be(false)
+              expect(config.khulnasoft.rails.databases.ci.use_main_database).to be(false)
             end
           end
 
           describe '__enabled' do
             it 'is enabled by default' do
-              expect(config.gitlab.rails.databases.ci.__enabled).to be(true)
+              expect(config.khulnasoft.rails.databases.ci.__enabled).to be(true)
             end
 
-            context 'when config.gitlab.rails.multiple_databases is true' do
+            context 'when config.khulnasoft.rails.multiple_databases is true' do
               before do
                 yaml['khulnasoft'] = {
                   'rails' => {
@@ -1497,11 +1497,11 @@ RSpec.describe KDK::Config do
               end
 
               it 'is enabled' do
-                expect(config.gitlab.rails.databases.ci.__enabled).to be(true)
+                expect(config.khulnasoft.rails.databases.ci.__enabled).to be(true)
               end
             end
 
-            context 'when config.gitlab.rails.databases.ci.enabled is true' do
+            context 'when config.khulnasoft.rails.databases.ci.enabled is true' do
               before do
                 yaml['khulnasoft'] = {
                   'rails' => {
@@ -1515,11 +1515,11 @@ RSpec.describe KDK::Config do
               end
 
               it 'is enabled' do
-                expect(config.gitlab.rails.databases.ci.__enabled).to be(true)
+                expect(config.khulnasoft.rails.databases.ci.__enabled).to be(true)
               end
             end
 
-            context 'when config.gitlab.rails.databases.ci.enabled is false' do
+            context 'when config.khulnasoft.rails.databases.ci.enabled is false' do
               before do
                 yaml['khulnasoft'] = {
                   'rails' => {
@@ -1533,17 +1533,17 @@ RSpec.describe KDK::Config do
               end
 
               it 'is disabled' do
-                expect(config.gitlab.rails.databases.ci.__enabled).to be(false)
+                expect(config.khulnasoft.rails.databases.ci.__enabled).to be(false)
               end
             end
           end
 
           describe '__use_main_database' do
             it 'is disabled by default' do
-              expect(config.gitlab.rails.databases.ci.__use_main_database).to be(false)
+              expect(config.khulnasoft.rails.databases.ci.__use_main_database).to be(false)
             end
 
-            context 'when config.gitlab.rails.multiple_databases is true' do
+            context 'when config.khulnasoft.rails.multiple_databases is true' do
               before do
                 yaml['khulnasoft'] = {
                   'rails' => {
@@ -1553,11 +1553,11 @@ RSpec.describe KDK::Config do
               end
 
               it 'is disabled' do
-                expect(config.gitlab.rails.databases.ci.__use_main_database).to be(false)
+                expect(config.khulnasoft.rails.databases.ci.__use_main_database).to be(false)
               end
             end
 
-            context 'when config.gitlab.rails.databases.ci.enabled is true' do
+            context 'when config.khulnasoft.rails.databases.ci.enabled is true' do
               before do
                 yaml['khulnasoft'] = {
                   'rails' => {
@@ -1571,11 +1571,11 @@ RSpec.describe KDK::Config do
               end
 
               it 'is enabled' do
-                expect(config.gitlab.rails.databases.ci.__enabled).to be(true)
+                expect(config.khulnasoft.rails.databases.ci.__enabled).to be(true)
               end
             end
 
-            context 'when config.gitlab.rails.databases.ci.enabled is false' do
+            context 'when config.khulnasoft.rails.databases.ci.enabled is false' do
               before do
                 yaml['khulnasoft'] = {
                   'rails' => {
@@ -1589,7 +1589,7 @@ RSpec.describe KDK::Config do
               end
 
               it 'is disabled' do
-                expect(config.gitlab.rails.databases.ci.__enabled).to be(false)
+                expect(config.khulnasoft.rails.databases.ci.__enabled).to be(false)
               end
             end
           end
@@ -1598,22 +1598,22 @@ RSpec.describe KDK::Config do
         describe 'sec' do
           describe 'enabled' do
             it 'is disabled by default' do
-              expect(config.gitlab.rails.databases.sec.enabled).to be(false)
+              expect(config.khulnasoft.rails.databases.sec.enabled).to be(false)
             end
           end
 
           describe 'use_main_database' do
             it 'is enabled by default' do
-              expect(config.gitlab.rails.databases.sec.use_main_database).to be(true)
+              expect(config.khulnasoft.rails.databases.sec.use_main_database).to be(true)
             end
           end
 
           describe '__enabled' do
             it 'is disabled by default' do
-              expect(config.gitlab.rails.databases.sec.__enabled).to be(false)
+              expect(config.khulnasoft.rails.databases.sec.__enabled).to be(false)
             end
 
-            context 'when config.gitlab.rails.multiple_databases is true' do
+            context 'when config.khulnasoft.rails.multiple_databases is true' do
               before do
                 yaml['khulnasoft'] = {
                   'rails' => {
@@ -1623,11 +1623,11 @@ RSpec.describe KDK::Config do
               end
 
               it 'is enabled' do
-                expect(config.gitlab.rails.databases.sec.__enabled).to be(true)
+                expect(config.khulnasoft.rails.databases.sec.__enabled).to be(true)
               end
             end
 
-            context 'when config.gitlab.rails.databases.sec.enabled is true' do
+            context 'when config.khulnasoft.rails.databases.sec.enabled is true' do
               before do
                 yaml['khulnasoft'] = {
                   'rails' => {
@@ -1641,11 +1641,11 @@ RSpec.describe KDK::Config do
               end
 
               it 'is enabled' do
-                expect(config.gitlab.rails.databases.sec.__enabled).to be(true)
+                expect(config.khulnasoft.rails.databases.sec.__enabled).to be(true)
               end
             end
 
-            context 'when config.gitlab.rails.databases.sec.enabled is false' do
+            context 'when config.khulnasoft.rails.databases.sec.enabled is false' do
               before do
                 yaml['khulnasoft'] = {
                   'rails' => {
@@ -1659,17 +1659,17 @@ RSpec.describe KDK::Config do
               end
 
               it 'is disabled' do
-                expect(config.gitlab.rails.databases.sec.__enabled).to be(false)
+                expect(config.khulnasoft.rails.databases.sec.__enabled).to be(false)
               end
             end
           end
 
           describe '__use_main_database' do
             it 'is enabled by default' do
-              expect(config.gitlab.rails.databases.sec.__use_main_database).to be(true)
+              expect(config.khulnasoft.rails.databases.sec.__use_main_database).to be(true)
             end
 
-            context 'when config.gitlab.rails.multiple_databases is true' do
+            context 'when config.khulnasoft.rails.multiple_databases is true' do
               before do
                 yaml['khulnasoft'] = {
                   'rails' => {
@@ -1679,11 +1679,11 @@ RSpec.describe KDK::Config do
               end
 
               it 'is enabled' do
-                expect(config.gitlab.rails.databases.sec.__use_main_database).to be(true)
+                expect(config.khulnasoft.rails.databases.sec.__use_main_database).to be(true)
               end
             end
 
-            context 'when config.gitlab.rails.databases.sec.enabled is true' do
+            context 'when config.khulnasoft.rails.databases.sec.enabled is true' do
               before do
                 yaml['khulnasoft'] = {
                   'rails' => {
@@ -1697,11 +1697,11 @@ RSpec.describe KDK::Config do
               end
 
               it 'is enabled' do
-                expect(config.gitlab.rails.databases.sec.__enabled).to be(true)
+                expect(config.khulnasoft.rails.databases.sec.__enabled).to be(true)
               end
             end
 
-            context 'when config.gitlab.rails.databases.sec.enabled is false' do
+            context 'when config.khulnasoft.rails.databases.sec.enabled is false' do
               before do
                 yaml['khulnasoft'] = {
                   'rails' => {
@@ -1715,7 +1715,7 @@ RSpec.describe KDK::Config do
               end
 
               it 'is disabled' do
-                expect(config.gitlab.rails.databases.sec.__enabled).to be(false)
+                expect(config.khulnasoft.rails.databases.sec.__enabled).to be(false)
               end
             end
           end
@@ -1725,13 +1725,13 @@ RSpec.describe KDK::Config do
       describe 'topology_service' do
         describe '#enabled' do
           it 'defaults to true' do
-            expect(config.gitlab.topology_service.enabled).to be(true)
+            expect(config.khulnasoft.topology_service.enabled).to be(true)
           end
         end
 
         describe '#address' do
           it 'defaults to the localhost:grpc_port' do
-            expect(config.gitlab.topology_service.address).to eq("kdk.example.com:9095")
+            expect(config.khulnasoft.topology_service.address).to eq("kdk.example.com:9095")
           end
         end
 
@@ -1739,9 +1739,9 @@ RSpec.describe KDK::Config do
           let(:certs_directory) { "/home/git/kdk/khulnasoft-topology-service/tmp/certs" }
 
           it 'they default to the certificate files in the temp directory' do
-            expect(config.gitlab.topology_service.ca_file).to eq(Pathname.new(File.join(certs_directory, "ca-cert.pem")))
-            expect(config.gitlab.topology_service.certificate_file).to eq(Pathname.new(File.join(certs_directory, "client-cert.pem")))
-            expect(config.gitlab.topology_service.private_key_file).to eq(Pathname.new(File.join(certs_directory, "client-key.pem")))
+            expect(config.khulnasoft.topology_service.ca_file).to eq(Pathname.new(File.join(certs_directory, "ca-cert.pem")))
+            expect(config.khulnasoft.topology_service.certificate_file).to eq(Pathname.new(File.join(certs_directory, "client-cert.pem")))
+            expect(config.khulnasoft.topology_service.private_key_file).to eq(Pathname.new(File.join(certs_directory, "client-key.pem")))
           end
         end
       end
@@ -1749,7 +1749,7 @@ RSpec.describe KDK::Config do
       describe 'cell' do
         describe '#cell_id' do
           it 'defaults to 1' do
-            expect(config.gitlab.cell.id).to eq(1)
+            expect(config.khulnasoft.cell.id).to eq(1)
           end
         end
       end
@@ -1757,7 +1757,7 @@ RSpec.describe KDK::Config do
       describe 'puma' do
         describe 'threads_min' do
           it 'is 1 by default' do
-            expect(config.gitlab.rails.puma.threads_min).to be(1)
+            expect(config.khulnasoft.rails.puma.threads_min).to be(1)
           end
         end
 
@@ -1774,7 +1774,7 @@ RSpec.describe KDK::Config do
             end
 
             it 'is 1 by default' do
-              expect(config.gitlab.rails.puma.__threads_min).to be(1)
+              expect(config.khulnasoft.rails.puma.__threads_min).to be(1)
             end
           end
 
@@ -1790,14 +1790,14 @@ RSpec.describe KDK::Config do
             end
 
             it 'is equal to threads_max' do
-              expect(config.gitlab.rails.puma.__threads_min).to be(config.gitlab.rails.puma.threads_max)
+              expect(config.khulnasoft.rails.puma.__threads_min).to be(config.khulnasoft.rails.puma.threads_max)
             end
           end
         end
 
         describe 'threads_max' do
           it 'is 4 by default' do
-            expect(config.gitlab.rails.puma.threads_max).to be(4)
+            expect(config.khulnasoft.rails.puma.threads_max).to be(4)
           end
         end
 
@@ -1819,7 +1819,7 @@ RSpec.describe KDK::Config do
             let(:threads_max) { 3 }
 
             it 'is equal to threads_max' do
-              expect(config.gitlab.rails.puma.__threads_max).to be(config.gitlab.rails.puma.threads_max)
+              expect(config.khulnasoft.rails.puma.__threads_max).to be(config.khulnasoft.rails.puma.threads_max)
             end
           end
 
@@ -1827,27 +1827,27 @@ RSpec.describe KDK::Config do
             let(:threads_max) { 1 }
 
             it 'is equal to threads_min' do
-              expect(config.gitlab.rails.puma.__threads_max).to be(config.gitlab.rails.puma.threads_min)
+              expect(config.khulnasoft.rails.puma.__threads_max).to be(config.khulnasoft.rails.puma.threads_min)
             end
           end
         end
 
         describe 'workers' do
           it 'is 2 by default' do
-            expect(config.gitlab.rails.puma.workers).to be(2)
+            expect(config.khulnasoft.rails.puma.workers).to be(2)
           end
         end
       end
 
       describe '#allowed_hosts' do
         it 'returns empty array by default' do
-          expect(config.gitlab.rails.allowed_hosts).to eq([])
+          expect(config.khulnasoft.rails.allowed_hosts).to eq([])
         end
       end
 
       describe '#application_settings_cache_seconds' do
         it 'defaults to 60' do
-          expect(config.gitlab.rails.application_settings_cache_seconds).to be(60)
+          expect(config.khulnasoft.rails.application_settings_cache_seconds).to be(60)
         end
       end
     end
@@ -1855,13 +1855,13 @@ RSpec.describe KDK::Config do
     describe 'rails_background_jobs' do
       describe 'verbose' do
         it 'is disabled by default' do
-          expect(config.gitlab.rails_background_jobs.verbose?).to be(false)
+          expect(config.khulnasoft.rails_background_jobs.verbose?).to be(false)
         end
       end
 
       describe 'timeout' do
         it 'is 10 (half of config.kdk.runit_wait_secs) by default' do
-          expect(config.gitlab.rails_background_jobs.timeout).to be(10)
+          expect(config.khulnasoft.rails_background_jobs.timeout).to be(10)
         end
 
         context 'when customized' do
@@ -1874,38 +1874,38 @@ RSpec.describe KDK::Config do
           end
 
           it 'is equal to 5' do
-            expect(config.gitlab.rails_background_jobs.timeout).to be(5)
+            expect(config.khulnasoft.rails_background_jobs.timeout).to be(5)
           end
         end
       end
 
       describe '#sidekiq_exporter_enabled' do
         it 'defaults to false' do
-          expect(config.gitlab.rails_background_jobs.sidekiq_exporter_enabled).to be(false)
+          expect(config.khulnasoft.rails_background_jobs.sidekiq_exporter_enabled).to be(false)
         end
       end
 
       describe '#sidekiq_exporter_port' do
         it 'defaults to 3807' do
-          expect(config.gitlab.rails_background_jobs.sidekiq_exporter_port).to eq(3807)
+          expect(config.khulnasoft.rails_background_jobs.sidekiq_exporter_port).to eq(3807)
         end
       end
 
       describe '#sidekiq_health_check_enabled' do
         it 'defaults to false' do
-          expect(config.gitlab.rails_background_jobs.sidekiq_health_check_enabled).to be(false)
+          expect(config.khulnasoft.rails_background_jobs.sidekiq_health_check_enabled).to be(false)
         end
       end
 
       describe '#sidekiq_health_check_port' do
         it 'defaults to 3907' do
-          expect(config.gitlab.rails_background_jobs.sidekiq_health_check_port).to eq(3907)
+          expect(config.khulnasoft.rails_background_jobs.sidekiq_health_check_port).to eq(3907)
         end
       end
 
       describe '#sidekiq_routing_rules' do
         it 'defaults to routing all to the default queue' do
-          expect(config.gitlab.rails_background_jobs.sidekiq_routing_rules).to eq([["*", "default"]])
+          expect(config.khulnasoft.rails_background_jobs.sidekiq_routing_rules).to eq([["*", "default"]])
         end
       end
     end
@@ -2181,13 +2181,13 @@ RSpec.describe KDK::Config do
     describe '__websocket_token_secret_file' do
       subject { config.khulnasoft_k8s_agent.__websocket_token_secret_file }
 
-      it { is_expected.to eq '/home/git/kdk/gitlab-kas-websocket-token-secret' }
+      it { is_expected.to eq '/home/git/kdk/khulnasoft-kas-websocket-token-secret' }
     end
 
     describe '__autoflow_temporal_workflow_data_encryption_secret_file' do
       subject { config.khulnasoft_k8s_agent.autoflow.temporal.workflow_data_encryption.__secret_key_file }
 
-      it { is_expected.to eq '/home/git/kdk/gitlab-kas-autoflow-temporal-workflow-data-encryption-secret' }
+      it { is_expected.to eq '/home/git/kdk/khulnasoft-kas-autoflow-temporal-workflow-data-encryption-secret' }
     end
 
     describe 'tracing' do
@@ -2260,7 +2260,7 @@ RSpec.describe KDK::Config do
           '\.git/git-receive-pack$',
           '\.git/ssh-upload-pack$',
           '\.git/ssh-receive-pack$',
-          '\.git/gitlab-lfs/objects',
+          '\.git/khulnasoft-lfs/objects',
           '\.git/info/lfs/objects/batch$'
         ]
 
@@ -2305,7 +2305,7 @@ RSpec.describe KDK::Config do
   describe 'khulnasoft_elasticsearch_indexer' do
     describe '#__dir' do
       it 'returns the KhulnaSoft directory' do
-        expect(config.khulnasoft_elasticsearch_indexer.__dir).to eq(Pathname.new('/home/git/kdk/gitlab-elasticsearch-indexer'))
+        expect(config.khulnasoft_elasticsearch_indexer.__dir).to eq(Pathname.new('/home/git/kdk/khulnasoft-elasticsearch-indexer'))
       end
     end
   end
@@ -2469,7 +2469,7 @@ RSpec.describe KDK::Config do
     describe '#version' do
       context 'when no version is specified' do
         it 'returns the default version' do
-          expect(config.registry.version).to eq('v4.14.0-gitlab')
+          expect(config.registry.version).to eq('v4.14.0-khulnasoft')
         end
       end
     end
@@ -3134,7 +3134,7 @@ RSpec.describe KDK::Config do
     describe '#update_hooks' do
       describe '#before' do
         it 'has spring stop || true hook by default' do
-          expect(config.kdk.update_hooks.before).to eq(['support/exec-cd gitlab bin/spring stop || true'])
+          expect(config.kdk.update_hooks.before).to eq(['support/exec-cd khulnasoft bin/spring stop || true'])
         end
 
         context 'with custom hooks defined' do
@@ -3143,7 +3143,7 @@ RSpec.describe KDK::Config do
           end
 
           it 'has spring stop || true hook and then our hooks also' do
-            expect(config.kdk.update_hooks.before).to eq(['uptime', 'support/exec-cd gitlab bin/spring stop || true'])
+            expect(config.kdk.update_hooks.before).to eq(['uptime', 'support/exec-cd khulnasoft bin/spring stop || true'])
           end
         end
       end
@@ -3308,34 +3308,34 @@ RSpec.describe KDK::Config do
       end
     end
 
-    describe 'omnibus_gitlab' do
+    describe 'omnibus_khulnasoft' do
       describe 'enabled' do
         it 'is disabled by default' do
-          expect(config.omnibus_gitlab.enabled).to be(false)
-          expect(config.omnibus_gitlab.enabled?).to be(false)
+          expect(config.omnibus_khulnasoft.enabled).to be(false)
+          expect(config.omnibus_khulnasoft.enabled?).to be(false)
         end
       end
 
       describe 'auto_update' do
         it 'is enabled by default' do
-          expect(config.omnibus_gitlab.auto_update).to be(true)
-          expect(config.omnibus_gitlab.auto_update?).to be(true)
+          expect(config.omnibus_khulnasoft.auto_update).to be(true)
+          expect(config.omnibus_khulnasoft.auto_update?).to be(true)
         end
       end
     end
 
-    describe 'charts_gitlab' do
+    describe 'charts_khulnasoft' do
       describe 'enabled' do
         it 'is disabled by default' do
-          expect(config.charts_gitlab.enabled).to be(false)
-          expect(config.charts_gitlab.enabled?).to be(false)
+          expect(config.charts_khulnasoft.enabled).to be(false)
+          expect(config.charts_khulnasoft.enabled?).to be(false)
         end
       end
 
       describe 'auto_update' do
         it 'is enabled by default' do
-          expect(config.charts_gitlab.auto_update).to be(true)
-          expect(config.charts_gitlab.auto_update?).to be(true)
+          expect(config.charts_khulnasoft.auto_update).to be(true)
+          expect(config.charts_khulnasoft.auto_update?).to be(true)
         end
       end
     end
@@ -3509,8 +3509,8 @@ RSpec.describe KDK::Config do
     end
 
     describe '#__service_command' do
-      it "is 'support/exec-cd gitlab-ai-gateway poetry run ai_gateway'" do
-        expect(config.khulnasoft_ai_gateway.__service_command).to eq('support/exec-cd gitlab-ai-gateway poetry run ai_gateway')
+      it "is 'support/exec-cd khulnasoft-ai-gateway poetry run ai_gateway'" do
+        expect(config.khulnasoft_ai_gateway.__service_command).to eq('support/exec-cd khulnasoft-ai-gateway poetry run ai_gateway')
       end
     end
   end
@@ -3564,9 +3564,9 @@ RSpec.describe KDK::Config do
       let(:certs_directory) { "/home/git/kdk/khulnasoft-topology-service/tmp/certs" }
 
       it 'they default to the certificate files in the temp directory' do
-        expect(config.gitlab.topology_service.ca_file).to eq(Pathname.new(File.join(certs_directory, "ca-cert.pem")))
-        expect(config.gitlab.topology_service.certificate_file).to eq(Pathname.new(File.join(certs_directory, "client-cert.pem")))
-        expect(config.gitlab.topology_service.private_key_file).to eq(Pathname.new(File.join(certs_directory, "client-key.pem")))
+        expect(config.khulnasoft.topology_service.ca_file).to eq(Pathname.new(File.join(certs_directory, "ca-cert.pem")))
+        expect(config.khulnasoft.topology_service.certificate_file).to eq(Pathname.new(File.join(certs_directory, "client-cert.pem")))
+        expect(config.khulnasoft.topology_service.private_key_file).to eq(Pathname.new(File.join(certs_directory, "client-key.pem")))
       end
     end
   end

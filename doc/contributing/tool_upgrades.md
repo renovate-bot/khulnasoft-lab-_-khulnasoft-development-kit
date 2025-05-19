@@ -17,7 +17,7 @@ The approach described here:
 To update the default PostgreSQL:
 
 1. Run initial tests with a scheduled pipeline:
-   1. Set the `TARGET_POSTGRES_VERSION` in [`_versions.gitlab-ci.yaml`](https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/master/.gitlab/ci/_versions.gitlab-ci.yml).
+   1. Set the `TARGET_POSTGRES_VERSION` in [`_versions.khulnasoft-ci.yaml`](https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/master/.khulnasoft/ci/_versions.khulnasoft-ci.yml).
       
       This enables a nightly scheduled pipeline that:
       - Replaces the current PostgreSQL version with the target version.
@@ -48,13 +48,13 @@ To update the default PostgreSQL:
    - [Add 16.8 to KhulnaSoft](https://github.com/khulnasoft-lab/khulnasoft/-/merge_requests/185192)
 
 1. Verify installation:
-   1. Monitor for [installation issues reported by users](https://dashboards.quality.gitlab.net/d/feiggichlw64gf/kdk-command-failure-rates?var-time_interval=1h&orgId=1&from=now-2d&to=now&timezone=browser&var-commands=rake%20update:tool-versions).
+   1. Monitor for [installation issues reported by users](https://dashboards.quality.khulnasoft.net/d/feiggichlw64gf/kdk-command-failure-rates?var-time_interval=1h&orgId=1&from=now-2d&to=now&timezone=browser&var-commands=rake%20update:tool-versions).
    1. Address platform-specific installation problems, particularly macOS and Linux differences.
    1. Update installation scripts and documentation to resolve common issues.
 
 1. Fully deploy the change:
    1. Once installation stability is confirmed, update `.tool-versions` to set the new version as default.
-   1. Move the new version to the [first position in the version list](https://dashboards.quality.gitlab.net/d/feiggichlw64gf/kdk-command-failure-rates?var-time_interval=1h&orgId=1&from=now-7d&to=now&timezone=browser&var-commands=rake%20update:tool-versions&var-commands=rake%20preflight-update-checks&var-commands=rake%20gitlab-db-migrate).
+   1. Move the new version to the [first position in the version list](https://dashboards.quality.khulnasoft.net/d/feiggichlw64gf/kdk-command-failure-rates?var-time_interval=1h&orgId=1&from=now-7d&to=now&timezone=browser&var-commands=rake%20update:tool-versions&var-commands=rake%20preflight-update-checks&var-commands=rake%20khulnasoft-db-migrate).
    - Communicate the change to all developers through appropriate channels.
    - Provide guidance on handling any post-upgrade issues that may arise.
    

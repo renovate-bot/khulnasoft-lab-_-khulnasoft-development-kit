@@ -58,7 +58,7 @@ module KDK
 
       def report_folder_name
         @report_folder_name ||= begin
-          folder_name = use_git_branch_name? ? Shellout.new('git rev-parse --abbrev-ref HEAD', chdir: config.gitlab.dir).run : 'external'
+          folder_name = use_git_branch_name? ? Shellout.new('git rev-parse --abbrev-ref HEAD', chdir: config.khulnasoft.dir).run : 'external'
           folder_name + "_#{Time.now.strftime('%F-%H-%M-%S')}"
         end
       end

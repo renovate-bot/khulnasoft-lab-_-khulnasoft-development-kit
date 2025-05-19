@@ -15,14 +15,14 @@ This means that the databases cannot be seen with `psql -l`, but you can use the
 to access the KDK databases:
 
 ```shell
-# Connect to the default gitlabhq_development database
+# Connect to the default khulnasofthq_development database
 kdk psql
 
 # List all databases
 kdk psql -l
 
 # Connect to a different database
-kdk psql -d gitlabhq_test
+kdk psql -d khulnasofthq_test
 
 # Show all options
 kdk psql --help
@@ -44,9 +44,9 @@ bundle exec rails dbconsole -e test
 
 To access the database using a [GUI SQL client](https://wiki.postgresql.org/wiki/PostgreSQL_Clients), provide the following information:
 
-- Host name: path to data file (for example, `khulnasoft-development-kit/postgresql`) or `localhost` (see the [instructions](https://docs.gitlab.com/ee/development/database/database_debugging.html#access-the-database-with-a-gui) for switching to `localhost`)
+- Host name: path to data file (for example, `khulnasoft-development-kit/postgresql`) or `localhost` (see the [instructions](https://docs.khulnasoft.com/ee/development/database/database_debugging.html#access-the-database-with-a-gui) for switching to `localhost`)
 - Database port: for example, `5432`
-- Database name: for example, `gitlabhq_development` or `gitlabhq_test`
+- Database name: for example, `khulnasofthq_development` or `khulnasofthq_test`
 - Username and Password should be left blank
 
 The CLI client is generally more capable. Not all GUI clients support a blank username.
@@ -97,7 +97,7 @@ version:
    kdk start db
 
    # Create a backup of the current contents of the KDK database
-   pg_dumpall -l gitlabhq_development -h "$PWD/postgresql"  -p 5432 > db_backup
+   pg_dumpall -l khulnasofthq_development -h "$PWD/postgresql"  -p 5432 > db_backup
 
    kdk stop db
    ```
@@ -159,14 +159,14 @@ If you have replication configured, after you have upgraded the primary database
 ## Access Geo Secondary Database
 
 ```shell
-# Connect to the default gitlabhq_geo_development database
+# Connect to the default khulnasofthq_geo_development database
 kdk psql-geo
 
 # List all databases
 kdk psql-geo -l
 
 # Connect to a different database
-kdk psql-geo -d gitlabhq_geo_test
+kdk psql-geo -d khulnasofthq_geo_test
 
 # Show all options
 kdk psql-geo --help

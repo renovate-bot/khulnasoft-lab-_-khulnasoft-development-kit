@@ -16,7 +16,7 @@ module KDK
       def continue?
         KDK::Output.warn('About to perform the following actions:')
         KDK::Output.puts(stderr: true)
-        KDK::Output.puts('- Truncate gitlab/log/* files', stderr: true)
+        KDK::Output.puts('- Truncate khulnasoft/log/* files', stderr: true)
         KDK::Output.puts("- Truncate #{KDK::Services::KhulnasoftHttpRouter::LOG_PATH} file", stderr: true)
 
         if unnecessary_installed_versions_of_software.any?
@@ -54,11 +54,11 @@ module KDK
       end
 
       def truncate_log_files
-        run_rake('gitlab:truncate_logs', 'false')
+        run_rake('khulnasoft:truncate_logs', 'false')
       end
 
       def truncate_http_router_log_files
-        run_rake('gitlab:truncate_http_router_logs', 'false')
+        run_rake('khulnasoft:truncate_http_router_logs', 'false')
       end
 
       def unnecessary_installed_versions_of_software

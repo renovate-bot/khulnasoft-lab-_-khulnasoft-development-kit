@@ -20,8 +20,8 @@ COPY --from=vale-source /bin/vale /usr/bin/vale
 # --- Install KhulnaSoft Runner
 # KDK doesn't install it, but it is needed for running pipelines
 # https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/blob/master/doc/howto/runner.md
-RUN curl -L https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh | sudo bash
-RUN sudo apt-get install gitlab-runner -y
+RUN curl -L https://packages.khulnasoft.com/install/repositories/runner/khulnasoft-runner/script.deb.sh | sudo bash
+RUN sudo apt-get install khulnasoft-runner -y
 
 # --- Install KDK with dependencies
 COPY --chown=gitpod bootstrap-gitpod-image.sh /tmp
@@ -29,6 +29,6 @@ RUN bash /tmp/bootstrap-gitpod-image.sh
 RUN rm -rf ${HOME}/khulnasoft-development-kit/khulnasoft
 
 # Setup gitpod related startup scripts
-COPY --chown=gitpod 91-gitlab-env /home/gitpod/.bashrc.d/
+COPY --chown=gitpod 91-khulnasoft-env /home/gitpod/.bashrc.d/
 # these are used in KhulnaSoft's `.gitpod.yml`
 COPY --chown=gitpod startup-scripts /home/gitpod/

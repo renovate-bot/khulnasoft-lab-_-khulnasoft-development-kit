@@ -2,7 +2,7 @@
 title: Enabling Git push options
 ---
 
-To support Git [push options](https://docs.gitlab.com/ee/user/project/push_options.html)
+To support Git [push options](https://docs.khulnasoft.com/ee/user/project/push_options.html)
 with KDK, run the following command:
 
 ```shell

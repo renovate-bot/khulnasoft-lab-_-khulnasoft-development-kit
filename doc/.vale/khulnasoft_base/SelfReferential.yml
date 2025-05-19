@@ -8,6 +8,6 @@ ignorecase: true
 nonword: true
 vocab: false
 level: warning
-link: https://docs.gitlab.com/development/documentation/styleguide/#self-referential-writing
+link: https://docs.khulnasoft.com/development/documentation/styleguide/#self-referential-writing
 tokens:
   - This (page|guide) (builds|contains|covers|describes|documents|explains|guides|lists|offers|provides|shows)

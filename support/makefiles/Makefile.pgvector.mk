@@ -74,6 +74,6 @@ pgvector-clean:
 pgvector/.git/pull: pgvector/.git
 	@echo
 	@echo "${DIVIDER}"
-	@echo "Updating gitlab-org/pgvector"
+	@echo "Updating khulnasoft-org/pgvector"
 	@echo "${DIVIDER}"
 	$(Q)support/component-git-update pgvector pgvector "${pgvector_version}" main

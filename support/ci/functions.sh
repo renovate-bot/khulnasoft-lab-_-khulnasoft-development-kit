@@ -50,7 +50,7 @@ checkout() {
 }
 
 set_khulnasoft_upstream() {
-  cd_into_checkout_path "gitlab"
+  cd_into_checkout_path "khulnasoft"
 
   local remote_name
   local default_branch
@@ -201,8 +201,8 @@ setup_geo() {
   fi
 
   cd ..
-  KHULNASOFT_LICENSE_MODE=test CUSTOMER_PORTAL_URL="https://customers.staging.gitlab.com" kdk/support/geo-install kdk kdk2 "${sha}"
-  output=$(cd kdk2/gitlab && bin/rake gitlab:geo:check)
+  KHULNASOFT_LICENSE_MODE=test CUSTOMER_PORTAL_URL="https://customers.staging.khulnasoft.com" kdk/support/geo-install kdk kdk2 "${sha}"
+  output=$(cd kdk2/khulnasoft && bin/rake khulnasoft:geo:check)
 
   matchers=(
     "KhulnaSoft Geo is enabled ... yes"

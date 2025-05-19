@@ -14,7 +14,7 @@ module KDK
 
         <<~CHROME_DRIVER_INSTALLED
           You have chromedriver installed via homebrew.
-          The gitlab project utilizes selenium-manager to manage Google Chrome
+          The khulnasoft project utilizes selenium-manager to manage Google Chrome
           and chromedriver versions. You may uninstall it with:
 
             brew uninstall chromedriver

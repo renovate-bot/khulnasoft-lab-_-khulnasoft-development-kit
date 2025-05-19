@@ -59,7 +59,7 @@ kubectl get nodes,pods,deployments,jobs,secrets
 `kubectl` looks for objects in the `default` namespace. So to see our KhulnaSoft deployed objects, use this flag:
 
 ```shell
-kubectl get pods -n gitlab-managed-apps
+kubectl get pods -n khulnasoft-managed-apps
 ```
 
 or:
@@ -73,19 +73,19 @@ kubectl get pods --all-namespaces
 To see the complete log:
 
 ```shell
-kubectl logs pod-name-here -n gitlab-managed-apps
+kubectl logs pod-name-here -n khulnasoft-managed-apps
 ```
 
 or to see the last *n* lines use the `--tail` flag:
 
 ```shell
-kubectl logs {pod-name-without-braces} --tail=20 -n gitlab-managed-apps
+kubectl logs {pod-name-without-braces} --tail=20 -n khulnasoft-managed-apps
 ```
 
 you can combine it with `watch` to keep reading the file every *n* seconds:
 
 ```shell
-watch -n3 kubectl logs {pod-name-without-braces} --tail=20 -n gitlab-managed-apps
+watch -n3 kubectl logs {pod-name-without-braces} --tail=20 -n khulnasoft-managed-apps
 ```
 
 if you're on mac you might need to install `watch` first:
@@ -117,9 +117,9 @@ Before you start:
 
 1. Make sure your `kubectl config current-context` [points to the correct cluster](#change-your-current-context).
 1. Find the namespace that contains your Helm release data:
-   - All [KhulnaSoft-managed apps](https://docs.gitlab.com/ee/user/clusters/applications.html) are
-     installed using Helm under the `gitlab-managed-apps` namespace.
-   - [Auto DevOps](https://docs.gitlab.com/ee/topics/autodevops/index.html) also
+   - All [KhulnaSoft-managed apps](https://docs.khulnasoft.com/ee/user/clusters/applications.html) are
+     installed using Helm under the `khulnasoft-managed-apps` namespace.
+   - [Auto DevOps](https://docs.khulnasoft.com/ee/topics/autodevops/index.html) also
      uses Helm for its deployments. Generally, each environment gets its own
      namespace, and each namespace has its own release data.
 
@@ -129,7 +129,7 @@ You can always interact with the in-cluster metadata using a local Tiller (even
 if a remote Tiller is present).
 
 In this example, we assume the environment variable `KUBE_NAMESPACE` is the
-namespace containing your releases (for example, `gitlab-managed-apps`). To
+namespace containing your releases (for example, `khulnasoft-managed-apps`). To
 start a local Tiller and prepare Helm,
 run:
 
@@ -150,7 +150,7 @@ helm list    # should output the releases stored in the given namespace
 #### Remote Tiller (for KhulnaSoft-managed apps)
 
 Prior to KhulnaSoft 13.2, KhulnaSoft used a remote Tiller server in the
-`gitlab-managed-apps` namespace for the KhulnaSoft-managed apps.
+`khulnasoft-managed-apps` namespace for the KhulnaSoft-managed apps.
 (Not Auto DevOps, which has used a local Tiller for a long time.) This Tiller
 is configured with SSL communication enabled, so we need to retrieve
 certificates from the backend to talk to it.
@@ -175,24 +175,24 @@ helm version --tls \
   --tls-ca-cert /tmp/ca_cert.pem \
   --tls-cert /tmp/cert.pem \
   --tls-key /tmp/key.pem \
-  --tiller-namespace=gitlab-managed-apps
+  --tiller-namespace=khulnasoft-managed-apps
 ```
 
 Note that we stopped using `--client-only`, but instead we added the TLS flags
-and the `--tiller-namespace=gitlab-managed-apps` flag. To make this process
+and the `--tiller-namespace=khulnasoft-managed-apps` flag. To make this process
 less verbose, we can use a simple bash function to fetch and use our certs:
 
 ```shell
-function gitlab-helm() {
-  [ ! -d ~/.gitlab-helm ] && mkdir ~/.gitlab-helm
-  [ -f ~/.gitlab-helm/tiller-ca.crt ] || (kubectl get secrets/tiller-secret -n gitlab-managed-apps -o "jsonpath={.data['ca\.crt']}"  | base64 --decode > ~/.gitlab-helm/tiller-ca.crt)
-  [ -f ~/.gitlab-helm/tiller.crt ]    || (kubectl get secrets/tiller-secret -n gitlab-managed-apps -o "jsonpath={.data['tls\.crt']}" | base64 --decode > ~/.gitlab-helm/tiller.crt)
-  [ -f ~/.gitlab-helm/tiller.key ]    || (kubectl get secrets/tiller-secret -n gitlab-managed-apps -o "jsonpath={.data['tls\.key']}" | base64 --decode > ~/.gitlab-helm/tiller.key)
+function khulnasoft-helm() {
+  [ ! -d ~/.khulnasoft-helm ] && mkdir ~/.khulnasoft-helm
+  [ -f ~/.khulnasoft-helm/tiller-ca.crt ] || (kubectl get secrets/tiller-secret -n khulnasoft-managed-apps -o "jsonpath={.data['ca\.crt']}"  | base64 --decode > ~/.khulnasoft-helm/tiller-ca.crt)
+  [ -f ~/.khulnasoft-helm/tiller.crt ]    || (kubectl get secrets/tiller-secret -n khulnasoft-managed-apps -o "jsonpath={.data['tls\.crt']}" | base64 --decode > ~/.khulnasoft-helm/tiller.crt)
+  [ -f ~/.khulnasoft-helm/tiller.key ]    || (kubectl get secrets/tiller-secret -n khulnasoft-managed-apps -o "jsonpath={.data['tls\.key']}" | base64 --decode > ~/.khulnasoft-helm/tiller.key)
   helm "$@" --tiller-connection-timeout 1 --tls \
-    --tls-ca-cert ~/.gitlab-helm/tiller-ca.crt \
-    --tls-cert ~/.gitlab-helm/tiller.crt \
-    --tls-key ~/.gitlab-helm/tiller.key \
-    --tiller-namespace gitlab-managed-apps
+    --tls-ca-cert ~/.khulnasoft-helm/tiller-ca.crt \
+    --tls-cert ~/.khulnasoft-helm/tiller.crt \
+    --tls-key ~/.khulnasoft-helm/tiller.key \
+    --tiller-namespace khulnasoft-managed-apps
 }
 ```
 
@@ -201,7 +201,7 @@ function gitlab-helm() {
 > contexts, to avoid performing Helm operations on the wrong cluster:
 
 ```shell
-function gitlab-helm-purge-credentials() {
-  rm -rf ~/.gitlab-helm
+function khulnasoft-helm-purge-credentials() {
+  rm -rf ~/.khulnasoft-helm
 }
 ```

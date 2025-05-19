@@ -4,7 +4,7 @@ title: Pages
 
 This page contains information about developing KhulnaSoft Pages inside the KDK. This method allows you test KhulnaSoft Pages from deployment to visiting your static site.
 
-For further details check the [Contribute to KhulnaSoft Pages development](https://docs.gitlab.com/ee/development/pages/).
+For further details check the [Contribute to KhulnaSoft Pages development](https://docs.khulnasoft.com/ee/development/pages/).
 
 ## Port
 
@@ -50,7 +50,7 @@ to handle wildcard hostnames.
 
 ## Enable access control
 
-1. Follow steps 3-6 in [Enabling access control](https://docs.gitlab.com/ee/development/pages/#enabling-access-control)
+1. Follow steps 3-6 in [Enabling access control](https://docs.khulnasoft.com/ee/development/pages/#enabling-access-control)
 to create an OAuth application for KhulnaSoft Pages.
 
 1. Add the following to `kdk.yml`

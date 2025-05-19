@@ -4,7 +4,7 @@ module KDK
   module Services
     class KhulnasoftAiGateway < Base
       def name
-        'gitlab-ai-gateway'
+        'khulnasoft-ai-gateway'
       end
 
       def command

@@ -34,7 +34,7 @@ In order to enable Zoekt for the entire instance:
 1. Select the **Enable indexing**,  **Enable searching**, and **Index root namespaces automatically** checkboxes.
 1. Select **Save changes**.
 
-You can monitor the indexing progress via `bin/rails "gitlab:zoekt:info[10]"`. When you see that replicas and indices are ready, you can perform the searches.
+You can monitor the indexing progress via `bin/rails "khulnasoft:zoekt:info[10]"`. When you see that replicas and indices are ready, you can perform the searches.
 
 Now, if you create a new public project in any of the namespaces (for example, `flightjs`) or update
 any existing public project, it is indexed in Zoekt. Code searches within these projects are served by Zoekt.
@@ -56,7 +56,7 @@ To change this, set `indexer_version`:
 ### Test changes to Zoekt setup instructions without changing the development environment
 
 To configure Zoekt in an environment without changing any of the settings
-for your current environment, use [KDK-in-a-box](https://docs.gitlab.com/development/contributing/first_contribution/configure-dev-env-kdk-in-a-box/).
+for your current environment, use [KDK-in-a-box](https://docs.khulnasoft.com/development/contributing/first_contribution/configure-dev-env-kdk-in-a-box/).
 
 Before testing this, you must [configure a developer license in your KDK](https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/tree/main/doc?ref_type=heads#configure-developer-license-in-kdk).
 

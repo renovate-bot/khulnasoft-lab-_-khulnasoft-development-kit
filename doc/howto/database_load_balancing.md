@@ -2,7 +2,7 @@
 title: Database load balancing
 ---
 
-This document describes the required steps to enable and test the [database load balancing](https://docs.gitlab.com/administration/postgresql/database_load_balancing/) feature in KDK.
+This document describes the required steps to enable and test the [database load balancing](https://docs.khulnasoft.com/administration/postgresql/database_load_balancing/) feature in KDK.
 
 To also test service discovery for database replicas, see the [database load balancing with service discovery documentation](database_load_balancing_with_service_discovery.md).
 

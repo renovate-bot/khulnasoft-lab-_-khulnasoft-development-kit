@@ -51,8 +51,8 @@ or add one of the following versions in your config file at /Users/foo/khulnasof
 golang 1.20.10
 golang 1.20.9
 golang 1.21.3
-make[2]: *** [gitlab-resize-image] Error 126
-make[1]: *** [gitlab/workhorse/khulnasoft-workhorse] Error 2
+make[2]: *** [khulnasoft-resize-image] Error 126
+make[1]: *** [khulnasoft/workhorse/khulnasoft-workhorse] Error 2
 make: *** [khulnasoft-workhorse-update-timed] Error 2
 ❌️ ERROR: Failed to update.
 ```
@@ -106,11 +106,11 @@ If you're using [`mise`](../howto/mise.md), but you still have `asdf` installed,
 you might see errors like the following:
 
 ```plaintext
-Compiling gitlab/workhorse/khulnasoft-workhorse
+Compiling khulnasoft/workhorse/khulnasoft-workhorse
 # sync/atomic
 compiler version "go1.22.5" does not match go tool version "go1.23.0"
-make[3]: *** [gitlab-resize-image] Error 1
-make[2]: *** [gitlab/workhorse/khulnasoft-workhorse] Error 2
+make[3]: *** [khulnasoft-resize-image] Error 1
+make[2]: *** [khulnasoft/workhorse/khulnasoft-workhorse] Error 2
 make[1]: *** [khulnasoft-workhorse-setup] Error 2
 make: *** [khulnasoft-workhorse-update-timed] Error 2
 ```

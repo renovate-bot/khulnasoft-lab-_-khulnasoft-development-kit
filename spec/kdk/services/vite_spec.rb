@@ -9,7 +9,7 @@ RSpec.describe KDK::Services::Vite do
 
   describe '#command' do
     it 'returns command based on config' do
-      expect(subject.command).to match(%(support/exec-cd gitlab bundle exec vite dev))
+      expect(subject.command).to match(%(support/exec-cd khulnasoft bundle exec vite dev))
     end
   end
 

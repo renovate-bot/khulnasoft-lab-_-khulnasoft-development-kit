@@ -1,26 +1,26 @@
-khulnasoft_runner_dir = ${khulnasoft_development_root}/gitlab-runner
+khulnasoft_runner_dir = ${khulnasoft_development_root}/khulnasoft-runner
 
 # For the runner service, not the repository
 .PHONY: runner-setup
-runner-setup: gitlab-runner-config.toml
+runner-setup: khulnasoft-runner-config.toml
 
-.PHONY: gitlab-runner-setup
+.PHONY: khulnasoft-runner-setup
 ifeq ($(khulnasoft_runner_enabled),true)
-gitlab-runner-setup: gitlab-runner/.git/pull
+khulnasoft-runner-setup: khulnasoft-runner/.git/pull
 else
-gitlab-runner-setup:
+khulnasoft-runner-setup:
 	@true
 endif
 
-.PHONY: gitlab-runner-update
+.PHONY: khulnasoft-runner-update
 ifeq ($(khulnasoft_runner_enabled),true)
-gitlab-runner-update: gitlab-runner/.git/pull
+khulnasoft-runner-update: khulnasoft-runner/.git/pull
 else
-gitlab-runner-update:
+khulnasoft-runner-update:
 	@true
 endif
 
-gitlab-runner-asdf-install:
+khulnasoft-runner-asdf-install:
 ifeq ($(asdf_opt_out),false)
 	@echo
 	@echo "${DIVIDER}"
@@ -37,12 +37,12 @@ else
 	@true
 endif
 
-gitlab-runner/.git:
-	$(Q)support/component-git-clone ${git_params} ${khulnasoft_runner_repo} gitlab-runner
+khulnasoft-runner/.git:
+	$(Q)support/component-git-clone ${git_params} ${khulnasoft_runner_repo} khulnasoft-runner
 
-gitlab-runner/.git/pull: gitlab-runner/.git
+khulnasoft-runner/.git/pull: khulnasoft-runner/.git
 	@echo
 	@echo "${DIVIDER}"
-	@echo "Updating gitlab-org/gitlab-runner"
+	@echo "Updating khulnasoft-org/khulnasoft-runner"
 	@echo "${DIVIDER}"
 	$(Q)support/component-git-update khulnasoft_runner "${khulnasoft_runner_dir}" main main

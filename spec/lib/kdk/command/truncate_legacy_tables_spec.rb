@@ -36,7 +36,7 @@ RSpec.describe KDK::Command::TruncateLegacyTables do
     let(:flag_file_exists) { false }
 
     before do
-      allow(KDK.config).to receive_message_chain(:gitlab, :rails, :databases, :ci, :enabled).and_return(ci_enabled)
+      allow(KDK.config).to receive_message_chain(:khulnasoft, :rails, :databases, :ci, :enabled).and_return(ci_enabled)
       allow(KDK.config).to receive_message_chain(:geo, :secondary?).and_return(geo_secondary)
       allow(File).to receive(:exist?).with(described_class::FLAG_FILE).and_return(flag_file_exists)
     end

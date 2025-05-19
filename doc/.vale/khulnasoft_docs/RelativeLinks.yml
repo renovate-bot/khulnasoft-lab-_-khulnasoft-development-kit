@@ -4,9 +4,9 @@ description: |
   Checks for the presence of absolute hyperlinks that should be relative.
 extends: existence
 message: "Use a relative link instead of a URL, and ensure the file name ends in .md and not .html."
-link: https://docs.gitlab.com/development/documentation/styleguide/#links
+link: https://docs.khulnasoft.com/development/documentation/styleguide/#links
 vocab: false
 level: error
 scope: raw
 raw:
-  - '\[[^\]]+\]\(https?:\/\/gitlab.com\/gitlab-org\/khulnasoft-development-kit\/-\/blob\/main\/doc.*\)'
+  - '\[[^\]]+\]\(https?:\/\/khulnasoft.com\/khulnasoft-org\/khulnasoft-development-kit\/-\/blob\/main\/doc.*\)'

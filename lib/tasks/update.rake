@@ -9,7 +9,7 @@ spinner_task update: %w[
   update:platform
   update:tool-versions
   preflight-update-checks
-  update:gitlab
+  update:khulnasoft
   preflight-checks
   update:subprojects
   update:make:unlock-dependency-installers
@@ -20,7 +20,7 @@ spinner_task update_branch: %w[
   update:kdk_bundle_install
   update:platform
   preflight-update-checks
-  update:gitlab
+  update:khulnasoft
   preflight-checks
   update:subprojects
   update:make:unlock-dependency-installers
@@ -47,7 +47,7 @@ namespace :update do
   task 'graphql' do
     KDK::PackageHelper.new(
       package: :graphql_schema,
-      project_id: 278964 # gitlab-org/gitlab
+      project_id: 278964 # khulnasoft-org/khulnasoft
     ).download_package
   end
 
@@ -58,18 +58,18 @@ namespace :update do
   end
 
   desc 'Update KhulnaSoft repository'
-  task 'gitlab-git-pull', [:branch] do
+  task 'khulnasoft-git-pull', [:branch] do
     success = KDK::Project::Base.new(
       'khulnasoft',
       KDK.config.kdk_root.join('khulnasoft'),
-      KDK.config.gitlab.default_branch
-    ).update(KDK.config.gitlab.default_branch)
+      KDK.config.khulnasoft.default_branch
+    ).update(KDK.config.khulnasoft.default_branch)
     raise "KhulnaSoft 'git pull' failed" unless success
   end
 
   desc nil
   task 'khulnasoft' => %w[
-    gitlab-git-pull
+    khulnasoft-git-pull
     khulnasoft-setup
     make:postgresql
   ]
@@ -77,38 +77,38 @@ namespace :update do
   desc nil
   task 'khulnasoft-setup' => %w[
     make:khulnasoft/.git
-    make:gitlab-config
-    make:gitlab-asdf-install
-    make:.gitlab-bundle
-    make:.gitlab-lefthook
-    make:.gitlab-yarn
+    make:khulnasoft-config
+    make:khulnasoft-asdf-install
+    make:.khulnasoft-bundle
+    make:.khulnasoft-lefthook
+    make:.khulnasoft-yarn
     make:.khulnasoft-translations
   ]
 
   desc nil
   multitask 'subprojects' => %w[
-    gitlab-db-migrate
+    khulnasoft-db-migrate
     update:graphql
     make:khulnasoft-translations-unlock
     make:gitaly-update
     make:ensure-databases-setup
-    make:gitlab-shell-update
+    make:khulnasoft-shell-update
     make:khulnasoft-http-router-update
     make:khulnasoft-topology-service-update
-    make:docs-gitlab-com-update
-    make:gitlab-elasticsearch-indexer-update
+    make:docs-khulnasoft-com-update
+    make:khulnasoft-elasticsearch-indexer-update
     make:khulnasoft-k8s-agent-update
-    make:gitlab-pages-update
-    make:gitlab-ui-update
+    make:khulnasoft-pages-update
+    make:khulnasoft-ui-update
     make:khulnasoft-workhorse-update
     make:khulnasoft-zoekt-update
-    make:gitlab-ai-gateway-update
+    make:khulnasoft-ai-gateway-update
     make:grafana-update
     make:jaeger-update
     make:object-storage-update
     make:pgvector-update
     make:openbao-update
-    make:gitlab-runner-update
+    make:khulnasoft-runner-update
     make:siphon-update
     make:nats-update
   ]

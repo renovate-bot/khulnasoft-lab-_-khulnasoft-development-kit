@@ -67,7 +67,7 @@ module KDK
       end
 
       def khulnasoft_bundle_config
-        @khulnasoft_bundle_config ||= BundleConfig.new(config.gitlab.dir)
+        @khulnasoft_bundle_config ||= BundleConfig.new(config.khulnasoft.dir)
       end
     end
   end

@@ -9,7 +9,7 @@ module KDK
       end
 
       def command
-        %(support/exec-cd gitlab bin/web start_foreground)
+        %(support/exec-cd khulnasoft bin/web start_foreground)
       end
 
       def enabled?
@@ -18,13 +18,13 @@ module KDK
 
       def env
         e = {
-          CACHE_CLASSES: config.gitlab.cache_classes,
-          BUNDLE_GEMFILE: config.gitlab.rails.bundle_gemfile,
-          ENABLE_BOOTSNAP: config.gitlab.rails.bootsnap?,
+          CACHE_CLASSES: config.khulnasoft.cache_classes,
+          BUNDLE_GEMFILE: config.khulnasoft.rails.bundle_gemfile,
+          ENABLE_BOOTSNAP: config.khulnasoft.rails.bootsnap?,
           RAILS_RELATIVE_URL_ROOT: config.relative_url_root,
           ACTION_CABLE_IN_APP: 'true',
           ACTION_CABLE_WORKER_POOL_SIZE: config.action_cable.worker_pool_size,
-          GITALY_DISABLE_REQUEST_LIMITS: config.gitlab.gitaly_disable_request_limits
+          GITALY_DISABLE_REQUEST_LIMITS: config.khulnasoft.gitaly_disable_request_limits
         }
 
         e[:KDK_GEO_SECONDARY] = 1 if config.geo? && config.geo.secondary?

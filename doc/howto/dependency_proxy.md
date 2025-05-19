@@ -2,7 +2,7 @@
 title: Dependency Proxy
 ---
 
-This document describes how to enable the [dependency proxy](https://docs.gitlab.com/ee/user/packages/dependency_proxy/)
+This document describes how to enable the [dependency proxy](https://docs.khulnasoft.com/ee/user/packages/dependency_proxy/)
 in your KDK environment.
 
 Some dependency proxy operations require token scopes that are only available when the container registry is enabled. You should
@@ -21,7 +21,7 @@ Test it with:
 sudo docker login 0.0.0.0:3000
 
 # Pull the hello-world image through the dependency proxy and run it
-sudo docker run localhost:3000/gitlab-org/dependency_proxy/containers/hello-world:latest
+sudo docker run localhost:3000/khulnasoft-org/dependency_proxy/containers/hello-world:latest
 ```
 
 Docker should succeed and you should see
@@ -127,7 +127,7 @@ Once your Docker daemon has restarted with the newly configured insecure registr
 sudo docker login 0.0.0.0:3000
 
 # Pull the hello-world image through the dependency proxy and run it
-sudo docker run 0.0.0.0:3000/gitlab-org/dependency_proxy/containers/hello-world:latest
+sudo docker run 0.0.0.0:3000/khulnasoft-org/dependency_proxy/containers/hello-world:latest
 ```
 
 Docker should succeed and you should see the following:

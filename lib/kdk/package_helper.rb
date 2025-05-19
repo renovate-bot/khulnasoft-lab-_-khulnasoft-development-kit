@@ -11,7 +11,7 @@ require_relative '../kdk'
 
 module KDK
   class PackageHelper
-    API_V4_URL = 'https://gitlab.com/api/v4'
+    API_V4_URL = 'https://khulnasoft.com/api/v4'
     KDK_PROJECT_ID = '74823'
     SUPPORTED_ARCHS = %w[darwin-arm64 linux-amd64 linux-arm64].freeze
     EXCLUDED_FILES = %w[build/metadata.txt build/checksums.txt].freeze

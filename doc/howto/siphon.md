@@ -13,7 +13,7 @@ which allows you to write features that will benefit from the performance improv
 Before configuring Siphon to run in KDK, you must:
 
 - Enable ClickHouse in your KDK. For more information, see
-  [ClickHouse within KhulnaSoft](https://docs.gitlab.com/ee/development/database/clickhouse/clickhouse_within_gitlab.html).
+  [ClickHouse within KhulnaSoft](https://docs.khulnasoft.com/ee/development/database/clickhouse/clickhouse_within_khulnasoft.html).
 - Enable NATS in your KDK. `kdk config set nats.enabled true`
 - Configure a Docker runtime. Only Docker Desktop is supported, but other container runtimes might work.
 
@@ -41,17 +41,17 @@ To start and configure Siphon:
    ```
 
 1. Run `kdk reconfigure` to generate configuration files.
-1. Optional. In KhulnaSoft Rails directory (`gitlab`), run the Siphon migration generator to generate a table. The migration generator creates a migration to create a table
+1. Optional. In KhulnaSoft Rails directory (`khulnasoft`), run the Siphon migration generator to generate a table. The migration generator creates a migration to create a table
    in ClickHouse.
 
    ```shell
-   rails generate gitlab:click_house:siphon users
+   rails generate khulnasoft:click_house:siphon users
    ```
 
 1. Run the ClickHouse migrations:
 
    ```shell
-   bundle exec rake gitlab:clickhouse:migrate
+   bundle exec rake khulnasoft:clickhouse:migrate
    ```
 
 1. Run `kdk start` to start the new service.

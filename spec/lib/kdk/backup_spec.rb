@@ -39,7 +39,7 @@ RSpec.describe KDK::Backup do
   end
 
   describe '.backup_root' do
-    it 'is /Users/ash/src/gitlab/khulnasoft-development-kit/.backups' do
+    it 'is /Users/ash/src/khulnasoft/khulnasoft-development-kit/.backups' do
       fake_root_pathname = stub_backup_root
 
       expect(described_class.backup_root).to be(fake_root_pathname)
@@ -133,8 +133,8 @@ RSpec.describe KDK::Backup do
     end
 
     context 'is a file within a directory' do
-      it_behaves_like 'a file to be backed up', 'gitlab/config/gitlab.yml', '.backups/khulnasoft__config__gitlab.yml.20210506185031', true
-      it_behaves_like 'a file to be backed up', 'gitlab/config/gitlab.yml', '.backups/khulnasoft__config__gitlab.yml.20210506185031', false
+      it_behaves_like 'a file to be backed up', 'khulnasoft/config/khulnasoft.yml', '.backups/khulnasoft__config__khulnasoft.yml.20210506185031', true
+      it_behaves_like 'a file to be backed up', 'khulnasoft/config/khulnasoft.yml', '.backups/khulnasoft__config__khulnasoft.yml.20210506185031', false
     end
   end
 

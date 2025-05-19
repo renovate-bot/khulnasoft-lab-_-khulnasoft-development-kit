@@ -1,13 +1,13 @@
 .PHONY: postgresql
-postgresql: postgresql/data postgresql/data/gitlab.conf _postgresql-seed-dbs
+postgresql: postgresql/data postgresql/data/khulnasoft.conf _postgresql-seed-dbs
 
 postgresql/data:
 	$(Q)${postgresql_bin_dir}/initdb --locale=C -E utf-8 ${postgresql_data_dir}
 
-.PHONY: postgresql/data/gitlab.conf
-postgresql/data/gitlab.conf:
-	$(Q). ./support/bootstrap-common.sh ; ensure_line_in_file "include 'gitlab.conf'" "postgresql/data/postgresql.conf"
-	$(Q)rake postgresql/data/gitlab.conf
+.PHONY: postgresql/data/khulnasoft.conf
+postgresql/data/khulnasoft.conf:
+	$(Q). ./support/bootstrap-common.sh ; ensure_line_in_file "include 'khulnasoft.conf'" "postgresql/data/postgresql.conf"
+	$(Q)rake postgresql/data/khulnasoft.conf
 
 .PHONY: _postgresql-seed-dbs
 _postgresql-seed-dbs: _postgresql-seed-dbs-heading _postgresql-seed-praefect _postgresql-seed-rails _postgresql-init-registry
@@ -20,7 +20,7 @@ _postgresql-seed-dbs-heading:
 	@echo "${DIVIDER}"
 
 .PHONY: _postgresql-environment
-_postgresql-environment: Procfile postgresql/data postgresql-geo/data postgresql-geo/data/gitlab.conf
+_postgresql-environment: Procfile postgresql/data postgresql-geo/data postgresql-geo/data/khulnasoft.conf
 	$(Q)kdk start db --quiet
 
 .PHONY: _postgresql-seed-rails

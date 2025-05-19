@@ -6,8 +6,8 @@ title: Install and configure KDK
 
 KhulnaSoft Development Kit (KDK) provides a local environment for developing KhulnaSoft and related projects. For example:
 
-- [Gitaly](https://gitlab.com/gitlab-org/gitaly).
-- [KhulnaSoft Docs](https://gitlab.com/gitlab-org/technical-writing/docs-gitlab-com).
+- [Gitaly](https://khulnasoft.com/khulnasoft-org/gitaly).
+- [KhulnaSoft Docs](https://khulnasoft.com/khulnasoft-org/technical-writing/docs-khulnasoft-com).
 
 To ensure a smooth installation of KDK, you should delete any previously cloned repositories. This prevents conflicts or errors that may arise during the installation process.
 
@@ -21,7 +21,7 @@ To install KDK, you must:
      and KDK installation, for more control and customization. When using the simple installation method, you:
 
      1. Install dependencies [using `mise`](#install-dependencies-using-mise) or [manually](#install-dependencies-manually).
-     1. [Use KDK to install KhulnaSoft](#use-kdk-to-install-gitlab).
+     1. [Use KDK to install KhulnaSoft](#use-kdk-to-install-khulnasoft).
 
 Use a [supported operating system](../README.md#supported-platforms).
 
@@ -91,7 +91,7 @@ Before running the one-line installation, ensure [the prerequisites are installe
 Then install KDK with:
 
 ```shell
-curl "https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/raw/main/support/install" | bash
+curl "https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/raw/master/support/install" | bash
 ```
 
 If you have any post-installation problems, see [Resolve installation errors](#resolve-installation-errors).
@@ -102,7 +102,7 @@ After prerequisites are installed, you can install KDK dependencies and KDK itse
 
 ### Install dependencies
 
-Before [using KDK to install KhulnaSoft](#use-kdk-to-install-gitlab), you must install and configure some third-party
+Before [using KDK to install KhulnaSoft](#use-kdk-to-install-khulnasoft), you must install and configure some third-party
 software, either:
 
 - [Using `mise`](#install-dependencies-using-mise)
@@ -184,11 +184,11 @@ After installing KDK dependencies:
 
 To install KhulnaSoft by using KDK, use one of these methods:
 
-- For those who have write access to the [KhulnaSoft.org group](https://gitlab.com/gitlab-org), you should install
+- For those who have write access to the [KhulnaSoft.org group](https://khulnasoft.com/khulnasoft-org), you should install
   using SSH:
 
   ```shell
-  kdk install khulnasoft_repo=git@gitlab.com:gitlab-org/gitlab.git
+  kdk install khulnasoft_repo=git@khulnasoft.com:khulnasoft-org/khulnasoft.git
   ```
 
 - Otherwise, install using HTTPS:
@@ -209,12 +209,12 @@ however.
 ### Use KDK to install KhulnaSoft FOSS
 
 If you want to run KhulnaSoft FOSS, install KDK using
-[the KhulnaSoft FOSS project](install_alternatives.md#install-using-gitlab-foss-project).
+[the KhulnaSoft FOSS project](install_alternatives.md#install-using-khulnasoft-foss-project).
 
 ### Use KDK to install your own KhulnaSoft fork
 
 If you want to run KhulnaSoft from your own fork, install KDK using
-[your own KhulnaSoft fork](install_alternatives.md#install-using-your-own-gitlab-fork).
+[your own KhulnaSoft fork](install_alternatives.md#install-using-your-own-khulnasoft-fork).
 
 ## Set up `kdk.test` hostname
 
@@ -233,21 +233,21 @@ errors. If these errors occur:
 
 ## Use KhulnaSoft Enterprise features
 
-For instructions on how to generate a developer license, see [Developer onboarding](https://handbook.gitlab.com/handbook/engineering/developer-onboarding/#working-on-gitlab-ee-developer-licenses).
+For instructions on how to generate a developer license, see [Developer onboarding](https://handbook.khulnasoft.com/handbook/engineering/developer-onboarding/#working-on-khulnasoft-ee-developer-licenses).
 
-The developer license is generated for you to get access to [Premium or Ultimate](https://about.gitlab.com/handbook/marketing/brand-and-product-marketing/product-and-solution-marketing/tiers/) features in your KDK. You must add this license to your KDK instance, not your KhulnaSoft.com account.
+The developer license is generated for you to get access to [Premium or Ultimate](https://about.khulnasoft.com/handbook/marketing/brand-and-product-marketing/product-and-solution-marketing/tiers/) features in your KDK. You must add this license to your KDK instance, not your KhulnaSoft.com account.
 
 ### Configure developer license in KDK
 
 To configure your developer license in KDK:
 
-1. [Add your developer license](https://docs.gitlab.com/ee/administration/license_file.html) to KhulnaSoft running in KDK.
+1. [Add your developer license](https://docs.khulnasoft.com/ee/administration/license_file.html) to KhulnaSoft running in KDK.
 1. Add the following configuration to your `kdk.yml` depending on your license type:
 
    - If you're using a license generated from the production Customers Portal, run:
 
      ```shell
-     kdk config set license.customer_portal_url https://customers.gitlab.com
+     kdk config set license.customer_portal_url https://customers.khulnasoft.com
      kdk config set license.license_mode prod
      ```
 
@@ -266,7 +266,7 @@ already set by default:
 
 ```shell
 export KHULNASOFT_LICENSE_MODE=test
-export CUSTOMER_PORTAL_URL=https://customers.staging.gitlab.com
+export CUSTOMER_PORTAL_URL=https://customers.staging.khulnasoft.com
 ```
 
 ## Post-installation
@@ -317,5 +317,5 @@ cd ..
 rm -rf kdk
 ```
 
-You might want to use a tool like [`git-recon`](https://gitlab.com/leipert-projects/git-recon)
+You might want to use a tool like [`git-recon`](https://khulnasoft.com/leipert-projects/git-recon)
 to make sure you don't have uncommitted or unpushed work in any project inside the KDK folder.

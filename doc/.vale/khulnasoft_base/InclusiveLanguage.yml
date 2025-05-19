@@ -4,7 +4,7 @@ description: |
   Suggests alternatives for non-inclusive language.
 extends: substitution
 message: "Use inclusive language. Consider '%s' instead of '%s'."
-link: https://docs.gitlab.com/development/documentation/styleguide/word_list/
+link: https://docs.khulnasoft.com/development/documentation/styleguide/word_list/
 vocab: false
 level: warning
 ignorecase: true

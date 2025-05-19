@@ -88,7 +88,7 @@ RSpec.describe KDK::PackageHelper do
     let(:stubbed_env) { nil }
     let(:package_versions) { %w[1.0.0 latest] }
     let(:package_name) { "test_package" }
-    let(:base_uri) { "https://gitlab.com/api/v4/projects/74823/packages/generic/#{package_name}" }
+    let(:base_uri) { "https://khulnasoft.com/api/v4/projects/74823/packages/generic/#{package_name}" }
     let(:versioned_uri) { URI.parse("#{base_uri}/1.0.0/test_package.tar.gz") }
     let(:latest_uri) { URI.parse("#{base_uri}/latest/test_package.tar.gz") }
 
@@ -141,7 +141,7 @@ RSpec.describe KDK::PackageHelper do
     context 'when platform_specific is true' do
       let(:platform_specific) { true }
       let(:package_name) { "test_package-linux-amd64" }
-      let(:base_uri) { "https://gitlab.com/api/v4/projects/74823/packages/generic/#{package_name}" }
+      let(:base_uri) { "https://khulnasoft.com/api/v4/projects/74823/packages/generic/#{package_name}" }
       let(:versioned_uri) { URI.parse("#{base_uri}/1.0.0/test_package.tar.gz") }
       let(:latest_uri) { URI.parse("#{base_uri}/latest/test_package.tar.gz") }
 
@@ -158,7 +158,7 @@ RSpec.describe KDK::PackageHelper do
       context 'when BUILD_ARCH is set to arm64' do
         let(:stubbed_env) { { 'BUILD_ARCH' => 'arm64' } }
         let(:package_name) { "test_package-linux-arm64" }
-        let(:base_uri) { "https://gitlab.com/api/v4/projects/74823/packages/generic/#{package_name}" }
+        let(:base_uri) { "https://khulnasoft.com/api/v4/projects/74823/packages/generic/#{package_name}" }
         let(:versioned_uri) { URI.parse("#{base_uri}/1.0.0/test_package.tar.gz") }
         let(:latest_uri) { URI.parse("#{base_uri}/latest/test_package.tar.gz") }
 
@@ -174,7 +174,7 @@ RSpec.describe KDK::PackageHelper do
   end
 
   describe '#download_package' do
-    let(:base_uri) { "https://gitlab.com/api/v4/projects/74823/packages/generic/#{expected_package_name}" }
+    let(:base_uri) { "https://khulnasoft.com/api/v4/projects/74823/packages/generic/#{expected_package_name}" }
     let(:versioned_uri) { URI.parse("#{base_uri}/1.0.0/test_package.tar.gz") }
     let(:latest_uri) { URI.parse("#{base_uri}/latest/test_package.tar.gz") }
     let(:response) { instance_double(Net::HTTPSuccess) }

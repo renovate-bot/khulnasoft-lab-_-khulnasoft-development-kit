@@ -8,7 +8,7 @@
 #
 # Requires KHULNASOFT_LICENSE_KEY to be set, like:
 #
-#   export KHULNASOFT_LICENSE_KEY=$(cat ~/Documents/KhulnaSoft/Test.gitlab-license)
+#   export KHULNASOFT_LICENSE_KEY=$(cat ~/Documents/KhulnaSoft/Test.khulnasoft-license)
 #
 # Or:
 #
@@ -22,7 +22,7 @@
 #
 # Example usage with arguments:
 #
-#   curl "https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/raw/main/support/geo-install" | bash -s kdk-a kdk-b my-kdk-branch-name
+#   curl "https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/raw/master/support/geo-install" | bash -s kdk-a kdk-b my-kdk-branch-name
 #
 _() {
 
@@ -150,7 +150,7 @@ fi
 ensure_required_commands_exist
 ensure_required_env_vars_exist
 
-# Collapsible section for geo-install CI job. See https://docs.gitlab.com/ee/ci/jobs/index.html#custom-collapsible-sections
+# Collapsible section for geo-install CI job. See https://docs.khulnasoft.com/ee/ci/jobs/index.html#custom-collapsible-sections
 echo -e "\e[0Ksection_start:$(date +%s):set_up_primary_kdk\r\e[0KSet up primary KDK"
 clone_kdk_if_needed
 ensure_kdk_clone_branch_checked_out
@@ -158,7 +158,7 @@ cd "${KDK_PRIMARY_INSTALL_DIR}" || error "Clone of KDK should have created ${KDK
 setup_tool_version_manager
 bootstrap
 kdk_install
-cd gitlab || error "kdk install should have created gitlab directory."
+cd khulnasoft || error "kdk install should have created khulnasoft directory."
 bin/rails runner 'License.create!(data: ENV["KHULNASOFT_LICENSE_KEY"])'
 
 echo

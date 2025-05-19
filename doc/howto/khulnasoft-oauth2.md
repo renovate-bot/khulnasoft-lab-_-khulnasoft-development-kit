@@ -20,8 +20,8 @@ KhulnaSoft.com generates an application ID and secret key for you to use.
      [`kdk.test:3000`](local_network.md)):
 
      ```plaintext
-     http://kdk.test:3000/import/gitlab/callback
-     http://kdk.test:3000/users/auth/gitlab/callback
+     http://kdk.test:3000/import/khulnasoft/callback
+     http://kdk.test:3000/users/auth/khulnasoft/callback
      ```
 
      The first link is required for the importer and second for the authorization.
@@ -32,7 +32,7 @@ KhulnaSoft.com generates an application ID and secret key for you to use.
 
 ## Set up KDK
 
-1. Within KDK, open `gitlab/config/gitlab.yml`.
+1. Within KDK, open `khulnasoft/config/khulnasoft.yml`.
 1. Look for the following:
 
    ```yaml

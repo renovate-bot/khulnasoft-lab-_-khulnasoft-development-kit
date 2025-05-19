@@ -35,7 +35,7 @@ module KDK
         read_khulnasoft_remote_file('.ruby-version')
       end
 
-      # Read content from file in `gitlab` folder
+      # Read content from file in `khulnasoft` folder
       #
       # @param [String] filename
       # @return [String,False] version or false
@@ -49,7 +49,7 @@ module KDK
         KDK.root.join('khulnasoft')
       end
 
-      # Read content from a file in `gitlab` remote repository
+      # Read content from a file in `khulnasoft` remote repository
       #
       # @param [String] filename
       def read_khulnasoft_remote_file(filename)

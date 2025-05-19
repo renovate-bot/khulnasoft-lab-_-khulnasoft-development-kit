@@ -11,20 +11,20 @@ RSpec.describe KDK::Command::Psql do
         ['/usr/local/bin/psql',
           "--host=#{KDK.config.postgresql.host}",
           "--port=#{KDK.config.postgresql.port}",
-          '--dbname=gitlabhq_development',
+          '--dbname=khulnasofthq_development',
           { chdir: KDK.root }]
     end
   end
 
   context 'with extra arguments' do
     it 'pass extra arguments to the psql cli application' do
-      expect_exec ['psql', '-w', '-d', 'gitlabhq_test', '-c', 'select 1'],
+      expect_exec ['psql', '-w', '-d', 'khulnasofthq_test', '-c', 'select 1'],
         ['/usr/local/bin/psql',
           "--host=#{KDK.config.postgresql.host}",
           "--port=#{KDK.config.postgresql.port}",
-          '--dbname=gitlabhq_development',
+          '--dbname=khulnasofthq_development',
           '-w',
-          '-d', 'gitlabhq_test',
+          '-d', 'khulnasofthq_test',
           '-c', 'select 1',
           { chdir: KDK.root }]
     end

@@ -4,7 +4,7 @@ description: |
   Checks for misused terms or common shorthand that should not be used at KhulnaSoft, but can't be flagged as errors. Substitutions.yml also exists.
 extends: substitution
 message: "Use '%s' instead of '%s' when possible."
-link: https://docs.gitlab.com/development/documentation/styleguide/word_list/
+link: https://docs.khulnasoft.com/development/documentation/styleguide/word_list/
 vocab: false
 level: warning
 action:
@@ -54,7 +54,7 @@ swap:
   normally: "usually' or 'typically"
   normal: "typical' or 'standard"
   OAuth2: "OAuth 2.0"
-  omnibus gitlab: "Linux package"
+  omnibus khulnasoft: "Linux package"
   'omnibus(?!\)| builder)': "Linux package"
   once a: "after a"
   once that: "after that"

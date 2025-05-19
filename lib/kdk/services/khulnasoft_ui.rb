@@ -4,7 +4,7 @@ module KDK
   module Services
     class KhulnasoftUi < Base
       def name
-        'gitlab-ui'
+        'khulnasoft-ui'
       end
 
       def enabled?
@@ -12,7 +12,7 @@ module KDK
       end
 
       def command
-        %(support/exec-cd gitlab-ui yarn build --watch)
+        %(support/exec-cd khulnasoft-ui yarn build --watch)
       end
 
       def env

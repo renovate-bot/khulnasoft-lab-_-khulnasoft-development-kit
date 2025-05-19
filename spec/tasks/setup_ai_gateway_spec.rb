@@ -20,7 +20,7 @@ RSpec.describe 'rake setup_ai_gateway', :hide_output do
     allow(KDK.config).to receive(:save_yaml!)
     allow_any_instance_of(KDK::Command::Update).to receive(:run).and_return(true)
     allow_any_instance_of(KDK::Command::Restart).to receive(:run)
-    allow(KDK).to receive(:make).with('gitlab-ai-gateway-gcloud-setup')
+    allow(KDK).to receive(:make).with('khulnasoft-ai-gateway-gcloud-setup')
   end
 
   context 'when running the task' do
@@ -42,12 +42,12 @@ RSpec.describe 'rake setup_ai_gateway', :hide_output do
       expect(KDK.config).to receive(:bury!).with('khulnasoft_ai_gateway.enabled', true)
       expect(KDK.config).to receive(:save_yaml!)
       expect(File).to receive(:write).with(env_file.to_s, "ANTHROPIC_API_KEY=test_api_key\n").ordered
-      expect(KDK).to receive(:make).with('gitlab-ai-gateway-gcloud-setup')
+      expect(KDK).to receive(:make).with('khulnasoft-ai-gateway-gcloud-setup')
       expect(File).to receive(:write).with(env_file.to_s, "AIGW_LOGGING__LEVEL=debug\n")
       expect(File).to receive(:write).with(env_file.to_s, "AIGW_LOGGING__FORMAT_JSON=false\n")
       expect(File).to receive(:write).with(
         env_file.to_s,
-        %r{AIGW_LOGGING__TO_FILE=.*/log/gitlab-ai-gateway/gateway_debug\.log\n}
+        %r{AIGW_LOGGING__TO_FILE=.*/log/khulnasoft-ai-gateway/gateway_debug\.log\n}
       )
       expect(File).to receive(:write).with(env_file.to_s, "AIGW_FASTAPI__RELOAD=true\n")
       expect(File).to receive(:open).with(env_runit_file.to_s, 'a')

@@ -46,7 +46,7 @@ khulnasoft-zoekt-indexer/.git:
 khulnasoft-zoekt-indexer/bin/khulnasoft-zoekt: khulnasoft-zoekt-asdf-install
 	@echo
 	@echo "${DIVIDER}"
-	@echo "Building gitlab-org/khulnasoft-zoekt version ${khulnasoft_zoekt_indexer_version}"
+	@echo "Building khulnasoft-org/khulnasoft-zoekt version ${khulnasoft_zoekt_indexer_version}"
 	@echo "${DIVIDER}"
 	$(Q)support/asdf-exec khulnasoft-zoekt-indexer $(MAKE) build_unified ${QQ}
 
@@ -54,6 +54,6 @@ khulnasoft-zoekt-indexer/bin/khulnasoft-zoekt: khulnasoft-zoekt-asdf-install
 khulnasoft-zoekt-indexer/.git/pull: khulnasoft-zoekt-indexer/.git
 	@echo
 	@echo "${DIVIDER}"
-	@echo "Updating gitlab-org/khulnasoft-zoekt-indexer"
+	@echo "Updating khulnasoft-org/khulnasoft-zoekt-indexer"
 	@echo "${DIVIDER}"
 	$(Q)support/component-git-update zoekt khulnasoft-zoekt-indexer "${khulnasoft_zoekt_indexer_version}" main

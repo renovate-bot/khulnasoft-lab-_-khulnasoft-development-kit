@@ -17,15 +17,15 @@ RSpec.describe KDK::Diagnostic::Khulnasoft do
 
         context "when both .khulnasoft_shell_secret files don't not exist" do
           it 'returns false' do
-            stub_existence('khulnasoft_shell', 'gitlab-shell', false)
+            stub_existence('khulnasoft_shell', 'khulnasoft-shell', false)
 
             expect(subject.success?).to be_falsey
           end
         end
 
-        context 'when only the gitlab-shell .khulnasoft_shell_secret file exists' do
+        context 'when only the khulnasoft-shell .khulnasoft_shell_secret file exists' do
           it 'returns false' do
-            stub_existence('khulnasoft_shell', 'gitlab-shell', true)
+            stub_existence('khulnasoft_shell', 'khulnasoft-shell', true)
 
             expect(subject.success?).to be_falsey
           end
@@ -34,7 +34,7 @@ RSpec.describe KDK::Diagnostic::Khulnasoft do
         context 'when both .khulnasoft_shell_secret files exist' do
           it 'returns true' do
             stub_existence('khulnasoft', 'khulnasoft', true)
-            stub_existence('khulnasoft_shell', 'gitlab-shell', true)
+            stub_existence('khulnasoft_shell', 'khulnasoft-shell', true)
 
             expect(subject.success?).to be_truthy
           end
@@ -48,7 +48,7 @@ RSpec.describe KDK::Diagnostic::Khulnasoft do
 
         context "when both .khulnasoft_shell_secret files don't match" do
           it 'returns false' do
-            stub_content('khulnasoft_shell', 'gitlab-shell', 'def')
+            stub_content('khulnasoft_shell', 'khulnasoft-shell', 'def')
 
             expect(subject.success?).to be_falsey
           end
@@ -56,7 +56,7 @@ RSpec.describe KDK::Diagnostic::Khulnasoft do
 
         context 'when both .khulnasoft_shell_secret files match' do
           it 'returns true' do
-            stub_content('khulnasoft_shell', 'gitlab-shell', 'abc')
+            stub_content('khulnasoft_shell', 'khulnasoft-shell', 'abc')
 
             expect(subject.success?).to be_truthy
           end
@@ -64,15 +64,15 @@ RSpec.describe KDK::Diagnostic::Khulnasoft do
       end
     end
 
-    context 'for gitlab/log/ dir size' do
+    context 'for khulnasoft/log/ dir size' do
       let(:khulnasoft_log_dir_exists) { nil }
 
       before do
         allow(subject).to receive_message_chain(:khulnasoft_shell_secret_diagnostic, :success?).and_return(true)
-        stub_file(%i[gitlab log_dir], '/home/git/kdk/gitlab/log', exist: khulnasoft_log_dir_exists)
+        stub_file(%i[khulnasoft log_dir], '/home/git/kdk/khulnasoft/log', exist: khulnasoft_log_dir_exists)
       end
 
-      context "when /home/git/kdk/gitlab/log doesn't exist" do
+      context "when /home/git/kdk/khulnasoft/log doesn't exist" do
         let(:khulnasoft_log_dir_exists) { false }
 
         it 'returns true' do
@@ -80,7 +80,7 @@ RSpec.describe KDK::Diagnostic::Khulnasoft do
         end
       end
 
-      context 'when /home/git/kdk/gitlab/log does exist' do
+      context 'when /home/git/kdk/khulnasoft/log does exist' do
         let(:khulnasoft_log_dir_exists) { true }
         let(:log_dir_size) { nil }
 
@@ -120,19 +120,19 @@ RSpec.describe KDK::Diagnostic::Khulnasoft do
 
         context "when both .khulnasoft_shell_secret files don't exist" do
           it 'returns detail content' do
-            stub_existence('khulnasoft_shell', 'gitlab-shell', false)
+            stub_existence('khulnasoft_shell', 'khulnasoft-shell', false)
 
-            match = %r{  /home/git/kdk/gitlab/.khulnasoft_shell_secret\n  /home/git/kdk/gitlab-shell/.khulnasoft_shell_secret}
+            match = %r{  /home/git/kdk/khulnasoft/.khulnasoft_shell_secret\n  /home/git/kdk/khulnasoft-shell/.khulnasoft_shell_secret}
 
             expect(subject.detail).to match(match)
           end
         end
 
-        context 'when only the gitlab-shell .khulnasoft_shell_secret file exists' do
+        context 'when only the khulnasoft-shell .khulnasoft_shell_secret file exists' do
           it 'returns detail content' do
-            stub_existence('khulnasoft_shell', 'gitlab-shell', true)
+            stub_existence('khulnasoft_shell', 'khulnasoft-shell', true)
 
-            match = %r{  /home/git/kdk/gitlab/.khulnasoft_shell_secret}
+            match = %r{  /home/git/kdk/khulnasoft/.khulnasoft_shell_secret}
 
             expect(subject.detail).to match(match)
           end
@@ -141,7 +141,7 @@ RSpec.describe KDK::Diagnostic::Khulnasoft do
         context 'when both .khulnasoft_shell_secret files exist' do
           it 'returns nil' do
             stub_existence('khulnasoft', 'khulnasoft', true)
-            stub_existence('khulnasoft_shell', 'gitlab-shell', true)
+            stub_existence('khulnasoft_shell', 'khulnasoft-shell', true)
 
             expect(subject.detail).to be_nil
           end
@@ -155,15 +155,15 @@ RSpec.describe KDK::Diagnostic::Khulnasoft do
 
         context "when both .khulnasoft_shell_secret files don't match" do
           it 'returns detail content' do
-            stub_content('khulnasoft_shell', 'gitlab-shell', 'def')
+            stub_content('khulnasoft_shell', 'khulnasoft-shell', 'def')
 
-            expect(subject.detail).to match(/The gitlab-shell secret files need to match but they don't/)
+            expect(subject.detail).to match(/The khulnasoft-shell secret files need to match but they don't/)
           end
         end
 
         context 'when both .khulnasoft_shell_secret files match' do
           it 'returns nil' do
-            stub_content('khulnasoft_shell', 'gitlab-shell', 'abc')
+            stub_content('khulnasoft_shell', 'khulnasoft-shell', 'abc')
 
             expect(subject.detail).to be_nil
           end
@@ -171,12 +171,12 @@ RSpec.describe KDK::Diagnostic::Khulnasoft do
       end
     end
 
-    context 'for gitlab/log/ dir size' do
+    context 'for khulnasoft/log/ dir size' do
       let(:log_dir_size) { nil }
 
       before do
         allow(subject).to receive_message_chain(:khulnasoft_shell_secret_diagnostic, :success?).and_return(true)
-        stub_file(%i[gitlab log_dir], '/home/git/kdk/gitlab/log', exist: true)
+        stub_file(%i[khulnasoft log_dir], '/home/git/kdk/khulnasoft/log', exist: true)
         stub_khulnasoft_log_dir_size(log_dir_size)
       end
 
@@ -184,7 +184,7 @@ RSpec.describe KDK::Diagnostic::Khulnasoft do
         let(:log_dir_size) { not_ok_log_dir_size }
 
         it 'returns detail content' do
-          expect(subject.detail).to match(%r{^Your gitlab/log/ directory is #{log_dir_size}MB.*You can truncate the log files if you wish.*rake gitlab:truncate_logs$}m)
+          expect(subject.detail).to match(%r{^Your khulnasoft/log/ directory is #{log_dir_size}MB.*You can truncate the log files if you wish.*rake khulnasoft:truncate_logs$}m)
         end
       end
 
@@ -223,6 +223,6 @@ RSpec.describe KDK::Diagnostic::Khulnasoft do
     double_array = [double]
     allow(double).to receive(:glob).with('*').and_return(double_array)
     allow(double_array).to receive(:sum).and_yield(double)
-    allow_any_instance_of(KDK::Config).to receive_message_chain(:gitlab, :log_dir).and_return(double)
+    allow_any_instance_of(KDK::Config).to receive_message_chain(:khulnasoft, :log_dir).and_return(double)
   end
 end

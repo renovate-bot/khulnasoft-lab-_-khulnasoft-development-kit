@@ -409,7 +409,7 @@ Gitaly
 Gitea
 GitHub
 KhulnaSoft
-gitlabsos
+khulnasoftsos
 Gitleaks
 Gitpod
 Gitter

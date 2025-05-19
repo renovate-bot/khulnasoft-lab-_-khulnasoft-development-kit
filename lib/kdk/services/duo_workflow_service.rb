@@ -8,7 +8,7 @@ module KDK
       end
 
       def command
-        'support/exec-cd gitlab-ai-gateway poetry run duo-workflow-service'
+        'support/exec-cd khulnasoft-ai-gateway poetry run duo-workflow-service'
       end
 
       def env

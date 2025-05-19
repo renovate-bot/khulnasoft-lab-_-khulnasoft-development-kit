@@ -3,7 +3,7 @@
 require 'etc'
 require 'openssl'
 
-autoload :KhulnasoftSDK, 'gitlab-sdk'
+autoload :KhulnasoftSDK, 'khulnasoft-sdk'
 autoload :Sentry, 'sentry-ruby'
 autoload :SnowplowTracker, 'snowplow-tracker'
 
@@ -11,10 +11,10 @@ module KDK
   module Telemetry
     ANALYTICS_APP_ID = 'e2e967c0-785f-40ae-9b45-5a05f729a27f'
     ANALYTICS_BASE_URL = 'https://collector.prod-1.gl-product-analytics.com'
-    # Track events emitted on CI in https://gitlab.com/gitlab-org/quality/tooling/kdk-playground/
+    # Track events emitted on CI in https://khulnasoft.com/khulnasoft-org/quality/tooling/kdk-playground/
     CI_ANALYTICS_APP_ID = '6a31192c-6567-40a3-9413-923abc790f05'
 
-    SENTRY_DSN = 'https://4e771163209528e15a6a66a6e674ddc3@new-sentry.gitlab.net/38'
+    SENTRY_DSN = 'https://4e771163209528e15a6a66a6e674ddc3@new-sentry.khulnasoft.net/38'
     PROMPT_TEXT = <<~TEXT.chomp
       To improve KDK, KhulnaSoft would like to collect basic error and usage information, including your platform and architecture.
 
@@ -116,7 +116,7 @@ module KDK
           exception = hint[:exception]
 
           # Workaround for using fingerprint to make certain errors distinct.
-          # See https://gitlab.com/gitlab-org/opstrace/opstrace/-/issues/2842#note_1927103517
+          # See https://khulnasoft.com/khulnasoft-org/opstrace/opstrace/-/issues/2842#note_1927103517
           event.transaction = exception.message if exception.is_a?(Shellout::ShelloutBaseError)
 
           event
@@ -168,31 +168,31 @@ module KDK
       }
     end
 
-    # Returns true if the user has configured a @gitlab.com email for git.
+    # Returns true if the user has configured a @khulnasoft.com email for git.
     #
     # This should only be used for telemetry and NEVER for authentication.
     def self.team_member?
       return @team_member if defined?(@team_member)
 
       @team_member = Shellout.new(%w[git config --get user.email])
-              .run.include?('@gitlab.com')
+              .run.include?('@khulnasoft.com')
 
       return @team_member if @team_member
 
       @team_member =
         if KDK::Machine.macos?
-          # See https://handbook.gitlab.com/handbook/security/corporate/systems/jamf/setup/
+          # See https://handbook.khulnasoft.com/handbook/security/corporate/systems/jamf/setup/
           Shellout
             .new(%w[profiles status -type enrollment])
             .execute(display_output: false, display_error: false)
-            .read_stdout.include?('gitlab.jamfcloud.com')
+            .read_stdout.include?('khulnasoft.jamfcloud.com')
         elsif KDK::Machine.linux?
           # KhulnaSoft hostname standard
           hostname_match = -> { /\A\S+--\d+-\w+\z$/.match?(Etc.uname[:nodename]) }
           file_contains = ->(file, regexp) { File.exist?(file) && File.foreach(file).any?(regexp) }
 
           hostname_match.call ||
-            !!file_contains.call(Pathname(Dir.home).join('.config/zoomus.conf'), /gitlab\.zoom\.us/)
+            !!file_contains.call(Pathname(Dir.home).join('.config/zoomus.conf'), /khulnasoft\.zoom\.us/)
         else
           false
         end

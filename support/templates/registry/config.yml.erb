@@ -37,7 +37,7 @@ auth:
   token:
     realm: <%= "#{config.__uri}/jwt/auth" %>
     service: container_registry
-    issuer: gitlab-issuer
+    issuer: khulnasoft-issuer
     rootcertbundle: "<%= kdk_root.join('localhost.crt') %>"
     autoredirect: false
 <%- end -%>
@@ -52,7 +52,7 @@ compatibility:
 <%- if config.registry.notifications_enabled -%>
 notifications:
   endpoints:
-    - name: gitlab-rails
+    - name: khulnasoft-rails
       url: <%= "#{config.__uri}/api/v4/container_registry_event/events" %>
       headers:
         Authorization: [notifications_secret]

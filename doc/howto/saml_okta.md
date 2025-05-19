@@ -27,7 +27,7 @@ This document illustrates how to set up a SAML application in KDK using Okta as 
 
 ## In KDK
 
-1. Go to `/path/to/kdk` and open the `gitlab/config/gitlab.yml` file. Add the following under `development:`
+1. Go to `/path/to/kdk` and open the `khulnasoft/config/khulnasoft.yml` file. Add the following under `development:`
 
    ```yaml
    development:

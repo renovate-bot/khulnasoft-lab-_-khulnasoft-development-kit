@@ -1,7 +1,7 @@
 khulnasoft_k8s_agent_clone_dir = khulnasoft-k8s-agent
 
 ifeq ($(khulnasoft_k8s_agent_enabled),true)
-khulnasoft-k8s-agent-setup: khulnasoft-k8s-agent/build/kdk/bin/kas_race khulnasoft-k8s-agent-config.yml gitlab-kas-websocket-token-secret gitlab-kas-autoflow-temporal-workflow-data-encryption-secret
+khulnasoft-k8s-agent-setup: khulnasoft-k8s-agent/build/kdk/bin/kas_race khulnasoft-k8s-agent-config.yml khulnasoft-kas-websocket-token-secret khulnasoft-kas-autoflow-temporal-workflow-data-encryption-secret
 else
 khulnasoft-k8s-agent-setup:
 	@true
@@ -44,7 +44,7 @@ endif
 khulnasoft-k8s-agent/build/kdk/bin/kas_race: ${khulnasoft_k8s_agent_clone_dir}/.git
 	@echo
 	@echo "${DIVIDER}"
-	@echo "Installing gitlab-org/cluster-integration/gitlab-agent"
+	@echo "Installing khulnasoft-org/cluster-integration/khulnasoft-agent"
 	@echo "${DIVIDER}"
 	$(Q)mkdir -p "${khulnasoft_k8s_agent_clone_dir}/build/kdk/bin"
 	$(Q)support/asdf-exec "${khulnasoft_k8s_agent_clone_dir}" $(MAKE) kdk-install TARGET_DIRECTORY="$(CURDIR)/${khulnasoft_k8s_agent_clone_dir}/build/kdk/bin" ${QQ}
@@ -55,6 +55,6 @@ ${khulnasoft_k8s_agent_clone_dir}/.git:
 khulnasoft-k8s-agent/.git/pull:
 	@echo
 	@echo "${DIVIDER}"
-	@echo "Updating gitlab-org/cluster-integration/gitlab-agent to ${khulnasoft_k8s_agent_version}"
+	@echo "Updating khulnasoft-org/cluster-integration/khulnasoft-agent to ${khulnasoft_k8s_agent_version}"
 	@echo "${DIVIDER}"
 	$(Q)support/component-git-update khulnasoft_k8s_agent "${khulnasoft_k8s_agent_clone_dir}" "${khulnasoft_k8s_agent_version}" master

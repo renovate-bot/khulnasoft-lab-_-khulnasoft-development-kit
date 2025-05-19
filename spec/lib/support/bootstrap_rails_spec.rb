@@ -19,7 +19,7 @@ RSpec.describe Support::BootstrapRails do
       let(:embedding_enabled) { nil }
 
       before do
-        allow_any_instance_of(KDK::Config).to receive_message_chain('gitlab.rails.databases.embedding.enabled').and_return(embedding_enabled)
+        allow_any_instance_of(KDK::Config).to receive_message_chain('khulnasoft.rails.databases.embedding.enabled').and_return(embedding_enabled)
         allow_any_instance_of(KDK::Postgresql).to receive(:ready?).and_return(true)
         allow(instance).to receive(:try_connect!)
         allow(instance).to receive_messages(bootstrap_main_db: true, bootstrap_ci_db: true, bootstrap_sec_db: true)
@@ -29,7 +29,7 @@ RSpec.describe Support::BootstrapRails do
         it 'skips bootstrapping' do
           stub_rake_tasks('db:reset:embedding', success: false, retry_attempts: 3)
 
-          expect_any_instance_of(KDK::Postgresql).not_to receive(:db_exists?).with('gitlabhq_development_embedding')
+          expect_any_instance_of(KDK::Postgresql).not_to receive(:db_exists?).with('khulnasofthq_development_embedding')
           expect { subject }.not_to raise_error
         end
       end
@@ -40,7 +40,7 @@ RSpec.describe Support::BootstrapRails do
         it 'tries to run bootstrapping' do
           stub_rake_tasks('db:reset:embedding', success: true, retry_attempts: 3)
 
-          expect_any_instance_of(KDK::Postgresql).to receive(:db_exists?).with('gitlabhq_development_embedding')
+          expect_any_instance_of(KDK::Postgresql).to receive(:db_exists?).with('khulnasofthq_development_embedding')
           expect { subject }.not_to raise_error
         end
       end
@@ -51,8 +51,8 @@ RSpec.describe Support::BootstrapRails do
       let(:use_main_database) { nil }
 
       before do
-        allow_any_instance_of(KDK::Config).to receive_message_chain('gitlab.rails.databases.sec.__enabled').and_return(sec_enabled)
-        allow_any_instance_of(KDK::Config).to receive_message_chain('gitlab.rails.databases.sec.__use_main_database').and_return(use_main_database)
+        allow_any_instance_of(KDK::Config).to receive_message_chain('khulnasoft.rails.databases.sec.__enabled').and_return(sec_enabled)
+        allow_any_instance_of(KDK::Config).to receive_message_chain('khulnasoft.rails.databases.sec.__use_main_database').and_return(use_main_database)
         allow_any_instance_of(KDK::Postgresql).to receive(:ready?).and_return(true)
         allow(instance).to receive(:try_connect!)
         allow(instance).to receive_messages(bootstrap_main_db: true, bootstrap_ci_db: true, bootstrap_embedding_db: true)
@@ -62,7 +62,7 @@ RSpec.describe Support::BootstrapRails do
         it 'skips bootstrapping' do
           stub_rake_tasks('dev:copy_db:sec', success: false, retry_attempts: 3)
 
-          expect_any_instance_of(KDK::Postgresql).not_to receive(:db_exists?).with('gitlabhq_development_sec')
+          expect_any_instance_of(KDK::Postgresql).not_to receive(:db_exists?).with('khulnasofthq_development_sec')
           expect { subject }.not_to raise_error
         end
       end
@@ -73,7 +73,7 @@ RSpec.describe Support::BootstrapRails do
         it 'skips bootstrapping' do
           stub_rake_tasks('dev:copy_db:sec', success: false, retry_attempts: 3)
 
-          expect_any_instance_of(KDK::Postgresql).not_to receive(:db_exists?).with('gitlabhq_development_sec')
+          expect_any_instance_of(KDK::Postgresql).not_to receive(:db_exists?).with('khulnasofthq_development_sec')
           expect { subject }.not_to raise_error
         end
       end
@@ -84,7 +84,7 @@ RSpec.describe Support::BootstrapRails do
         it 'tries to run bootstrapping' do
           stub_rake_tasks('dev:copy_db:sec', success: true, retry_attempts: 3)
 
-          expect_any_instance_of(KDK::Postgresql).to receive(:db_exists?).with('gitlabhq_development_sec')
+          expect_any_instance_of(KDK::Postgresql).to receive(:db_exists?).with('khulnasofthq_development_sec')
           expect { subject }.not_to raise_error
         end
 
@@ -94,7 +94,7 @@ RSpec.describe Support::BootstrapRails do
           it 'skips bootstrapping' do
             stub_rake_tasks('dev:copy_db:sec', success: false, retry_attempts: 3)
 
-            expect_any_instance_of(KDK::Postgresql).not_to receive(:db_exists?).with('gitlabhq_development_sec')
+            expect_any_instance_of(KDK::Postgresql).not_to receive(:db_exists?).with('khulnasofthq_development_sec')
             expect { subject }.not_to raise_error
           end
         end
@@ -132,48 +132,48 @@ RSpec.describe Support::BootstrapRails do
 
       context 'and PostgreSQL is ready' do
         let(:postgres_ready) { true }
-        let(:gitlabhq_development_db_exists) { nil }
-        let(:gitlabhq_development_ci_db_exists) { nil }
+        let(:khulnasofthq_development_db_exists) { nil }
+        let(:khulnasofthq_development_ci_db_exists) { nil }
 
         before do
           allow(instance).to receive(:try_connect!)
 
-          allow(postgres_mock).to receive(:db_exists?).with('gitlabhq_development').and_return(gitlabhq_development_db_exists)
-          allow(postgres_mock).to receive(:db_exists?).with('gitlabhq_development_ci').and_return(gitlabhq_development_ci_db_exists)
+          allow(postgres_mock).to receive(:db_exists?).with('khulnasofthq_development').and_return(khulnasofthq_development_db_exists)
+          allow(postgres_mock).to receive(:db_exists?).with('khulnasofthq_development_ci').and_return(khulnasofthq_development_ci_db_exists)
         end
 
         context 'when all DBs already exist' do
-          let(:gitlabhq_development_db_exists) { true }
-          let(:gitlabhq_development_ci_db_exists) { true }
+          let(:khulnasofthq_development_db_exists) { true }
+          let(:khulnasofthq_development_ci_db_exists) { true }
 
           it 'advises and skips further logic' do
-            expect(KDK::Output).to receive(:info).with('gitlabhq_development exists, nothing to do here.')
+            expect(KDK::Output).to receive(:info).with('khulnasofthq_development exists, nothing to do here.')
 
-            expect(KDK::Output).to receive(:info).with('gitlabhq_development_ci exists, nothing to do here.')
+            expect(KDK::Output).to receive(:info).with('khulnasofthq_development_ci exists, nothing to do here.')
 
             subject
           end
         end
 
         context 'where no DBs exist' do
-          let(:gitlabhq_development_db_exists) { false }
-          let(:gitlabhq_development_ci_db_exists) { false }
+          let(:khulnasofthq_development_db_exists) { false }
+          let(:khulnasofthq_development_ci_db_exists) { false }
 
-          context 'attempts to setup the gitlabhq_development DB' do
-            context 'but `rake db:drop db:create gitlab:db:configure` fails' do
+          context 'attempts to setup the khulnasofthq_development DB' do
+            context 'but `rake db:drop db:create khulnasoft:db:configure` fails' do
               it 'exits with a status code of 1' do
-                stub_rake_tasks(%w[db:drop db:create gitlab:db:configure], success: false, retry_attempts: 3)
+                stub_rake_tasks(%w[db:drop db:create khulnasoft:db:configure], success: false, retry_attempts: 3)
 
                 expect { subject }
-                  .to output(/The rake task 'db:drop db:create gitlab:db:configure' failed/).to_stderr
+                  .to output(/The rake task 'db:drop db:create khulnasoft:db:configure' failed/).to_stderr
                   .and raise_error(SystemExit) { |error| expect(error.status).to eq(1) }
               end
             end
 
-            context 'when `rake db:drop db:create gitlab:db:configure` succeeds' do
+            context 'when `rake db:drop db:create khulnasoft:db:configure` succeeds' do
               context 'but `rake dev:copy_db:ci` fails' do
                 it 'exits with a status code of 1' do
-                  stub_rake_tasks(%w[db:drop db:create gitlab:db:configure], success: true, retry_attempts: 3)
+                  stub_rake_tasks(%w[db:drop db:create khulnasoft:db:configure], success: true, retry_attempts: 3)
                   stub_rake_tasks('db:seed_fu', success: true, retry_attempts: 3)
                   stub_rake_tasks('dev:copy_db:ci', success: false, retry_attempts: 3)
 
@@ -185,7 +185,7 @@ RSpec.describe Support::BootstrapRails do
 
               context 'and `rake dev:copy_db:ci` succeeds' do
                 it 'exits with a status code of 0' do
-                  stub_rake_tasks(%w[db:drop db:create gitlab:db:configure], success: true, retry_attempts: 3)
+                  stub_rake_tasks(%w[db:drop db:create khulnasoft:db:configure], success: true, retry_attempts: 3)
                   stub_rake_tasks('db:seed_fu', success: true, retry_attempts: 3)
                   stub_rake_tasks('dev:copy_db:ci', success: true, retry_attempts: 3)
 
@@ -202,6 +202,6 @@ RSpec.describe Support::BootstrapRails do
   def stub_rake_tasks(*tasks, success:, **args)
     rake_double = instance_double(KDK::Execute::Rake, success?: success)
     allow(KDK::Execute::Rake).to receive(:new).with(*tasks).and_return(rake_double)
-    allow(rake_double).to receive(:execute_in_gitlab).with(**args).and_return(rake_double)
+    allow(rake_double).to receive(:execute_in_khulnasoft).with(**args).and_return(rake_double)
   end
 end

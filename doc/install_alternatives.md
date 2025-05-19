@@ -2,7 +2,7 @@
 title: Alternative KDK installation methods
 ---
 
-In addition to the [primary installation process](_index.md#use-kdk-to-install-gitlab), you can install KDK
+In addition to the [primary installation process](_index.md#use-kdk-to-install-khulnasoft), you can install KDK
 using alternative methods.
 
 ## Install KDK to alternative platforms
@@ -30,18 +30,18 @@ projects.
 
 ### Install using KhulnaSoft FOSS project
 
-Learn [how to create a fork](https://docs.gitlab.com/ee/user/project/repository/forking_workflow.html#creating-a-fork)
+Learn [how to create a fork](https://docs.khulnasoft.com/ee/user/project/repository/forking_workflow.html#creating-a-fork)
 of [KhulnaSoft FOSS](https://github.com/khulnasoft-lab/khulnasoft-foss).
 
 After cloning the `khulnasoft-development-kit` project and running `make bootstrap`, to:
 
-- Clone `gitlab-foss` using SSH, run:
+- Clone `khulnasoft-foss` using SSH, run:
 
   ```shell
-  kdk install khulnasoft_repo=git@gitlab.com:gitlab-org/gitlab-foss.git
+  kdk install khulnasoft_repo=git@khulnasoft.com:khulnasoft-org/khulnasoft-foss.git
   ```
 
-- Clone `gitlab-foss` using HTTPS, run:
+- Clone `khulnasoft-foss` using HTTPS, run:
 
   ```shell
   kdk install khulnasoft_repo=https://github.com/khulnasoft-lab/khulnasoft-foss.git
@@ -49,18 +49,18 @@ After cloning the `khulnasoft-development-kit` project and running `make bootstr
 
 ### Install using your own KhulnaSoft fork
 
-Learn [how to create a fork](https://docs.gitlab.com/ee/user/project/repository/forking_workflow.html#creating-a-fork)
+Learn [how to create a fork](https://docs.khulnasoft.com/ee/user/project/repository/forking_workflow.html#creating-a-fork)
 of [KhulnaSoft FOSS](https://github.com/khulnasoft-lab/khulnasoft-foss).
 
 After cloning the `khulnasoft-development-kit` project and running `make bootstrap`, to:
 
-- Clone `gitlab-foss` using SSH, run:
+- Clone `khulnasoft-foss` using SSH, run:
 
   ```shell
-  kdk install khulnasoft_repo=git@gitlab.com:gitlab-org/gitlab-foss.git
+  kdk install khulnasoft_repo=git@khulnasoft.com:khulnasoft-org/khulnasoft-foss.git
   ```
 
-- Clone `gitlab-foss` using HTTPS, run:
+- Clone `khulnasoft-foss` using HTTPS, run:
 
   ```shell
   kdk install khulnasoft_repo=https://github.com/khulnasoft-lab/khulnasoft-foss.git

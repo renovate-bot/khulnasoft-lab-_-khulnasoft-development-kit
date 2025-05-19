@@ -4,7 +4,7 @@ description: |
   Checks for the presence of merge conflict markers.
 extends: existence
 message: "Remove the merge conflict marker '%s'."
-link: https://docs.gitlab.com/development/code_review/#merging-a-merge-request
+link: https://docs.khulnasoft.com/development/code_review/#merging-a-merge-request
 vocab: false
 level: error
 scope: raw

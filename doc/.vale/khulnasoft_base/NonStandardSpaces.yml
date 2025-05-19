@@ -10,7 +10,7 @@ message: "Use standard spaces only. Do not use no-break or zero width spaces."
 vocab: false
 level: error
 ignorecase: true
-link: https://docs.gitlab.com/development/documentation/styleguide/#punctuation
+link: https://docs.khulnasoft.com/development/documentation/styleguide/#punctuation
 scope: raw
 raw:
   - '[\u202F\u00A0\u200B]'

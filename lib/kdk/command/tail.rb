@@ -25,7 +25,7 @@ module KDK
           %<shortcuts>s
 
         To contribute to KhulnaSoft, see
-        https://docs.gitlab.com/ee/development/index.html.
+        https://docs.khulnasoft.com/ee/development/index.html.
       MSG
 
       def run(args = [])

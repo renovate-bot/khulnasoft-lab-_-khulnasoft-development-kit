@@ -29,7 +29,7 @@ To synchronize the license compliance data:
    ```
 
 1. Configure the synchronization options
-   in [the Admin panel](https://docs.gitlab.com/ee/administration/settings/security_and_compliance.html#choose-package-registry-metadata-to-sync).
+   in [the Admin panel](https://docs.khulnasoft.com/ee/administration/settings/security_and_compliance.html#choose-package-registry-metadata-to-sync).
 
 1. Synchronize package license data from PMDB:
 

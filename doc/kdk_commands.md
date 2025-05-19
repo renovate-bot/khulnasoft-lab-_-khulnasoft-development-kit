@@ -56,14 +56,14 @@ kdk tail | grep <some_correlation_id>
 
   ```shell
   # follow the API's JSON log
-  tail -f gitlab/log/api_json.log
+  tail -f khulnasoft/log/api_json.log
   ```
 
 - Using `-n`:
 
   ```shell
   # Return the last 100 lines of the GraphQL JSON log
-  tail -n 100 gitlab/log/graphql_json.log
+  tail -n 100 khulnasoft/log/graphql_json.log
   ```
 
 For usage information and a list of services and shortcuts for the `tail` command, use the `--help` flag:
@@ -181,7 +181,7 @@ kdk clickhouse [<args>]
 
 ## Update KDK
 
-To update `gitlab` and all of its dependencies, run the following commands:
+To update `khulnasoft` and all of its dependencies, run the following commands:
 
 ```shell
 kdk update
@@ -256,7 +256,7 @@ For more context, `reset-data` backs up these directories (relative from the KDK
 
 - `postgresql/data/`
 - `redis/dump.rdb`
-- `gitlab/public/uploads/`
+- `khulnasoft/public/uploads/`
 - `repositories/`
 
 It then restores the default `repositories/` directory from Git and runs the database setup again.
@@ -308,7 +308,7 @@ Sitespeed settings. We support local relative and absolute URLs as arguments. As
 is generated, it is automatically opened in your browser.
 
 ```shell
-kdk measure /explore http://127.0.0.1/explore https://gitlab.com/explore
+kdk measure /explore http://127.0.0.1/explore https://khulnasoft.com/explore
 ```
 
 ## Measure Workflows performance

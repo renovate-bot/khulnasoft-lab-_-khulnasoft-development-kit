@@ -40,14 +40,14 @@ RSpec.describe KDK::Command::Pristine do
         expect_kdk_shellout_command(described_class::RESET_CONFIGS_CMD).and_return(shellout_double)
 
         # khulnasoft_bundle
-        expect_kdk_shellout_command(subject.bundle_install_cmd, chdir: config.gitlab.dir).and_return(shellout_double)
-        expect_kdk_shellout_command(described_class::BUNDLE_PRISTINE_CMD, chdir: config.gitlab.dir).and_return(shellout_double)
+        expect_kdk_shellout_command(subject.bundle_install_cmd, chdir: config.khulnasoft.dir).and_return(shellout_double)
+        expect_kdk_shellout_command(described_class::BUNDLE_PRISTINE_CMD, chdir: config.khulnasoft.dir).and_return(shellout_double)
 
         # khulnasoft_tmp_clean
-        expect_kdk_shellout_command(described_class::GIT_CLEAN_TMP_CMD, chdir: config.gitlab.dir).and_return(shellout_double)
+        expect_kdk_shellout_command(described_class::GIT_CLEAN_TMP_CMD, chdir: config.khulnasoft.dir).and_return(shellout_double)
 
         # khulnasoft_yarn_clean
-        expect_kdk_shellout_command(described_class::YARN_CLEAN_CMD, chdir: config.gitlab.dir).and_return(shellout_double)
+        expect_kdk_shellout_command(described_class::YARN_CLEAN_CMD, chdir: config.khulnasoft.dir).and_return(shellout_double)
 
         expect(KDK::Output).to receive(:success).with("Successfully ran 'kdk pristine'!")
 

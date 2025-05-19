@@ -13,7 +13,7 @@ group :development do
 end
 
 group :test do
-  gem 'gitlab-styles', '~> 13.1.0', require: false
+  gem 'khulnasoft-styles', '~> 13.1.0', require: false
   gem 'irb', '~> 1.15.1', require: false
   gem 'rspec', '~> 3.13.0', require: false
   gem 'rspec_junit_formatter', '~> 0.6.0', require: false
@@ -22,7 +22,7 @@ group :test do
 end
 
 group :development, :test, :danger do
-  gem 'gitlab-dangerfiles', '~> 4.9.0', require: false
+  gem 'khulnasoft-dangerfiles', '~> 4.9.0', require: false
   gem 'resolv', '~> 0.6.0', require: false
 
   gem 'ruby-lsp', "~> 0.23.0", require: false

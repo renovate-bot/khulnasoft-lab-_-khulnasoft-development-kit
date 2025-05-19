@@ -26,7 +26,7 @@ install `pcre2` with Homebrew.
 By default, Homebrew installs packages for `arm64` under `/opt/homebrew` which causes issue for the Gitaly instance
 that is built for running tests. To resolve the issue:
 
-1. Remove the Gitaly instance that is built for running tests (it must be built again) at `<path-to-kdk>/gitlab/tmp/tests/gitaly`.
+1. Remove the Gitaly instance that is built for running tests (it must be built again) at `<path-to-kdk>/khulnasoft/tmp/tests/gitaly`.
 1. Set the `LIBPCREDIR` environment variable to `/opt/homebrew/opt/pcre2`, either:
 
    - Inline when running tests:
@@ -60,12 +60,12 @@ switched back to `main` without
 the migrations locally first.
 
 In that case, what you need to do is run the following command inside
-the `gitlab` directory to drop all tables on your test database and have
+the `khulnasoft` directory to drop all tables on your test database and have
 them recreated from the canonical version in `db/structure.sql`. Note,
 dropping and recreating your test database tables is perfectly safe!
 
 ```shell
-cd gitlab
+cd khulnasoft
 bundle exec rake db:test:prepare
 ```
 
@@ -81,7 +81,7 @@ rspec ./spec/javascripts/fixtures/branches.rb:24 # Projects::BranchesController 
 rspec ./spec/javascripts/fixtures/commit.rb:22 # Projects::CommitController (JavaScript fixtures) commit/show.html
 ```
 
-To fix this, remove `tmp/tests/` in the `gitlab/` directory and regenerate the fixtures:
+To fix this, remove `tmp/tests/` in the `khulnasoft/` directory and regenerate the fixtures:
 
 ```shell
 rm -rf tmp/tests/ && bin/rake karma:fixtures
@@ -139,7 +139,7 @@ For more information, see [issue 1875](https://github.com/khulnasoft-lab/khulnas
 ## Gitaly doesn't start
 
 If tests don't run because `gitaly` doesn't start, run the binary manually
-from the `gitlab` directory and look for errors:
+from the `khulnasoft` directory and look for errors:
 
 ```shell
 % ./tmp/tests/gitaly/_build/bin/gitaly help

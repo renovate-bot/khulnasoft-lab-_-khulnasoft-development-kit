@@ -2,7 +2,7 @@
 title: Web IDE Terminal
 ---
 
-[Web IDE terminal](https://docs.gitlab.com/ee/user/project/web_ide/index.html#interactive-web-terminals-for-the-web-ide)
+[Web IDE terminal](https://docs.khulnasoft.com/ee/user/project/web_ide/index.html#interactive-web-terminals-for-the-web-ide)
 can be tested using the KDK.
 
 ## Pre-requisites
@@ -15,7 +15,7 @@ To run Web IDE terminals on KDK, the following are required:
   1. Expand **Visibility, project features, permissions**.
   1. Confirm **Pipelines** is enabled.
 - [KhulnaSoft Runner](runner.md) installed.
-- [minikube](https://docs.gitlab.com/charts/development/minikube/#getting-started-with-minikube)
+- [minikube](https://docs.khulnasoft.com/charts/development/minikube/#getting-started-with-minikube)
   installed and started. Start minikube with a driver of your choice (VirtualBox in this case):
 
   ```shell
@@ -54,7 +54,7 @@ To configure KDK for Web IDE terminals:
    kind: Role
    metadata:
      namespace: default
-     name: gitlab-ci
+     name: khulnasoft-ci
    rules:
    - apiGroups: [""] # "" indicates the core API group
      resources: ["pods", "pods/exec", "secrets"]
@@ -68,7 +68,7 @@ To configure KDK for Web IDE terminals:
    apiVersion: rbac.authorization.k8s.io/v1
    kind: RoleBinding
    metadata:
-     name: gitlab-ci
+     name: khulnasoft-ci
      namespace: default
    subjects:
    - kind: ServiceAccount
@@ -76,7 +76,7 @@ To configure KDK for Web IDE terminals:
      namespace: default
    roleRef:
      kind: Role #this must be Role or ClusterRole
-     name: gitlab-ci # this must match tile name of the Role or ClusterRole you wish to bind to
+     name: khulnasoft-ci # this must match tile name of the Role or ClusterRole you wish to bind to
      apiGroup: rbac.authorization.k8s.io
    ```
 
@@ -104,10 +104,10 @@ The following is required to configure KhulnaSoft Runner for Web IDE terminals.
 1. Go to **Settings > CI/CD**
 1. Expand **Runners** and refer to the information at **Set up a specific Runner manually**,
    making note of the URL and token.
-1. [Register](https://docs.gitlab.com/runner/register/) the Runner:
+1. [Register](https://docs.khulnasoft.com/runner/register/) the Runner:
 
    ```shell
-   gitlab-runner register
+   khulnasoft-runner register
    ```
 
    - Follow the prompt to provide the URL, token, and description for the Runner.
@@ -118,7 +118,7 @@ The following is required to configure KhulnaSoft Runner for Web IDE terminals.
 1. Start the Runner:
 
    ```shell
-   gitlab-runner run
+   khulnasoft-runner run
    ```
 
 1. Go to **Settings > CI/CD** again to check the Runner is shown as online (next to a green circle).
@@ -131,8 +131,8 @@ The following is required to configure KhulnaSoft Runner for Web IDE terminals.
    kubectl get secrets -ojsonpath="{.items[?(@.metadata.annotations['kubernetes\.io/service-account\.name']=='default')].data.token}" | base64 -D
    ```
 
-1. Add the token to the [`[[runners]]`](https://docs.gitlab.com/runner/configuration/advanced-configuration.html#the-runners-section)
-   section of `~/.gitlab-runner/config.toml` as follows:
+1. Add the token to the [`[[runners]]`](https://docs.khulnasoft.com/runner/configuration/advanced-configuration.html#the-runners-section)
+   section of `~/.khulnasoft-runner/config.toml` as follows:
 
    ```yaml
    [[runners]]
@@ -141,7 +141,7 @@ The following is required to configure KhulnaSoft Runner for Web IDE terminals.
        bearer_token = "token_from_step_one"
    ```
 
-1. Add your IP address as the `listen_address` to the [`[session_server]`](https://docs.gitlab.com/runner/configuration/advanced-configuration.html#the-session_server-section)
+1. Add your IP address as the `listen_address` to the [`[session_server]`](https://docs.khulnasoft.com/runner/configuration/advanced-configuration.html#the-session_server-section)
    section using `host:port` format:
 
    ```yaml
@@ -153,13 +153,13 @@ The following is required to configure KhulnaSoft Runner for Web IDE terminals.
 1. Stop the Runner and run it again:
 
    ```shell
-   gitlab-runner run
+   khulnasoft-runner run
    ```
 
 ## Starting the Web IDE terminal
 
 1. Go to the test project and open the Web IDE.
-1. Add the file `.khulnasoft/.gitlab-webide.yml` to the repository's root.
+1. Add the file `.khulnasoft/.khulnasoft-webide.yml` to the repository's root.
 
    ```yaml
    terminal:
@@ -172,7 +172,7 @@ The following is required to configure KhulnaSoft Runner for Web IDE terminals.
        NODE_ENV: "test"
    ```
 
-   Check the [Web IDE configuration file](https://docs.gitlab.com/ee/user/project/web_ide/#web-ide-configuration-file)
+   Check the [Web IDE configuration file](https://docs.khulnasoft.com/ee/user/project/web_ide/#web-ide-configuration-file)
    section for more information about this file's syntax.
 1. From the menu on the left, click on the Terminal icon.
 1. Start the Web IDE terminal.
@@ -189,7 +189,7 @@ The following are possible problems using Web IDE terminal with possible solutio
   terminal one can start.
 
 - In case of a `connection failure` (due to `apt-get` command not being
-  found), you can try changing the `image` in `.khulnasoft/.gitlab-webide.yml`
+  found), you can try changing the `image` in `.khulnasoft/.khulnasoft-webide.yml`
   to be `image: alpine:3.5`.
 
   This is a bit inconsistent as you could later try to change it back to
@@ -198,11 +198,11 @@ The following are possible problems using Web IDE terminal with possible solutio
 
 - If you're still having trouble getting the terminal up and running in
   Web IDE, it maybe worth trying the "regular"
-  [debug terminal for pipeline jobs](https://docs.gitlab.com/ee/ci/interactive_web_terminal/#debugging-a-running-job),
+  [debug terminal for pipeline jobs](https://docs.khulnasoft.com/ee/ci/interactive_web_terminal/#debugging-a-running-job),
   as it requires less configuration.
 
   That is, the KhulnaSoft instance doesn't need to ping out to the Runner like it
-  does for the IDE terminal). In this case, your `.gitlab-ci.yml` file should look like
+  does for the IDE terminal). In this case, your `.khulnasoft-ci.yml` file should look like
   this:
 
   ```yaml

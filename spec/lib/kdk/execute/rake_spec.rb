@@ -54,7 +54,7 @@ RSpec.describe KDK::Execute::Rake do
     end
   end
 
-  describe '#execute_in_gitlab' do
+  describe '#execute_in_khulnasoft' do
     context 'with mocked shellout' do
       before do
         allow_kdk_shellout.and_return(shellout_mock)
@@ -67,7 +67,7 @@ RSpec.describe KDK::Execute::Rake do
 
           expect(Bundler).to receive(:with_unbundled_env).and_yield
 
-          rake.execute_in_gitlab
+          rake.execute_in_khulnasoft
         end
       end
 
@@ -77,7 +77,7 @@ RSpec.describe KDK::Execute::Rake do
 
           expect(Bundler).not_to receive(:with_unbundled_env)
 
-          rake.execute_in_gitlab
+          rake.execute_in_khulnasoft
         end
       end
 
@@ -87,7 +87,7 @@ RSpec.describe KDK::Execute::Rake do
 
           expect_kdk_shellout.with(start_with('asdf', 'exec'), any_args).and_return(shellout_mock)
 
-          rake.execute_in_gitlab
+          rake.execute_in_khulnasoft
         end
       end
 
@@ -97,7 +97,7 @@ RSpec.describe KDK::Execute::Rake do
 
           expect_kdk_shellout.with(array_including('bundle', 'exec'), any_args).and_return(shellout_mock)
 
-          rake.execute_in_gitlab
+          rake.execute_in_khulnasoft
         end
       end
 
@@ -106,7 +106,7 @@ RSpec.describe KDK::Execute::Rake do
           .with(array_including('bundle', 'exec', 'rake', 'list:of:tasks', 'other:task'), any_args)
           .and_return(shellout_mock)
 
-        rake.execute_in_gitlab
+        rake.execute_in_khulnasoft
       end
     end
 
@@ -121,7 +121,7 @@ RSpec.describe KDK::Execute::Rake do
           }
         })
 
-        rake.execute_in_gitlab(display_output: false)
+        rake.execute_in_khulnasoft(display_output: false)
 
         expect(rake.success?).to be_truthy
       end

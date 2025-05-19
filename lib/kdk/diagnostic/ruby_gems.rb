@@ -84,14 +84,14 @@ module KDK
       def exec_cmd(cmd)
         KDK::Output.debug("cmd=[#{cmd}]")
 
-        Shellout.new(cmd, chdir: config.gitlab.dir.to_s).execute(display_output: false, display_error: false).success?
+        Shellout.new(cmd, chdir: config.khulnasoft.dir.to_s).execute(display_output: false, display_error: false).success?
       end
 
       def bundle_check_error_message
         <<~MESSAGE
           There are Ruby gems missing that need to be installed. Try running the following to fix:
 
-            (cd #{config.gitlab.dir} && bundle install)
+            (cd #{config.khulnasoft.dir} && bundle install)
         MESSAGE
       end
 
@@ -103,7 +103,7 @@ module KDK
 
           Try running the following to fix:
 
-            (cd #{config.gitlab.dir} && bundle pristine #{@failed_to_load_khulnasoft_gems.join(' ')})
+            (cd #{config.khulnasoft.dir} && bundle pristine #{@failed_to_load_khulnasoft_gems.join(' ')})
         MESSAGE
       end
     end

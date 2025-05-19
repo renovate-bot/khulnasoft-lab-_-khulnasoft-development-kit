@@ -12,8 +12,8 @@ Prerequisites:
 
 1. On your existing KDK, add a KhulnaSoft Premium or Ultimate license either:
 
-   - In the [KhulnaSoft UI](https://docs.gitlab.com/ee/administration/license_file.html).
-   - Using an [environment variable](https://docs.gitlab.com/ee/administration/license_file.html#add-your-license-file-during-installation).
+   - In the [KhulnaSoft UI](https://docs.khulnasoft.com/ee/administration/license_file.html).
+   - Using an [environment variable](https://docs.khulnasoft.com/ee/administration/license_file.html#add-your-license-file-during-installation).
 
 1. Clone KDK into a second directory adjacent to your existing KDK:
 
@@ -40,7 +40,7 @@ The new KDK's URL `http://127.0.0.1:3001` is the unified URL. You can still visi
 ### Prerequisites
 
 Development on KhulnaSoft Geo requires two KDK instances running side-by-side. You can use an existing
-KDK instance based on the [the usual installation instructions](../../_index.md#use-kdk-to-install-gitlab) documentation
+KDK instance based on the [the usual installation instructions](../../_index.md#use-kdk-to-install-khulnasoft) documentation
 as the primary node.
 
 In these instructions we assume:
@@ -100,13 +100,13 @@ Then run the following command:
 
 ```shell
 # Assuming your primary KDK instance lives in parallel folders:
-kdk install khulnasoft_repo=../kdk/gitlab
+kdk install khulnasoft_repo=../kdk/khulnasoft
 ```
 
 The `khulnasoft_repo` parameter is an optimization, but it is not
 strictly required. It saves you time by performing a local `git clone`
 instead of pulling from KhulnaSoft.com. In addition, a `git pull` in the
-`gitlab` directory updates from your local primary Git repository.
+`khulnasoft` directory updates from your local primary Git repository.
 
 After installation finishes, run the following commands:
 
@@ -171,15 +171,15 @@ kdk restart postgresql
 
 The primary and the secondary nodes use the same secret key to encrypt and decrypt attributes in the database. To copy the secret from your primary to your secondary:
 
-1. Open `kdk/gitlab/config/secrets.yml` with your editor of choice.
+1. Open `kdk/khulnasoft/config/secrets.yml` with your editor of choice.
 1. Copy the value of `development.db_key_base`.
-1. Paste it into `kdk-geo/gitlab/config/secrets.yml`.
+1. Paste it into `kdk-geo/khulnasoft/config/secrets.yml`.
 
 ### Configure Geo nodes
 
 #### Add a license that includes the Geo feature
 
-1. Get a [test license](https://about.gitlab.com/handbook/support/workflows/test_env.html#testing-environment-license)
+1. Get a [test license](https://about.khulnasoft.com/handbook/support/workflows/test_env.html#testing-environment-license)
 1. Upload the license on your local Geo primary at <http://kdk.test:3000/admin/license>
 
 #### Add primary node
@@ -187,7 +187,7 @@ The primary and the secondary nodes use the same secret key to encrypt and decry
 1. Add the primary node:
 
    ```shell
-   cd kdk/gitlab
+   cd kdk/khulnasoft
 
    bundle exec rake geo:set_primary_node
    ```
@@ -204,10 +204,10 @@ There isn't a convenient Rake task to add the secondary node because the relevan
 data is on the secondary, but you can only write to the primary database. So you
 must get the values from the secondary, and then manually add the node.
 
-1. In a terminal, change to the `gitlab` directory of the secondary node:
+1. In a terminal, change to the `khulnasoft` directory of the secondary node:
 
    ```shell
-   cd kdk-geo/gitlab
+   cd kdk-geo/khulnasoft
    ```
 
 1. Output the secondary node's **Name** and **URL**:
@@ -256,7 +256,7 @@ You could set up a reverse proxy at port `3002` to forward requests to either si
 1. Optional. In your primary's `kdk.yml`, add:
 
    ```yaml
-   gitlab:
+   khulnasoft:
      rails:
        port: 3001
    ```

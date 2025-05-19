@@ -29,7 +29,7 @@ gitaly-git-pull: gitaly-git-pull-timed
 gitaly-git-pull-run:
 	@echo
 	@echo "${DIVIDER}"
-	@echo "Updating gitlab-org/gitaly to ${gitaly_version}"
+	@echo "Updating khulnasoft-org/gitaly to ${gitaly_version}"
 	@echo "${DIVIDER}"
 	$(Q)support/component-git-update gitaly "${gitaly_dir}" "${gitaly_version}" master
 
@@ -63,7 +63,7 @@ ifeq ($(gitaly_skip_compile),true)
 else
 	@echo
 	@echo "${DIVIDER}"
-	@echo "Building gitlab-org/gitaly ${gitaly_version}"
+	@echo "Building khulnasoft-org/gitaly ${gitaly_version}"
 	@echo "${DIVIDER}"
 	$(Q)support/asdf-exec ${gitaly_dir} $(MAKE) -j${restrict_cpu_count} WITH_BUNDLED_GIT=YesPlease BUNDLE_FLAGS=--no-deployment USE_MESON=YesPlease
 endif

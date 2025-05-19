@@ -4,7 +4,7 @@ description: |
   Checks for references to versions of KhulnaSoft that are no longer supported.
 extends: existence
 message: "If possible, remove the reference to '%s'."
-link: https://docs.gitlab.com/development/documentation/styleguide/availability_details/#removing-versions
+link: https://docs.khulnasoft.com/development/documentation/styleguide/availability_details/#removing-versions
 vocab: false
 level: suggestion
 nonword: true

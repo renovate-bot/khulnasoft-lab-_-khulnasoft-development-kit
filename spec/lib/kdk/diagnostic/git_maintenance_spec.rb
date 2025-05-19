@@ -29,7 +29,7 @@ RSpec.describe KDK::Diagnostic::GitMaintenance do
     end
 
     describe 'when all repos have maintenance enabled' do
-      let(:maintenance_repos) { [KDK.config.kdk_root, KDK.config.gitlab.dir] }
+      let(:maintenance_repos) { [KDK.config.kdk_root, KDK.config.khulnasoft.dir] }
 
       it { expect(subject.success?).to be(true) }
     end
@@ -39,7 +39,7 @@ RSpec.describe KDK::Diagnostic::GitMaintenance do
     describe 'when no repo has maintenance enabled' do
       it 'starts git maintenance for all recommended repositories' do
         shellout = kdk_shellout_double
-        expect_kdk_shellout_command(%w[git maintenance start], chdir: KDK.config.gitlab.dir.to_s).and_return(shellout)
+        expect_kdk_shellout_command(%w[git maintenance start], chdir: KDK.config.khulnasoft.dir.to_s).and_return(shellout)
         expect_kdk_shellout_command(%w[git maintenance start], chdir: KDK.config.kdk_root.to_s).and_return(shellout)
         expect(shellout).to receive(:execute).with(display_output: false).twice
 
@@ -52,7 +52,7 @@ RSpec.describe KDK::Diagnostic::GitMaintenance do
 
       it 'starts git maintenance only for repositories without it' do
         shellout = kdk_shellout_double
-        expect_kdk_shellout_command(%w[git maintenance start], chdir: KDK.config.gitlab.dir.to_s).and_return(shellout)
+        expect_kdk_shellout_command(%w[git maintenance start], chdir: KDK.config.khulnasoft.dir.to_s).and_return(shellout)
         expect(shellout).to receive(:execute).with(display_output: false)
 
         subject.correct!
@@ -60,11 +60,11 @@ RSpec.describe KDK::Diagnostic::GitMaintenance do
     end
 
     describe 'when all repos have maintenance enabled' do
-      let(:maintenance_repos) { [KDK.config.kdk_root, KDK.config.gitlab.dir] }
+      let(:maintenance_repos) { [KDK.config.kdk_root, KDK.config.khulnasoft.dir] }
 
       it 'does not start git maintenance for any repository' do
         expect_no_kdk_shellout.with(%w[git maintenance start], chdir: KDK.config.kdk_root.to_s)
-        expect_no_kdk_shellout.with(%w[git maintenance start], chdir: KDK.config.gitlab.dir.to_s)
+        expect_no_kdk_shellout.with(%w[git maintenance start], chdir: KDK.config.khulnasoft.dir.to_s)
 
         subject.correct!
       end
@@ -81,7 +81,7 @@ RSpec.describe KDK::Diagnostic::GitMaintenance do
           To enable it, run `git maintenance start` in each repository:
 
           git -C #{KDK.config.kdk_root} maintenance start
-          git -C #{KDK.config.gitlab.dir} maintenance start
+          git -C #{KDK.config.khulnasoft.dir} maintenance start
           MESSAGE
         )
       end
@@ -97,14 +97,14 @@ RSpec.describe KDK::Diagnostic::GitMaintenance do
 
           To enable it, run `git maintenance start` in each repository:
 
-          git -C #{KDK.config.gitlab.dir} maintenance start
+          git -C #{KDK.config.khulnasoft.dir} maintenance start
           MESSAGE
         )
       end
     end
 
     describe 'when all repos have maintenance enabled' do
-      let(:maintenance_repos) { [KDK.config.kdk_root, KDK.config.gitlab.dir] }
+      let(:maintenance_repos) { [KDK.config.kdk_root, KDK.config.khulnasoft.dir] }
 
       it { expect(subject.detail).to be_nil }
     end

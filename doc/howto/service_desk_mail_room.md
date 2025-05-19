@@ -11,31 +11,31 @@ You can watch [a recorded video walkthrough](https://www.youtube.com/watch?v=Sdq
 1. Generate a secret file for MailRoom. For example:
 
    ```shell
-   echo $( ruby -rsecurerandom -e "puts SecureRandom.base64(32)" ) > ~/.gitlab-mailroom-secret
+   echo $( ruby -rsecurerandom -e "puts SecureRandom.base64(32)" ) > ~/.khulnasoft-mailroom-secret
    ```
    
    Get the **full path to the secret file** to use in a later step:
 
    ```shell
-   realpath ~/.gitlab-mailroom-secret
+   realpath ~/.khulnasoft-mailroom-secret
    ```
    
    If your system does not support `realpath` you can also use this to get the full path of the file:
 
    ```shell
-   cd ~ && echo `pwd`/`ls .gitlab-mailroom-secret`
+   cd ~ && echo `pwd`/`ls .khulnasoft-mailroom-secret`
    ```
 
 1. (Optional) Using a new Gmail account for testing purposes is recommended. If using Gmail, you need to 
    [set up 2FA](https://myaccount.google.com/u/1/signinoptions/two-step-verification) and then 
    [add an App Password](https://myaccount.google.com/u/1/apppasswords) to be able to use SMTP-Auth.
    Store this password securely and use it as an environment variable.
-1. Set [incoming_email](https://docs.gitlab.com/ee/administration/incoming_email.html) and
-   [service_desk_email](https://docs.gitlab.com/ee/user/project/service_desk.html#using-a-custom-email-address)
+1. Set [incoming_email](https://docs.khulnasoft.com/ee/administration/incoming_email.html) and
+   [service_desk_email](https://docs.khulnasoft.com/ee/user/project/service_desk.html#using-a-custom-email-address)
    configuration to point to an email inbox. If you want to test all features of Incoming Email and Service Desk, 
    please use two separate email addresses (e.g. two new Gmail addresses). Use one for `incoming_email` and a 
    separate one for `service_desk_email` then.
-   In the `development:` section of `gitlab/config/gitlab.yml` add:
+   In the `development:` section of `khulnasoft/config/khulnasoft.yml` add:
 
    ```yaml
    incoming_email:
@@ -47,7 +47,7 @@ You can watch [a recorded video walkthrough](https://www.youtube.com/watch?v=Sdq
      # Base url of your instance. Adjust if you use a different url
      khulnasoft_url: "http://127.0.0.1:3000"
      # Replace with the full path to your secret file.
-     secret_file: /Users/youruser/.gitlab-mailroom-secret
+     secret_file: /Users/youruser/.khulnasoft-mailroom-secret
      # IMAP server host
      host: "imap.gmail.com"
      # IMAP server port
@@ -70,7 +70,7 @@ You can watch [a recorded video walkthrough](https://www.youtube.com/watch?v=Sdq
      # Base url of your instance. Adjust if you use a different url
      khulnasoft_url: "http://127.0.0.1:3000"
      # Replace with the full path to your secret file.
-     secret_file: /Users/youruser/.gitlab-mailroom-secret
+     secret_file: /Users/youruser/.khulnasoft-mailroom-secret
      # IMAP server host
      host: "imap.gmail.com"
      # IMAP server port
@@ -85,9 +85,9 @@ You can watch [a recorded video walkthrough](https://www.youtube.com/watch?v=Sdq
      idle_timeout: 60
    ```
 
-1. Optional. Consider adding `gitlab/config/gitlab.yml` as a [protected config file](../configuration.md#overwriting-configuration-files) to retain these changes when running the `kdk reconfigure` command.
+1. Optional. Consider adding `khulnasoft/config/khulnasoft.yml` as a [protected config file](../configuration.md#overwriting-configuration-files) to retain these changes when running the `kdk reconfigure` command.
 1. Restart all services. `kdk start`
-1. Start MailRoom in a console (pointing to your `gitlab` folder e.g. `cd ~/khulnasoft-development-kit/khulnasoft`) with the following command:
+1. Start MailRoom in a console (pointing to your `khulnasoft` folder e.g. `cd ~/khulnasoft-development-kit/khulnasoft`) with the following command:
 
    ```shell
    bundle exec mail_room -c ./config/mail_room.yml
@@ -109,7 +109,7 @@ After configuring services test:
 
 If you have problems with issues not being created from email:
 
-1. In the `<kdk-root>/gitlab` directory, tail the MailRoom logs with the following command:
+1. In the `<kdk-root>/khulnasoft` directory, tail the MailRoom logs with the following command:
 
    ```shell
    tail -f log/mail_room_json.log

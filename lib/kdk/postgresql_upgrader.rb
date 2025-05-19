@@ -115,7 +115,7 @@ module KDK
     end
 
     def pgvector_setup
-      return unless config.pgvector.enabled? || config.gitlab.rails.databases.embedding.enabled?
+      return unless config.pgvector.enabled? || config.khulnasoft.rails.databases.embedding.enabled?
 
       KDK::Output.info "Running 'make pgvector-clean pgvector-setup'.."
       run!('make pgvector-clean pgvector-setup', config.kdk_root)

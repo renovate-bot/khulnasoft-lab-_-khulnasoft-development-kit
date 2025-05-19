@@ -1,6 +1,6 @@
 # Containerized KDK-in-a-box
 
-For more information, check out this [guide to your first contribution with KDK-in-a-box](https://docs.gitlab.com/ee/development/contributing/first_contribution/configure-dev-env-kdk-in-a-box.html).
+For more information, check out this [guide to your first contribution with KDK-in-a-box](https://docs.khulnasoft.com/ee/development/contributing/first_contribution/configure-dev-env-kdk-in-a-box.html).
 
 ## Prerequisites
 
@@ -51,7 +51,7 @@ docker run -d -h kdk.local --name kdk \
 
 ## Connecting to container
 
-After the container is up, you can treat this container as a regular "KDK-in-a-box" VM. To connect, you can SSH to the container ([using the KDK-in-a-box keys](https://docs.gitlab.com/ee/development/contributing/first_contribution/configure-dev-env-kdk-in-a-box.html#use-vs-code-to-connect-to-kdk)):
+After the container is up, you can treat this container as a regular "KDK-in-a-box" VM. To connect, you can SSH to the container ([using the KDK-in-a-box keys](https://docs.khulnasoft.com/ee/development/contributing/first_contribution/configure-dev-env-kdk-in-a-box.html#use-vs-code-to-connect-to-kdk)):
 
 ```shell
 ssh kdk.local
@@ -61,11 +61,11 @@ ssh kdk.local
 
 This section describes how to set up Rails debugging in Visual Studio Code (VS Code) using the KhulnaSoft Development Kit (KDK).
 
-The steps are based on [the documentation page "VS Code debugging"](https://docs.gitlab.com/ee/development/vs_code_debugging.html).
+The steps are based on [the documentation page "VS Code debugging"](https://docs.khulnasoft.com/ee/development/vs_code_debugging.html).
 
 ### Setup
 
-1. Install the debug gem by running gem install debug inside the `/gitlab-kdk/khulnasoft-development-kit/khulnasoft` folder.
+1. Install the debug gem by running gem install debug inside the `/khulnasoft-kdk/khulnasoft-development-kit/khulnasoft` folder.
 1. Install [the VS Code Ruby rdbg Debugger extension](https://marketplace.visualstudio.com/items?itemName=KoichiSasada.vscode-rdbg) to add support for the rdbg debugger type to VS Code.
 1. In case you want to automatically stop and start KhulnaSoft and its associated Ruby Rails/Sidekiq process, you may add the following VS Code task to your configuration under the `.vscode/tasks.json` file:
 

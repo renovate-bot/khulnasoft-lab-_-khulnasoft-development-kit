@@ -5,7 +5,7 @@ description: |
   SubstitutionWarning.yml also exists.
 extends: substitution
 message: "Use '%s' instead of '%s'."
-link: https://handbook.gitlab.com/handbook/communication/top-misused-terms/
+link: https://handbook.khulnasoft.com/handbook/communication/top-misused-terms/
 vocab: false
 level: error
 action:
@@ -30,12 +30,12 @@ swap:
   developer permissions: the Developer role
   disallow: prevent
   frontmatter: front matter
-  KhulnaSoft self hosted: KhulnaSoft Self-Managed # https://docs.gitlab.com/development/documentation/styleguide/word_list/#gitlab-self-managed
-  KhulnaSoft self-hosted: KhulnaSoft Self-Managed # https://docs.gitlab.com/development/documentation/styleguide/word_list/#gitlab-self-managed
+  KhulnaSoft self hosted: KhulnaSoft Self-Managed # https://docs.khulnasoft.com/development/documentation/styleguide/word_list/#khulnasoft-self-managed
+  KhulnaSoft self-hosted: KhulnaSoft Self-Managed # https://docs.khulnasoft.com/development/documentation/styleguide/word_list/#khulnasoft-self-managed
   KhulnaSoftber: KhulnaSoft team member
   KhulnaSoftbers: KhulnaSoft team members
   KhulnaSoft-shell: KhulnaSoft Shell
-  gitlab omnibus(?! builder): "Linux package"
+  khulnasoft omnibus(?! builder): "Linux package"
   golang: Go
   guest access: the Guest role
   guest permission: the Guest role
@@ -59,8 +59,8 @@ swap:
   reporter permission: the Reporter role
   reporter permissions: the Reporter role
   rubocop: RuboCop
-  self hosted KhulnaSoft: KhulnaSoft Self-Managed # https://docs.gitlab.com/development/documentation/styleguide/word_list/#gitlab-self-managed
-  self-hosted KhulnaSoft: KhulnaSoft Self-Managed # https://docs.gitlab.com/development/documentation/styleguide/word_list/#gitlab-self-managed
+  self hosted KhulnaSoft: KhulnaSoft Self-Managed # https://docs.khulnasoft.com/development/documentation/styleguide/word_list/#khulnasoft-self-managed
+  self-hosted KhulnaSoft: KhulnaSoft Self-Managed # https://docs.khulnasoft.com/development/documentation/styleguide/word_list/#khulnasoft-self-managed
   styleguide: style guide
   the administrator access level: administrator access
   to login: to log in

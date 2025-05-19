@@ -5,7 +5,7 @@ RSpec.describe KDK::TestURL do
 
   let(:commit_sha) { 'abc123' }
   let(:default_url) { 'http://127.0.0.1:3000/users/sign_in' }
-  let(:tmp_khulnasoft_dir) { Dir.mktmpdir('gitlab-path') }
+  let(:tmp_khulnasoft_dir) { Dir.mktmpdir('khulnasoft-path') }
 
   before do
     stub_const('KDK::TestURL::MAX_ATTEMPTS', 2)
@@ -52,7 +52,7 @@ RSpec.describe KDK::TestURL do
     shared_examples "a URL that's up" do
       before do
         allow(subject).to receive(:check_url).and_return(true)
-        allow(KDK.config).to receive_message_chain(:gitlab, :dir).and_return(tmp_khulnasoft_dir)
+        allow(KDK.config).to receive_message_chain(:khulnasoft, :dir).and_return(tmp_khulnasoft_dir)
       end
 
       it 'checks if the URL is up and returns true' do
@@ -74,7 +74,7 @@ RSpec.describe KDK::TestURL do
         expect(KDK::Output).to receive(:print).with("=> Waiting until #{default_url} is ready..")
         expect(KDK::Output).to receive(:notice).with(/#{default_url} is up \(200 OK\). Took \d+(\.\d+)? second\(s\)\./)
         expect(KDK::Output).to receive(:notice).with("  - KhulnaSoft Commit SHA: #{commit_sha}.")
-        expect(File).to receive(:write).with('gitlab-last-verified-sha.json', '{"khulnasoft_last_verified_sha":"abc123"}')
+        expect(File).to receive(:write).with('khulnasoft-last-verified-sha.json', '{"khulnasoft_last_verified_sha":"abc123"}')
 
         subject.wait
       end

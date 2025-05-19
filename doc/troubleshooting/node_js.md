@@ -34,8 +34,8 @@ nvm install <version>
 The full error you might be getting is:
 
 ```plaintext
-Makefile:134: recipe for target '.gitlab-yarn' failed
-make: *** [.gitlab-yarn] Error 2
+Makefile:134: recipe for target '.khulnasoft-yarn' failed
+make: *** [.khulnasoft-yarn] Error 2
 ```
 
 This is likely to happen if you installed `yarn` using `apt install cmdtest`.

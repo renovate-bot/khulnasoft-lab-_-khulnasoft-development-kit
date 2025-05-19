@@ -124,8 +124,8 @@ if [ $# -eq 1 ]; then
   echo
   echo "Which KhulnaSoft repo URL would you like to clone? [${DEFAULT_KHULNASOFT_REPO_URL}]"
   echo
-  echo "ATTENTION: For members of the wider community, it is recommended to use the community fork (https://gitlab.com/gitlab-community/gitlab-org/gitlab.git)."
-  echo "See https://gitlab.com/gitlab-community/meta for instructions on how to join."
+  echo "ATTENTION: For members of the wider community, it is recommended to use the community fork (https://khulnasoft.com/khulnasoft-community/khulnasoft-org/khulnasoft.git)."
+  echo "See https://khulnasoft.com/khulnasoft-community/meta for instructions on how to join."
   echo "If you'd prefer to use your own repository, please ensure that its visibility is set to public."
   read -r KHULNASOFT_REPO_URL </dev/tty
   echo

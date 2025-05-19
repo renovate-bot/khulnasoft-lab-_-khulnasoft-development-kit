@@ -71,7 +71,7 @@ module KDK
         return true unless revision_is_default?
 
         command = %w[git pull --ff-only]
-        command << remote_name << KDK.config.gitlab.default_branch if khulnasoft_repo?
+        command << remote_name << KDK.config.khulnasoft.default_branch if khulnasoft_repo?
 
         sh = execute_command(command, retry_attempts: NETWORK_RETRIES)
         if sh.success?
@@ -145,7 +145,7 @@ module KDK
       end
 
       def khulnasoft_repo?
-        worktree_path.to_s == KDK.config.gitlab.dir.to_s
+        worktree_path.to_s == KDK.config.khulnasoft.dir.to_s
       end
 
       # To avoid fetching from an unnamed remote, we need to determine the remote_name
@@ -183,8 +183,8 @@ module KDK
 
       def parse_git_remotes(output)
         # Sample output
-        # com     git@gitlab.com:gitlab-community/gitlab-org/gitlab-shell.git (fetch)
-        # com     git@gitlab.com:gitlab-community/gitlab-org/gitlab-shell.git (push)
+        # com     git@khulnasoft.com:khulnasoft-community/khulnasoft-org/khulnasoft-shell.git (fetch)
+        # com     git@khulnasoft.com:khulnasoft-community/khulnasoft-org/khulnasoft-shell.git (push)
         # origin  https://github.com/khulnasoft-lab/khulnasoft-shell.git (fetch)
         # origin  https://github.com/khulnasoft-lab/khulnasoft-shell.git (push)
         lines = output.split("\n").select { |line| line.include?('(fetch)') }

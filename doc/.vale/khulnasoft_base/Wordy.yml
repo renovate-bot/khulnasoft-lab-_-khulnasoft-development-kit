@@ -4,7 +4,7 @@ description: |
   Suggests shorter versions of wordy phrases.
 extends: substitution
 message: "%s"
-link: https://docs.gitlab.com/development/documentation/styleguide/word_list/
+link: https://docs.khulnasoft.com/development/documentation/styleguide/word_list/
 vocab: false
 level: suggestion
 ignorecase: true

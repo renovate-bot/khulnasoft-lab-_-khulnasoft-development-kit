@@ -103,7 +103,7 @@ module KDK
       end
 
       def move_rails_uploads
-        backup_path('Rails uploads', %w[gitlab public uploads])
+        backup_path('Rails uploads', %w[khulnasoft public uploads])
       end
 
       def move_git_repository_data

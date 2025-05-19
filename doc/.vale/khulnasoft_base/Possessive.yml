@@ -6,7 +6,7 @@ extends: existence
 message: "Remove 's from %s."
 level: error
 ignorecase: true
-link: https://docs.gitlab.com/development/documentation/styleguide/word_list/#gitlab
+link: https://docs.khulnasoft.com/development/documentation/styleguide/word_list/#khulnasoft
 vocab: false
 tokens:
   - KhulnaSoft's

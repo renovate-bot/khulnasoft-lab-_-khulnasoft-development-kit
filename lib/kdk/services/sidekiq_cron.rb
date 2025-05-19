@@ -9,21 +9,21 @@ module KDK
       end
 
       def enabled?
-        config.gitlab.sidekiq_cron.enabled?
+        config.khulnasoft.sidekiq_cron.enabled?
       end
 
       def env
         {
           COVERBAND_ENABLED: false,
           KHULNASOFT_CRON_JOBS_POLL_INTERVAL: 1,
-          SIDEKIQ_VERBOSE: config.gitlab.sidekiq_cron.verbose?,
-          SIDEKIQ_QUEUES: config.gitlab.sidekiq_cron.sidekiq_queues.join(','),
-          CACHE_CLASSES: config.gitlab.cache_classes,
-          BUNDLE_GEMFILE: config.gitlab.rails.bundle_gemfile,
+          SIDEKIQ_VERBOSE: config.khulnasoft.sidekiq_cron.verbose?,
+          SIDEKIQ_QUEUES: config.khulnasoft.sidekiq_cron.sidekiq_queues.join(','),
+          CACHE_CLASSES: config.khulnasoft.cache_classes,
+          BUNDLE_GEMFILE: config.khulnasoft.rails.bundle_gemfile,
           SIDEKIQ_WORKERS: 1,
-          ENABLE_BOOTSNAP: config.gitlab.rails.bootsnap?,
+          ENABLE_BOOTSNAP: config.khulnasoft.rails.bootsnap?,
           RAILS_RELATIVE_URL_ROOT: config.relative_url_root,
-          GITALY_DISABLE_REQUEST_LIMITS: config.gitlab.gitaly_disable_request_limits
+          GITALY_DISABLE_REQUEST_LIMITS: config.khulnasoft.gitaly_disable_request_limits
         }
       end
     end

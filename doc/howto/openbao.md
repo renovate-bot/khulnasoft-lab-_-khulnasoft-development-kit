@@ -6,7 +6,7 @@ OpenBao is backward compatible with Vault and can replace Vault without changing
 
 ## Important: Set up binary location
 
-KDK builds OpenBao from [an internal build system](https://gitlab.com/gitlab-org/govern/secrets-management/openbao-internal), which includes custom patches. The binary is located at `openbao/bin/bao` in your KDK directory.
+KDK builds OpenBao from [an internal build system](https://khulnasoft.com/khulnasoft-org/govern/secrets-management/openbao-internal), which includes custom patches. The binary is located at `openbao/bin/bao` in your KDK directory.
 
 To use the OpenBao CLI commands:
 

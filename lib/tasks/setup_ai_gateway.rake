@@ -2,9 +2,9 @@
 
 require_relative '../kdk'
 
-AI_GATEWAY_ENV_FILE = File.join(KDK.root, 'gitlab-ai-gateway', '.env')
+AI_GATEWAY_ENV_FILE = File.join(KDK.root, 'khulnasoft-ai-gateway', '.env')
 ENV_RUNIT_FILE = File.join(KDK.root, 'env.runit')
-LOG_FILE = File.join(KDK.root, 'log/gitlab-ai-gateway/gateway_debug.log')
+LOG_FILE = File.join(KDK.root, 'log/khulnasoft-ai-gateway/gateway_debug.log')
 DEBUG_VARS = {
   'AIGW_LOGGING__LEVEL' => 'debug',
   'AIGW_LOGGING__FORMAT_JSON' => 'false',
@@ -55,7 +55,7 @@ task :setup_ai_gateway do
   update_env_file(AI_GATEWAY_ENV_FILE, 'AIGW_AUTH__BYPASS_EXTERNAL', 'true')
 
   KDK::Output.puts 'Setting up Google Cloud...'
-  KDK.make('gitlab-ai-gateway-gcloud-setup')
+  KDK.make('khulnasoft-ai-gateway-gcloud-setup')
 
   if enable_debug.match?(/\Ay(?:es)*\z/i)
     DEBUG_VARS.each do |key, value|
@@ -98,7 +98,7 @@ task :setup_ai_gateway do
 
   KDK::Output.puts 'KDK AI Gateway setup complete'
   KDK::Output.puts "Access AI Gateway docs at the url listed in 'kdk status'"
-  KDK::Output.puts 'For more information, see https://docs.gitlab.com/ee/development/ai_features/index.html'
+  KDK::Output.puts 'For more information, see https://docs.khulnasoft.com/ee/development/ai_features/index.html'
 
   KDK::Output.success('Done')
 end

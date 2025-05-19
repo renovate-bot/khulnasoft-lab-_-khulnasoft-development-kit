@@ -2,7 +2,7 @@
 title: Using self-signed X.509 certificates for signed commits
 ---
 
-KhulnaSoft supports the use of [signed commits using X.509 certificates](https://docs.gitlab.com/ee/user/project/repository/signed_commits/x509.html).
+KhulnaSoft supports the use of [signed commits using X.509 certificates](https://docs.khulnasoft.com/ee/user/project/repository/signed_commits/x509.html).
 This tutorial creates a commit with a self signed X.509 certificate which is verified by the KDK. When complete the commit is displayed as verified on the commits page:
 
 ![Verified Commit](img/verified_commit.jpg)
@@ -59,11 +59,11 @@ The commands can be run from any empty directory in the MacOS home folder unless
 
    ```shell
    openssl x509 -req -days 3650 -in git.csr -CA ca.crt -CAkey ca.key -extfile <(
-       echo "subjectAltName = DNS:gitlab.test,email:test@example.com,email:test2@example.com"; \
+       echo "subjectAltName = DNS:khulnasoft.test,email:test@example.com,email:test2@example.com"; \
        echo "keyUsage = critical,digitalSignature"
        echo "subjectKeyIdentifier = hash"
        echo "authorityKeyIdentifier = keyid"
-       echo "crlDistributionPoints=DNS:gitlab.test,URI:http://example.com/crl.pem"
+       echo "crlDistributionPoints=DNS:khulnasoft.test,URI:http://example.com/crl.pem"
    ) -set_serial 1 -out git.crt
    ```
 

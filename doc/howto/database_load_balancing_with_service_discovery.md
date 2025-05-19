@@ -2,7 +2,7 @@
 title: Database load balancing with service discovery
 ---
 
-This document describes how to enable and test the [database load balancing with service discovery of replicas](https://docs.gitlab.com/ee/administration/postgresql/database_load_balancing.html#service-discovery) feature in KDK. To do this, you must run multiple TCP ports for Postgres as well as a DNS server to respond with those different Postgres ports.
+This document describes how to enable and test the [database load balancing with service discovery of replicas](https://docs.khulnasoft.com/ee/administration/postgresql/database_load_balancing.html#service-discovery) feature in KDK. To do this, you must run multiple TCP ports for Postgres as well as a DNS server to respond with those different Postgres ports.
 
 If you only want to test load balancing features but do not want to test service discovery, see the [Database load balancing documentation](database_load_balancing.md).
 
@@ -67,7 +67,7 @@ For these instructions, we assume that you are running all commands from the KDK
 1. Confirm that Rails has connected to all the replicas:
 
    ```shell
-   PGPASSWORD=gitlab psql -U $(whoami) -h localhost -p 6435 -d pgbouncer -c 'show clients'
+   PGPASSWORD=khulnasoft psql -U $(whoami) -h localhost -p 6435 -d pgbouncer -c 'show clients'
    ```
 
 If it is working as expected, you should see multiple clients in the output.

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'rake gitlab:truncate_logs', :hide_output do
+RSpec.describe 'rake khulnasoft:truncate_logs', :hide_output do
   before(:all) do
     Rake.application.rake_require('tasks/khulnasoft')
   end
@@ -9,7 +9,7 @@ RSpec.describe 'rake gitlab:truncate_logs', :hide_output do
   let(:log_file) { log_dir.join('test.log') }
 
   before do
-    allow(KDK.config).to receive_message_chain(:gitlab, :log_dir).and_return(log_dir)
+    allow(KDK.config).to receive_message_chain(:khulnasoft, :log_dir).and_return(log_dir)
     log_file.write('test data')
   end
 
@@ -42,7 +42,7 @@ RSpec.describe 'rake gitlab:truncate_logs', :hide_output do
   end
 end
 
-RSpec.describe 'rake gitlab:truncate_http_router_logs', :hide_output do
+RSpec.describe 'rake khulnasoft:truncate_http_router_logs', :hide_output do
   before(:all) do
     Rake.application.rake_require('tasks/khulnasoft')
   end

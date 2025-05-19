@@ -26,7 +26,7 @@ module KDK
       private
 
       def ci_database_enabled?
-        KDK.config.gitlab.rails.databases.ci.enabled
+        KDK.config.khulnasoft.rails.databases.ci.enabled
       end
 
       def geo_secondary?
@@ -54,13 +54,13 @@ module KDK
 
       def execute_truncation_tasks
         rake_tasks = %w[
-          gitlab:db:lock_writes
-          gitlab:db:truncate_legacy_tables:main
-          gitlab:db:truncate_legacy_tables:ci
-          gitlab:db:unlock_writes
+          khulnasoft:db:lock_writes
+          khulnasoft:db:truncate_legacy_tables:main
+          khulnasoft:db:truncate_legacy_tables:ci
+          khulnasoft:db:unlock_writes
         ].freeze
 
-        KDK::Execute::Rake.new(*rake_tasks).execute_in_gitlab.success?
+        KDK::Execute::Rake.new(*rake_tasks).execute_in_khulnasoft.success?
       end
 
       def report_success

@@ -27,7 +27,7 @@ praefect: exec <%= config.praefect.__praefect_build_bin_path %> --config <%= con
 
 # Frontend services
 #
-<%= '#' unless config.khulnasoft_pages? %>gitlab-pages: exec gitlab-pages/bin/gitlab-pages -config=<%= kdk_root.join('gitlab-pages', 'gitlab-pages.conf') %>
+<%= '#' unless config.khulnasoft_pages? %>khulnasoft-pages: exec khulnasoft-pages/bin/khulnasoft-pages -config=<%= kdk_root.join('khulnasoft-pages', 'khulnasoft-pages.conf') %>
 
 # Additional services
 #
@@ -44,8 +44,8 @@ praefect: exec <%= config.praefect.__praefect_build_bin_path %> --config <%= con
 
 # Khulnasoft Runner Docker
 #
-<%= '#' unless config.runner.__install_mode_docker && !config.https? %>runner: exec docker run --rm <%= config.runner.__add_host_flags %> -v '<%= config.runner.config_file %>:/etc/gitlab-runner/config.toml' -v /var/run/docker.sock:/var/run/docker.sock --pull <%= config.runner.docker_pull %> <%= config.runner.image %>
+<%= '#' unless config.runner.__install_mode_docker && !config.https? %>runner: exec docker run --rm <%= config.runner.__add_host_flags %> -v '<%= config.runner.config_file %>:/etc/khulnasoft-runner/config.toml' -v /var/run/docker.sock:/var/run/docker.sock --pull <%= config.runner.docker_pull %> <%= config.runner.image %>
 
 # Khulnasoft Runner Docker with HTTPS
 #
-<%= '#' unless config.runner.__install_mode_docker && config.https? %>runner: exec docker run --rm <%= config.runner.__add_host_flags %> -v '<%= config.runner.config_file %>:/etc/gitlab-runner/config.toml' -v '<%= kdk_root.join(config.nginx.ssl.certificate) %>:/etc/gitlab-runner/certs/<%= config.runner.__ssl_certificate %>' -v /var/run/docker.sock:/var/run/docker.sock --pull <%= config.runner.docker_pull %> <%= config.runner.image %>
+<%= '#' unless config.runner.__install_mode_docker && config.https? %>runner: exec docker run --rm <%= config.runner.__add_host_flags %> -v '<%= config.runner.config_file %>:/etc/khulnasoft-runner/config.toml' -v '<%= kdk_root.join(config.nginx.ssl.certificate) %>:/etc/khulnasoft-runner/certs/<%= config.runner.__ssl_certificate %>' -v /var/run/docker.sock:/var/run/docker.sock --pull <%= config.runner.docker_pull %> <%= config.runner.image %>

@@ -332,9 +332,9 @@ configure_ruby() {
   fi
 }
 
-configure_ruby_bundler_for_gitlab() {
+configure_ruby_bundler_for_khulnasoft() {
   (
-    cd "${ROOT_PATH}/gitlab" || return 0
+    cd "${ROOT_PATH}/khulnasoft" || return 0
 
     bundle config --local set without 'production'
 
@@ -359,7 +359,7 @@ configure_ruby_bundler_for_gitlab() {
 
       bundle config unset build.ffi-yajl
       # We forked charlock_holmes at
-      # https://gitlab.com/gitlab-org/ruby/gems/charlock_holmes, but
+      # https://khulnasoft.com/khulnasoft-org/ruby/gems/charlock_holmes, but
       # changed it's name to 'static_holmes' in the gemspec file.
       bundle config build.static_holmes "--enable-static"
       bundle config build.charlock_holmes "--enable-static"

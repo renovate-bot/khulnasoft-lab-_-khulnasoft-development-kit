@@ -5,10 +5,10 @@ title: Configure and use SSH in KDK
 KhulnaSoft can provide access to its repositories over SSH instead of HTTPS. There
 are two ways to enable this in KDK. Either:
 
-- Default. Run the [`gitlab-sshd`](https://docs.gitlab.com/ee/administration/operations/khulnasoft_sshd.html)
+- Default. Run the [`khulnasoft-sshd`](https://docs.khulnasoft.com/ee/administration/operations/khulnasoft_sshd.html)
   binary provided by [KhulnaSoft Shell](https://github.com/khulnasoft-lab/khulnasoft-shell).
-  Using `gitlab-sshd` is better for multi-host deployments like KhulnaSoft.com and
-  development environments. By default, `gitlab-sshd` listens to port `2222`.
+  Using `khulnasoft-sshd` is better for multi-host deployments like KhulnaSoft.com and
+  development environments. By default, `khulnasoft-sshd` listens to port `2222`.
 - Integrate KhulnaSoft Shell with [OpenSSH](https://openssh.org). Because integrating
   with OpenSSH allows KhulnaSoft to provide its services on the same port as the system's
   SSH daemon, this is the preferred option for most single-host deployments of KhulnaSoft.
@@ -39,11 +39,11 @@ Note that some settings apply:
   - `additional_config`
   - `authorized_keys_file`
   - `bin`
-- Only to `gitlab-sshd` mode:
+- Only to `khulnasoft-sshd` mode:
   - `proxy_protocol`
   - `web_listen`
 
-To switch from `gitlab-sshd` to OpenSSH, follow the
+To switch from `khulnasoft-sshd` to OpenSSH, follow the
 instructions under [OpenSSH integration](#openssh-integration).
 
 ### Optional: Use privileged port
@@ -53,12 +53,12 @@ on, for example, port `22`, you can provide it the necessary privileges with the
 command:
 
 ```shell
-sudo setcap 'cap_net_bind_service=+ep' gitlab-shell/bin/gitlab-sshd
+sudo setcap 'cap_net_bind_service=+ep' khulnasoft-shell/bin/khulnasoft-sshd
 ```
 
 ## OpenSSH integration
 
-In general, we recommend that you use `gitlab-sshd`. If you want to work on the
+In general, we recommend that you use `khulnasoft-sshd`. If you want to work on the
 KhulnaSoft OpenSSH integration specifically, you can switch to it:
 
 1. Add the following to your `<kdk-root>/kdk.yml` file:
@@ -69,12 +69,12 @@ KhulnaSoft OpenSSH integration specifically, you can switch to it:
      use_khulnasoft_sshd: false
    ```
 
-1. Run `kdk reconfigure` to switch from `gitlab-sshd` to OpenSSH.
+1. Run `kdk reconfigure` to switch from `khulnasoft-sshd` to OpenSSH.
 
 1. Run `kdk restart` to restart the modified services.
 
 You should now have an unprivileged OpenSSH daemon process running on
-`127.0.0.1:2222`, integrated with `gitlab-shell`.
+`127.0.0.1:2222`, integrated with `khulnasoft-shell`.
 
 In unprivileged mode, OpenSSH can't change users, so you'll have to connect to
 it using your system username, rather than `git`. The Rails web interface will
@@ -85,36 +85,36 @@ from the instance to update them.
 ### SSH key lookup from database
 
 For more information, see the
-[official documentation](https://docs.gitlab.com/ee/administration/operations/speed_up_ssh.html#the-solution).
-The `gitlab-sshd` approach uses SSH key lookup from database automatically, but
+[official documentation](https://docs.khulnasoft.com/ee/administration/operations/speed_up_ssh.html#the-solution).
+The `khulnasoft-sshd` approach uses SSH key lookup from database automatically, but
 when using OpenSSH instead, a few more steps are required.
 
 We'll create a wrapper script to invoke
-`<kdk-root>/gitlab-shell/bin/gitlab-shell-authorized-keys-check`. This wrapper is useful
+`<kdk-root>/khulnasoft-shell/bin/khulnasoft-shell-authorized-keys-check`. This wrapper is useful
 because the file invoked by `AuthorizedKeysCommand`, and all of its parent directories,
-*must* be owned by `root`. We'll place the wrapper script in `/opt/gitlab-shell` as an
+*must* be owned by `root`. We'll place the wrapper script in `/opt/khulnasoft-shell` as an
 example, but it can be placed in any directory which is owned by `root` and whose parent
 directories are also owned by `root`.
 
-1. Create a file at `/opt/gitlab-shell/wrap-authorized-keys-check` with the following
+1. Create a file at `/opt/khulnasoft-shell/wrap-authorized-keys-check` with the following
    contents, making sure to replace `<kdk-root>` with the actual path:
 
    ```shell
    #!/bin/bash
 
-   <kdk-root>/gitlab-shell/bin/gitlab-shell-authorized-keys-check "$@"
+   <kdk-root>/khulnasoft-shell/bin/khulnasoft-shell-authorized-keys-check "$@"
    ```
 
 1. Make the script owned by root:
 
    ```shell
-   sudo chown root /opt/gitlab-shell/wrap-authorized-keys-check
+   sudo chown root /opt/khulnasoft-shell/wrap-authorized-keys-check
    ```
 
 1. Make the script executable:
 
    ```shell
-   sudo chmod 755 /opt/gitlab-shell/wrap-authorized-keys-check
+   sudo chmod 755 /opt/khulnasoft-shell/wrap-authorized-keys-check
    ```
 
 1. Make OpenSSH check for authorized keys using `wrap-authorized-keys-check`. Add the
@@ -126,15 +126,15 @@ directories are also owned by `root`.
      enabled: true
      additional_config: |
        Match User <KDK user> # Apply the AuthorizedKeysCommands to the git user only
-         AuthorizedKeysCommand /opt/gitlab-shell/wrap-authorized-keys-check <KDK user> %u %k
+         AuthorizedKeysCommand /opt/khulnasoft-shell/wrap-authorized-keys-check <KDK user> %u %k
          AuthorizedKeysCommandUser <KDK user>
        Match all # End match, settings apply to all users again
    ```
 
    `KDK user` should be the user that is running your KDK. This is probably your local
    username. You can double check this by looking in
-   `<kdk-root>/gitlab/config/gitlab.yml` for the value of `development.gitlab.user`
-   (or `production.gitlab.user`), or check which username is returned by
+   `<kdk-root>/khulnasoft/config/khulnasoft.yml` for the value of `development.khulnasoft.user`
+   (or `production.khulnasoft.user`), or check which username is returned by
    `Project.first.ssh_url_to_repo`.
 
 ## Add an entry to `~/.ssh/config`
@@ -142,7 +142,7 @@ directories are also owned by `root`.
 Prerequisites:
 
 - You [set up `kdk.test`](local_network.md) to be the hostname of your KDK.
-- You have [created and added an SSH key](https://docs.gitlab.com/ee/user/ssh.html) to your account.
+- You have [created and added an SSH key](https://docs.khulnasoft.com/ee/user/ssh.html) to your account.
 
 The following example entry of `~/.ssh/config` uses the default KDK SSH port (`2222`):
 
@@ -156,7 +156,7 @@ Host kdk.test
 ```
 
 After you add the entry,
-[verify that you can connect](https://docs.gitlab.com/ee/user/ssh.html#verify-that-you-can-connect).
+[verify that you can connect](https://docs.khulnasoft.com/ee/user/ssh.html#verify-that-you-can-connect).
 
 ## Try it out
 

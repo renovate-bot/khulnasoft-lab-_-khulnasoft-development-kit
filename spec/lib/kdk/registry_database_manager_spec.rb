@@ -22,7 +22,7 @@ RSpec.describe KDK::RegistryDatabaseManager do
   end
 
   describe '#reset_registry_database' do
-    let(:common_command) { ['/usr/local/bin/psql', "--host=#{kdk_root}/postgresql", '--port=5432', '--dbname=gitlabhq_development', '-c'] }
+    let(:common_command) { ['/usr/local/bin/psql', "--host=#{kdk_root}/postgresql", '--port=5432', '--dbname=khulnasofthq_development', '-c'] }
     let(:drop_database_command) { common_command + ['drop database registry_dev'] }
     let(:recreate_database_command) { common_command + ['create database registry_dev'] }
     let(:migrate_database_command) { "#{kdk_root}/support/migrate-registry" }

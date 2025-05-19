@@ -9,7 +9,7 @@ module KDK
       end
 
       def command
-        %(support/exec-cd gitlab bundle exec vite dev)
+        %(support/exec-cd khulnasoft bundle exec vite dev)
       end
 
       def enabled?

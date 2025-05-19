@@ -3,7 +3,7 @@ title: Developing KhulnaSoft with KDK on Gitpod
 ---
 
 KDK can be used with [Gitpod](https://www.gitpod.io) using the KhulnaSoft
-[Gitpod integration](https://docs.gitlab.com/ee/integration/gitpod.html).
+[Gitpod integration](https://docs.khulnasoft.com/ee/integration/gitpod.html).
 
 The main advantage of running the KDK in Gitpod is that you don't have to worry about
 your local environment, installing dependencies, and keeping them up to date. With
@@ -20,7 +20,7 @@ an iPad!
 
 - Open [this link](https://gitpod.io/#https://github.com/khulnasoft-lab/khulnasoft/).
 - Click the **Gitpod** button in the [KhulnaSoft repository](https://github.com/khulnasoft-lab/khulnasoft/).
-  This might require you to [enable the Gitpod integration](https://docs.gitlab.com/ee/integration/gitpod.html)
+  This might require you to [enable the Gitpod integration](https://docs.khulnasoft.com/ee/integration/gitpod.html)
   in your user settings.
 
 **If you are a community contributor**:
@@ -195,11 +195,11 @@ Ensure that you're using the 3000 port and that it's set to public. To change th
 
 #### Option 1: Docker executor
 
-1. Create a [Personal Access Token](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html#create-a-personal-access-token) in Gitpod with `owner` access and `api` scope and copy it.
-1. Add the PAT you created to this command in place of `$KHULNASOFT_TOKEN` and then run it in your terminal. This command starts Runner in a Docker container and uses the Gitpod IP address, a default image, and a PAT access token to register the new runner ([learn more about why a PAT is needed](https://docs.gitlab.com/ee/ci/runners/new_creation_workflow.html#creating-runners-programmatically)):
+1. Create a [Personal Access Token](https://docs.khulnasoft.com/ee/user/profile/personal_access_tokens.html#create-a-personal-access-token) in Gitpod with `owner` access and `api` scope and copy it.
+1. Add the PAT you created to this command in place of `$KHULNASOFT_TOKEN` and then run it in your terminal. This command starts Runner in a Docker container and uses the Gitpod IP address, a default image, and a PAT access token to register the new runner ([learn more about why a PAT is needed](https://docs.khulnasoft.com/ee/ci/runners/new_creation_workflow.html#creating-runners-programmatically)):
 
    ```shell
-   docker run --rm -it -v gitlab-runner-config:/etc/gitlab-runner gitlab/gitlab-runner:latest register \
+   docker run --rm -it -v khulnasoft-runner-config:/etc/khulnasoft-runner khulnasoft/khulnasoft-runner:latest register \
      --non-interactive \
      --url "http://10.0.5.2:3000/" \
      --token "$(curl -sX POST "http://10.0.5.2:3000/api/v4/user/runners" -H "private-token: $KHULNASOFT_TOKEN" --data runner_type=instance_type --data description=docker-runner | jq -r '.token')" \
@@ -208,13 +208,13 @@ Ensure that you're using the 3000 port and that it's set to public. To change th
      --description "docker-runner"
    ```
 
-1. Start the runner container using the Docker volume as [documented](https://docs.gitlab.com/runner/install/docker.html#option-2-use-docker-volumes-to-start-the-runner-container).
+1. Start the runner container using the Docker volume as [documented](https://docs.khulnasoft.com/runner/install/docker.html#option-2-use-docker-volumes-to-start-the-runner-container).
 
    ```shell
-   docker run -d --name gitlab-runner --restart always \
+   docker run -d --name khulnasoft-runner --restart always \
      -v /var/run/docker.sock:/var/run/docker.sock \
-     -v gitlab-runner-config:/etc/gitlab-runner \
-     gitlab/gitlab-runner:latest
+     -v khulnasoft-runner-config:/etc/khulnasoft-runner \
+     khulnasoft/khulnasoft-runner:latest
    ```
 
 #### Option 2: Shell executor
@@ -226,7 +226,7 @@ Ensure that you're using the 3000 port and that it's set to public. To change th
 1. In the next screen, copy the command.
 1. In the terminal, switch to the KDK directory `cd /workspace/khulnasoft-development-kit`.
 1. Run the copied command with the following added to the end `--config /workspace/khulnasoft-development-kit/khulnasoft-runner-config.toml --non-interactive --executor shell`.
-1. Run `gitlab-runner run --config /workspace/khulnasoft-development-kit/khulnasoft-runner-config.toml`.
+1. Run `khulnasoft-runner run --config /workspace/khulnasoft-development-kit/khulnasoft-runner-config.toml`.
 
 You should receive a confirmation message on the screen that your runner is ready to pick up jobs. If you create a new project, the
 **Pages/Plain HTML** template contains a super simple and tiny pipeline that's great to
@@ -253,7 +253,7 @@ The billing page is now accessible at **Group > Settings > Billing**.
 
 ### Connect the Customer app to your Gitpod instance
 
-Use the instructions in the [`customers-gitlab-com` project](https://gitlab.com/gitlab-org/customers-gitlab-com/-/blob/master/doc/setup/gitpod_installation.md).
+Use the instructions in the [`customers-khulnasoft-com` project](https://khulnasoft.com/khulnasoft-org/customers-khulnasoft-com/-/blob/master/doc/setup/gitpod_installation.md).
 
 ### Use Advanced Search
 
@@ -281,11 +281,11 @@ To enable Elasticsearch:
 ### How to test features only available in higher KhulnaSoft tiers
 
 For information on enabling higher KhulnaSoft tiers in KDK to test out features, learn more about
-[how to activate KhulnaSoft EE with a license file or key](https://docs.gitlab.com/ee/administration/license_file.html#add-your-license-file-during-installation).
+[how to activate KhulnaSoft EE with a license file or key](https://docs.khulnasoft.com/ee/administration/license_file.html#add-your-license-file-during-installation).
 
 ### How to test features only available on SaaS (KhulnaSoft.com)
 
-By default KDK runs as self-managed, but can be switched to run as the SaaS version. For more information, see [Simulate a SaaS instance](https://docs.gitlab.com/ee/development/ee_features.html#simulate-a-saas-instance).
+By default KDK runs as self-managed, but can be switched to run as the SaaS version. For more information, see [Simulate a SaaS instance](https://docs.khulnasoft.com/ee/development/ee_features.html#simulate-a-saas-instance).
 
 ## How to update the Gitpod KDK Docker image
 

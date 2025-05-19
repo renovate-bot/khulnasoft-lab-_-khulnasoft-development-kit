@@ -2,7 +2,7 @@
 title: Product Analytics
 ---
 
-[Product Analytics](https://docs.gitlab.com/ee/user/product_analytics/) must be run locally in conjunction with the [Product Analytics DevKit](https://gitlab.com/gitlab-org/analytics-section/product-analytics/devkit).
+[Product Analytics](https://docs.khulnasoft.com/ee/user/product_analytics/) must be run locally in conjunction with the [Product Analytics DevKit](https://khulnasoft.com/khulnasoft-org/analytics-section/product-analytics/devkit).
 
 ## Product Analytics DevKit setup
 
@@ -12,26 +12,26 @@ title: Product Analytics
 
 ### Set up the Product Analytics DevKit
 
-1. Follow the [instructions](https://gitlab.com/gitlab-org/analytics-section/product-analytics/devkit#product-analytics-devkit) to set up the Product Analytics DevKit on your machine.
-1. Continue following the [instructions](https://gitlab.com/gitlab-org/analytics-section/product-analytics/devkit#connecting-kdk-to-your-devkit) to connect the KDK to the Product Analytics DevKit.
+1. Follow the [instructions](https://khulnasoft.com/khulnasoft-org/analytics-section/product-analytics/devkit#product-analytics-devkit) to set up the Product Analytics DevKit on your machine.
+1. Continue following the [instructions](https://khulnasoft.com/khulnasoft-org/analytics-section/product-analytics/devkit#connecting-kdk-to-your-devkit) to connect the KDK to the Product Analytics DevKit.
 
 ## KDK setup
 
 ### Prerequisites
 
 - Your KDK instance must have an active license for KhulnaSoft Ultimate.
-- For billing functionality, your KDK must [simulate a SaaS instance](https://docs.gitlab.com/ee/development/ee_features.html#simulate-a-saas-instance).
+- For billing functionality, your KDK must [simulate a SaaS instance](https://docs.khulnasoft.com/ee/development/ee_features.html#simulate-a-saas-instance).
 
 ### One-line setup
 
-To automatically set up Product Analytics, in your `gitlab` directory run the following command:
+To automatically set up Product Analytics, in your `khulnasoft` directory run the following command:
 
 ```shell
-RAILS_ENV=development bundle exec rake gitlab:product_analytics:setup\['gitlab-org'\]
+RAILS_ENV=development bundle exec rake khulnasoft:product_analytics:setup\['khulnasoft-org'\]
 ```
 
 > [!note]
-> You can replace `gitlab-org` with the group name you want to enable Product Analytics on.
+> You can replace `khulnasoft-org` with the group name you want to enable Product Analytics on.
 
 After running the command [set up the DevKit](#set-up-the-product-analytics-devkit) if you haven't already done so.
 
@@ -40,7 +40,7 @@ Once set up, you can follow the [instructions](#onboarding-projects-to-product-a
 ### Manual setup
 
 1. Enable the required [feature flags](#feature-flags).
-1. Run KDK in [SaaS mode](https://docs.gitlab.com/ee/development/ee_features.html#simulate-a-saas-instance) with an Ultimate license.
+1. Run KDK in [SaaS mode](https://docs.khulnasoft.com/ee/development/ee_features.html#simulate-a-saas-instance) with an Ultimate license.
 1. Set the **Ultimate** plan on your test group.
 1. Enable Experiment & Beta features on your test group.
 
@@ -55,12 +55,12 @@ Once set up, you can follow the [instructions](#onboarding-projects-to-product-a
 
 ### Onboarding projects to Product Analytics
 
-Follow the [instructions](https://docs.gitlab.com/ee/user/product_analytics/#onboard-a-gitlab-project) to onboard a project with your Product Analytics.
+Follow the [instructions](https://docs.khulnasoft.com/ee/user/product_analytics/#onboard-a-khulnasoft-project) to onboard a project with your Product Analytics.
 
-For day-to-day local development, you can use the [self-managed provider](https://docs.gitlab.com/ee/user/product_analytics/?tab=Self-managed+provider#onboard-a-gitlab-project) 
+For day-to-day local development, you can use the [self-managed provider](https://docs.khulnasoft.com/ee/user/product_analytics/?tab=Self-managed+provider#onboard-a-khulnasoft-project) 
 option. To use the instance-level Product Analytics settings, make sure **Use instance-level settings** is selected.
 
-For local development of the billing functionality, you should use the [KhulnaSoft-managed provider](https://docs.gitlab.com/ee/user/product_analytics/?tab=KhulnaSoft-managed+provider#onboard-a-gitlab-project)
+For local development of the billing functionality, you should use the [KhulnaSoft-managed provider](https://docs.khulnasoft.com/ee/user/product_analytics/?tab=KhulnaSoft-managed+provider#onboard-a-khulnasoft-project)
 option.
 
 Once set up, you can follow the [instructions](#view-product-analytics-dashboards) below on how to view the product analytics dashboards.
@@ -108,7 +108,7 @@ To simplify generating test data, you can connect your KDK to your Product Analy
 
 To connect KDK to your Product Analytics DevKit:
 
-1. Follow the [instructions](https://docs.gitlab.com/ee/development/internal_analytics/internal_event_instrumentation/local_setup_and_debugging.html#setup-local-event-collector)
+1. Follow the [instructions](https://docs.khulnasoft.com/ee/development/internal_analytics/internal_event_instrumentation/local_setup_and_debugging.html#setup-local-event-collector)
    to set up Snowplow Micro on your machine. By default, Snowplow Micro uses the same port as the Snowplow instance running within the DevKit. Therefore, you must
    follow the port change step in the instructions.
 1. Enable the `additional_snowplow_tracking` ops feature flag:

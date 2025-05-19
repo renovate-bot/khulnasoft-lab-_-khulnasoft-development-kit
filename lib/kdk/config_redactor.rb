@@ -52,7 +52,7 @@ module KDK
 
     # Block the config values. String or Regexp.
     BLOCK_VALUES = [
-      # https://docs.gitlab.com/security/tokens/#token-prefixes
+      # https://docs.khulnasoft.com/security/tokens/#token-prefixes
       /^gl\w+-/,
       # https://github.blog/engineering/platform-security/behind-githubs-new-authentication-token-formats/#identifiable-prefixes
       /^gh\w_/,

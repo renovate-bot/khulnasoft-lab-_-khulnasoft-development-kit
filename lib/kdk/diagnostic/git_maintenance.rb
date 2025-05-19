@@ -36,7 +36,7 @@ module KDK
       def recommended_repo_paths
         [
           config.kdk_root,
-          config.gitlab.dir
+          config.khulnasoft.dir
         ].map(&:to_s)
       end
 

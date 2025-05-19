@@ -38,17 +38,17 @@ Configuring smart cards allows logging into your local KhulnaSoft tenant using [
    smartcard:
      enabled: true
      hostname: smartcard.kdk.test
-     port: 3444 # this must be different than the port gitlab-rails is running on
+     port: 3444 # this must be different than the port khulnasoft-rails is running on
      ssl:
        certificate: smartcard.kdk.test.pem
        key: smartcard.kdk.test-key.pem
        client_cert_ca: '<location of root certificate.pem>'
    ```
 
-1. Ensure the `gitlab.rails.allowed_hosts` setting in `kdk.yml` includes the new smart card subdomain:
+1. Ensure the `khulnasoft.rails.allowed_hosts` setting in `kdk.yml` includes the new smart card subdomain:
 
    ```yaml
-   gitlab:
+   khulnasoft:
      rails:
        allowed_hosts:
          - 'kdk.test' # hostname specified in the top-level "hostname" setting

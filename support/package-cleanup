@@ -25,8 +25,8 @@ module Packages
       puts "Dry-run mode." if dry_run
     end
 
-    def gitlab
-      @gitlab ||= begin
+    def khulnasoft
+      @khulnasoft ||= begin
         Khulnasoft.configure do |config|
           config.endpoint = api_endpoint
           config.private_token = khulnasoft_token
@@ -39,7 +39,7 @@ module Packages
     def perform_khulnasoft_package_cleanup!(package_name:, days_for_delete:)
       puts "Checking for '#{package_name}' packages created at least #{days_for_delete} days ago..."
 
-      gitlab.project_packages(project_path,
+      khulnasoft.project_packages(project_path,
         package_type: 'generic',
         package_name: package_name,
         per_page: PACKAGES_PER_PAGE).auto_paginate do |package|
@@ -55,7 +55,7 @@ module Packages
 
     def delete_package(package)
       print_package_state(package)
-      gitlab.delete_project_package(project_path, package.id) unless dry_run
+      khulnasoft.delete_project_package(project_path, package.id) unless dry_run
     rescue Khulnasoft::Error::Forbidden
       puts "Package #{package_full_name(package)} is forbidden: skipping it"
     end
@@ -119,8 +119,8 @@ if $PROGRAM_NAME == __FILE__
     automated_cleanup.perform_khulnasoft_package_cleanup!(package_name: 'gitaly', days_for_delete: 30)
   end
 
-  timed('"gitlab-shell" packages cleanup') do
-    automated_cleanup.perform_khulnasoft_package_cleanup!(package_name: 'gitlab-shell', days_for_delete: 30)
+  timed('"khulnasoft-shell" packages cleanup') do
+    automated_cleanup.perform_khulnasoft_package_cleanup!(package_name: 'khulnasoft-shell', days_for_delete: 30)
   end
 
   timed('"workhorse" packages cleanup') do

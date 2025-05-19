@@ -39,7 +39,7 @@ RSpec.describe 'support/templates/runit/run.sh.erb' do
         expect(output)
           .to include("export RAILS_ENV='development'")
           .and include("export KHULNASOFT_LICENSE_MODE='test'")
-          .and include("export CUSTOMER_PORTAL_URL='https://customers.staging.gitlab.com'")
+          .and include("export CUSTOMER_PORTAL_URL='https://customers.staging.khulnasoft.com'")
       end
     end
 

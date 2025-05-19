@@ -11,20 +11,20 @@ RSpec.describe KDK::Command::PsqlGeo do
         ['/usr/local/bin/psql',
           "--host=#{KDK.config.postgresql.geo.host}",
           "--port=#{KDK.config.postgresql.geo.port}",
-          '--dbname=gitlabhq_geo_development',
+          '--dbname=khulnasofthq_geo_development',
           { chdir: KDK.root }]
     end
   end
 
   context 'with extra arguments' do
     it 'pass extra arguments to the psql cli application' do
-      expect_exec ['psql-geo', '-w', '-d', 'gitlabhq_test', '-c', 'select 1'],
+      expect_exec ['psql-geo', '-w', '-d', 'khulnasofthq_test', '-c', 'select 1'],
         ['/usr/local/bin/psql',
           "--host=#{KDK.config.postgresql.geo.host}",
           "--port=#{KDK.config.postgresql.geo.port}",
-          '--dbname=gitlabhq_geo_development',
+          '--dbname=khulnasofthq_geo_development',
           '-w',
-          '-d', 'gitlabhq_test',
+          '-d', 'khulnasofthq_test',
           '-c', 'select 1',
           { chdir: KDK.root }]
     end

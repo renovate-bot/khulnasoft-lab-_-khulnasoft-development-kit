@@ -65,12 +65,12 @@ module KDK
         end
 
         def both_files_exist?
-          khulnasoft_shell_secret_in_gitlab.exist? && khulnasoft_shell_secret_in_khulnasoft_shell.exist?
+          khulnasoft_shell_secret_in_khulnasoft.exist? && khulnasoft_shell_secret_in_khulnasoft_shell.exist?
         end
 
         def file_doesnt_exist_detail
           output = ["The following #{KHULNASOFT_SHELL_SECRET_FILE} files don't exist but need to:", '']
-          output << "  #{khulnasoft_shell_secret_in_gitlab}" unless khulnasoft_shell_secret_in_gitlab.exist?
+          output << "  #{khulnasoft_shell_secret_in_khulnasoft}" unless khulnasoft_shell_secret_in_khulnasoft.exist?
           output << "  #{khulnasoft_shell_secret_in_khulnasoft_shell}" unless khulnasoft_shell_secret_in_khulnasoft_shell.exist?
 
           "#{output.join("\n")}\n"
@@ -82,10 +82,10 @@ module KDK
 
         def contents_match_detail
           <<~CONTENT_MISMATCH_MESSSGE
-            The gitlab-shell secret files need to match but they don't:
+            The khulnasoft-shell secret files need to match but they don't:
 
-            #{khulnasoft_shell_secret_in_gitlab}
-            #{'-' * khulnasoft_shell_secret_in_gitlab.to_s.length}
+            #{khulnasoft_shell_secret_in_khulnasoft}
+            #{'-' * khulnasoft_shell_secret_in_khulnasoft.to_s.length}
             #{khulnasoft_shell_secret_in_khulnasoft_contents}
 
             #{khulnasoft_shell_secret_in_khulnasoft_shell}
@@ -94,12 +94,12 @@ module KDK
           CONTENT_MISMATCH_MESSSGE
         end
 
-        def khulnasoft_shell_secret_in_gitlab
-          config.gitlab.dir.join(KHULNASOFT_SHELL_SECRET_FILE)
+        def khulnasoft_shell_secret_in_khulnasoft
+          config.khulnasoft.dir.join(KHULNASOFT_SHELL_SECRET_FILE)
         end
 
         def khulnasoft_shell_secret_in_khulnasoft_contents
-          @khulnasoft_shell_secret_in_khulnasoft_contents ||= khulnasoft_shell_secret_in_gitlab.read.chomp
+          @khulnasoft_shell_secret_in_khulnasoft_contents ||= khulnasoft_shell_secret_in_khulnasoft.read.chomp
         end
 
         def khulnasoft_shell_secret_in_khulnasoft_shell
@@ -127,10 +127,10 @@ module KDK
           return if success?
 
           <<~LOG_DIR_SIZE_NOT_OK
-            Your gitlab/log/ directory is #{log_dir_size}MB.  You can truncate the log files if you wish
+            Your khulnasoft/log/ directory is #{log_dir_size}MB.  You can truncate the log files if you wish
             by running:
 
-              cd #{config.kdk_root} && rake gitlab:truncate_logs
+              cd #{config.kdk_root} && rake khulnasoft:truncate_logs
           LOG_DIR_SIZE_NOT_OK
         end
 
@@ -139,13 +139,13 @@ module KDK
         attr_reader :config
 
         def log_dir_size_ok?
-          return true unless config.gitlab.log_dir.exist?
+          return true unless config.khulnasoft.log_dir.exist?
 
           log_dir_size <= LOG_DIR_SIZE_NOT_OK_MB
         end
 
         def log_dir_size
-          @log_dir_size ||= config.gitlab.log_dir.glob('*').sum(&:size) / 1_048_576
+          @log_dir_size ||= config.khulnasoft.log_dir.glob('*').sum(&:size) / 1_048_576
         end
       end
     end

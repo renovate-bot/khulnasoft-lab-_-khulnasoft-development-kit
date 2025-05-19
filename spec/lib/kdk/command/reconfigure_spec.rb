@@ -37,10 +37,10 @@ RSpec.describe KDK::Command::Reconfigure do
         <<~DIFF
           Procfile
           --------------------------------------------------------------------------------
-          diff --git a/Procfile b/home/peter/devel/gitlab/kdk/tmp/diff_Procfile
+          diff --git a/Procfile b/home/peter/devel/khulnasoft/kdk/tmp/diff_Procfile
           index de284a64..3ef9c0c3 100644
           --- a/Procfile
-          +++ b/home/peter/devel/gitlab/kdk/tmp/diff_Procfile
+          +++ b/home/peter/devel/khulnasoft/kdk/tmp/diff_Procfile
         DIFF
       end
 

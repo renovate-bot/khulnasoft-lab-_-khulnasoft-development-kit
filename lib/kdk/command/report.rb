@@ -10,32 +10,32 @@ module KDK
     class Report < BaseCommand
       REPORT_TEMPLATE_PATH = 'lib/support/files/report_template.md.erb'
       LOG_NAMES = %w[
-        gitlab-db-migrate
+        khulnasoft-db-migrate
         update-make-ensure-databases-setup
         update-make-khulnasoft-topology-service-update
         reconfigure-make-kdk-reconfigure-task
         update-make-gitaly-update
         update-make-khulnasoft-translations
         reconfigure-make-khulnasoft-http-router-setup
-        update-make-gitlab-asdf-install
+        update-make-khulnasoft-asdf-install
         update-make-khulnasoft-workhorse-update
         reconfigure-make-khulnasoft-topology-service-setup
-        update-make-gitlab-bundle
-        update-make-gitlab-yarn
+        update-make-khulnasoft-bundle
+        update-make-khulnasoft-yarn
         reconfigure-make-postgresql
-        update-make-gitlab-git
+        update-make-khulnasoft-git
         update-make-postgresql
         update-kdk_bundle_install
         update-make-khulnasoft-http-router-update
         update-platform
-        update-gitlab-git-pull
-        update-make-gitlab-lefthook
+        update-khulnasoft-git-pull
+        update-make-khulnasoft-lefthook
         update-tool-versions
         update-graphql
-        update-make-gitlab-shell-update
+        update-make-khulnasoft-shell-update
       ].freeze
 
-      REPOSITORY_NAMES = %w[kdk gitaly gitlab].freeze
+      REPOSITORY_NAMES = %w[kdk gitaly khulnasoft].freeze
       NEW_ISSUE_URL = 'https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/issues/new?issue[label]=~Category:KDK'
       LABELING = '/label ~type::bug ~bug::functional ~Category:KDK ~kdk-report ~group::developer tooling'
       COPY_COMMANDS = [

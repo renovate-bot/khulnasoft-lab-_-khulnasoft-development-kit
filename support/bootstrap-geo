@@ -6,13 +6,13 @@ success = true
 
 success &&= system(*%w[kdk start postgresql-geo])
 
-# Create gitlabhq_geo_development. This command is not idempotent.
+# Create khulnasofthq_geo_development. This command is not idempotent.
 system({ 'force' => 'yes', 'BOOTSTRAP' => '1', 'RAILS_ENV' => 'development' }, *%w[../support/bundle-exec rails db:create:geo], chdir: 'khulnasoft')
 
-# Run migrations on gitlabhq_geo_development.
+# Run migrations on khulnasofthq_geo_development.
 success &&= system({ 'force' => 'yes', 'BOOTSTRAP' => '1', 'RAILS_ENV' => 'development' }, *%w[../support/bundle-exec rails db:migrate:geo], chdir: 'khulnasoft')
 
-# Create gitlabhq_geo_test. This command is not idempotent, but it's also not a huge deal if it fails.
+# Create khulnasofthq_geo_test. This command is not idempotent, but it's also not a huge deal if it fails.
 system({ 'force' => 'yes', 'BOOTSTRAP' => '1', 'RAILS_ENV' => 'test' }, *%w[../support/bundle-exec rails db:create:geo], chdir: 'khulnasoft')
 
 # To recreate the Praefect DB

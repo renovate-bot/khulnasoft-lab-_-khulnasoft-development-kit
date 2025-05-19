@@ -1,12 +1,12 @@
 ---
 name: khulnasoft_base.CIConfigFile
 description: |
-  Checks that the `.gitlab-ci.yml` file is referenced properly.
+  Checks that the `.khulnasoft-ci.yml` file is referenced properly.
 extends: existence
-message: "Change the file name to be exactly '.gitlab-ci.yml'."
-link: https://docs.gitlab.com/development/documentation/styleguide/availability_details/
+message: "Change the file name to be exactly '.khulnasoft-ci.yml'."
+link: https://docs.khulnasoft.com/development/documentation/styleguide/availability_details/
 vocab: false
 level: error
 scope: raw
 raw:
-  - '(?!`\.gitlab-ci\.yml`)`.?gitlab.?ci.?ya?ml`'
+  - '(?!`\.khulnasoft-ci\.yml`)`.?khulnasoft.?ci.?ya?ml`'

@@ -29,7 +29,7 @@ kdk update
 if is_gitpod_instance; then
   export DEV_SERVER_PUBLIC_ADDR=$(gp url 3808)
   export RAILS_HOSTS=$(gp url 3000 | sed -e 's+^http[s]*://++')
-  kdk config set gitlab.rails.hostname "$RAILS_HOSTS"
+  kdk config set khulnasoft.rails.hostname "$RAILS_HOSTS"
 fi
 
 # Reconfigure KDK
@@ -43,7 +43,7 @@ kdk start
 # Run DB migrations when env var KHULNASOFT_RUN_DB_MIGRATIONS in https://gitpod.io/settings/ is set to true
 if [[ "$KHULNASOFT_RUN_DB_MIGRATIONS" == true ]]; then
     log "Running DB migrations"
-    bundle exec rake gitlab-db-migrate
+    bundle exec rake khulnasoft-db-migrate
 fi
 
 # Ensure db/structure.sql is checked out

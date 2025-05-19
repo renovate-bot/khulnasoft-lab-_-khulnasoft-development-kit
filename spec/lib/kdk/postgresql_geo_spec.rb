@@ -46,7 +46,7 @@ RSpec.describe KDK::PostgresqlGeo do
 
   describe '#psql_cmd' do
     it 'calls pg_cmd' do
-      expect(subject).to receive(:pg_cmd).with('--version', database: 'gitlabhq_geo_development').and_call_original
+      expect(subject).to receive(:pg_cmd).with('--version', database: 'khulnasofthq_geo_development').and_call_original
 
       subject.psql_cmd('--version')
     end

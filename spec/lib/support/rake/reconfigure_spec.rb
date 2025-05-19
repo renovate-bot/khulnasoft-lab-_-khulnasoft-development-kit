@@ -15,16 +15,16 @@ RSpec.describe Support::Rake::Reconfigure do
         nginx-setup
         registry-setup
         elasticsearch-setup
-        gitlab-runner-setup
+        khulnasoft-runner-setup
         runner-setup
         geo-config
         khulnasoft-http-router-setup
-        docs-gitlab-com-setup
-        gitlab-observability-backend-setup
-        gitlab-elasticsearch-indexer-setup
+        docs-khulnasoft-com-setup
+        khulnasoft-observability-backend-setup
+        khulnasoft-elasticsearch-indexer-setup
         khulnasoft-k8s-agent-setup
-        gitlab-pages-setup
-        gitlab-ui-setup
+        khulnasoft-pages-setup
+        khulnasoft-ui-setup
         khulnasoft-zoekt-setup
         grafana-setup
         object-storage-setup

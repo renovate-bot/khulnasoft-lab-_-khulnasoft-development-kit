@@ -52,7 +52,7 @@ docker run --rm --name opensearch1.2.4 -p 9201:9200 -e "plugins.security.disable
 
 ## Setup
 
-1. Go to **Admin Area > Subscription** and ensure you have a [license](https://about.gitlab.com/handbook/developer-onboarding/#working-on-gitlab-ee) installed as this is required for Elasticsearch.
+1. Go to **Admin Area > Subscription** and ensure you have a [license](https://about.khulnasoft.com/handbook/developer-onboarding/#working-on-khulnasoft-ee) installed as this is required for Elasticsearch.
 
 1. Start Elasticsearch by either running `elasticsearch` in a new terminal, or
    by starting the KDK service:
@@ -64,7 +64,7 @@ docker run --rm --name opensearch1.2.4 -p 9201:9200 -e "plugins.security.disable
 1. Perform a manual update of the Elasticsearch indexes:
 
    ```shell
-   cd gitlab && bundle exec rake gitlab:elastic:index
+   cd khulnasoft && bundle exec rake khulnasoft:elastic:index
    ```
 
 1. Go to **Admin Area > Settings > Search > Advanced Search** to enable Elasticsearch.
@@ -76,10 +76,10 @@ docker run --rm --name opensearch1.2.4 -p 9201:9200 -e "plugins.security.disable
 
 To enable logging for all queries against Elasticsearch you can change the slow
 log settings to log every query. To do this you need to send a request to
-Elasticsearch to change the settings for the `gitlab-development` index:
+Elasticsearch to change the settings for the `khulnasoft-development` index:
 
 ```shell
-curl -H 'Content-Type: application/json' -XPUT "http://localhost:9200/gitlab-development/_settings" -d '{
+curl -H 'Content-Type: application/json' -XPUT "http://localhost:9200/khulnasoft-development/_settings" -d '{
 "index.indexing.slowlog.threshold.index.debug" : "0s",
 "index.search.slowlog.threshold.fetch.debug" : "0s",
 "index.search.slowlog.threshold.query.debug" : "0s"

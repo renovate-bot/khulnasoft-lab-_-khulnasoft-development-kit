@@ -17,7 +17,7 @@ RSpec.describe KDK::Command::Switch do
   end
 
   it 'changes the default_branch only for the current session', :hide_output do
-    expect { subject.run([branch]) }.to change { KDK.config.gitlab.default_branch }.from('master').to('cool-feature-woof')
+    expect { subject.run([branch]) }.to change { KDK.config.khulnasoft.default_branch }.from('master').to('cool-feature-woof')
   end
 
   context 'when update_branch fails' do

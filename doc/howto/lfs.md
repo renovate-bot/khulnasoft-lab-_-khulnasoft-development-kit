@@ -10,12 +10,12 @@ If you need to test Git LFS over SSH in KDK, you need run additional commands:
 1. `kdk reconfigure`
 1. `kdk restart sshd`
 
-These steps update the `lfs` section of your `<KDK_ROOT>/gitlab-shell/config.yml`
+These steps update the `lfs` section of your `<KDK_ROOT>/khulnasoft-shell/config.yml`
 file to set the `pure_ssh_protocol` value to `true`:
 
 ```yaml
 lfs:
-  # See https://gitlab.com/groups/gitlab-org/-/epics/11872 for context
+  # See https://khulnasoft.com/groups/khulnasoft-org/-/epics/11872 for context
   pure_ssh_protocol: true
 ```
 

@@ -13,12 +13,12 @@ If you still encounter some errors, see the troubleshooting FAQ below:
 - I'm getting an error when I run `kdk reconfigure`:
 
   ```plaintext
-  Makefile:30: recipe for target 'gitlab/config/gitlab.yml' failed
-  make: *** [gitlab/config/gitlab.yml] Error 1
+  Makefile:30: recipe for target 'khulnasoft/config/khulnasoft.yml' failed
+  make: *** [khulnasoft/config/khulnasoft.yml] Error 1
   ```
 
   This is likely because you have not updated your KhulnaSoft CE/EE repository to
-  the latest default branch yet. It has a template for `gitlab.yml` in it which
+  the latest default branch yet. It has a template for `khulnasoft.yml` in it which
   the KDK needs to update. The `kdk update` step should have taken care of this
   for you, but you can also manually go to your KhulnaSoft directory and run
   `git checkout main && git pull origin main`
@@ -40,7 +40,7 @@ If you still encounter some errors, see the troubleshooting FAQ below:
   ```
 
   This probably means that the webpack dev server isn't running or that your
-  `gitlab.yml` isn't properly configured. Ensure that you have run
+  `khulnasoft.yml` isn't properly configured. Ensure that you have run
   `kdk reconfigure` **AND** `kdk restart webpack`.
 
   ---
@@ -75,7 +75,7 @@ If you still encounter some errors, see the troubleshooting FAQ below:
   ...
   ```
 
-  This means you have not run `yarn install` since updating your `gitlab/gitlab-foss`
+  This means you have not run `yarn install` since updating your `khulnasoft/khulnasoft-foss`
   repository. The `kdk update` command should have done this for you, but you
   can do so manually as well.
 
@@ -104,5 +104,5 @@ If you still encounter some errors, see the troubleshooting FAQ below:
 
 - I see UI elements out of place when I access my local KhulnaSoft in a browser:
 
-  This means your KDK has some stale CSS files that need to be removed. You can run `bundle exec rake assets:clean gitlab:assets:purge`
+  This means your KDK has some stale CSS files that need to be removed. You can run `bundle exec rake assets:clean khulnasoft:assets:purge`
   to remove the contents of `public/assets/webpack`. Then run `kdk restart webpack` to trigger the regeneration of the files.

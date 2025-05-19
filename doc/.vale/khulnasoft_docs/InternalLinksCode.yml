@@ -4,7 +4,7 @@ description: |
   Checks that internal links don't link to files outside the doc directory.
 extends: existence
 message: "Use full URLs for files outside the docs directory."
-link: https://docs.gitlab.com/development/documentation/styleguide/#links
+link: https://docs.khulnasoft.com/development/documentation/styleguide/#links
 vocab: false
 level: error
 scope: raw

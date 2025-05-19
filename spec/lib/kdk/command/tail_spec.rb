@@ -56,7 +56,7 @@ RSpec.describe KDK::Command::Tail do
           rails                                                     # rails*
 
         To contribute to KhulnaSoft, see
-        https://docs.gitlab.com/ee/development/index.html.
+        https://docs.khulnasoft.com/ee/development/index.html.
       MSG
     end
 

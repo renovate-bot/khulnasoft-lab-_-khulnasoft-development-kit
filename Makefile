@@ -82,8 +82,8 @@ list:
 # This is used by `kdk install`
 #
 # When KhulnaSoft boots, it checks to ensure the version of khulnasoft-shell it expects
-# (based off of https://khulnasoft.com/khulnasoft-org/khulnasoft/-/blob/b99664deef4af88ef33bcd0abef8b0845a81e00f/KHULNASOFT_SHELL_VERSION)
-# matches what's checkout under <KDK_ROOT>/khulnasoft-shell (https://khulnasoft.com/khulnasoft-org/khulnasoft/-/blob/b99664deef4af88ef33bcd0abef8b0845a81e00f/config/initializers/5_backend.rb#L8).
+# (based off of https://gitlab.com/gitlab-org/gitlab/-/blob/b99664deef4af88ef33bcd0abef8b0845a81e00f/KHULNASOFT_SHELL_VERSION)
+# matches what's checkout under <KDK_ROOT>/khulnasoft-shell (https://gitlab.com/gitlab-org/gitlab/-/blob/b99664deef4af88ef33bcd0abef8b0845a81e00f/config/initializers/5_backend.rb#L8).
 # We run khulnasoft-shell-setup here before khulnasoft-setup to ensure KhulnaSoft is happy.
 # We also need to run khulnasoft/.git _prior_ to khulnasoft-shell-setup because it
 # needs access to <KDK_ROOT>/khulnasoft/KHULNASOFT_SHELL_VERSION

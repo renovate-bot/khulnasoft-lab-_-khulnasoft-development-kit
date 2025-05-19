@@ -34,13 +34,13 @@ In the past, we have already used telemetry to validate that we actually
 [sped up KDK updates through parallelization](https://codingpa.ws/post/faster-updates-with-fancy-spinners).
 
 In January of 2025, we created the first iteration of the
-[KDK stats dashboard](https://kdk-stats-826305.gitlab.io/), which we
+[KDK stats dashboard](https://kdk-stats-826305.khulnasoft.io/), which we
 frequently refer to when making changes to KDK.
 
 ## How to access telemetry data
 
 Team members who need access to telemetry data to work on KDK can submit
-an [access request](https://gitlab.com/gitlab-com/team-member-epics/access-requests)
+an [access request](https://khulnasoft.com/khulnasoft-com/team-member-epics/access-requests)
 for `ClickHouse Cloud`.
 
 After you have access, open the instance `product-analytics-prd` in

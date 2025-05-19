@@ -57,7 +57,7 @@ bundle pristine charlock_holmes
 Or for example `re2` on MacOS:
 
 ```shell
-/Users/user/khulnasoft-development-kit/khulnasoft/lib/gitlab/untrusted_regexp.rb:25:  [BUG] Segmentation fault at 0x0000000000000000
+/Users/user/khulnasoft-development-kit/khulnasoft/lib/khulnasoft/untrusted_regexp.rb:25:  [BUG] Segmentation fault at 0x0000000000000000
 ruby 2.6.6p146 (2020-03-31 revision 67876) [x86_64-darwin19]
 ```
 
@@ -92,7 +92,7 @@ To see why this extension failed to compile, please check the mkmf.log which can
 An error occurred while installing thrift (0.16.0), and Bundler cannot continue.
 
 In Gemfile:
-  gitlab-labkit was resolved to 0.32.0, which depends on
+  khulnasoft-labkit was resolved to 0.32.0, which depends on
     jaeger-client was resolved to 1.1.0, which depends on
       thrift
 ```
@@ -230,18 +230,18 @@ You should remove the `bootsnap` cache:
 
 ```shell
 kdk stop
-rm -rf gitlab/tmp/cache/bootsnap-*
+rm -rf khulnasoft/tmp/cache/bootsnap-*
 kdk start
 ```
 
 ## Truncate Rails logs
 
-The logs in `gitlab/log` keep growing forever as you use the KDK.
+The logs in `khulnasoft/log` keep growing forever as you use the KDK.
 
 You can truncate them either manually with the provided Rake task:
 
 ```shell
-rake gitlab:truncate_logs
+rake khulnasoft:truncate_logs
 ```
 
 Or add a [KDK hook](../configuration.md#hooks) to your `kdk.yml` with the following to truncate them

@@ -31,7 +31,7 @@ module KDK
       private
 
       def workhorse_dir
-        config.gitlab.dir.join('workhorse')
+        config.khulnasoft.dir.join('workhorse')
       end
 
       def auth_backend_option
@@ -51,11 +51,11 @@ module KDK
       end
 
       def document_root
-        config.gitlab.dir.join('public').to_s
+        config.khulnasoft.dir.join('public').to_s
       end
 
       def secret_path
-        config.gitlab.dir.join('.khulnasoft_workhorse_secret').to_s
+        config.khulnasoft.dir.join('.khulnasoft_workhorse_secret').to_s
       end
 
       def config_file

@@ -7,14 +7,14 @@
 # * are being moved to ApplicationSetting model!                       #
 # If a setting requires an application restart say so in that screen.  #
 # If you change this file in a Merge Request, please also create       #
-# a MR on https://gitlab.com/gitlab-org/omnibus-gitlab/merge_requests  #
+# a MR on https://khulnasoft.com/khulnasoft-org/omnibus-khulnasoft/merge_requests  #
 ########################################################################
 #
 #
 # How to use:
-# 1. Copy file as gitlab.yml
-# 2. Update gitlab -> host with your fully qualified domain name
-# 3. Update gitlab -> email_from
+# 1. Copy file as khulnasoft.yml
+# 2. Update khulnasoft -> host with your fully qualified domain name
+# 3. Update khulnasoft -> email_from
 # 4. If you installed Git from source, change git -> bin_path to /usr/local/bin/git
 #    IMPORTANT: If Git was installed in a different location use that instead.
 #    You can check with `which git`. If a wrong path of Git is specified, it will
@@ -27,15 +27,15 @@ production: &base
   # ==========================
 
   ## KhulnaSoft settings
-  gitlab:
+  khulnasoft:
     ## Web server settings (note: host is the FQDN, do not include http://)
-    host: <%= config.gitlab.rails.hostname %>
-    port: <%= config.gitlab.rails.port %>
-    https: <%= config.gitlab.rails.https? %>
+    host: <%= config.khulnasoft.rails.hostname %>
+    port: <%= config.khulnasoft.rails.port %>
+    https: <%= config.khulnasoft.rails.https? %>
 
     relative_url_root: "<%= config.relative_url_root %>"
 
-    allowed_hosts: <%= config.gitlab.rails.allowed_hosts %>
+    allowed_hosts: <%= config.khulnasoft.rails.allowed_hosts %>
 
     # Trusted Proxies
     # Customize if you have KhulnaSoft behind a reverse proxy which is running on a different machine.
@@ -114,22 +114,22 @@ production: &base
     impersonation_enabled: true
 
     ## Application settings cache expiry in seconds (default: 60)
-    application_settings_cache_seconds: <%= config.gitlab.rails.application_settings_cache_seconds %>
+    application_settings_cache_seconds: <%= config.khulnasoft.rails.application_settings_cache_seconds %>
 
   ## Reply by email
   # Allow users to comment on issues and merge requests by replying to notification emails.
-  # For documentation on how to set this up, see http://doc.gitlab.com/ce/administration/reply_by_email.html
+  # For documentation on how to set this up, see http://doc.khulnasoft.com/ce/administration/reply_by_email.html
   incoming_email:
     enabled: false
 
     # The email address including the `%{key}` placeholder that will be replaced to reference the item being replied to.
     # The placeholder can be omitted but if present, it must appear in the "user" part of the address (before the `@`).
-    address: "gitlab-incoming+%{key}@gmail.com"
+    address: "khulnasoft-incoming+%{key}@gmail.com"
 
     # Email account username
     # With third party providers, this is usually the full email address.
     # With self-hosted email servers, this is usually the user part of the email address.
-    user: "gitlab-incoming@gmail.com"
+    user: "khulnasoft-incoming@gmail.com"
     # Email account password
     password: "[REDACTED]"
 
@@ -161,7 +161,7 @@ production: &base
   ## Service desk email
   # Allow users to create new service desk issues by sending an email to
   # service desk address.
-  # https://docs.gitlab.com/ee/user/project/service_desk.html#using-custom-email-address
+  # https://docs.khulnasoft.com/ee/user/project/service_desk.html#using-custom-email-address
   service_desk_email:
     enabled: false
 
@@ -340,7 +340,7 @@ production: &base
     external_https: true # enable TLS for custom domains
     <%- end -%>
     admin:
-      address: unix:<%= kdk_root %>/gitlab/tmp/sockets/private/pages-admin.socket # TCP connections are supported too (e.g. tcp://host:port)
+      address: unix:<%= kdk_root %>/khulnasoft/tmp/sockets/private/pages-admin.socket # TCP connections are supported too (e.g. tcp://host:port)
     secret_file: <%= config.khulnasoft_pages.secret_file %>
     <%- unless config.object_store.consolidated_form? -%>
     object_store:
@@ -372,7 +372,7 @@ production: &base
   ## Gravatar
   ## If using gravatar.com, there's nothing to change here. For Libravatar
   ## you'll need to provide the custom URLs. For more information,
-  ## see: https://docs.gitlab.com/ee/customization/libravatar.html
+  ## see: https://docs.khulnasoft.com/ee/customization/libravatar.html
   gravatar:
     # Gravatar/Libravatar URLs: possible placeholders: %{hash} %{size} %{email} %{username}
     # plain_url: "http://..."     # default: https://www.gravatar.com/avatar/%{hash}?s=%{size}&d=identicon
@@ -381,7 +381,7 @@ production: &base
   ## Sidekiq
   sidekiq:
     log_format: json # (default is also supported)
-    routing_rules: <%= config.gitlab.rails_background_jobs.sidekiq_routing_rules.to_json %>
+    routing_rules: <%= config.khulnasoft.rails_background_jobs.sidekiq_routing_rules.to_json %>
 
   ## Auxiliary jobs
   # Periodically executed jobs, to self-heal KhulnaSoft, do external synchronizations, etc.
@@ -426,7 +426,7 @@ production: &base
     api_url: http://<%= config.registry.api_host %>:<%= config.registry.port %>
     key: <%= kdk_root %>/localhost.key
     path: <%= kdk_root %>/registry/storage/
-    issuer: gitlab-issuer
+    issuer: khulnasoft-issuer
     notification_secret: notifications_secret # Notification secret, use the same secret you use in registry/config.yml
 
   ## Error Reporting and Logging with Sentry
@@ -450,12 +450,12 @@ production: &base
       enabled: <%= config.geo.registry_replication? %>
       primary_api_url: <%= config.geo.registry_replication.primary_api_url %> # internal address to the primary registry, will be used by KhulnaSoft to directly communicate with primary registry API
 
-  ## Feature Flag https://docs.gitlab.com/ee/user/project/operations/feature_flags.html
+  ## Feature Flag https://docs.khulnasoft.com/ee/user/project/operations/feature_flags.html
   feature_flags:
     unleash:
       # enabled: false
-      # url: https://gitlab.com/api/v4/feature_flags/unleash/<project_id>
-      # app_name: gitlab.com # Environment name of your KhulnaSoft instance
+      # url: https://khulnasoft.com/api/v4/feature_flags/unleash/<project_id>
+      # app_name: khulnasoft.com # Environment name of your KhulnaSoft instance
       # instance_id: INSTANCE_ID
 
   #
@@ -481,7 +481,7 @@ production: &base
   ## LDAP settings
   # You can test connections and inspect a sample of the LDAP users with login
   # access by running:
-  #   bundle exec rake gitlab:ldap:check RAILS_ENV=production
+  #   bundle exec rake khulnasoft:ldap:check RAILS_ENV=production
   ldap:
     enabled: <%= config.openldap.enabled? %>
     servers:
@@ -604,7 +604,7 @@ production: &base
 
         # Base where we can search for users
         #
-        #   Ex. 'ou=People,dc=gitlab,dc=example' or 'DC=mydomain,DC=com'
+        #   Ex. 'ou=People,dc=khulnasoft,dc=example' or 'DC=mydomain,DC=com'
         #
         base: 'dc=example,dc=com'
         group_base: 'ou=groups,dc=example,dc=com'
@@ -627,7 +627,7 @@ production: &base
         # Note that the user's LDAP login will always be the attribute specified as `uid` above.
         attributes:
           # The username will be used in paths for the user's own projects
-          # (like `gitlab.example.com/username/project`) and when mentioning
+          # (like `khulnasoft.example.com/username/project`) and when mentioning
           # them in issues, merge request and comments (like `@username`).
           # If the attribute specified for `username` contains an email address,
           # the KhulnaSoft username will be the part of the email address before the '@'.
@@ -703,10 +703,10 @@ production: &base
     ## Auth providers
     # Uncomment the following lines and fill in the data of the auth provider you want to use
     # If your favorite auth provider is not listed you can use others:
-    # see https://github.com/gitlabhq/gitlab-public-wiki/wiki/Custom-omniauth-provider-configurations
+    # see https://github.com/khulnasofthq/khulnasoft-public-wiki/wiki/Custom-omniauth-provider-configurations
     # The 'app_id' and 'app_secret' parameters are always passed as the first two
     # arguments, followed by optional 'args' which can be either a hash or an array.
-    # Documentation for this is available at http://doc.gitlab.com/ce/integration/omniauth.html
+    # Documentation for this is available at http://doc.khulnasoft.com/ce/integration/omniauth.html
     providers:
       # - { name: 'alicloud',
       #     app_id: 'YOUR_APP_ID',
@@ -744,10 +744,10 @@ production: &base
       #     groups_attribute: 'Groups',
       #     external_groups: ['Contractors', 'Freelancers'],
       #     args: {
-      #             assertion_consumer_service_url: 'https://gitlab.example.com/users/auth/saml/callback',
+      #             assertion_consumer_service_url: 'https://khulnasoft.example.com/users/auth/saml/callback',
       #             idp_cert_fingerprint: '43:51:43:a1:b5:fc:8b:b7:0a:3a:a9:b1:0f:66:73:a8',
       #             idp_sso_target_url: 'https://login.example.com/idp',
-      #             issuer: 'https://gitlab.example.com',
+      #             issuer: 'https://khulnasoft.example.com',
       #             name_identifier_format: 'urn:oasis:names:tc:SAML:2.0:nameid-format:transient'
       #           } }
       #
@@ -768,7 +768,7 @@ production: &base
 
   # Shared file storage settings
   shared:
-    # path: /mnt/gitlab # Default: shared
+    # path: /mnt/khulnasoft # Default: shared
 
   # Gitaly settings
   gitaly:
@@ -785,7 +785,7 @@ production: &base
   repositories:
     # Paths where repositories can be stored. Give the canonicalized absolute pathname.
     # IMPORTANT: None of the path components may be symlink, because
-    # gitlab-shell invokes Dir.pwd inside the repository path and that results
+    # khulnasoft-shell invokes Dir.pwd inside the repository path and that results
     # real path not the symlink.
     storages: # You must have at least a `default` storage path.
       default:
@@ -845,21 +845,21 @@ production: &base
   workhorse:
     # File that contains the secret key for verifying access for khulnasoft-workhorse.
     # Default is '.khulnasoft_workhorse_secret' relative to Rails.root (i.e. root of the KhulnaSoft app).
-    # secret_file: /home/git/gitlab/.khulnasoft_workhorse_secret
+    # secret_file: /home/git/khulnasoft/.khulnasoft_workhorse_secret
 
-  <%- if config.gitlab.topology_service.enabled -%>
+  <%- if config.khulnasoft.topology_service.enabled -%>
   topology_service:
     enabled: true
-    address: <%= config.gitlab.topology_service.address %>
-    ca_file: <%= config.gitlab.topology_service.ca_file %>
-    private_key_file: <%= config.gitlab.topology_service.private_key_file %>
-    certificate_file: <%= config.gitlab.topology_service.certificate_file %>
+    address: <%= config.khulnasoft.topology_service.address %>
+    ca_file: <%= config.khulnasoft.topology_service.ca_file %>
+    private_key_file: <%= config.khulnasoft.topology_service.private_key_file %>
+    certificate_file: <%= config.khulnasoft.topology_service.certificate_file %>
 
   cell:
     enabled: true
-    id: <%= config.gitlab.cell.id %>
+    id: <%= config.khulnasoft.cell.id %>
     database:
-      skip_sequence_alteration: <%= config.gitlab.cell.database.skip_sequence_alteration %>
+      skip_sequence_alteration: <%= config.khulnasoft.cell.database.skip_sequence_alteration %>
   <%- end -%>
 
   khulnasoft_kas:
@@ -896,15 +896,15 @@ production: &base
 
     # Sidekiq exporter is a webserver built in to Sidekiq to expose Prometheus metrics
     sidekiq_exporter:
-      enabled: <%= config.gitlab.rails_background_jobs.sidekiq_exporter_enabled? %>
+      enabled: <%= config.khulnasoft.rails_background_jobs.sidekiq_exporter_enabled? %>
       address: <%= config.hostname %>
-      port: <%= config.gitlab.rails_background_jobs.sidekiq_exporter_port %>
+      port: <%= config.khulnasoft.rails_background_jobs.sidekiq_exporter_port %>
 
     # Sidekiq health checks is a webserver built in to Sidekiq to serve health checks for the workers
     sidekiq_health_checks:
-      enabled: <%= config.gitlab.rails_background_jobs.sidekiq_health_check_enabled? %>
+      enabled: <%= config.khulnasoft.rails_background_jobs.sidekiq_health_check_enabled? %>
       address: <%= config.hostname %>
-      port: <%= config.gitlab.rails_background_jobs.sidekiq_health_check_port %>
+      port: <%= config.khulnasoft.rails_background_jobs.sidekiq_health_check_port %>
   prometheus:
     enabled: <%= config.prometheus.enabled? %>
     server_address: '<%= config.hostname %>:<%= config.prometheus.port %>'
@@ -944,11 +944,11 @@ development:
   <<: *base
   omniauth:
     providers:
-    <%- if config.omniauth.gitlab.enabled -%>
+    <%- if config.omniauth.khulnasoft.enabled -%>
     - { name: 'khulnasoft',
-        app_id: '<%= config.omniauth.gitlab.app_id %>',
-        app_secret: '<%= config.omniauth.gitlab.app_secret %>',
-        args: { scope: '<%= config.omniauth.gitlab.scope %>' } }
+        app_id: '<%= config.omniauth.khulnasoft.app_id %>',
+        app_secret: '<%= config.omniauth.khulnasoft.app_secret %>',
+        args: { scope: '<%= config.omniauth.khulnasoft.scope %>' } }
     <%- end -%>
     <%- if config.omniauth.google_oauth2.enabled -%>
     - { name: 'google_oauth2',
@@ -989,12 +989,12 @@ development:
   <%- end -%>
 
   elasticsearch:
-    indexer_path: <%= kdk_root %>/gitlab-elasticsearch-indexer/bin/gitlab-elasticsearch-indexer
+    indexer_path: <%= kdk_root %>/khulnasoft-elasticsearch-indexer/bin/khulnasoft-elasticsearch-indexer
 
   <%- if config.duo_workflow.enabled? -%>
   duo_workflow:
     debug: <%= config.duo_workflow.debug %>
-    service_url: "<%= config.gitlab.rails.hostname %>:<%= config.duo_workflow.port %>"
+    service_url: "<%= config.khulnasoft.rails.hostname %>:<%= config.duo_workflow.port %>"
     secure: false
     executor_binary_url: "<%= config.duo_workflow.executor_binary_url %>"
     executor_version: "<%= File.read(File.join(kdk_root, 'khulnasoft', 'DUO_WORKFLOW_EXECUTOR_VERSION')).chomp %>"
@@ -1092,15 +1092,15 @@ test:
         aws_secret_access_key: AWS_SECRET_ACCESS_KEY
         region: us-east-1
     <%- end -%>
-  gitlab:
+  khulnasoft:
     host: localhost
     port: 80
 
     content_security_policy:
       directives:
-        connect_src: "'self' http://localhost:* ws://localhost:* wss://localhost:* ws://<%= config.gitlab.rails.hostname %>:* wss://<%= config.gitlab.rails.hostname %>:*"
+        connect_src: "'self' http://localhost:* ws://localhost:* wss://localhost:* ws://<%= config.khulnasoft.rails.hostname %>:* wss://<%= config.khulnasoft.rails.hostname %>:*"
 
-    # When you run tests we clone and set up gitlab-shell
+    # When you run tests we clone and set up khulnasoft-shell
     # In order to set it up correctly you need to specify
     # your system username you use to run KhulnaSoft
     user: <%= config.username %>
@@ -1135,7 +1135,7 @@ test:
     path: tmp/tests/backups
     gitaly_backup_path: tmp/tests/gitaly/_build/bin/gitaly-backup
   khulnasoft_shell:
-    path: tmp/tests/gitlab-shell/
+    path: tmp/tests/khulnasoft-shell/
     authorized_keys_file: tmp/tests/authorized_keys
   issues_tracker:
     redmine:

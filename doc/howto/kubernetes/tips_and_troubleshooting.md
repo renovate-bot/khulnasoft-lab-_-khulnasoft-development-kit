@@ -33,7 +33,7 @@ running on GKE. See [Local Tiller](useful_commands.md#local-tiller) to know how 
 
 ### Configuration for Auto DevOps base domain
 
-Please refer to the [Auto DevOps Base Domain](https://docs.gitlab.com/ee/topics/autodevops/#auto-devops-base-domain) to learn more about it.
+Please refer to the [Auto DevOps Base Domain](https://docs.khulnasoft.com/ee/topics/autodevops/#auto-devops-base-domain) to learn more about it.
 
 ## Using an external virtual machine for the development
 
@@ -77,7 +77,7 @@ If your Ingress is never assigned an IP address and you've waited for the IP add
 
 ### Error due to `Insufficient regional quota` for `DISKS_TOTAL_GB`
 
-When [creating a new GKE cluster](https://docs.gitlab.com/ee/user/project/clusters/#creating-the-cluster), GKE creates persistent disks for you. If you are
+When [creating a new GKE cluster](https://docs.khulnasoft.com/ee/user/project/clusters/#creating-the-cluster), GKE creates persistent disks for you. If you are
 running into the following error:
 
 ```plaintext

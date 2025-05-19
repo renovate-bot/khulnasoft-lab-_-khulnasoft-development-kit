@@ -20,7 +20,7 @@ To get a debugging prompt while browsing local
 development server (<http://localhost:3000>), use `binding.pry_shell` instead.
 
 You can then connect to this session by running `pry-shell` in your terminal. See
-[Pry debugging docs](https://docs.gitlab.com/ee/development/pry_debugging.html)
+[Pry debugging docs](https://docs.khulnasoft.com/ee/development/pry_debugging.html)
 for more usage.
 
 ## Run a web server in the foreground

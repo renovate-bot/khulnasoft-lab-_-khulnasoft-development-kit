@@ -6,7 +6,7 @@ PROJECT=$1
 
 install_common_deps() {
   echo "Installing common dependencies..."
-  gem install gitlab-sdk sentry-ruby zeitwerk tty-spinner
+  gem install khulnasoft-sdk sentry-ruby zeitwerk tty-spinner
 }
 
 install_macos_deps() {
@@ -120,7 +120,7 @@ generate_metadata() {
 
 compile_gitaly() {
   fetch_version "gitaly" "$GITALY_SERVER_VERSION_FILE_URL"
-  clone_repository "https://gitlab.com/gitlab-org/gitaly.git" "master" "gitaly" full
+  clone_repository "https://khulnasoft.com/khulnasoft-org/gitaly.git" "master" "gitaly" full
   setup_build_environment
 
   echo "Building Gitaly..."
@@ -142,8 +142,8 @@ compile_gitaly() {
 }
 
 compile_khulnasoft_shell() {
-  fetch_version "gitlab-shell" "$KHULNASOFT_SHELL_VERSION_FILE_URL"
-  clone_repository "https://github.com/khulnasoft-lab/khulnasoft-shell.git" "v$PACKAGE_VERSION" "gitlab-shell"
+  fetch_version "khulnasoft-shell" "$KHULNASOFT_SHELL_VERSION_FILE_URL"
+  clone_repository "https://github.com/khulnasoft-lab/khulnasoft-shell.git" "v$PACKAGE_VERSION" "khulnasoft-shell"
   setup_build_environment
 
   echo "Building KhulnaSoft Shell..."
@@ -161,7 +161,7 @@ compile_khulnasoft_shell() {
 
 compile_workhorse() {
   fetch_version "workhorse" "$KHULNASOFT_WORKHORSE_VERSION_FILE_URL"
-  clone_repository "https://github.com/khulnasoft-lab/khulnasoft.git" "master" "gitlab/workhorse"
+  clone_repository "https://github.com/khulnasoft-lab/khulnasoft.git" "master" "khulnasoft/workhorse"
   setup_build_environment
 
   echo "Building KhulnaSoft Workhorse..."
@@ -169,7 +169,7 @@ compile_workhorse() {
   GOOS=$BUILD_OS GOARCH=$BUILD_ARCH make
 
   echo "Moving binaries to build directory..."
-  mv gitlab-* build
+  mv khulnasoft-* build
 
   generate_metadata build
   generate_checksums build
@@ -195,14 +195,14 @@ main() {
     gitaly)
       compile_gitaly
       ;;
-    gitlab-shell)
+    khulnasoft-shell)
       compile_khulnasoft_shell
       ;;
     workhorse)
       compile_workhorse
       ;;
     *)
-      echo "Usage: $0 [gitaly|gitlab-shell|workhorse]"
+      echo "Usage: $0 [gitaly|khulnasoft-shell|workhorse]"
       exit 1
       ;;
   esac

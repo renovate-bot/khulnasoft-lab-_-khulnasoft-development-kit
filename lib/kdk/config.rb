@@ -69,7 +69,7 @@ module KDK
       port(:port, 'khulnasoft_ai_gateway')
       string(:version) { 'main' }
       string(:__listen) { "http://#{config.hostname}:#{config.khulnasoft_ai_gateway.port}" }
-      string(:__service_command) { 'support/exec-cd gitlab-ai-gateway poetry run ai_gateway' }
+      string(:__service_command) { 'support/exec-cd khulnasoft-ai-gateway poetry run ai_gateway' }
     end
 
     settings :khulnasoft_http_router do
@@ -115,27 +115,27 @@ module KDK
     end
 
     settings :repositories do
-      string(:charts_gitlab) { 'https://gitlab.com/gitlab-org/charts/gitlab.git' }
-      string(:docs_khulnasoft_com) { 'https://gitlab.com/gitlab-org/technical-writing/docs-gitlab-com.git' }
-      string(:gitaly) { 'https://gitlab.com/gitlab-org/gitaly.git' }
-      string(:gitlab) { 'https://github.com/khulnasoft-lab/khulnasoft.git' }
-      string(:khulnasoft_ai_gateway) { 'https://gitlab.com/gitlab-org/modelops/applied-ml/code-suggestions/ai-assist.git' }
-      string(:khulnasoft_http_router) { 'https://gitlab.com/gitlab-org/cells/http-router.git' }
+      string(:charts_khulnasoft) { 'https://khulnasoft.com/khulnasoft-org/charts/khulnasoft.git' }
+      string(:docs_khulnasoft_com) { 'https://khulnasoft.com/khulnasoft-org/technical-writing/docs-khulnasoft-com.git' }
+      string(:gitaly) { 'https://khulnasoft.com/khulnasoft-org/gitaly.git' }
+      string(:khulnasoft) { 'https://github.com/khulnasoft-lab/khulnasoft.git' }
+      string(:khulnasoft_ai_gateway) { 'https://khulnasoft.com/khulnasoft-org/modelops/applied-ml/code-suggestions/ai-assist.git' }
+      string(:khulnasoft_http_router) { 'https://khulnasoft.com/khulnasoft-org/cells/http-router.git' }
       string(:khulnasoft_elasticsearch_indexer) { 'https://github.com/khulnasoft-lab/khulnasoft-elasticsearch-indexer.git' }
-      string(:khulnasoft_k8s_agent) { 'https://gitlab.com/gitlab-org/cluster-integration/gitlab-agent.git' }
-      string(:khulnasoft_operator) { 'https://gitlab.com/gitlab-org/cloud-native/gitlab-operator.git' }
+      string(:khulnasoft_k8s_agent) { 'https://khulnasoft.com/khulnasoft-org/cluster-integration/khulnasoft-agent.git' }
+      string(:khulnasoft_operator) { 'https://khulnasoft.com/khulnasoft-org/cloud-native/khulnasoft-operator.git' }
       string(:khulnasoft_pages) { 'https://github.com/khulnasoft-lab/khulnasoft-pages.git' }
       string(:khulnasoft_shell) { 'https://github.com/khulnasoft-lab/khulnasoft-shell.git' }
-      string(:khulnasoft_topology_service) { 'https://gitlab.com/gitlab-org/cells/topology-service.git' }
+      string(:khulnasoft_topology_service) { 'https://khulnasoft.com/khulnasoft-org/cells/topology-service.git' }
       string(:khulnasoft_runner) { 'https://github.com/khulnasoft-lab/khulnasoft-runner.git' }
       string(:khulnasoft_ui) { 'https://github.com/khulnasoft-lab/khulnasoft-ui.git' }
-      string(:khulnasoft_zoekt_indexer) { 'https://gitlab.com/gitlab-org/khulnasoft-zoekt-indexer.git' }
-      string(:omnibus_gitlab) { 'https://gitlab.com/gitlab-org/omnibus-gitlab.git' }
-      string(:openbao_internal) { 'https://gitlab.com/gitlab-org/govern/secrets-management/openbao-internal.git' }
-      string(:registry) { 'https://gitlab.com/gitlab-org/container-registry.git' }
-      string(:khulnasoft_observability_backend) { 'git@gitlab.com:gitlab-org/opstrace/opstrace.git' }
-      string(:siphon) { 'https://gitlab.com/gitlab-org/analytics-section/siphon.git' }
-      string(:duo_workflow_executor) { 'https://gitlab.com/gitlab-org/duo-workflow/duo-workflow-executor.git' }
+      string(:khulnasoft_zoekt_indexer) { 'https://gitlab.com/gitlab-org/gitlab-zoekt-indexer.git' }
+      string(:omnibus_khulnasoft) { 'https://khulnasoft.com/khulnasoft-org/omnibus-khulnasoft.git' }
+      string(:openbao_internal) { 'https://khulnasoft.com/khulnasoft-org/govern/secrets-management/openbao-internal.git' }
+      string(:registry) { 'https://khulnasoft.com/khulnasoft-org/container-registry.git' }
+      string(:khulnasoft_observability_backend) { 'git@khulnasoft.com:khulnasoft-org/opstrace/opstrace.git' }
+      string(:siphon) { 'https://khulnasoft.com/khulnasoft-org/analytics-section/siphon.git' }
+      string(:duo_workflow_executor) { 'https://khulnasoft.com/khulnasoft-org/duo-workflow/duo-workflow-executor.git' }
     end
 
     settings :dev do
@@ -158,7 +158,7 @@ module KDK
     array(:git_repositories) do
       # This list in not exhaustive yet, as some git repositories are based on
       # a fake GOPATH inside a projects sub directory
-      ["/", "gitlab"].map { |d| File.join(kdk_root, d) }.select { |d| Dir.exist?(d) }
+      ["/", "khulnasoft"].map { |d| File.join(kdk_root, d) }.select { |d| Dir.exist?(d) }
     end
 
     settings :kdk do
@@ -183,7 +183,7 @@ module KDK
         array(:after) { [] }
       end
       settings :update_hooks do
-        array(:before, merge: true) { ['support/exec-cd gitlab bin/spring stop || true'] }
+        array(:before, merge: true) { ['support/exec-cd khulnasoft bin/spring stop || true'] }
         array(:after) { [] }
       end
     end
@@ -214,7 +214,7 @@ module KDK
     string(:__whoami) { Etc.getpwuid.name }
 
     settings :license do
-      string(:customer_portal_url) { 'https://customers.staging.gitlab.com' }
+      string(:customer_portal_url) { 'https://customers.staging.khulnasoft.com' }
       string(:license_mode) { 'test' }
     end
 
@@ -239,7 +239,7 @@ module KDK
 
     settings :webpack do
       bool(:enabled) { true }
-      string(:host) { config.gitlab.rails.hostname }
+      string(:host) { config.khulnasoft.rails.hostname }
       port(:port, 'webpack')
       string(:public_address) { "" }
       bool(:static) { false }
@@ -248,7 +248,7 @@ module KDK
       integer(:incremental_ttl) { 30 }
       bool(:sourcemaps) { true }
       bool(:live_reload) { true }
-      array(:allowed_hosts) { config.gitlab.rails.allowed_hosts }
+      array(:allowed_hosts) { config.khulnasoft.rails.allowed_hosts }
       integer(:vue_version) { 2 }
 
       bool(:__set_vue_version) do
@@ -285,7 +285,7 @@ module KDK
 
       settings :__listen_settings do
         string(:__type) do
-          if config.gitlab.rails.address.empty?
+          if config.khulnasoft.rails.address.empty?
             'authSocket'
           else
             'authBackend'
@@ -293,7 +293,7 @@ module KDK
         end
 
         string(:__address) do
-          config.gitlab.rails.__workhorse_url
+          config.khulnasoft.rails.__workhorse_url
         end
       end
 
@@ -326,16 +326,16 @@ module KDK
       bool(:skip_compile) { config.__supports_precompiled_binaries }
       bool(:skip_setup) { false }
       bool(:auto_update) { true }
-      path(:dir) { config.kdk_root.join('gitlab-shell') }
+      path(:dir) { config.kdk_root.join('khulnasoft-shell') }
       settings :lfs do
-        # https://gitlab.com/groups/gitlab-org/-/epics/11872
+        # https://khulnasoft.com/groups/khulnasoft-org/-/epics/11872
         bool(:pure_ssh_protocol_enabled) { false }
       end
       settings :pat do
         bool(:enabled) { true }
         array(:allowed_scopes) { [] }
       end
-      string(:__version) { ConfigHelper.version_from(config, 'gitlab/KHULNASOFT_SHELL_VERSION') }
+      string(:__version) { ConfigHelper.version_from(config, 'khulnasoft/KHULNASOFT_SHELL_VERSION') }
     end
 
     settings :khulnasoft_ui do
@@ -364,12 +364,12 @@ module KDK
       bool(:auto_update) { true }
     end
 
-    settings :omnibus_gitlab do
+    settings :omnibus_khulnasoft do
       bool(:enabled) { false }
       bool(:auto_update) { true }
     end
 
-    settings :charts_gitlab do
+    settings :charts_khulnasoft do
       bool(:enabled) { false }
       bool(:auto_update) { true }
     end
@@ -381,8 +381,8 @@ module KDK
 
     settings :khulnasoft_elasticsearch_indexer do
       bool(:auto_update) { true }
-      path(:__dir) { config.kdk_root.join('gitlab-elasticsearch-indexer') }
-      string(:__version) { ConfigHelper.version_from(config, 'gitlab/KHULNASOFT_ELASTICSEARCH_INDEXER_VERSION') }
+      path(:__dir) { config.kdk_root.join('khulnasoft-elasticsearch-indexer') }
+      string(:__version) { ConfigHelper.version_from(config, 'khulnasoft/KHULNASOFT_ELASTICSEARCH_INDEXER_VERSION') }
     end
 
     settings :registry do
@@ -412,7 +412,7 @@ module KDK
         string(:sslmode) { 'disable' }
       end
 
-      string(:version) { 'v4.14.0-gitlab' }
+      string(:version) { 'v4.14.0-khulnasoft' }
     end
 
     settings :object_store do
@@ -455,7 +455,7 @@ module KDK
       port(:port, 'khulnasoft_pages')
       string(:__uri) { "#{config.khulnasoft_pages.host}:#{config.khulnasoft_pages.port}" }
       bool(:auto_update) { true }
-      string(:secret_file) { config.kdk_root.join('gitlab-pages-secret') }
+      string(:secret_file) { config.kdk_root.join('khulnasoft-pages-secret') }
       bool(:verbose) { false }
       bool(:propagate_correlation_id) { false }
       bool(:access_control) { false }
@@ -466,13 +466,13 @@ module KDK
       # random 32-byte string
       string(:__auth_secret) { SecureRandom.alphanumeric(32) }
       string(:__auth_redirect_uri) { "http://#{config.khulnasoft_pages.__uri}/auth" }
-      string(:__version) { ConfigHelper.version_from(config, 'gitlab/KHULNASOFT_PAGES_VERSION') }
+      string(:__version) { ConfigHelper.version_from(config, 'khulnasoft/KHULNASOFT_PAGES_VERSION') }
     end
 
     settings :khulnasoft_k8s_agent do
       bool(:enabled) { false }
       bool(:auto_update) { true }
-      string(:__version) { ConfigHelper.version_from(config, 'gitlab/KHULNASOFT_KAS_VERSION') }
+      string(:__version) { ConfigHelper.version_from(config, 'khulnasoft/KHULNASOFT_KAS_VERSION') }
       bool(:configure_only) { false }
 
       string(:agent_listen_network) { 'tcp' }
@@ -552,7 +552,7 @@ module KDK
       end
       string(:__config_file) { config.kdk_root.join('khulnasoft-k8s-agent-config.yml') }
       string(:__secret_file) { config.kdk_root.join('khulnasoft', '.khulnasoft_kas_secret') }
-      string(:__websocket_token_secret_file) { config.kdk_root.join('gitlab-kas-websocket-token-secret') }
+      string(:__websocket_token_secret_file) { config.kdk_root.join('khulnasoft-kas-websocket-token-secret') }
 
       string(:otlp_endpoint) { '' }
       string(:otlp_ca_certificate_file) { '' }
@@ -589,7 +589,7 @@ module KDK
           settings :workflow_data_encryption do
             bool(:enabled) { false }
 
-            string(:__secret_key_file) { config.kdk_root.join('gitlab-kas-autoflow-temporal-workflow-data-encryption-secret') }
+            string(:__secret_key_file) { config.kdk_root.join('khulnasoft-kas-autoflow-temporal-workflow-data-encryption-secret') }
 
             settings :codec_server do
               string(:nginx_url_path) { '/-/autoflow/codec-server/' }
@@ -610,7 +610,7 @@ module KDK
     end
 
     settings :omniauth do
-      settings :gitlab do
+      settings :khulnasoft do
         bool(:enabled) { false }
         string(:app_id) { '' }
         string(:app_secret) { '' }
@@ -631,7 +631,7 @@ module KDK
       end
       settings :openid_connect do
         bool(:enabled) { false }
-        # See https://docs.gitlab.com/ee/administration/auth/oidc.html for more detail
+        # See https://docs.khulnasoft.com/ee/administration/auth/oidc.html for more detail
         hash_setting(:args) { {} }
       end
     end
@@ -672,7 +672,7 @@ module KDK
             (i + 2) * parent.parent.__global_sequence_range
           ]
         end
-        string(:khulnasoft_repo) { "git@gitlab.com:gitlab-org/gitlab.git" }
+        string(:khulnasoft_repo) { "git@khulnasoft.com:khulnasoft-org/khulnasoft.git" }
         hash_setting(:config, merge: true) do
           main_config = parent.config
 
@@ -690,11 +690,11 @@ module KDK
               },
               # Enable client and use main cell's defaults
               'topology_service' => {
-                'enabled' => main_config.gitlab.topology_service.enabled,
-                'address' => main_config.gitlab.topology_service.address,
-                'ca_file' => main_config.gitlab.topology_service.ca_file.to_s,
-                'certificate_file' => main_config.gitlab.topology_service.certificate_file.to_s,
-                'private_key_file' => main_config.gitlab.topology_service.private_key_file.to_s
+                'enabled' => main_config.khulnasoft.topology_service.enabled,
+                'address' => main_config.khulnasoft.topology_service.address,
+                'ca_file' => main_config.khulnasoft.topology_service.ca_file.to_s,
+                'certificate_file' => main_config.khulnasoft.topology_service.certificate_file.to_s,
+                'private_key_file' => main_config.khulnasoft.topology_service.private_key_file.to_s
               },
               'rails' => {
                 'hostname' => main_config.hostname,
@@ -750,7 +750,7 @@ module KDK
       bool(:llm_cache) { false }
       bool(:debug) { true }
 
-      string(:__executor_version) { ConfigHelper.version_from(config, 'gitlab/DUO_WORKFLOW_EXECUTOR_VERSION') }
+      string(:__executor_version) { ConfigHelper.version_from(config, 'khulnasoft/DUO_WORKFLOW_EXECUTOR_VERSION') }
       # We build the executor for linux amd64 by default as we run
       # this in docker and assume you will be using linux amd64 docker
       # images. This means it may not run directly on your host.
@@ -807,7 +807,7 @@ module KDK
           '\.git/git-receive-pack$',
           '\.git/ssh-upload-pack$',
           '\.git/ssh-receive-pack$',
-          '\.git/gitlab-lfs/objects',
+          '\.git/khulnasoft-lfs/objects',
           '\.git/info/lfs/objects/batch$'
         ]
       end
@@ -904,7 +904,7 @@ module KDK
       path(:__build_bin_path) { config.gitaly.__build_path.join('bin') }
       path(:__build_bin_backup_path) { config.gitaly.__build_bin_path.join('gitaly-backup') }
       path(:__gitaly_build_bin_path) { config.gitaly.__build_bin_path.join('gitaly') }
-      string(:__version) { ConfigHelper.version_from(config, 'gitlab/GITALY_SERVER_VERSION') }
+      string(:__version) { ConfigHelper.version_from(config, 'khulnasoft/GITALY_SERVER_VERSION') }
       array(:gitconfig) { [] }
       settings_array :__storages, size: -> { storage_count } do |i|
         string(:name) { i.zero? ? 'default' : "gitaly-#{i}" }
@@ -981,7 +981,7 @@ module KDK
         if config.sshd.use_khulnasoft_sshd?
           "/dev/stdout"
         else
-          "#{config.khulnasoft_shell.dir}/gitlab-shell.log"
+          "#{config.khulnasoft_shell.dir}/khulnasoft-shell.log"
         end
       end
 
@@ -1011,7 +1011,7 @@ module KDK
           .reject(&:empty?).uniq
       end
 
-      # gitlab-sshd only
+      # khulnasoft-sshd only
       bool(:proxy_protocol) { false }
       string(:web_listen) do
         if config.prometheus?
@@ -1032,18 +1032,18 @@ module KDK
     end
 
     settings :runner do
-      path(:config_file) { config.kdk_root.join('gitlab-runner-config.toml') }
+      path(:config_file) { config.kdk_root.join('khulnasoft-runner-config.toml') }
       bool(:enabled) { false }
       integer(:concurrent) { 1 }
       string(:install_mode) { "binary" }
       string(:executor) { "docker" }
       array(:extra_hosts) { [] }
       string(:token) { 'DEFAULT TOKEN: Register your runner to get a valid token' }
-      string(:image) { "gitlab/gitlab-runner:latest" }
+      string(:image) { "khulnasoft/khulnasoft-runner:latest" }
       string(:docker_pull) { 'always' }
       string(:pull_policy) { "if-not-present" }
       string(:docker_host) { "" }
-      path(:bin) { find_executable!('gitlab-runner') || '/usr/local/bin/gitlab-runner' }
+      path(:bin) { find_executable!('khulnasoft-runner') || '/usr/local/bin/khulnasoft-runner' }
       bool(:network_mode_host) { false }
       bool(:__network_mode_host) do
         raise UnsupportedConfiguration, 'runner.network_mode_host is only supported on Linux' if config.runner.network_mode_host && !KDK::Machine.linux?
@@ -1124,12 +1124,12 @@ module KDK
       string(:image) { 'mattermost/mattermost-preview' }
     end
 
-    settings :gitlab do
+    settings :khulnasoft do
       bool(:auto_update) { true }
       string(:default_branch) { 'master' }
       bool(:lefthook_enabled) { true }
       path(:dir) { config.kdk_root.join('khulnasoft') }
-      path(:log_dir) { config.gitlab.dir.join('log') }
+      path(:log_dir) { config.khulnasoft.dir.join('log') }
       bool(:cache_classes) { false }
       bool(:gitaly_disable_request_limits) { false }
 
@@ -1143,20 +1143,20 @@ module KDK
 
         bool(:bootsnap) { true }
         string(:address) { '' }
-        string(:__bind) { "#{config.gitlab.rails.__listen_settings.__protocol}://#{config.gitlab.rails.__listen_settings.__address}" }
+        string(:__bind) { "#{config.khulnasoft.rails.__listen_settings.__protocol}://#{config.khulnasoft.rails.__listen_settings.__address}" }
         string(:__workhorse_url) do
-          if config.gitlab.rails.address.empty?
-            config.gitlab.rails.__socket_file
+          if config.khulnasoft.rails.address.empty?
+            config.khulnasoft.rails.__socket_file
           else
-            "http://#{config.gitlab.rails.__listen_settings.__address}"
+            "http://#{config.khulnasoft.rails.__listen_settings.__address}"
           end
         end
-        path(:__socket_file) { config.kdk_root.join('gitlab.socket') }
-        string(:__socket_file_escaped) { CGI.escape(config.gitlab.rails.__socket_file.to_s) }
+        path(:__socket_file) { config.kdk_root.join('khulnasoft.socket') }
+        string(:__socket_file_escaped) { CGI.escape(config.khulnasoft.rails.__socket_file.to_s) }
 
         settings :__listen_settings do
           string(:__protocol) do
-            if config.gitlab.rails.address.empty?
+            if config.khulnasoft.rails.address.empty?
               'unix'
             else
               'tcp'
@@ -1164,21 +1164,21 @@ module KDK
           end
 
           string(:__address) do
-            if config.gitlab.rails.address.empty?
-              config.gitlab.rails.__socket_file
+            if config.khulnasoft.rails.address.empty?
+              config.khulnasoft.rails.__socket_file
             else
-              config.gitlab.rails.address
+              config.khulnasoft.rails.address
             end
           end
         end
 
-        bool(:__has_jh_dir) { File.exist?(config.gitlab.dir.join('jh')) }
+        bool(:__has_jh_dir) { File.exist?(config.khulnasoft.dir.join('jh')) }
 
         string(:bundle_gemfile) do
           if __has_jh_dir
-            config.gitlab.dir.join('jh/Gemfile')
+            config.khulnasoft.dir.join('jh/Gemfile')
           else
-            config.gitlab.dir.join('Gemfile')
+            config.khulnasoft.dir.join('Gemfile')
           end
         end
 
@@ -1191,14 +1191,14 @@ module KDK
             bool(:use_main_database) { false }
 
             bool(:__enabled) do
-              config.gitlab.rails.multiple_databases || config.gitlab.rails.databases.ci.enabled
+              config.khulnasoft.rails.multiple_databases || config.khulnasoft.rails.databases.ci.enabled
             end
 
             bool(:__use_main_database) do
-              if config.gitlab.rails.multiple_databases
+              if config.khulnasoft.rails.multiple_databases
                 false
-              elsif config.gitlab.rails.databases.ci.enabled
-                config.gitlab.rails.databases.ci.use_main_database
+              elsif config.khulnasoft.rails.databases.ci.enabled
+                config.khulnasoft.rails.databases.ci.use_main_database
               else
                 false
               end
@@ -1210,14 +1210,14 @@ module KDK
             bool(:use_main_database) { true }
 
             bool(:__enabled) do
-              config.gitlab.rails.multiple_databases || config.gitlab.rails.databases.sec.enabled
+              config.khulnasoft.rails.multiple_databases || config.khulnasoft.rails.databases.sec.enabled
             end
 
             bool(:__use_main_database) do
-              if config.gitlab.rails.multiple_databases
+              if config.khulnasoft.rails.multiple_databases
                 true
-              elsif config.gitlab.rails.databases.sec.enabled
-                config.gitlab.rails.databases.sec.use_main_database
+              elsif config.khulnasoft.rails.databases.sec.enabled
+                config.khulnasoft.rails.databases.sec.use_main_database
               else
                 true
               end
@@ -1234,19 +1234,19 @@ module KDK
           integer(:workers) { 2 }
 
           integer(:threads_max) { 4 }
-          integer(:__threads_max) { [config.gitlab.rails.puma.__threads_min, config.gitlab.rails.puma.threads_max].max }
+          integer(:__threads_max) { [config.khulnasoft.rails.puma.__threads_min, config.khulnasoft.rails.puma.threads_max].max }
           integer(:threads_min) { 1 }
-          integer(:__threads_min) { config.gitlab.rails.puma.workers.zero? ? config.gitlab.rails.puma.threads_max : config.gitlab.rails.puma.threads_min }
+          integer(:__threads_min) { config.khulnasoft.rails.puma.workers.zero? ? config.khulnasoft.rails.puma.threads_max : config.khulnasoft.rails.puma.threads_min }
         end
 
         settings :session_store do
           # unique_cookie_key_postfix: Unique key postfix based on the root directory of KDK
           #    We enable it by default if all cells functionality is disabled.
           #    Therefore, excluding the primary cell, keeps it `false`.
-          bool(:unique_cookie_key_postfix) { !config.gitlab.topology_service.enabled? && !config.khulnasoft_topology_service.enabled }
+          bool(:unique_cookie_key_postfix) { !config.khulnasoft.topology_service.enabled? && !config.khulnasoft_topology_service.enabled }
           string(:cookie_key) { "_khulnasoft_session" }
           string(:session_cookie_token_prefix) do
-            config.gitlab.topology_service.enabled? ? "cell-#{config.gitlab.cell.id}" : ""
+            config.khulnasoft.topology_service.enabled? ? "cell-#{config.khulnasoft.cell.id}" : ""
           end
         end
 

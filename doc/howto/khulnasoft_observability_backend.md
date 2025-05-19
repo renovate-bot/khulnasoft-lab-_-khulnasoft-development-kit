@@ -5,13 +5,13 @@ title: KhulnaSoft Observability Backend
 Configure the KhulnaSoft Observability Backend (GOB) to run locally in KDK. This is required to ingest and query
 observability signals metrics, logs, and traces. Using GOB in KDK will help you get up to speed quickly when developing these features.
 
-Learn more about Observability for [tracing](https://docs.gitlab.com/ee/operations/tracing.html), [metrics](https://docs.gitlab.com/ee/operations/metrics.html) and [logs](https://docs.gitlab.com/ee/operations/logs.html) in our documentation.
+Learn more about Observability for [tracing](https://docs.khulnasoft.com/ee/operations/tracing.html), [metrics](https://docs.khulnasoft.com/ee/operations/metrics.html) and [logs](https://docs.khulnasoft.com/ee/operations/logs.html) in our documentation.
 
 ## Prerequisites
 
-- ClickHouse enabled in your KDK. [[Docs](https://docs.gitlab.com/ee/development/database/clickhouse/clickhouse_within_gitlab.html)]
+- ClickHouse enabled in your KDK. [[Docs](https://docs.khulnasoft.com/ee/development/database/clickhouse/clickhouse_within_khulnasoft.html)]
 - An EE Ultimate license in your KDK.
-- KDK running as SaaS. [[Docs](https://docs.gitlab.com/ee/development/ee_features.html#simulate-a-saas-instance)]
+- KDK running as SaaS. [[Docs](https://docs.khulnasoft.com/ee/development/ee_features.html#simulate-a-saas-instance)]
 
 ## Get started
 
@@ -34,20 +34,20 @@ Learn more about Observability for [tracing](https://docs.gitlab.com/ee/operatio
 
 ## Troubleshooting
 
-### `gitlab-observability-backend` service not starting on macOS
+### `khulnasoft-observability-backend` service not starting on macOS
 
-After following the steps above you might find that `gitlab-observability-backend` is not able to start and returns the following message:
+After following the steps above you might find that `khulnasoft-observability-backend` is not able to start and returns the following message:
 
 ```shell
-kdk status gitlab-observability-backend
+kdk status khulnasoft-observability-backend
 
-down: /khulnasoft-development-kit/services/gitlab-observability-backend: 4s; run: log: (pid 93406) 5494s
+down: /khulnasoft-development-kit/services/khulnasoft-observability-backend: 4s; run: log: (pid 93406) 5494s
 ```
 
 In this case, check if the process can start at all by launching it manually:
 
 ```shell
-cd gitlab/gitlab-observability-backend/go/cmd/all-in-one 
+cd khulnasoft/khulnasoft-observability-backend/go/cmd/all-in-one 
 ./all-in-one
 
 ./all-in-one [1] 19695 killed # the process is killed
@@ -82,6 +82,6 @@ all-in-one: satisfies its Designated Requirement
 Error: get connection: getting database handle ... # process actually gets started now
 ```
 
-At this point it should be possible to run `kdk start gitlab-observability-backend` successfully.
+At this point it should be possible to run `kdk start khulnasoft-observability-backend` successfully.
 
-Note that every time you run `kdk update` or `kdk reconfigure`, you must manually rebuild the `gitlab-observability-backend`.
+Note that every time you run `kdk update` or `kdk reconfigure`, you must manually rebuild the `khulnasoft-observability-backend`.

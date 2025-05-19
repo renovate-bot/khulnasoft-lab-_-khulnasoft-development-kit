@@ -54,8 +54,8 @@ For testing of KhulnaSoft Enterprise Edition the following groups are created:
 
 ### LDAP group sync
 
-To test [LDAP group sync](https://docs.gitlab.com/ee/user/group/access_and_permissions.html#manage-group-memberships-via-ldap),
-[create group links through CN](https://docs.gitlab.com/ee/user/group/access_and_permissions.html#create-group-links-via-cn)
+To test [LDAP group sync](https://docs.khulnasoft.com/ee/user/group/access_and_permissions.html#manage-group-memberships-via-ldap),
+[create group links through CN](https://docs.khulnasoft.com/ee/user/group/access_and_permissions.html#create-group-links-via-cn)
 and add a sync for `group1` or `group2`, then ensure that the correct members are
 added.
 
@@ -162,8 +162,8 @@ ldapadd -H "ldap://127.0.0.1:3890" -x -D "cn=admin,dc=example,dc=com" -w passwor
 
 ### Configuring KhulnaSoft
 
-In `<kdk-directory>/gitlab/config/gitlab.yml` under `production:` and `ldap:`, change the following keys to the values
-given below (see [defaults](https://github.com/khulnasoft-lab/khulnasoft/-/blob/master/config/gitlab.yml.example#L550-769)):
+In `<kdk-directory>/khulnasoft/config/khulnasoft.yml` under `production:` and `ldap:`, change the following keys to the values
+given below (see [defaults](https://github.com/khulnasoft-lab/khulnasoft/-/blob/master/config/khulnasoft.yml.example#L550-769)):
 
 ```yaml
   enabled: true
@@ -215,7 +215,7 @@ If you want to disable anonymous binding and require authentication:
    make disable_bind_anon
    ```
 
-1. Update `gitlab.yml` also with the following:
+1. Update `khulnasoft.yml` also with the following:
 
    ```yaml
    ldap:
@@ -232,7 +232,7 @@ If you want to disable anonymous binding and require authentication:
 
 If you have [set up smart card authentication on KDK](smartcard.md), you can enable smart card authentication against the LDAP server.
 
-1. In `<kdk-directory>/gitlab/config/gitlab.yml` under `production:` and `ldap:`, change the `smartcard_auth:` key to either `optional` or `required`:
+1. In `<kdk-directory>/khulnasoft/config/khulnasoft.yml` under `production:` and `ldap:`, change the `smartcard_auth:` key to either `optional` or `required`:
 
    ```yaml
    ldap:
@@ -254,14 +254,14 @@ On the tab for the relevant LDAP server on the sign-in page, you should now see 
 ## Troubleshooting
 
 The following commands should help validate KhulnaSoft and OpenLDAP are
-configured properly. Also see the [LDAP Troubleshooting documentation](https://docs.gitlab.com/ee/administration/auth/ldap/ldap-troubleshooting.html).
+configured properly. Also see the [LDAP Troubleshooting documentation](https://docs.khulnasoft.com/ee/administration/auth/ldap/ldap-troubleshooting.html).
 
 ### Rake task
 
-In the `gitlab` directory, run:
+In the `khulnasoft` directory, run:
 
 ```shell
-bundle exec rake gitlab:ldap:check
+bundle exec rake khulnasoft:ldap:check
 ```
 
 You should see two sets of LDAP configurations: one for the domain

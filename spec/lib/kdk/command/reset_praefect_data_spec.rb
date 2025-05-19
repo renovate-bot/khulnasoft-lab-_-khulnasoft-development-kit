@@ -35,7 +35,7 @@ RSpec.describe KDK::Command::ResetPraefectData do
       expect(Runit).to receive(:start).with('postgresql', quiet: true).and_return(true)
       expect(subject).to receive(:sleep).with(2).and_return(true).ordered
 
-      common_command = ['/usr/local/bin/psql', '--host=/home/git/kdk/postgresql', '--port=5432', '--dbname=gitlabhq_development', '-c']
+      common_command = ['/usr/local/bin/psql', '--host=/home/git/kdk/postgresql', '--port=5432', '--dbname=khulnasofthq_development', '-c']
 
       drop_database_command = common_command + ['drop database praefect_development']
       expect_shellout_stream(drop_database_command)

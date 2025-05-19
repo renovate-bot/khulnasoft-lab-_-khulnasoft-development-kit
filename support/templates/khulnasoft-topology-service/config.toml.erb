@@ -1,14 +1,14 @@
 env = "development"
 
-<%- if config.gitlab.topology_service.enabled -%>
+<%- if config.khulnasoft.topology_service.enabled -%>
 [[cells]]
-id = <%= config.gitlab.cell.id %>
+id = <%= config.khulnasoft.cell.id %>
 address = "<%= config.nginx? ? config.nginx.__listen_address : config.workhorse.__listen_address %>"
-session_prefix = "<%= config.gitlab.rails.session_store.session_cookie_token_prefix %>"
-sequence_range = [1, <%= config.gitlab.cell.__legacy_cell_sequence_maxval %>]
+session_prefix = "<%= config.khulnasoft.rails.session_store.session_cookie_token_prefix %>"
+sequence_range = [1, <%= config.khulnasoft.cell.__legacy_cell_sequence_maxval %>]
 [[cells.sequence_ranges]]
 minval = 1
-maxval = <%= config.gitlab.cell.__legacy_cell_sequence_maxval %>
+maxval = <%= config.khulnasoft.cell.__legacy_cell_sequence_maxval %>
 <%- end -%>
 
 <%- cell_manager = CellManager.new -%>
@@ -17,7 +17,7 @@ maxval = <%= config.gitlab.cell.__legacy_cell_sequence_maxval %>
 [[cells]]
 id = <%= instance.id %>
 address = "<%= cell_config.nginx? ? cell_config.nginx.__listen_address : cell_config.workhorse.__listen_address %>"
-session_prefix = "<%= cell_config.gitlab.rails.session_store.session_cookie_token_prefix %>"
+session_prefix = "<%= cell_config.khulnasoft.rails.session_store.session_cookie_token_prefix %>"
 sequence_range = [<%= instance.__sequence_range[0] %>, <%= instance.__sequence_range[1] %>]
 [[cells.sequence_ranges]]
 minval = <%= instance.__sequence_range[0] %>

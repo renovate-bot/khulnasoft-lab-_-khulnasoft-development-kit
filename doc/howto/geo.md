@@ -7,8 +7,8 @@ This document instructs you to set up KhulnaSoft Geo using KDK.
 Geo allows you to replicate a whole KhulnaSoft instance. Customers use this for
 Disaster Recovery, as well as to offload read-only requests to secondary
 instances. For more information, see the
-[Geo solutions page](https://about.gitlab.com/solutions/geo/) or
-the [Geo documentation](https://docs.gitlab.com/ee/administration/geo).
+[Geo solutions page](https://about.khulnasoft.com/solutions/geo/) or
+the [Geo documentation](https://docs.khulnasoft.com/ee/administration/geo).
 
 ## Easy installation
 
@@ -31,7 +31,7 @@ The installation script:
    If you have a file on disk, then run:
 
    ```shell
-   export KHULNASOFT_LICENSE_KEY=$(cat /path/to/your/premium.gitlab-license)
+   export KHULNASOFT_LICENSE_KEY=$(cat /path/to/your/premium.khulnasoft-license)
    ```
 
    Or, if you have plaintext, then run:
@@ -43,20 +43,20 @@ The installation script:
 1. Run the installation script:
 
    ```shell
-   curl "https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/raw/main/support/geo-install" | bash
+   curl "https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/raw/master/support/geo-install" | bash
    ```
 
    Or, if you want to name the KDK directories, then run:
 
    ```shell
-   curl "https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/raw/main/support/geo-install" | bash -s name-of-primary name-of-secondary
+   curl "https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/raw/master/support/geo-install" | bash -s name-of-primary name-of-secondary
    ```
 
 To check if it is working, visit the unified URL at `http://127.0.0.1:3001` and sign in. Your requests are always served by the secondary site (as if Geo-location based DNS is set up and you are located near the secondary site). It should behave no differently than the primary site. That is the goal anyway.
 
 If needed, you can visit the primary directly at `http://127.0.0.1:3000` but this would be considered a workaround, and you may notice quirks. For example, absolute URLs rendered on the page use the unified URL. You may also occasionally get redirected to the unified URL.
 
-To see if you are able to run tests, you can run a simple spec like `bin/rspec ee/spec/lib/gitlab/geo/logger_spec.rb` from the `gitlab` directory in the primary `kdk` directory.
+To see if you are able to run tests, you can run a simple spec like `bin/rspec ee/spec/lib/khulnasoft/geo/logger_spec.rb` from the `khulnasoft` directory in the primary `kdk` directory.
 
 ## Advanced Installation
 
@@ -155,11 +155,11 @@ secondary. It is ok to ignore. Your local Geo secondary does not have or need a
 test DB, and this error occurs on the very last step of `kdk update`.
 
 ```shell
-cd /Users/foo/Developer/kdk-geo/gitlab && \
+cd /Users/foo/Developer/kdk-geo/khulnasoft && \
       bundle exec rake db:migrate db:test:prepare
 rake aborted!
 ActiveRecord::StatementInvalid: PG::ReadOnlySqlTransaction: ERROR:  cannot execute DROP DATABASE in a read-only transaction
-: DROP DATABASE IF EXISTS "gitlabhq_test"
+: DROP DATABASE IF EXISTS "khulnasofthq_test"
 /Users/foo/.rbenv/versions/2.6.3/bin/bundle:23:in `load'
 /Users/foo/.rbenv/versions/2.6.3/bin/bundle:23:in `<main>'
 
@@ -169,7 +169,7 @@ PG::ReadOnlySqlTransaction: ERROR:  cannot execute DROP DATABASE in a read-only 
 /Users/foo/.rbenv/versions/2.6.3/bin/bundle:23:in `<main>'
 Tasks: TOP => db:test:load => db:test:purge
 (See full trace by running task with --trace)
-make: *** [gitlab-update] Error 1
+make: *** [khulnasoft-update] Error 1
 ```
 
 ## Enabling Docker Registry replication

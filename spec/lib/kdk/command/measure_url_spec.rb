@@ -17,7 +17,7 @@ RSpec.describe KDK::Command::MeasureUrl do
 
     context 'when an empty URL array is provided' do
       it 'aborts' do
-        expected_error = 'ERROR: Please add URL(s) as an argument (e.g. http://localhost:3000/explore, /explore or https://gitlab.com/explore)'
+        expected_error = 'ERROR: Please add URL(s) as an argument (e.g. http://localhost:3000/explore, /explore or https://khulnasoft.com/explore)'
         urls = []
 
         expect { subject.run(urls) }.to raise_error(expected_error).and output("#{expected_error}\n").to_stderr

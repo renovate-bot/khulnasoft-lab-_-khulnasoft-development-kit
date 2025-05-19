@@ -4,7 +4,7 @@ description: |
   Suggests the correct way to describe a button.
 extends: existence
 message: "If possible, rewrite to remove 'button'."
-link: https://docs.gitlab.com/development/documentation/styleguide/word_list/#button
+link: https://docs.khulnasoft.com/development/documentation/styleguide/word_list/#button
 vocab: false
 level: warning
 ignorecase: true

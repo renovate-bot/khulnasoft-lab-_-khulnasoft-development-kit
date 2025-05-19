@@ -9,7 +9,7 @@ else
 	@true
 endif
 
-geo-config: khulnasoft/config/database.yml postgresql-geo/data/gitlab.conf
+geo-config: khulnasoft/config/database.yml postgresql-geo/data/khulnasoft.conf
 
 geo-cursor:
 	$(Q)grep '^geo-cursor:' Procfile || (printf ',s/^#geo-cursor/geo-cursor/\nwq\n' | ed -s Procfile)

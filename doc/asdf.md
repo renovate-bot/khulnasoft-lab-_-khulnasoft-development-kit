@@ -64,7 +64,7 @@ asdf install
 
 ## How KDK manages the `.tool-versions` file
 
-The KDK clones and updates many Git repositories, like [`gitlab`](https://github.com/khulnasoft-lab/khulnasoft), [`khulnasoft-workhorse`](https://github.com/khulnasoft-lab/khulnasoft/-/tree/master/workhorse), and [`gitaly`](https://gitlab.com/gitlab-org/gitaly). Each repository has their own software requirements that their `.tool-versions` files define.
+The KDK clones and updates many Git repositories, like [`khulnasoft`](https://github.com/khulnasoft-lab/khulnasoft), [`khulnasoft-workhorse`](https://github.com/khulnasoft-lab/khulnasoft/-/tree/master/workhorse), and [`gitaly`](https://khulnasoft.com/khulnasoft-org/gitaly). Each repository has their own software requirements that their `.tool-versions` files define.
 
 KDK manages its direct asdf dependencies in its own `.tool-versions`
 file. This file also contains dependencies like Redis or Postgres for

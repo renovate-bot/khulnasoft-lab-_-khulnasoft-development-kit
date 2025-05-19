@@ -51,8 +51,8 @@ RSpec.describe KDK::Diagnostic::PendingMigrations do
 
     sh = kdk_shellout_double(read_stdout: success ? all_migrations.join("\n") : all_migrations[..2].join("^\n"))
     allow(sh).to receive(:execute).with(display_output: false).and_return(sh)
-    allow_kdk_shellout_command(get_psql_command('gitlabhq_development')).and_return(sh)
-    allow_kdk_shellout_command(get_psql_command('gitlabhq_development_ci')).and_return(sh)
+    allow_kdk_shellout_command(get_psql_command('khulnasofthq_development')).and_return(sh)
+    allow_kdk_shellout_command(get_psql_command('khulnasofthq_development_ci')).and_return(sh)
 
     schema_migrations_dir = "#{KDK.config.kdk_root.join('khulnasoft')}/db/schema_migrations"
     expect(Dir).to receive(:[]).with("#{schema_migrations_dir}/*").and_return(all_migrations.map { |m| "#{schema_migrations_dir}/#{m}" })

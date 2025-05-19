@@ -4,7 +4,7 @@ description: |
   Checks that internal links have .md extenstion and not .html extension.
 extends: existence
 message: "Link to a file and use the .md file extension instead of .html."
-link: https://docs.gitlab.com/development/documentation/styleguide/#links
+link: https://docs.khulnasoft.com/development/documentation/styleguide/#links
 vocab: false
 level: error
 scope: raw

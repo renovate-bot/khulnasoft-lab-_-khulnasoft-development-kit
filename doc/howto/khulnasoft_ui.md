@@ -16,4 +16,4 @@ as part of your KDK:
 
 ## Testing local changes
 
-[Link your local `@gitlab/ui` package to the KhulnaSoft project](https://github.com/khulnasoft-lab/khulnasoft-ui/-/blob/master/doc/contributing/khulnasoft_integration_test.md).
+[Link your local `@khulnasoft/ui` package to the KhulnaSoft project](https://github.com/khulnasoft-lab/khulnasoft-ui/-/blob/master/doc/contributing/khulnasoft_integration_test.md).

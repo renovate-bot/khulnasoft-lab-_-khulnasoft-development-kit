@@ -38,16 +38,16 @@ install_gems() {
   cd "${PROJECT_PATH}"
   echo "Installing Gems in ${PROJECT_PATH}"
   bundle install
-  cd gitlab
-  echo "Installing Gems in ${PROJECT_PATH}/gitlab"
+  cd khulnasoft
+  echo "Installing Gems in ${PROJECT_PATH}/khulnasoft"
   bundle install
   cd "${PROJECT_PATH}"
 }
 
-clone_gitlab() {
-  echo "Cloning gitlab-org/gitlab"
+clone_khulnasoft() {
+  echo "Cloning khulnasoft-org/khulnasoft"
   make khulnasoft/.git
-  cp "${WORKSPACE_DIR_NAME}/khulnasoft-development-kit/secrets.yml" gitlab/config
+  cp "${WORKSPACE_DIR_NAME}/khulnasoft-development-kit/secrets.yml" khulnasoft/config
 }
 
 copy_items_from_bootstrap() {
@@ -57,14 +57,14 @@ copy_items_from_bootstrap() {
     "consul"
     "kdk-config.mk"
     "gitaly"
-    ".gitlab-bundle"
-    ".gitlab-lefthook"
-    "gitlab-pages"
-    "gitlab-runner-config.toml"
-    "gitlab-shell"
-    ".gitlab-shell-bundle"
+    ".khulnasoft-bundle"
+    ".khulnasoft-lefthook"
+    "khulnasoft-pages"
+    "khulnasoft-runner-config.toml"
+    "khulnasoft-shell"
+    ".khulnasoft-shell-bundle"
     ".khulnasoft-translations"
-    ".gitlab-yarn" 
+    ".khulnasoft-yarn" 
     "localhost.crt"
     "localhost.key"
     "log"
@@ -91,7 +91,7 @@ reconfigure_and_migrate() {
 
   kdk reconfigure
   
-  bundle exec rake gitlab-db-migrate
+  bundle exec rake khulnasoft-db-migrate
   kdk stop
 }
 
@@ -105,7 +105,7 @@ restart_kdk() {
 }
 
 measure_time check_inotify
-measure_time clone_gitlab
+measure_time clone_khulnasoft
 measure_time copy_items_from_bootstrap
 measure_time reconfigure_and_migrate
 measure_time update_kdk

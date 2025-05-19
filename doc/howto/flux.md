@@ -2,7 +2,7 @@
 title: Flux CD
 ---
 
-Installing and configuring [Flux CD](https://fluxcd.io/) locally allows you to test and develop [GitOps](https://docs.gitlab.com/ee/user/clusters/agent/gitops.html)-related features and integrations.
+Installing and configuring [Flux CD](https://fluxcd.io/) locally allows you to test and develop [GitOps](https://docs.khulnasoft.com/ee/user/clusters/agent/gitops.html)-related features and integrations.
 
 ## Install dependencies
 
@@ -50,12 +50,12 @@ Generate an SSH key for KDK access:
 
 Create a project to hold the Flux configuration.
 It can be an empty project within any group.
-For example, you can create a project named `flux-config` in the `gitlab-org` group.
+For example, you can create a project named `flux-config` in the `khulnasoft-org` group.
 
 ## Complete a bootstrap installation
 
 Bootstrap Flux into an empty KhulnaSoft repository with the
-[`flux bootstrap`](https://fluxcd.io/flux/installation/bootstrap/gitlab/) command.
+[`flux bootstrap`](https://fluxcd.io/flux/installation/bootstrap/khulnasoft/) command.
 
 Since you only need Flux for development purposes, you can use an SSH repository connection. This simplifies the local KDK setup, including avoiding an issue where Flux doesn't verify local certificates if KDK runs behind [NGINX](nginx.md).
 
@@ -73,7 +73,7 @@ If using the example values from previous steps, your command should look like t
 
 ```shell
  flux bootstrap git
-  --url=ssh://git@kdk.test:2222/gitlab-org/flux-config.git \
+  --url=ssh://git@kdk.test:2222/khulnasoft-org/flux-config.git \
   --branch=main \
   --private-key-file=/Users/username/.ssh/kdk \
   --path=clusters/test-cluster
@@ -85,7 +85,7 @@ To fully replicate a GitOps configuration locally, you'll also need to create an
 
 First, make sure your KDK is [properly set up for KAS](kubernetes_agent.md).
 
-Then follow the [Flux set up tutorial](https://docs.gitlab.com/ee/user/clusters/agent/gitops/flux_tutorial.html#register-agentk) with the following modification:
+Then follow the [Flux set up tutorial](https://docs.khulnasoft.com/ee/user/clusters/agent/gitops/flux_tutorial.html#register-agentk) with the following modification:
 When installing the `agentk` with Flux, use the `grpc` address to connect to KAS. If you used the default  [loopback alias IP](local_network.md#create-loopback-interface) your YAML configuration should look like:
 
 ```yaml
@@ -95,33 +95,33 @@ kind: HelmRepository
 metadata:
   labels:
     app.kubernetes.io/component: agentk
-    app.kubernetes.io/created-by: gitlab
+    app.kubernetes.io/created-by: khulnasoft
     app.kubernetes.io/name: agentk
-    app.kubernetes.io/part-of: gitlab
-  name: gitlab-agent
-  namespace: gitlab
+    app.kubernetes.io/part-of: khulnasoft
+  name: khulnasoft-agent
+  namespace: khulnasoft
 spec:
   interval: 1h0m0s
-  url: https://charts.gitlab.io
+  url: https://charts.khulnasoft.io
 ---
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: gitlab-agent
-  namespace: gitlab
+  name: khulnasoft-agent
+  namespace: khulnasoft
 spec:
   chart:
     spec:
-      chart: gitlab-agent
+      chart: khulnasoft-agent
       sourceRef:
         kind: HelmRepository
-        name: gitlab-agent
-        namespace: gitlab
+        name: khulnasoft-agent
+        namespace: khulnasoft
   interval: 1h0m0s
   values:
     config:
       kasAddress: "grpc://172.16.123.1:8150"
-      secretName: gitlab-agent-token
+      secretName: khulnasoft-agent-token
 ```
 
 Once the agent is installed, you'll have a fully functional local GitOps solution you can use for development purposes.

@@ -40,13 +40,13 @@ module KDK
       # rubocop:disable Metrics/AbcSize -- A set of definitions which could be split up per component later
       def self.define_template_tasks(tasks)
         tasks.add_template(name: 'Procfile')
-        tasks.add_template(name: 'gitlab/config/cable.yml')
+        tasks.add_template(name: 'khulnasoft/config/cable.yml')
         tasks.add_template(name: 'khulnasoft/config/database.yml')
-        tasks.add_template(name: 'gitlab/config/gitlab.yml')
-        tasks.add_template(name: 'gitlab/config/puma.rb')
-        tasks.add_template(name: 'gitlab/config/redis.queues.yml', template: 'support/templates/khulnasoft/config/redis.sessions.yml.erb', erb_extra_args: { cluster: :queues })
-        tasks.add_template(name: 'gitlab/config/resque.yml', template: 'support/templates/khulnasoft/config/redis.sessions.yml.erb', erb_extra_args: { cluster: :shared_state })
-        tasks.add_template(name: 'gitlab/config/session_store.yml')
+        tasks.add_template(name: 'khulnasoft/config/khulnasoft.yml')
+        tasks.add_template(name: 'khulnasoft/config/puma.rb')
+        tasks.add_template(name: 'khulnasoft/config/redis.queues.yml', template: 'support/templates/khulnasoft/config/redis.sessions.yml.erb', erb_extra_args: { cluster: :queues })
+        tasks.add_template(name: 'khulnasoft/config/resque.yml', template: 'support/templates/khulnasoft/config/redis.sessions.yml.erb', erb_extra_args: { cluster: :shared_state })
+        tasks.add_template(name: 'khulnasoft/config/session_store.yml')
 
         tasks.add_template(name: 'gitaly/gitaly.config.toml', erb_extra_args: { node: KDK.config.gitaly }, post_render: lambda do |_task|
           KDK.config.gitaly.__storages.each do |storage|
@@ -78,12 +78,12 @@ module KDK
         %i[rate_limiting cache repository_cache sessions shared_state trace_chunks].each do |name|
           kwargs = if KDK.config.redis_cluster.enabled?
                      {
-                       name: "gitlab/config/redis.#{name}.yml",
+                       name: "khulnasoft/config/redis.#{name}.yml",
                        template: 'support/templates/khulnasoft/config/redis.cluster.yml.erb'
                      }
                    else
                      {
-                       name: "gitlab/config/redis.#{name}.yml",
+                       name: "khulnasoft/config/redis.#{name}.yml",
                        template: 'support/templates/khulnasoft/config/redis.sessions.yml.erb',
                        erb_extra_args: { cluster: name }
                      }
@@ -93,15 +93,15 @@ module KDK
         end
 
         tasks.add_template(name: 'khulnasoft-topology-service/config.toml', no_op_condition: 'khulnasoft_topology_service_enabled')
-        tasks.add_template(name: 'gitlab/config/vite.kdk.json')
-        tasks.add_template(name: 'gitlab/workhorse/config.toml')
+        tasks.add_template(name: 'khulnasoft/config/vite.kdk.json')
+        tasks.add_template(name: 'khulnasoft/workhorse/config.toml')
         tasks.add_template(name: 'khulnasoft-k8s-agent-config.yml')
-        tasks.add_template(name: 'gitlab-kas-websocket-token-secret', hide_diff: true)
-        tasks.add_template(name: 'gitlab-kas-autoflow-temporal-workflow-data-encryption-secret', hide_diff: true)
-        tasks.add_template(name: 'gitlab-pages/gitlab-pages.conf', make_dependencies: ['gitlab-pages/.git/pull'])
-        tasks.add_template(name: 'gitlab-pages-secret', hide_diff: true)
-        tasks.add_template(name: 'gitlab-runner-config.toml', no_op_condition: 'runner_enabled')
-        tasks.add_template(name: 'gitlab-shell/config.yml', make_dependencies: ['gitlab-shell/.git'])
+        tasks.add_template(name: 'khulnasoft-kas-websocket-token-secret', hide_diff: true)
+        tasks.add_template(name: 'khulnasoft-kas-autoflow-temporal-workflow-data-encryption-secret', hide_diff: true)
+        tasks.add_template(name: 'khulnasoft-pages/khulnasoft-pages.conf', make_dependencies: ['khulnasoft-pages/.git/pull'])
+        tasks.add_template(name: 'khulnasoft-pages-secret', hide_diff: true)
+        tasks.add_template(name: 'khulnasoft-runner-config.toml', no_op_condition: 'runner_enabled')
+        tasks.add_template(name: 'khulnasoft-shell/config.yml', make_dependencies: ['khulnasoft-shell/.git'])
         tasks.add_template(name: 'grafana/grafana.ini')
         tasks.add_template(name: 'nginx/conf/nginx.conf')
         tasks.add_template(name: 'openbao/config.hcl', no_op_condition: 'openbao_enabled')

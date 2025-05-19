@@ -8,7 +8,7 @@ You might sometimes need to allow KDK to be publicly accessible. For example:
 - Some authentication flows, such as OIDC, might also require callbacks to a publicly-accessible URL.
 
 You shouldn't expose local ports to the internet, either by opening up the port or using tunnels that forward traffic back to your development machine (for example, by using
-`ngrok`) because of [security risks](https://handbook.gitlab.com/handbook/business-technology/it/security/system-configuration/#other-servicesdevices). Because KhulnaSoft offers
+`ngrok`) because of [security risks](https://handbook.khulnasoft.com/handbook/business-technology/it/security/system-configuration/#other-servicesdevices). Because KhulnaSoft offers
 remote code execution as a feature, KhulnaSoft Runner could execute CI/CD jobs directly on the host machine, for example.
 
 For development machines that contain sensitive data, such as company-issued laptops, you should instead run KDK on a sandboxed virtual machine and make it publicly accessible.
@@ -28,7 +28,7 @@ In the virtual machine:
 1. Add the following to `kdk.yml` file:
 
    ```yaml
-   gitlab:
+   khulnasoft:
      rails:
        hostname: 'kdk.mydomain.io'
        allowed_hosts:
@@ -57,6 +57,6 @@ Now KDK will be available on its URL. For example, `https://kdk.mydomain.io`.
 
 ## Security reminders
 
-- [Change](https://docs.gitlab.com/ee/security/reset_user_password.html) the root account password.
-- Remember to [disable sign-ups](https://docs.gitlab.com/ee/administration/settings/sign_up_restrictions.html#disable-new-sign-ups).
+- [Change](https://docs.khulnasoft.com/ee/security/reset_user_password.html) the root account password.
+- Remember to [disable sign-ups](https://docs.khulnasoft.com/ee/administration/settings/sign_up_restrictions.html#disable-new-sign-ups).
 - Stop the reverse proxy when it is no longer needed.

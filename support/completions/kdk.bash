@@ -46,7 +46,7 @@ _kdk()
           if [ "$index" = 2 ]; then
             words="-d"
           elif [ "$index" = 3 ]; then
-            words="gitlabhq_development gitlabhq_test"
+            words="khulnasofthq_development khulnasofthq_test"
           fi
           ;;
         redis-cli)

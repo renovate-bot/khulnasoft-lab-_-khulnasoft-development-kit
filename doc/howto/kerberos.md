@@ -2,7 +2,7 @@
 title: Kerberos
 ---
 
-In order to test the [Kerberos integration](https://docs.gitlab.com/ee/integration/kerberos.html)
+In order to test the [Kerberos integration](https://docs.khulnasoft.com/ee/integration/kerberos.html)
 using KDK, set up a local Kerberos server.
 
 ## Requirements
@@ -38,8 +38,8 @@ These instructions require:
    chmod 0600 http.keytab
    ```
 
-1. Configure `config/gitlab.yml` following the instructions from Kerberos
-   integration [documentation](https://docs.gitlab.com/ee/integration/kerberos.html).
+1. Configure `config/khulnasoft.yml` following the instructions from Kerberos
+   integration [documentation](https://docs.khulnasoft.com/ee/integration/kerberos.html).
    The `keytab` option should point to where `http.keytab` exists.
 1. Restart KDK: `kdk restart`.
 
@@ -120,7 +120,7 @@ appropriate KDC for a specific realm.
 1. Test that you can clone a repository without any credentials:
 
    ```shell
-   git clone http://:@kdk.test:3000/root/gitlab.git
+   git clone http://:@kdk.test:3000/root/khulnasoft.git
    ```
 
    If you encounter a `HTTP Basic: Access denied` error, configure `git` to set

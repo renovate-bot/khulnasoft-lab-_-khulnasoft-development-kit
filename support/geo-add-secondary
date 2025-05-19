@@ -102,7 +102,7 @@ end
 class GeoSecondaryAdder
   include GeoSecondaryHelpers
 
-  attr_reader :options, :primary_kdk, :secondary_kdk, :primary_gitlab, :secondary_gitlab, :secondary_port
+  attr_reader :options, :primary_kdk, :secondary_kdk, :primary_khulnasoft, :secondary_khulnasoft, :secondary_port
 
   def initialize(options)
     @options = options
@@ -114,7 +114,7 @@ class GeoSecondaryAdder
     configure_primary
     configure_secondary
 
-    unified_url = run_rails_command(secondary_gitlab, 'puts(GeoNode.current_node_url)')
+    unified_url = run_rails_command(secondary_khulnasoft, 'puts(GeoNode.current_node_url)')
     create_primary_geo_node_record(unified_url)
     create_secondary_geo_node_record(unified_url)
 
@@ -130,8 +130,8 @@ class GeoSecondaryAdder
 
     @primary_kdk = Pathname.new(options.primary_kdk).realpath
     @secondary_kdk = Pathname.new(options.secondary_kdk).realpath
-    @primary_gitlab = primary_kdk.join('khulnasoft')
-    @secondary_gitlab = secondary_kdk.join('khulnasoft')
+    @primary_khulnasoft = primary_kdk.join('khulnasoft')
+    @secondary_khulnasoft = secondary_kdk.join('khulnasoft')
     @secondary_port = options.secondary_port
 
     print_vars
@@ -152,7 +152,7 @@ class GeoSecondaryAdder
   def configure_secondary
     configure_secondary_kdk_yml
     run_command_arr(secondary_kdk, %w[make bootstrap])
-    run_command_arr(secondary_kdk, %W[kdk install khulnasoft_repo=#{primary_gitlab}]) unless secondary_gitlab.exist?
+    run_command_arr(secondary_kdk, %W[kdk install khulnasoft_repo=#{primary_khulnasoft}]) unless secondary_khulnasoft.exist?
     run_command_arr(secondary_kdk, %w[make geo-secondary-setup])
     copy_db_key_base_to_secondary
     setup_pg_replication
@@ -188,8 +188,8 @@ class GeoSecondaryAdder
   end
 
   def secondary_kdk_khulnasoft_directory_exists?
-    retval = secondary_gitlab.exist? && secondary_gitlab.directory?
-    $stdout.puts "Secondary KDK gitlab directory #{retval ? 'exists' : 'does not exist'}"
+    retval = secondary_khulnasoft.exist? && secondary_khulnasoft.directory?
+    $stdout.puts "Secondary KDK khulnasoft directory #{retval ? 'exists' : 'does not exist'}"
     retval
   end
 
@@ -227,8 +227,8 @@ class GeoSecondaryAdder
   # Copy the secret key to the secondary so it can decrypt data in the PG DB
   # which was encrypted by the primary.
   def copy_db_key_base_to_secondary
-    db_key_base = read_db_key_base(primary_gitlab)
-    write_db_key_base(secondary_gitlab, db_key_base)
+    db_key_base = read_db_key_base(primary_khulnasoft)
+    write_db_key_base(secondary_khulnasoft, db_key_base)
   end
 
   def read_db_key_base(rails_dir)
@@ -256,7 +256,7 @@ class GeoSecondaryAdder
         'n.internal_url = GeoNode.current_node_url; ' \
         'n.save!'
 
-    run_rails_command(primary_gitlab, rails_set_as_primary_with_unified_url_cmd)
+    run_rails_command(primary_khulnasoft, rails_set_as_primary_with_unified_url_cmd)
   end
 
   def create_secondary_geo_node_record(unified_url)
@@ -269,7 +269,7 @@ class GeoSecondaryAdder
         "n.url = '#{unified_url}'; " \
         'n.save!'
 
-    run_rails_command(primary_gitlab, rails_create_secondary_node_cmd)
+    run_rails_command(primary_khulnasoft, rails_create_secondary_node_cmd)
   end
 
   def run_command_arr(dir, cmd_arr)
@@ -330,11 +330,11 @@ class GeoSecondaryAdder
   end
 
   def khulnasoft_geo_checks
-    run_command_arr(primary_gitlab, %w[bin/rake gitlab:geo:check])
-    run_command_arr(secondary_gitlab, %w[bin/rake gitlab:geo:check])
+    run_command_arr(primary_khulnasoft, %w[bin/rake khulnasoft:geo:check])
+    run_command_arr(secondary_khulnasoft, %w[bin/rake khulnasoft:geo:check])
 
     $stdout.puts "The `geo-install` and `geo-add-secondary` scripts do not configure SSH at the moment."
-    $stdout.puts "So the following failures during `rake gitlab:geo:check` can be ignored if Git over SSH is not needed:\n"
+    $stdout.puts "So the following failures during `rake khulnasoft:geo:check` can be ignored if Git over SSH is not needed:\n"
     $stdout.puts "Git user has default SSH configuration? ... no"
     $stdout.puts "OpenSSH configured to use AuthorizedKeysCommand ... no"
     $stdout.puts "KhulnaSoft configured to disable writing to authorized_keys file ... no"

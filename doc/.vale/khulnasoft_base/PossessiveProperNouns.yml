@@ -7,7 +7,7 @@ extends: existence
 message: "Remove 's from %s."
 level: warning
 ignorecase: true
-link: https://docs.gitlab.com/development/documentation/styleguide/#possessives
+link: https://docs.khulnasoft.com/development/documentation/styleguide/#possessives
 vocab: false
 tokens:
   - Amazon's

@@ -6,7 +6,7 @@ The `kdk evaluate` command allows you to evaluate AI models using the ELI5 proje
 
 ## Setup
 
-1. See our [documentation](https://gitlab.com/gitlab-org/ai-powered/eli5/-/tree/main/doc?ref_type=heads) for more information on setting up and using the ELI5 project.
+1. See our [documentation](https://khulnasoft.com/khulnasoft-org/ai-powered/eli5/-/tree/main/doc?ref_type=heads) for more information on setting up and using the ELI5 project.
 1. Enable the management of the ELI5 project by running:
    - `kdk config set khulnasoft_eli5.enabled true`
    - `kdk update`

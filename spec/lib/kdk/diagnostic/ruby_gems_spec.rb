@@ -136,7 +136,7 @@ RSpec.describe KDK::Diagnostic::RubyGems do
   def stub_shellout(cmd, success)
     shellout_double = kdk_shellout_double(success?: success)
 
-    allow_kdk_shellout_command(cmd, chdir: '/home/git/kdk/gitlab').and_return(shellout_double)
+    allow_kdk_shellout_command(cmd, chdir: '/home/git/kdk/khulnasoft').and_return(shellout_double)
     allow(shellout_double).to receive(:execute).with(display_output: false, display_error: false).and_return(shellout_double)
 
     shellout_double

@@ -33,7 +33,7 @@ any steps in here.
    for Knative and the IP address is `1.2.3.4` then you need to create an `A`
    record like `*.example.com -> 1.2.3.4`.
 1. Now clone
-   [this minimal example Ruby app](https://gitlab.com/gitlab-org/cluster-integration/knative-examples/knative-ruby-app-kubectl)
+   [this minimal example Ruby app](https://khulnasoft.com/khulnasoft-org/cluster-integration/knative-examples/knative-ruby-app-kubectl)
    and push to your project to deploy a Knative service
 
 ## Workarounds to avoid buying a domain name

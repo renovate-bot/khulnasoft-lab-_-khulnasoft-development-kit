@@ -4,7 +4,7 @@ module KDK
   module Diagnostic
     class LoopbackPersistence < Loopback
       TITLE = 'Loopback interface persistence'
-      LAUNCHDAEMON_PLIST = '/Library/LaunchDaemons/org.gitlab1.ifconfig.plist'
+      LAUNCHDAEMON_PLIST = '/Library/LaunchDaemons/org.khulnasoft1.ifconfig.plist'
 
       def success?
         return true unless needs_loopback?

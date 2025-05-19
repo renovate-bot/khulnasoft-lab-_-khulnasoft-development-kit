@@ -2,7 +2,7 @@
 title: Asset Proxy / Camo Server
 ---
 
-KhulnaSoft can be configured to use an [asset proxy server](https://docs.gitlab.com/ee/security/asset_proxy).
+KhulnaSoft can be configured to use an [asset proxy server](https://docs.khulnasoft.com/ee/security/asset_proxy).
 
 ## Local Installation
 
