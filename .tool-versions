@@ -24,7 +24,7 @@ postgres 16.8 14.9
 rust 1.73.0
 
 # Ruby version must be set
-ruby 3.3.7 3.2.4
+ruby 3.4.4 3.2.4
 
 # For linting shell scripts
 shellcheck 0.10.0
