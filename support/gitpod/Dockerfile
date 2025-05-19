@@ -26,7 +26,7 @@ RUN sudo apt-get install gitlab-runner -y
 # --- Install KDK with dependencies
 COPY --chown=gitpod bootstrap-gitpod-image.sh /tmp
 RUN bash /tmp/bootstrap-gitpod-image.sh
-RUN rm -rf ${HOME}/khulnasoft-development-kit/gitlab
+RUN rm -rf ${HOME}/khulnasoft-development-kit/khulnasoft
 
 # Setup gitpod related startup scripts
 COPY --chown=gitpod 91-gitlab-env /home/gitpod/.bashrc.d/

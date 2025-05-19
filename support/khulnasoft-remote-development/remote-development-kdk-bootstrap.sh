@@ -46,7 +46,7 @@ install_gems() {
 
 clone_gitlab() {
   echo "Cloning gitlab-org/gitlab"
-  make gitlab/.git
+  make khulnasoft/.git
   cp "${WORKSPACE_DIR_NAME}/khulnasoft-development-kit/secrets.yml" gitlab/config
 }
 

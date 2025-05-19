@@ -7,7 +7,7 @@ exit_and_error () {
   exit 1
 }
 
-cd ~/khulnasoft-development-kit/gitlab || exit_and_error "Could not change directory to '~/khulnasoft-development-kit/gitlab'"
+cd ~/khulnasoft-development-kit/khulnasoft || exit_and_error "Could not change directory to '~/khulnasoft-development-kit/khulnasoft'"
 
 if ! git -P config --get --global user.email 2&>1 > /dev/null; then
   echo "---"

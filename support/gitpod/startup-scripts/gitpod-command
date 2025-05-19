@@ -47,7 +47,7 @@ if [[ "$KHULNASOFT_RUN_DB_MIGRATIONS" == true ]]; then
 fi
 
 # Ensure db/structure.sql is checked out
-cd /workspace/khulnasoft-development-kit/gitlab
+cd /workspace/khulnasoft-development-kit/khulnasoft
 git checkout db/structure.sql
 
 # Waiting for KhulnaSoft ..

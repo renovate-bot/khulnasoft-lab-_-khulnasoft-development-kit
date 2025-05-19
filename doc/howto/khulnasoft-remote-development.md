@@ -4,7 +4,7 @@ title: KhulnaSoft Remote Development
 
 ## Setting up Remote Development locally
 
-Follow [these steps](https://gitlab.com/gitlab-org/remote-development/gitlab-remote-development-docs/-/blob/main/doc/local-development-environment-setup.md) to set up remote development locally.
+Follow [these steps](https://gitlab.com/gitlab-org/remote-development/khulnasoft-remote-development-docs/-/blob/main/doc/local-development-environment-setup.md) to set up remote development locally.
 
 ## Develop KhulnaSoft with KhulnaSoft remote development workspaces
 
@@ -46,7 +46,7 @@ alt="Workspaces overview page">
 
 ### Run KDK in your workspace
 
-1. The _Bootstrap KDK_ task starts automatically when a workspace is opened, executing the [bootstrap script](../../support/gitlab-remote-development/setup_workspace.rb).
+1. The _Bootstrap KDK_ task starts automatically when a workspace is opened, executing the [bootstrap script](../../support/khulnasoft-remote-development/setup_workspace.rb).
 1. After the bootstrap script finishes, you'll see a prompt asking if you want to send duration data.
 1. After responding, enter any command to close the task terminal.
 

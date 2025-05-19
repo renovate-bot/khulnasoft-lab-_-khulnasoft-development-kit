@@ -36,7 +36,7 @@ cannot open shared object file: No such file or directory - /home/user/.rvm/gems
 ```
 
 ```shell
-cd /home/user/khulnasoft-development-kit/gitlab && bundle exec rake gettext:compile > /home/user/khulnasoft-development-kit/gitlab/log/gettext.log 2>&1
+cd /home/user/khulnasoft-development-kit/khulnasoft && bundle exec rake gettext:compile > /home/user/khulnasoft-development-kit/khulnasoft/log/gettext.log 2>&1
 make: *** [.gettext] Error 1
 ```
 
@@ -57,7 +57,7 @@ bundle pristine charlock_holmes
 Or for example `re2` on MacOS:
 
 ```shell
-/Users/user/khulnasoft-development-kit/gitlab/lib/gitlab/untrusted_regexp.rb:25:  [BUG] Segmentation fault at 0x0000000000000000
+/Users/user/khulnasoft-development-kit/khulnasoft/lib/gitlab/untrusted_regexp.rb:25:  [BUG] Segmentation fault at 0x0000000000000000
 ruby 2.6.6p146 (2020-03-31 revision 67876) [x86_64-darwin19]
 ```
 
@@ -198,9 +198,9 @@ rake aborted!
 LoadError: dlopen(/Users/kdk/.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/extensions/x86_64-darwin-13/2.1.0-static/charlock_holmes-0.6.9.4/charlock_holmes/charlock_holmes.bundle, 9): Library not loaded: /usr/local/opt/icu4c/lib/libicui18n.52.1.dylib
   Referenced from: /Users/kdk/.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/extensions/x86_64-darwin-13/2.1.0-static/charlock_holmes-0.6.9.4/charlock_holmes/charlock_holmes.bundle
   Reason: image not found - /Users/kdk/.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/extensions/x86_64-darwin-13/2.1.0-static/charlock_holmes-0.6.9.4/charlock_holmes/charlock_holmes.bundle
-/Users/kdk/khulnasoft-development-kit/gitlab/config/application.rb:6:in `<top (required)>'
-/Users/kdk/khulnasoft-development-kit/gitlab/Rakefile:5:in `require'
-/Users/kdk/khulnasoft-development-kit/gitlab/Rakefile:5:in `<top (required)>'
+/Users/kdk/khulnasoft-development-kit/khulnasoft/config/application.rb:6:in `<top (required)>'
+/Users/kdk/khulnasoft-development-kit/khulnasoft/Rakefile:5:in `require'
+/Users/kdk/khulnasoft-development-kit/khulnasoft/Rakefile:5:in `<top (required)>'
 (See full trace by running task with --trace)
 ```
 

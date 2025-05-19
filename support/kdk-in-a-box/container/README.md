@@ -26,7 +26,7 @@ docker run -d -h kdk.local --name kdk \
   -p 5100:5100 \
   -p 5778:5778 \
   -p 9000:9000 \
-  registry.github.com/khulnasoft-lab/khulnasoft-development-kit/gitlab-kdk-in-a-box:latest
+  registry.github.com/khulnasoft-lab/khulnasoft-development-kit/khulnasoft-kdk-in-a-box:latest
 ```
 
 ## SSH Host Keys
@@ -46,7 +46,7 @@ docker run -d -h kdk.local --name kdk \
   -p 5100:5100 \
   -p 5778:5778 \
   -p 9000:9000 \
-  registry.github.com/khulnasoft-lab/khulnasoft-development-kit/gitlab-kdk-in-a-box:latest
+  registry.github.com/khulnasoft-lab/khulnasoft-development-kit/khulnasoft-kdk-in-a-box:latest
 ```
 
 ## Connecting to container
@@ -65,7 +65,7 @@ The steps are based on [the documentation page "VS Code debugging"](https://docs
 
 ### Setup
 
-1. Install the debug gem by running gem install debug inside the `/gitlab-kdk/khulnasoft-development-kit/gitlab` folder.
+1. Install the debug gem by running gem install debug inside the `/gitlab-kdk/khulnasoft-development-kit/khulnasoft` folder.
 1. Install [the VS Code Ruby rdbg Debugger extension](https://marketplace.visualstudio.com/items?itemName=KoichiSasada.vscode-rdbg) to add support for the rdbg debugger type to VS Code.
 1. In case you want to automatically stop and start KhulnaSoft and its associated Ruby Rails/Sidekiq process, you may add the following VS Code task to your configuration under the `.vscode/tasks.json` file:
 

@@ -1,0 +1,153 @@
+name: Build and Release
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+env:
+  DOCKER_BUILDKIT: 1
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        tool_version_manager: [mise, asdf]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 1
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: |
+            ${{ secrets.DOCKER_IMAGE_NAME }}:${{ github.sha }}
+            ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' && format('{0}:latest', secrets.DOCKER_IMAGE_NAME) || '' }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  build-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 1
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v2
+        with:
+          hugo-version: '0.121.0'
+          extended: true
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+
+      - name: Build theme assets
+        run: |
+          cd doc-site/themes/hugo-geekdoc
+          npm install
+          npm run build
+          cd ../../
+
+      - name: Build documentation
+        run: hugo --minify --contentDir ../docs --destination ../public --baseURL "${{ github.event.repository.url }}/"
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        if: github.ref == 'refs/heads/master'
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+
+  build-gitpod:
+    runs-on: ubuntu-latest
+    if: contains(github.event.head_commit.modified, 'support/gitpod')
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_TOKEN }}
+
+      - name: Build and push Gitpod image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./support/gitpod
+          push: true
+          tags: ${{ secrets.GITPOD_IMAGE_NAME }}:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  build-kdk-in-a-box:
+    runs-on: ${{ matrix.platform == 'arm64' && 'ubuntu-latest' || 'ubuntu-latest' }}
+    if: contains(github.event.head_commit.modified, 'support/kdk-in-a-box')
+    strategy:
+      matrix:
+        platform: [amd64, arm64]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_TOKEN }}
+
+      - name: Build and push KDK-in-a-box image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./support/kdk-in-a-box/container
+          platforms: linux/${{ matrix.platform }}
+          push: true
+          tags: ${{ secrets.KDK_IN_A_BOX_IMAGE_NAME }}:${{ github.sha }}-${{ matrix.platform }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  create-manifest:
+    needs: build-kdk-in-a-box
+    runs-on: ubuntu-latest
+    if: contains(github.event.head_commit.modified, 'support/kdk-in-a-box')
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_TOKEN }}
+
+      - name: Create and push manifest
+        run: |
+          docker manifest create ${{ secrets.KDK_IN_A_BOX_IMAGE_NAME }}:${{ github.sha }} \
+            ${{ secrets.KDK_IN_A_BOX_IMAGE_NAME }}:${{ github.sha }}-amd64 \
+            ${{ secrets.KDK_IN_A_BOX_IMAGE_NAME }}:${{ github.sha }}-arm64
+          docker manifest push ${{ secrets.KDK_IN_A_BOX_IMAGE_NAME }}:${{ github.sha }} 

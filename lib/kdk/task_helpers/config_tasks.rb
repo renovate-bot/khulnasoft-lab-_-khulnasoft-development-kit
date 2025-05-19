@@ -41,11 +41,11 @@ module KDK
       def self.define_template_tasks(tasks)
         tasks.add_template(name: 'Procfile')
         tasks.add_template(name: 'gitlab/config/cable.yml')
-        tasks.add_template(name: 'gitlab/config/database.yml')
+        tasks.add_template(name: 'khulnasoft/config/database.yml')
         tasks.add_template(name: 'gitlab/config/gitlab.yml')
         tasks.add_template(name: 'gitlab/config/puma.rb')
-        tasks.add_template(name: 'gitlab/config/redis.queues.yml', template: 'support/templates/gitlab/config/redis.sessions.yml.erb', erb_extra_args: { cluster: :queues })
-        tasks.add_template(name: 'gitlab/config/resque.yml', template: 'support/templates/gitlab/config/redis.sessions.yml.erb', erb_extra_args: { cluster: :shared_state })
+        tasks.add_template(name: 'gitlab/config/redis.queues.yml', template: 'support/templates/khulnasoft/config/redis.sessions.yml.erb', erb_extra_args: { cluster: :queues })
+        tasks.add_template(name: 'gitlab/config/resque.yml', template: 'support/templates/khulnasoft/config/redis.sessions.yml.erb', erb_extra_args: { cluster: :shared_state })
         tasks.add_template(name: 'gitlab/config/session_store.yml')
 
         tasks.add_template(name: 'gitaly/gitaly.config.toml', erb_extra_args: { node: KDK.config.gitaly }, post_render: lambda do |_task|
@@ -79,12 +79,12 @@ module KDK
           kwargs = if KDK.config.redis_cluster.enabled?
                      {
                        name: "gitlab/config/redis.#{name}.yml",
-                       template: 'support/templates/gitlab/config/redis.cluster.yml.erb'
+                       template: 'support/templates/khulnasoft/config/redis.cluster.yml.erb'
                      }
                    else
                      {
                        name: "gitlab/config/redis.#{name}.yml",
-                       template: 'support/templates/gitlab/config/redis.sessions.yml.erb',
+                       template: 'support/templates/khulnasoft/config/redis.sessions.yml.erb',
                        erb_extra_args: { cluster: name }
                      }
                    end

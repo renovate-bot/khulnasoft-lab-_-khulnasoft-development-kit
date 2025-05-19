@@ -87,7 +87,7 @@ You can watch [a recorded video walkthrough](https://www.youtube.com/watch?v=Sdq
 
 1. Optional. Consider adding `gitlab/config/gitlab.yml` as a [protected config file](../configuration.md#overwriting-configuration-files) to retain these changes when running the `kdk reconfigure` command.
 1. Restart all services. `kdk start`
-1. Start MailRoom in a console (pointing to your `gitlab` folder e.g. `cd ~/khulnasoft-development-kit/gitlab`) with the following command:
+1. Start MailRoom in a console (pointing to your `gitlab` folder e.g. `cd ~/khulnasoft-development-kit/khulnasoft`) with the following command:
 
    ```shell
    bundle exec mail_room -c ./config/mail_room.yml

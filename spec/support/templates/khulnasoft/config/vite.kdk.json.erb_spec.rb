@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'support/templates/gitlab/config/vite.kdk.json.erb' do
+RSpec.describe 'support/templates/khulnasoft/config/vite.kdk.json.erb' do
   let(:kdk_basepath) { KDK.config.kdk_root }
   let(:key_path) { kdk_basepath.join('localhost.key').to_s }
   let(:cert_path) { kdk_basepath.join('localhost.crt').to_s }

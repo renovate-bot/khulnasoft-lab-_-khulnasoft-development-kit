@@ -36,7 +36,7 @@ If you still encounter some errors, see the troubleshooting FAQ below:
 
   ```plaintext
   Webpack::Rails::Manifest::ManifestLoadError at /
-  Could not load compiled manifest from /path/to/khulnasoft-development-kit/gitlab/public/assets/webpack/manifest.json - have you run `rake webpack:compile`?
+  Could not load compiled manifest from /path/to/khulnasoft-development-kit/khulnasoft/public/assets/webpack/manifest.json - have you run `rake webpack:compile`?
   ```
 
   This probably means that the webpack dev server isn't running or that your
@@ -67,7 +67,7 @@ If you still encounter some errors, see the troubleshooting FAQ below:
 - I see the following error when run `kdk tail` or `kdk tail webpack`:
 
   ```plaintext
-  09:54:15 webpack.1               | > @ dev-server /Users/mike/Projects/khulnasoft-development-kit/gitlab
+  09:54:15 webpack.1               | > @ dev-server /Users/mike/Projects/khulnasoft-development-kit/khulnasoft
   09:54:15 webpack.1               | > webpack-dev-server --config config/webpack.config.js
   09:54:15 webpack.1               |
   09:54:15 webpack.1               | sh: webpack-dev-server: command not found

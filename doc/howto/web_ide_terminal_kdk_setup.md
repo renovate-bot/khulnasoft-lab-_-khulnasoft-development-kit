@@ -159,7 +159,7 @@ The following is required to configure KhulnaSoft Runner for Web IDE terminals.
 ## Starting the Web IDE terminal
 
 1. Go to the test project and open the Web IDE.
-1. Add the file `.gitlab/.gitlab-webide.yml` to the repository's root.
+1. Add the file `.khulnasoft/.gitlab-webide.yml` to the repository's root.
 
    ```yaml
    terminal:
@@ -189,7 +189,7 @@ The following are possible problems using Web IDE terminal with possible solutio
   terminal one can start.
 
 - In case of a `connection failure` (due to `apt-get` command not being
-  found), you can try changing the `image` in `.gitlab/.gitlab-webide.yml`
+  found), you can try changing the `image` in `.khulnasoft/.gitlab-webide.yml`
   to be `image: alpine:3.5`.
 
   This is a bit inconsistent as you could later try to change it back to

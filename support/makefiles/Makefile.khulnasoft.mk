@@ -9,7 +9,7 @@ ifeq ($(asdf_opt_out),false)
 endif
 
 .PHONY: khulnasoft-setup
-khulnasoft-setup: gitlab/.git gitlab-config gitlab-asdf-install .gitlab-bundle .gitlab-lefthook .gitlab-yarn .khulnasoft-translations
+khulnasoft-setup: khulnasoft/.git gitlab-config gitlab-asdf-install .gitlab-bundle .gitlab-lefthook .gitlab-yarn .khulnasoft-translations
 
 gitlab/doc/api/graphql/reference/khulnasoft_schema.json: .gitlab-bundle
 	@echo
@@ -18,7 +18,7 @@ gitlab/doc/api/graphql/reference/khulnasoft_schema.json: .gitlab-bundle
 	@echo "${DIVIDER}"
 	$(Q)$(khulnasoft_rake_cmd) gitlab:graphql:schema:dump ${QQ}
 
-gitlab/.git:
+khulnasoft/.git:
 	@echo
 	@echo "${DIVIDER}"
 	@echo "Cloning ${khulnasoft_repo}"
@@ -45,7 +45,7 @@ endif
 gitlab-config: touch-examples gitlab/public/uploads
 	$(Q)rake \
 		gitlab/config/gitlab.yml \
-		gitlab/config/database.yml \
+		khulnasoft/config/database.yml \
 		gitlab/config/cable.yml \
 		gitlab/config/resque.yml \
 		gitlab/config/redis.cache.yml \

@@ -7,7 +7,7 @@ Use the KDK to run a previous version of KhulnaSoft.
 ## Change the version
 
 1. Find the [tag](https://github.com/khulnasoft-lab/khulnasoft/-/tags) or commit hash for the version of KhulnaSoft you want to use.
-1. Navigate to the `/khulnasoft-development-kit/gitlab/` folder using the command line.
+1. Navigate to the `/khulnasoft-development-kit/khulnasoft/` folder using the command line.
 1. Switch to the target tag or commit hash and detach from `HEAD`:
 
    ```shell

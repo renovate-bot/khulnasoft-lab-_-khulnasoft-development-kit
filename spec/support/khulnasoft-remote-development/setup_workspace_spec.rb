@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative '../../../support/gitlab-remote-development/setup_workspace'
+require_relative '../../../support/khulnasoft-remote-development/setup_workspace'
 
 RSpec.describe SetupWorkspace do
   include ShelloutHelper

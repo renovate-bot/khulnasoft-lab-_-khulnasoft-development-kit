@@ -94,7 +94,7 @@ The easiest way to switch to another branch is to use the UI functionality:
 Alternatively, you can also use the terminal to check out a branch:
 
 ```shell
-cd /workspace/khulnasoft-development-kit/gitlab
+cd /workspace/khulnasoft-development-kit/khulnasoft
 git fetch origin &&
 git checkout -b "BRANCH_NAME" "origin/BRANCH_NAME"
 ```
@@ -105,7 +105,7 @@ so after switching branches, make sure they are installed.
 On the Gitpod console:
 
 ```shell
-cd /workspace/khulnasoft-development-kit/gitlab
+cd /workspace/khulnasoft-development-kit/khulnasoft
 bundle && yarn
 ```
 
@@ -125,7 +125,7 @@ To run the Rails console:
 1. Run the following command:
 
    ```shell
-   cd /workspace/khulnasoft-development-kit/gitlab && ./bin/rails console
+   cd /workspace/khulnasoft-development-kit/khulnasoft && ./bin/rails console
    ```
 
 ### View logs
@@ -136,7 +136,7 @@ To switch to the directory with Rails logs:
 1. Change into the KhulnaSoft log directory:
 
    ```shell
-   cd /workspace/khulnasoft-development-kit/gitlab/log
+   cd /workspace/khulnasoft-development-kit/khulnasoft/log
    ```
 
 You can also tail logs from KDK services:
@@ -225,8 +225,8 @@ Ensure that you're using the 3000 port and that it's set to public. To change th
 1. Select **New instance runner** and be sure to check **Run untagged jobs** if you don't specify a tag list. Optionally fill out the rest of the form.
 1. In the next screen, copy the command.
 1. In the terminal, switch to the KDK directory `cd /workspace/khulnasoft-development-kit`.
-1. Run the copied command with the following added to the end `--config /workspace/khulnasoft-development-kit/gitlab-runner-config.toml --non-interactive --executor shell`.
-1. Run `gitlab-runner run --config /workspace/khulnasoft-development-kit/gitlab-runner-config.toml`.
+1. Run the copied command with the following added to the end `--config /workspace/khulnasoft-development-kit/khulnasoft-runner-config.toml --non-interactive --executor shell`.
+1. Run `gitlab-runner run --config /workspace/khulnasoft-development-kit/khulnasoft-runner-config.toml`.
 
 You should receive a confirmation message on the screen that your runner is ready to pick up jobs. If you create a new project, the
 **Pages/Plain HTML** template contains a super simple and tiny pipeline that's great to

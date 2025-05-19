@@ -6,7 +6,7 @@ module Support
   module Rake
     class Update
       CORE_TARGETS = %w[
-        gitlab/.git
+        khulnasoft/.git
         gitlab-config
         gitlab-asdf-install
         .gitlab-bundle

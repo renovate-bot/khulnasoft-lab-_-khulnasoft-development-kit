@@ -47,7 +47,7 @@ Please install a version by running one of the following:
 
 asdf install golang 1.21.2
 
-or add one of the following versions in your config file at /Users/foo/khulnasoft-development-kit/gitlab/workhorse/.tool-versions
+or add one of the following versions in your config file at /Users/foo/khulnasoft-development-kit/khulnasoft/workhorse/.tool-versions
 golang 1.20.10
 golang 1.20.9
 golang 1.21.3

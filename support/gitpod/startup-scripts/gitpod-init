@@ -22,8 +22,8 @@ cp -r "$HOME/khulnasoft-development-kit" /workspace
 cd /workspace/khulnasoft-development-kit
 
 # Ensure KhulnaSoft directory is symlinked under the KDK
-ln -nfs "$GITPOD_REPO_ROOT" /workspace/khulnasoft-development-kit/gitlab
-mv /workspace/khulnasoft-development-kit/secrets.yml /workspace/khulnasoft-development-kit/gitlab/config
+ln -nfs "$GITPOD_REPO_ROOT" /workspace/khulnasoft-development-kit/khulnasoft
+mv /workspace/khulnasoft-development-kit/secrets.yml /workspace/khulnasoft-development-kit/khulnasoft/config
 
 # Reconfigure KDK
 log "Reconfiguring KDK"

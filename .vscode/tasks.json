@@ -1,0 +1,18 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Bootstrap KDK",
+			"type": "shell",
+			"command": "support/khulnasoft-remote-development/setup_workspace.rb",
+			"presentation": {
+				"echo": true,
+				"reveal": "always"
+			},
+			"runOptions": {
+				"reevaluateOnRerun": true,
+				"runOn": "folderOpen"
+			}
+		}
+	]
+}

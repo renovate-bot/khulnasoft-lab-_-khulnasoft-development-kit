@@ -12,9 +12,9 @@ Procfile:
 gitlab/config/cable.yml: 
 	$(Q)rake gitlab/config/cable.yml
 
-.PHONY: gitlab/config/database.yml
-gitlab/config/database.yml: 
-	$(Q)rake gitlab/config/database.yml
+.PHONY: khulnasoft/config/database.yml
+khulnasoft/config/database.yml: 
+	$(Q)rake khulnasoft/config/database.yml
 
 .PHONY: gitlab/config/gitlab.yml
 gitlab/config/gitlab.yml: 

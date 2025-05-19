@@ -15,7 +15,7 @@ if [[ -z $DIR ]]; then
   echo
   echo "Example:"
   echo "  ./support/docker-build support/gitpod"
-  echo "  ./support/docker-build support/gitlab-remote-development workspace"
+  echo "  ./support/docker-build support/khulnasoft-remote-development workspace"
   exit 1
 fi
 

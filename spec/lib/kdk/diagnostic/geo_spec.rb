@@ -3,7 +3,7 @@
 RSpec.describe KDK::Diagnostic::Geo do
   subject(:geo_diagnostic) { described_class.new }
 
-  let(:database_yml_file) { '/home/git/kdk/gitlab/config/database.yml' }
+  let(:database_yml_file) { '/home/git/kdk/khulnasoft/config/database.yml' }
 
   let(:default_content) do
     <<-CONTENT
@@ -146,7 +146,7 @@ RSpec.describe KDK::Diagnostic::Geo do
           expected_detail = <<~MESSAGE
             There is a mismatch in your Geo configuration.
 
-            Geo is disabled in KDK, but `/home/git/kdk/gitlab/config/database.yml` contains geo database.
+            Geo is disabled in KDK, but `/home/git/kdk/khulnasoft/config/database.yml` contains geo database.
 
             Please run `kdk reconfigure` to apply settings in kdk.yml.
             For more details, please refer to https://github.com/khulnasoft-lab/khulnasoft-development-kit/blob/main/doc/howto/geo.md.
@@ -169,7 +169,7 @@ RSpec.describe KDK::Diagnostic::Geo do
           expected_detail = <<~MESSAGE
             There is a mismatch in your Geo configuration.
 
-            Geo is enabled in KDK as a secondary, but `/home/git/kdk/gitlab/config/database.yml` does not contain geo database.
+            Geo is enabled in KDK as a secondary, but `/home/git/kdk/khulnasoft/config/database.yml` does not contain geo database.
 
             Please run `kdk reconfigure` to apply settings in kdk.yml.
             For more details, please refer to https://github.com/khulnasoft-lab/khulnasoft-development-kit/blob/main/doc/howto/geo.md.
@@ -192,7 +192,7 @@ RSpec.describe KDK::Diagnostic::Geo do
           expected_detail = <<~MESSAGE
             There is a mismatch in your Geo configuration.
 
-            Geo is enabled in KDK, but not as a secondary node, so `/home/git/kdk/gitlab/config/database.yml` should not contain geo database.
+            Geo is enabled in KDK, but not as a secondary node, so `/home/git/kdk/khulnasoft/config/database.yml` should not contain geo database.
 
             Please run `kdk reconfigure` to apply settings in kdk.yml.
             For more details, please refer to https://github.com/khulnasoft-lab/khulnasoft-development-kit/blob/main/doc/howto/geo.md.

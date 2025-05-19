@@ -31,7 +31,7 @@ kdk psql --help
 You can also use the Rails `dbconsole` command, but it's much slower to start up:
 
 ```shell
-cd khulnasoft-development-kit/gitlab
+cd khulnasoft-development-kit/khulnasoft
 
 # Use default development environment
 bundle exec rails dbconsole

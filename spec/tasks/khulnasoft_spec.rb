@@ -2,10 +2,10 @@
 
 RSpec.describe 'rake gitlab:truncate_logs', :hide_output do
   before(:all) do
-    Rake.application.rake_require('tasks/gitlab')
+    Rake.application.rake_require('tasks/khulnasoft')
   end
 
-  let(:log_dir) { Pathname.new(Dir.mktmpdir('gitlab-log-dir')) }
+  let(:log_dir) { Pathname.new(Dir.mktmpdir('khulnasoft-log-dir')) }
   let(:log_file) { log_dir.join('test.log') }
 
   before do
@@ -44,7 +44,7 @@ end
 
 RSpec.describe 'rake gitlab:truncate_http_router_logs', :hide_output do
   before(:all) do
-    Rake.application.rake_require('tasks/gitlab')
+    Rake.application.rake_require('tasks/khulnasoft')
   end
 
   let(:http_router_log_dir) { Pathname.new(Dir.mktmpdir('')) }

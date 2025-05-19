@@ -1,0 +1,50 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+env:
+  OBSERVABILITY_LOGGING_LEVEL: debug
+  OBSERVABILITY_GRPC_LEVEL: warn
+  REMOTE_DEV_ENABLED: true
+  REMOTE_DEV_DNS_ZONE: workspaces.github.dev
+  REMOTE_DEV_RUNTIME_CLASS: sysbox-runc
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up observability
+      run: |
+        echo "Setting up observability configuration..."
+        echo "Logging level: $OBSERVABILITY_LOGGING_LEVEL"
+        echo "gRPC level: $OBSERVABILITY_GRPC_LEVEL"
+    
+    - name: Configure remote development
+      run: |
+        echo "Configuring remote development..."
+        echo "Remote development enabled: $REMOTE_DEV_ENABLED"
+        echo "DNS Zone: $REMOTE_DEV_DNS_ZONE"
+        echo "Runtime Class: $REMOTE_DEV_RUNTIME_CLASS"
+    
+    - name: Build
+      run: |
+        echo "Building the application..."
+        # Add your build commands here
+    
+    - name: Test
+      run: |
+        echo "Running tests..."
+        # Add your test commands here
+    
+    - name: Deploy
+      if: github.ref == 'refs/heads/master'
+      run: |
+        echo "Deploying to production..."
+        # Add your deployment commands here 

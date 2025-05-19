@@ -46,7 +46,7 @@ class SetupWorkspace
 
     # Instead KDK::Shellout use Process.spawn to let the process reuse the interactive TTY.
     # This is cructial to run command like `kdk update` in parallel.
-    pid = Process.spawn('support/gitlab-remote-development/remote-development-kdk-bootstrap.sh', chdir: ROOT_DIR)
+    pid = Process.spawn('support/khulnasoft-remote-development/remote-development-kdk-bootstrap.sh', chdir: ROOT_DIR)
     success = Process::Status.wait(pid).success?
 
     duration = Process.clock_gettime(Process::CLOCK_MONOTONIC) - start

@@ -76,7 +76,7 @@ namespace :update do
 
   desc nil
   task 'khulnasoft-setup' => %w[
-    make:gitlab/.git
+    make:khulnasoft/.git
     make:gitlab-config
     make:gitlab-asdf-install
     make:.gitlab-bundle

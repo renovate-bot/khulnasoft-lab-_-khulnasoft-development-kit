@@ -8,7 +8,7 @@ RSpec.describe Support::Rake::Update do
   describe '.make_tasks' do
     it 'returns all make targets' do
       expect(described_class.make_tasks.map(&:target)).to match_array(%w[
-        gitlab/.git
+        khulnasoft/.git
         gitlab-config
         gitlab-asdf-install
         .gitlab-bundle

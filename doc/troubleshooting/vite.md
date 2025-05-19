@@ -36,8 +36,8 @@ showed:
 
 ```plaintext
 2025-01-23_14:50:31.29582 vite                    : TypeError: Cannot read properties of undefined (reading 'join')
-2025-01-23_14:50:31.29583 vite                    :     at file:///gitlab-kdk/khulnasoft-development-kit/gitlab/node_modules/vite/dist/node/chunks/dep-BJP6rrE_.js:18049:13
-2025-01-23_14:50:31.29584 vite                    :     at async file:///gitlab-kdk/khulnasoft-development-kit/gitlab/node_modules/vite/dist/node/chunks/dep-BJP6rrE_.js:51643:28
+2025-01-23_14:50:31.29583 vite                    :     at file:///gitlab-kdk/khulnasoft-development-kit/khulnasoft/node_modules/vite/dist/node/chunks/dep-BJP6rrE_.js:18049:13
+2025-01-23_14:50:31.29584 vite                    :     at async file:///gitlab-kdk/khulnasoft-development-kit/khulnasoft/node_modules/vite/dist/node/chunks/dep-BJP6rrE_.js:51643:28
 ```
 
 The error in the log was also visible in a KDK that was working, so it was not the root cause.
@@ -58,7 +58,7 @@ node:internal/fs/watchers:247
     const error = new UVException({
                   ^
 
-Error: ENOSPC: System limit for number of file watchers reached, watch '/gitlab-kdk/khulnasoft-development-kit/gitlab/app/assets/stylesheets/highlight/hljs.scss'
+Error: ENOSPC: System limit for number of file watchers reached, watch '/gitlab-kdk/khulnasoft-development-kit/khulnasoft/app/assets/stylesheets/highlight/hljs.scss'
 ```
 
 Especially when running the full KDK and editing the source with VS Code, the system is going to be creating a lot of inotify handles. The default
