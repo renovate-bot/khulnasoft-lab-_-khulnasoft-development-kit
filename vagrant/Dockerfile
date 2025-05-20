@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM ubuntu:24.04
 LABEL authors.maintainer "KDK contributors: https://github.com/khulnasoft-lab/khulnasoft-development-kit/-/graphs/main"
 
 ENV DEBIAN_FRONTEND noninteractive

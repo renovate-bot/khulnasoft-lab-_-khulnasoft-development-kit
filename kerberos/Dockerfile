@@ -1,4 +1,4 @@
-FROM ubuntu:focal
+FROM ubuntu:noble
 ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get update
 RUN apt-get install krb5-kdc krb5-admin-server -y

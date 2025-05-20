@@ -1,4 +1,4 @@
-FROM ubuntu:22.04
+FROM ubuntu:24.04
 LABEL authors.maintainer="KDK contributors: https://github.com/khulnasoft-com/khulnasoft-development-kit"
 
 ## The CI script that build this file can be found under: support/docker

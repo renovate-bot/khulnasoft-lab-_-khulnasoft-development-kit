@@ -1,6 +1,6 @@
 FROM jdkato/vale AS vale-source
 
-FROM ubuntu:22.04
+FROM ubuntu:24.04
 
 ARG git_checkout_branch
 ENV GIT_CHECKOUT_BRANCH $git_checkout_branch
