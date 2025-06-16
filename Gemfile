@@ -5,7 +5,7 @@ source 'https://rubygems.org'
 gemspec path: 'gem/'
 
 group :development do
-  gem 'lefthook', '~> 1.10.10', require: false
+  gem 'lefthook', '~> 1.11.0', require: false
   gem 'rubocop', require: false
   gem "rubocop-rake", "~> 0.7.0", require: false
   gem 'yard', '~> 0.9.37', require: false
